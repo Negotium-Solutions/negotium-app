@@ -7,15 +7,34 @@
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
 
         <!-- Fonts -->
-        <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <!-- Google Font: Source Sans Pro -->
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+        <!-- Font Awesome Icons -->
+        <link rel="stylesheet" href="{{asset('adminlte/plugins/fontawesome-free/css/all.min.css')}}">
+        <!-- IonIcons -->
+        <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+        <!-- Theme style -->
+        <link rel="stylesheet" href="{{asset('adminlte/dist/css/adminlte.min.css')}}">
 
         <!-- Scripts -->
         @routes
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    <body class="hold-transition sidebar-mini">
         @inertia
+
+        <!-- REQUIRED SCRIPTS -->
+        <!-- jQuery -->
+        <script src="{{asset('adminlte/plugins/jquery/jquery.min.js')}}"></script>
+        <!-- Bootstrap -->
+        <script src="{{asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
+        <!-- AdminLTE -->
+        <script src="{{asset('adminlte/dist/js/adminlte.js')}}"></script>
+
+        <!-- OPTIONAL SCRIPTS -->
+        <script src="{{asset('adminlte/plugins/chart.js/Chart.min.js')}}"></script>
+        <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+        <script src="{{asset('adminlte/dist/js/pages/dashboard3.js')}}"></script>
     </body>
 </html>
