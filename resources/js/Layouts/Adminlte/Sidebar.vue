@@ -42,7 +42,7 @@ import NavLink from "@/Components/NavLink.vue";
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <Link href="#" method="post" class="nav-link">
+            <Link href="#" class="nav-link">
               <i class="nav-icon fas fa-briefcase"></i>
               <p>
                 Create
@@ -85,12 +85,12 @@ import NavLink from "@/Components/NavLink.vue";
             </Link>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a :href="route('document')" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>
                 Documents
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
             <Link href="#" class="nav-link">

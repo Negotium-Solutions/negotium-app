@@ -1,17 +1,15 @@
 <script setup>
 import { AuthenticatedLayout } from '@/Layouts/Adminlte';
-import '../../../public/adminlte/plugins/chart.js/Chart.min.js';
-import '../../../public/adminlte/dist/js/pages/dashboard3.js';
 </script>
 
 <template>
     <AuthenticatedLayout>
         <template #header>
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Documents</h1>
             <ol class="breadcrumb sm">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard v3</li>
+              <li class="breadcrumb-item active">Documents</li>
             </ol>
           </div><!-- /.col -->
           <div class="col-sm-6">
