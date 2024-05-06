@@ -6,7 +6,7 @@ import NavLink from "@/Components/NavLink.vue";
 
 <template>
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-light-success elevation-4">
+  <aside class="main-sidebar sidebar-light-dark elevation-4">
     <!-- Brand Logo -->
     <table class="brand-link-logo">
       <tr>
@@ -50,7 +50,7 @@ import NavLink from "@/Components/NavLink.vue";
             </Link>
           </li>
           <li class="nav-item">
-            <Link :href="route('dashboard')" :active="route().current('dashboard')" class="nav-link active">
+            <Link :href="route('dashboard')" :class="{ active: route().current('dashboard') || route().current('dashboard.create') || route().current('dashboard.edit') }" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -85,7 +85,7 @@ import NavLink from "@/Components/NavLink.vue";
             </Link>
           </li>
           <li class="nav-item">
-            <a :href="route('document')" class="nav-link">
+            <a :href="route('document')" :class="{ active: route().current('document') }" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>
                 Documents

@@ -24,7 +24,9 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/document', [DocumentController::class, 'get'])->name('document');
+    Route::get('/document', [DocumentController::class, 'index'])->name('document');
+    Route::get('/document/create', [DocumentController::class, 'create'])->name('document.create');
+    Route::post('/document/store', [DocumentController::class, 'store'])->name('document.store');
 });
 
 require __DIR__.'/auth.php';

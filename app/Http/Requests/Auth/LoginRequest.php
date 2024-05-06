@@ -51,12 +51,16 @@ class LoginRequest extends FormRequest
         $response_data = json_decode($response->body());
 
         if ($response_data->code === 200) {
-            $user = User::get()->first();
+            $user = User::find($response_data->data->user->id);
+            if(!isset($user->id)) {
+                $user = new User();
+            }
             $user->first_name = $response_data->data->user->first_name;
             $user->last_name = $response_data->data->user->last_name;
             $user->email = $response_data->data->user->email;
             $user->token = $response_data->data->token;
             $user->tenant = $response_data->data->tenant;
+            $user->save();
             Auth::login($user, true);
         } else {
             RateLimiter::hit($this->throttleKey());

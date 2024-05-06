@@ -1,14 +1,5 @@
 <script setup>
-import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
-import { Sidebar } from "@/Layouts/Adminlte";
-
-const showingNavigationDropdown = ref(false);
+import { Sidebar } from "@/Layouts/Adminlte";;
 </script>
 
 <template>
@@ -45,7 +36,7 @@ const showingNavigationDropdown = ref(false);
                 <!-- /.content-wrapper -->
 
                 <!-- Main Footer -->
-                <footer class="main-footer">
+                <footer class="main-footer" v-if="false">
                     <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>
                     All rights reserved.
                     <div class="float-right d-none d-sm-inline-block">

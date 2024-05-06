@@ -3,11 +3,37 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
 class DocumentController extends Controller
 {
-    public function get() {
-        return Inertia::render('Document/Index');
+    public function index()
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('API_URL').'/'.Auth::user()->tenant.'/document');
+
+        $responseData = json_decode($response->body());
+
+        $documents = $responseData->data;
+
+        $parameters = [
+            'documents' => $documents
+        ];
+
+        return Inertia::render('Document/Index', $parameters);
+    }
+
+    public function create()
+    {
+        $parameters = [
+            'api_url' => config('app.env.API_URL')
+        ];
+
+        dd($parameters);
+        return Inertia::render('Document/Create', $parameters);
     }
 }
