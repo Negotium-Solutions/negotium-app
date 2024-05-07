@@ -85,3 +85,6 @@ $(function () {
 
     </AuthenticatedLayout>
 </template>
+<style>
+
+</style>

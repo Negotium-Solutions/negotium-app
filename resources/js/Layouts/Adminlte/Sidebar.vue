@@ -15,7 +15,7 @@ import NavLink from "@/Components/NavLink.vue";
             <span class="brand-text font-weight-light">Negotium</span>
           </a>
         </td>
-        <td class="text-right pr-2">
+        <td v-if="false" class="text-right pr-2">
           <a data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </td>
       </tr>

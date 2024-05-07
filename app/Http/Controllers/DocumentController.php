@@ -11,10 +11,11 @@ class DocumentController extends Controller
 {
     public function index()
     {
+        // env('API_URL')
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(env('API_URL').'/'.Auth::user()->tenant.'/document');
+        ])->get('http://localhost/api/'.Auth::user()->tenant.'/document');
 
         $responseData = json_decode($response->body());
 
@@ -33,7 +34,6 @@ class DocumentController extends Controller
             'api_url' => config('app.env.API_URL')
         ];
 
-        dd($parameters);
         return Inertia::render('Document/Create', $parameters);
     }
 }

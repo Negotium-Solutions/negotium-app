@@ -3,7 +3,6 @@ import { AuthenticatedLayout } from '@/Layouts/Adminlte';
 import axios from "axios";
 import { computed, reactive } from 'vue';
 import { usePage } from '@inertiajs/vue3';
-import { useToastr } from '../../toastr.js';
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -13,23 +12,11 @@ defineProps({
 });
 
 const form = reactive({
-  name: '',
-  file: '',
-  errors: []
-});
-
-import { useForm } from '@inertiajs/vue3';
-/*
-const form = useForm({
   name: null,
   file: null
 });
-*/
-
-const toastr = useToastr();
 
 function save() {
-  form.errors = [];
   console.log('Name: ', form.name)
   console.log('File: ', form.file)
   console.log('User: ', page.props.auth.user.tenant);
@@ -38,42 +25,17 @@ function save() {
   formData.append('name', form.name);
   formData.append('file', form.file);
   try {
-
     axios.post('http://localhost/api/'+page.props.auth.user.tenant+'/document/create', formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
         Authorization: `Bearer ` + page.props.auth.user.token,
       },
-    }).then((response) => {
-      console.log(response);
-      if (response.data.code === 201) {
-        toastr.success(response.data.message);
-      }
+    }).then((respose) => {
+      console.log(respose);
     })
-    .catch( (error) => {
-      if (error.response.data.code === 422) {
-        toastr.error(error.response.data.message);
-        form.errors = error.response.data.errors;
-        // this.$inertia.variable('errors', error.response.data.errors);
-        // this.$inertia.variable('myData', response.data);
-
-        console.log('errors', errors);
-        // console.log('$page.props.errors', $page.props.errors);
-        return errors;
-      }
+    .catch(function (error) {
+      console.log(error);
     });
-
-
-
-/*
-    form.post('http://localhost/api/'+page.props.auth.user.tenant+'/document/create', {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ` + page.props.auth.user.token,
-      },
-      preserveState: false,
-    });
-*/
   } catch (error) {
     console.error('Error fetching data:', error);
   }
@@ -105,8 +67,7 @@ function save() {
                 <form @submit.prevent="save">
                   <div class="form-group">
                     <label for="name">Name</label>
-                    <input type="text" v-model="form.name" :class="{'is-invalid': (typeof form.errors['name'] !== 'undefined')}" class="form-control" id="name" placeholder="Filename" required>
-                    <span v-for="error in form.errors['name']" id="exampleInputEmail1-error" class="error invalid-feedback">{{ error }}</span>
+                    <input type="text" v-model="form.name" class="form-control" id="name" placeholder="Filename" required>
                   </div>
                   <div class="form-group">
                     <label for="file">File</label>

@@ -43,7 +43,8 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $response = Http::post(env('APP_URL').'/api/auth/signin', [
+        // env('APP_URL')
+        $response = Http::post('http://localhost/api/auth/signin', [
             'email' => $this->email,
             'password' => $this->password,
         ]);
@@ -51,9 +52,11 @@ class LoginRequest extends FormRequest
         $response_data = json_decode($response->body());
 
         if ($response_data->code === 200) {
-            $user = User::find($response_data->data->user->id);
-            if(!isset($user->id)) {
+            $_user = User::where('email', $response_data->data->user->email)->first();
+            if(!isset($_user->id)) {
                 $user = new User();
+            } else {
+                $user = User::find($_user->id);
             }
             $user->first_name = $response_data->data->user->first_name;
             $user->last_name = $response_data->data->user->last_name;
