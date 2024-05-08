@@ -1,5 +1,7 @@
 <script setup>
-import { Header, AuthenticatedLayout } from '@/Layouts/Adminlte';
+import { AuthenticatedLayout } from '@/Layouts/Adminlte';
+import '../../../public/adminlte/plugins/chart.js/Chart.min.js';
+import '../../../public/adminlte/dist/js/pages/dashboard3.js';
 </script>
 
 <template>

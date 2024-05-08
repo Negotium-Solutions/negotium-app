@@ -6,7 +6,7 @@ import NavLink from "@/Components/NavLink.vue";
 
 <template>
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-light-success elevation-4">
+  <aside class="main-sidebar sidebar-light-dark elevation-4">
     <!-- Brand Logo -->
     <table class="brand-link-logo">
       <tr>
@@ -15,7 +15,7 @@ import NavLink from "@/Components/NavLink.vue";
             <span class="brand-text font-weight-light">Negotium</span>
           </a>
         </td>
-        <td class="text-right pr-2">
+        <td v-if="false" class="text-right pr-2">
           <a data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
         </td>
       </tr>
@@ -42,7 +42,7 @@ import NavLink from "@/Components/NavLink.vue";
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <Link href="#" method="post" class="nav-link">
+            <Link href="#" class="nav-link">
               <i class="nav-icon fas fa-briefcase"></i>
               <p>
                 Create
@@ -50,7 +50,7 @@ import NavLink from "@/Components/NavLink.vue";
             </Link>
           </li>
           <li class="nav-item">
-            <Link :href="route('dashboard')" :active="route().current('dashboard')" class="nav-link active">
+            <Link :href="route('dashboard')" :class="{ active: route().current('dashboard') || route().current('dashboard.create') || route().current('dashboard.edit') }" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
@@ -85,12 +85,12 @@ import NavLink from "@/Components/NavLink.vue";
             </Link>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a :href="route('document')" :class="{ active: route().current('document') }" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>
                 Documents
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
             <Link href="#" class="nav-link">

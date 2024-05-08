@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $response = Http::post(env('APP_URL').'/api/auth/signin', [
+        $response = Http::post(env('NEGOTIUM_API_URL').'/auth/signin', [
             'email' => $this->email,
             'password' => $this->password,
         ]);
@@ -51,12 +51,19 @@ class LoginRequest extends FormRequest
         $response_data = json_decode($response->body());
 
         if ($response_data->code === 200) {
-            $user = User::find(1);
+            $_user = User::where('email', $response_data->data->user->email)->first();
+            if(!isset($_user->id)) {
+                $user = new User();
+            } else {
+                $user = User::find($_user->id);
+            }
+            $user->id = $response_data->data->user->id;
             $user->first_name = $response_data->data->user->first_name;
             $user->last_name = $response_data->data->user->last_name;
             $user->email = $response_data->data->user->email;
             $user->token = $response_data->data->token;
             $user->tenant = $response_data->data->tenant;
+            $user->save();
             Auth::login($user, true);
         } else {
             RateLimiter::hit($this->throttleKey());
