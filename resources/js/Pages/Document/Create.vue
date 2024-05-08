@@ -2,7 +2,7 @@
 import { AuthenticatedLayout } from '@/Layouts/Adminlte';
 import axios from "axios";
 import { computed, reactive } from 'vue';
-import { usePage } from '@inertiajs/vue3';
+import { usePage, router } from '@inertiajs/vue3';
 import { useToastr } from '../../toastr.js';
 
 const page = usePage();
@@ -21,32 +21,33 @@ const form = reactive({
 const toastr = useToastr();
 
 function save() {
-  form.errors = [];
+  resetForm();
   const formData = new FormData();
   formData.append('name', form.name);
   formData.append('file', form.file);
-  try {
-    axios.post('http://localhost/api/'+page.props.auth.user.tenant+'/document/create', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        Authorization: `Bearer ` + page.props.auth.user.token,
-      },
-    }).then((response) => {
-      console.log(response);
-      if (response.data.code === 201) {
-        toastr.success(response.data.message);
-      }
-    })
-    .catch( (error) => {
-      if (error.response.data.code === 422) {
-        toastr.error(error.response.data.message);
-        form.errors = error.response.data.errors;
-      }
-    });
+  axios.post('http://localhost/api/'+user.value.tenant+'/document/create', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ` + user.value.token,
+    },
+  }).then((response) => {
+    if (response.data.code === 201) {
+      router.get('/document');
+      toastr.success(response.data.message);
+    }
+  })
+  .catch( (error) => {
+    if (error.response.status === 422) {
+      toastr.error(error.response.data.message);
+      form.errors = error.response.data.errors;
+    } else {
+      toastr.error(error.response.status+': '+error.response.statusText);
+    }
+  });
+}
 
-  } catch (error) {
-    console.error('Error fetching data:', error);
-  }
+function resetForm() {
+  form.errors = [];
 }
 </script>
 
@@ -76,7 +77,7 @@ function save() {
                   <div class="form-group">
                     <label for="name">Name</label>
                     <input type="text" v-model="form.name" :class="{'is-invalid': (typeof form.errors['name'] !== 'undefined')}" class="form-control" id="name" placeholder="Filename" required>
-                    <span v-for="error in form.errors['name']" id="name-error" class="error invalid-feedback">{{ error }}</span>
+                    <span v-for="(error, index) in form.errors['name']" :id="'name-error-'+index" class="error invalid-feedback">{{ error }}</span>
                   </div>
                   <div class="form-group">
                     <label for="file">File</label>
@@ -86,7 +87,7 @@ function save() {
                         <label class="custom-file-label" for="file">Choose file</label>
                       </div>
                     </div>
-                    <span v-for="error in form.errors['file']" id="file-error" class="error invalid-feedback">{{ error }}</span>
+                    <span v-for="(error, index) in form.errors['file']" :id="'file-error-'+index" class="error invalid-feedback">{{ error }}</span>
                     <progress v-if="form.progress" :value="form.progress.percentage" max="100">
                       {{ form.progress.percentage }}%
                     </progress>

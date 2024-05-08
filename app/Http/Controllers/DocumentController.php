@@ -11,11 +11,10 @@ class DocumentController extends Controller
 {
     public function index()
     {
-        // env('API_URL')
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get('http://localhost/api/'.Auth::user()->tenant.'/document');
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/document');
 
         $responseData = json_decode($response->body());
 
@@ -35,5 +34,23 @@ class DocumentController extends Controller
         ];
 
         return Inertia::render('Document/Create', $parameters);
+    }
+
+    public function edit($id)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/document/'.$id);
+
+        $responseData = json_decode($response->body());
+
+        $document = $responseData->data;
+
+        $parameters = [
+            'doc' => $document
+        ];
+
+        return Inertia::render('Document/Edit', $parameters);
     }
 }

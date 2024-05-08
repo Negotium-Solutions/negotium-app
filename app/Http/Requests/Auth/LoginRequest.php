@@ -43,8 +43,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        // env('APP_URL')
-        $response = Http::post('http://localhost/api/auth/signin', [
+        $response = Http::post(env('NEGOTIUM_API_URL').'/auth/signin', [
             'email' => $this->email,
             'password' => $this->password,
         ]);
@@ -58,6 +57,7 @@ class LoginRequest extends FormRequest
             } else {
                 $user = User::find($_user->id);
             }
+            $user->id = $response_data->data->user->id;
             $user->first_name = $response_data->data->user->first_name;
             $user->last_name = $response_data->data->user->last_name;
             $user->email = $response_data->data->user->email;

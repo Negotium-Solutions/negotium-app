@@ -4,9 +4,12 @@ import "../../../../public/adminlte/plugins/datatables/jquery.dataTables.min.js"
 import "../../../../public/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js";
 import "../../../../public/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js";
 import "../../../../public/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js";
-import axios from 'axios';
 import "../../../../public/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css";
 import "../../../../public/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css";
+import axios from 'axios';
+import {router, usePage} from '@inertiajs/vue3';
+import { computed } from "vue";
+import { useToastr } from "@/toastr.js";
 
 defineProps({
   documents: {
@@ -14,11 +17,34 @@ defineProps({
   }
 });
 
+const toastr = useToastr();
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+const negotium_api_url = computed(() => page.props.negotium_api_url);
+
 $(function () {
   $("#documents-table").DataTable({
     "responsive": true, "lengthChange": false, "autoWidth": false, "searching": false,
   });
 });
+
+function deleteDocument(id) {
+  axios.delete(negotium_api_url.value+'/'+user.value.tenant+'/document/delete/'+id, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+      Authorization: `Bearer ` + user.value.token,
+    },
+  }).then((response) => {
+    console.log(response);
+    if (response.status === 204) {
+      toastr.success('Item successfully deleted.');
+      router.get('/document');
+    }
+  })
+  .catch( (error) => {
+    toastr.error(error.response.status+': '+error.response.statusText);
+  });
+}
 </script>
 
 <template>
@@ -59,8 +85,8 @@ $(function () {
                           <td>{{ document.size / 1000 }}KB</td>
                           <td>{{ document.user !== null ? document.user.first_name : '' }} {{ document.user !== null ? document.user.last_name : '' }}</td>
                           <td class="text-right">
-                            <button class="btn btn-sm"><i class="fa fa-edit"></i></button>
-                            <button class="btn btn-sm"><i class="fa fa-trash"></i></button>
+                            <a :href="route('document.edit', document.id)" class="btn btn-sm btn-edit"><i class="fa fa-edit"></i></a>
+                            <a v-on:click="deleteDocument(document.id)" class="btn btn-sm btn-delete"><i class="fa fa-trash"></i></a>
                           </td>
                         </tr>
                       </tbody>
@@ -82,9 +108,14 @@ $(function () {
               </div>
           </div>
         <!-- /.row -->
-
     </AuthenticatedLayout>
 </template>
 <style>
+  .btn-edit {
+    color: lawngreen;
+  }
 
+  .btn-delete {
+    color: orangered;
+  }
 </style>

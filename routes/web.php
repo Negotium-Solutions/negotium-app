@@ -27,6 +27,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/document', [DocumentController::class, 'index'])->name('document');
     Route::get('/document/create', [DocumentController::class, 'create'])->name('document.create');
     Route::post('/document/store', [DocumentController::class, 'store'])->name('document.store');
+    Route::get('/document/edit/{id}', [DocumentController::class, 'edit'])->name('document.edit');
 });
 
 require __DIR__.'/auth.php';
