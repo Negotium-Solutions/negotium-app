@@ -5,6 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\DocumentController;
+use App\Http\Controllers\Admin\ProfileManagerController;
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -28,6 +29,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/document/create', [DocumentController::class, 'create'])->name('document.create');
     Route::post('/document/store', [DocumentController::class, 'store'])->name('document.store');
     Route::get('/document/edit/{id}', [DocumentController::class, 'edit'])->name('document.edit');
+
+    Route::get('/profile-manager', [ProfileManagerController::class, 'index'])->name('profile-manager');
 });
 
 require __DIR__.'/auth.php';
