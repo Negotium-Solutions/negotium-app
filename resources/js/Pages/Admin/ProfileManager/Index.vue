@@ -28,8 +28,9 @@ const form = reactive({
   activityLabel: ''
 });
 const activityForm = reactive({
-  name:"Testing",
-  type:"text",
+  name: form.name,
+  title: form.activityLabel,
+  type: "text",
   attributes: {
     indent: 0,
     is_id: 0,
@@ -103,6 +104,7 @@ function isValidProfileTypeForm()
 function addActivity()
 {
   pageProps.activeProfile.schema.columns.push(activityForm);
+  pageProps.pendingChanges = true;
 }
 
 window.onbeforeunload = function() {
@@ -128,7 +130,7 @@ window.onbeforeunload = function() {
     </template>
 
     <div class="row content-container">
-      <div class="card col-md-3">
+      <div class="card col-md-2">
         <div class="card-header">
           <span class="left-heading">Profile Type</span>
         </div>
@@ -242,7 +244,7 @@ window.onbeforeunload = function() {
           <div class="row edit-activity" v-for="(column, column_index) in pageProps.activeProfile.schema.columns">
             <div class="col-md-8">
               <small class="activity-type">{{ column.type }}</small>
-              <p class="activity-name">{{ column.name }}</p>
+              <p class="activity-name">{{ column.title }}</p>
             </div>
             <div class="col-md-4 text-right">
               <a class="delete-activity mr-2" v-on:click="deleteProfileType(column_index)"><i class="fa fa-edit"></i></a>
@@ -296,7 +298,7 @@ window.onbeforeunload = function() {
   }
 
   .is-edit-profile {
-    background-color: #DADADA;
+    background-color: #8FADB7;
     opacity: 0.8;
     cursor: pointer;
   }
