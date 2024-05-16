@@ -66,7 +66,7 @@ import NavLink from "@/Components/NavLink.vue";
             </Link>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <Link :href="route('process')" :class="{ active: route().current('process') }" class="nav-link">
               <i class="nav-icon fas fa-print"></i>
               <p>
                 Processes
