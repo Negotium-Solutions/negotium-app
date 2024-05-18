@@ -4,6 +4,9 @@ import { computed, reactive } from "vue";
 import axios from "axios";
 import { router, usePage } from "@inertiajs/vue3";
 import { useToastr } from "@/toastr.js";
+import { useActivitiesStore } from "@/stores";
+
+const activities = useActivitiesStore();
 
 defineProps({
   profileTypes: {
@@ -18,7 +21,9 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
 const pageProps = reactive({
   isEdit: false,
   activeProfile: Object,
-  pendingChanges: false
+  activeStep: Object,
+  pendingChanges: false,
+  showStep: false
 });
 const form = reactive({
   name: '',
@@ -28,9 +33,9 @@ const form = reactive({
   activityLabel: ''
 });
 const activityForm = reactive({
-  name: form.name,
-  title: form.activityLabel,
-  type: "text",
+  name: '',
+  title: '',
+  type: '',
   attributes: {
     indent: 0,
     is_id: 0,
@@ -66,17 +71,32 @@ function deleteProfileType(id)
   });
 }
 
-function deleteActvity(index)
+function editStep(step)
+{
+  pageProps.activeStep = step;
+  console.log('Activities: ', pageProps.activeStep.activities.columns);
+  console.log('pageProps.activeStep', pageProps.activeStep);
+  activities.setActivities(pageProps.activeStep.activities.columns);
+  console.log('activities.getAll()', activities.getAll());
+  pageProps.showStep = true;
+}
+
+function deleteStep(id)
+{
+
+}
+
+function deleteActivity(index)
 {
   let _activity = [];
   let counter = 0;
-  pageProps.activeProfile.schema.columns.forEach((activity, ind) => {
+  pageProps.activeStep.activities.columns.forEach((activity, ind) => {
     if(index !== ind) {
-      _activity[counter] = pageProps.activeProfile.schema.columns[ind];
+      _activity[counter] = pageProps.activeStep.activities.columns[ind];
       counter++;
     }
   });
-  pageProps.activeProfile.schema.columns = _activity;
+  pageProps.activeStep.activities.columns = _activity;
   pageProps.pendingChanges = true;
 }
 
@@ -103,14 +123,45 @@ function isValidProfileTypeForm()
 
 function addActivity()
 {
-  pageProps.activeProfile.schema.columns.push(activityForm);
+  activityForm.title = form.activityLabel;
+  activityForm.name = form.activityName;
+  switch (form.inputType) {
+    case 1:
+      activityForm.type = 'Number';
+    break;
+    case 2:
+      activityForm.type = 'Text';
+    break;
+    case 3:
+      activityForm.type = 'Long Text';
+    break;
+    case 4:
+      activityForm.type = 'Radio';
+    break;
+    case 5:
+      activityForm.type = 'Checkbox';
+    break;
+    case 6:
+      activityForm.type = 'Dropdown';
+    break;
+    case 7:
+      activityForm.type = 'Documents';
+    break;
+    case 8:
+      activityForm.type = 'Video';
+    break;
+    case 9:
+      activityForm.type = 'Images';
+    break;
+  }
+  let _activity = activityForm;
+  pageProps.activeStep.activities.columns.push(_activity);
   pageProps.pendingChanges = true;
 }
 
 window.onbeforeunload = function() {
   return pageProps.pendingChanges ? "You have pending changes, are you sure you want to navigate away from this form" : null;
 }
-
 </script>
 
 <template>
@@ -130,9 +181,9 @@ window.onbeforeunload = function() {
     </template>
 
     <div class="row content-container">
-      <div class="card col-md-2">
+      <div class="card col-md-2" v-if="!pageProps.isEdit">
         <div class="card-header">
-          <span class="left-heading">Profile Type</span>
+          <span class="left-heading">Profile Creator</span>
         </div>
         <div class="card-body table-responsive table-hover">
           <div v-for="(profileType, index) in profileTypes" v-on:click="editProfileType(index)" class="row profile-types" :class="{ 'is-edit-profile': pageProps.activeProfile.id === profileType.id }">
@@ -140,18 +191,39 @@ window.onbeforeunload = function() {
               {{ profileType.name }}
             </div>
             <div class="col-md-4 text-right align-middle">
-              <a v-on:click="deleteProfileType(profileType.id)"><small><i class="fa fa-trash delete-icon"></i></small></a>
+              <a v-on:click="deleteProfileType(profileType.id)">X</a>
             </div>
           </div>
         </div>
       </div>
 
-      <hr class="col-md-1 mt-4 hr-middle" v-if="pageProps.isEdit" />
-
-      <div class="card col-md-3" v-if="pageProps.isEdit">
+      <div class="card col-md-2" v-if="pageProps.isEdit">
         <div class="card-header">
-          <p class="left-heading">{{ pageProps.activeProfile.name }}</p>
-          <small>{{ pageProps.activeProfile.schema.columns.length }} Activities</small>
+          <span class="left-heading">Profile Creator</span>
+          <span v-if="pageProps.isEdit" class="float-right"><a :href="route('profile-manager')"><i class="fa fa-arrow-left"></i></a></span>
+          <div class="mt-2">
+            <small>Profile name</small>
+            <p><small class="font-weight-bold">{{ pageProps.activeProfile.name }}</small></p>
+          </div>
+        </div>
+        <div class="card-body table-responsive table-hover">
+          <div v-for="(step, index) in pageProps.activeProfile.steps" v-on:click="editStep(step)" class="row profile-types">
+            <div class="col-md-8">
+              {{ step.name }}
+            </div>
+            <div class="col-md-4 text-right align-middle">
+              <a v-on:click="deleteStep(step.id)">X</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <hr class="col-md-1 mt-4 hr-middle" v-if="pageProps.showStep" />
+
+      <div class="card col-md-3" v-if="pageProps.showStep">
+        <div class="card-header">
+          <p class="left-heading">{{ pageProps.activeStep.name }}</p>
+          <small>{{ pageProps.activeStep.activities.columns.length }} Activities</small>
         </div>
         <div class="card-body">
           <form>
@@ -175,7 +247,7 @@ window.onbeforeunload = function() {
             <div class="user-input-type" v-if="form.activityType === 1">
               <div class="form-group">
                 <p>
-                  <small>Select <span class="font-weight-bold">upload type</span></small>
+                  <small>Select <span class="font-weight-bold">User input type</span></small>
                 </p>
                 <div class="btn-group">
                   <button type="button" v-on:click="inputType(1)" class="btn btn-default btn-radio" :class="{ 'btn-radio-active': form.inputType === 1 }">Number</button>
@@ -188,7 +260,7 @@ window.onbeforeunload = function() {
             <div class="upload-type" v-if="form.activityType === 2">
               <div class="form-group">
                 <p>
-                  <small>Select <span class="font-weight-bold">upload type</span></small>
+                  <small>Select <span class="font-weight-bold">select type</span></small>
                 </p>
                 <div class="btn-group">
                   <button type="button" v-on:click="inputType(4)" class="btn btn-default btn-radio" :class="{ 'btn-radio-active': form.inputType === 4 }">Radio</button>
@@ -234,21 +306,22 @@ window.onbeforeunload = function() {
         </div>
       </div>
 
-      <hr class="col-md-1 mt-4 hr-middle" v-if="pageProps.isEdit && (pageProps.activeProfile.schema.columns.length > 0)" />
+      <hr class="col-md-1 mt-4 hr-middle" v-if="pageProps.showStep" />
 
-      <div class="card col-md-3" v-if="pageProps.isEdit && (pageProps.activeProfile.schema.columns.length > 0)">
+      <div class="card col-md-3" v-if="pageProps.showStep">
         <div class="card-header">
           <span class="left-heading">Activities</span>
         </div>
         <div class="card-body">
-          <div class="row edit-activity" v-for="(column, column_index) in pageProps.activeProfile.schema.columns">
+          <!-- <div v-if="1===2" class="row edit-activity" v-for="(column, column_index) in pageProps.activeStep.activities.columns"> -->
+          <div class="row edit-activity" v-for="(column, column_index) in activities.getAll()">
             <div class="col-md-8">
               <small class="activity-type">{{ column.type }}</small>
               <p class="activity-name">{{ column.title }}</p>
             </div>
             <div class="col-md-4 text-right">
-              <a class="delete-activity mr-2" v-on:click="deleteProfileType(column_index)"><i class="fa fa-edit"></i></a>
-              <a class="delete-activity" v-on:click="deleteActvity(column_index)">X</a>
+              <a class="delete-activity mr-2"><i class="fa fa-edit"></i></a>
+              <a class="delete-activity" v-on:click="deleteActivity(column_index)">X</a>
             </div>
           </div>
         </div>
