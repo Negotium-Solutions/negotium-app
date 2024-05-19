@@ -4,7 +4,7 @@ import { computed, reactive } from "vue";
 import axios from "axios";
 import { router, usePage } from "@inertiajs/vue3";
 import { useToastr } from "@/toastr.js";
-import { useActivitiesStore, useStepsStore } from "@/stores";
+import { useActivitiesStore } from "@/stores";
 
 const activities = useActivitiesStore();
 
@@ -18,8 +18,6 @@ const toastr = useToastr();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
-const stepsStore = useStepsStore();
-stepsStore.init(negotium_api_url, user.value);
 const pageProps = reactive({
   isEdit: false,
   activeProfile: Object,
@@ -48,8 +46,6 @@ const activityForm = reactive({
 
 function editProfileType(index)
 {
-  stepsStore.fetchSteps(1);
-  console.log('stepsStore', stepsStore.get);
   pageProps.isEdit = true;
   pageProps.activeProfile = page.props.profileTypes[index];
   form.name = pageProps.activeProfile.name;
@@ -77,9 +73,11 @@ function deleteProfileType(id)
 
 function editStep(step)
 {
-  console.log('stepsStore', stepsStore.get);
   pageProps.activeStep = step;
+  console.log('Activities: ', pageProps.activeStep.activities.columns);
+  console.log('pageProps.activeStep', pageProps.activeStep);
   activities.setActivities(pageProps.activeStep.activities.columns);
+  console.log('activities.getAll()', activities.getAll());
   pageProps.showStep = true;
 }
 
@@ -209,7 +207,7 @@ window.onbeforeunload = function() {
           </div>
         </div>
         <div class="card-body table-responsive table-hover">
-          <div v-for="(step, index) in stepsStore.steps" v-on:click="editStep(step)" class="row profile-types">
+          <div v-for="(step, index) in pageProps.activeProfile.steps" v-on:click="editStep(step)" class="row profile-types">
             <div class="col-md-8">
               {{ step.name }}
             </div>

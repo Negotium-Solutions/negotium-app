@@ -1,4 +1,5 @@
 import { defineStore } from 'pinia';
+import { useToastr } from "@/toastr.js";
 
 export const useActivitiesStore = defineStore({
     id: 'activities',
