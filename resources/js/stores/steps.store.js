@@ -1,8 +1,14 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
 import { useToastr } from "@/toastr.js";
+import { usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
 
 const toastr = useToastr();
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+const negotium_api_url = computed(() => page.props.negotium_api_url);
+
 export const useStepsStore = defineStore({
     id: 'steps',
     state: () => ({
@@ -13,7 +19,8 @@ export const useStepsStore = defineStore({
         editMode: false,
         url: '',
         user: Object,
-        tenant: ''
+        tenant: '',
+        profile: Object
     }),
     actions: {
         init(url, user) {
@@ -22,7 +29,7 @@ export const useStepsStore = defineStore({
             this.tenant = user.tenant;
         },
         async fetchSteps(parent_id, id = null) {
-            let _url = this.url+'/'+this.tenant+'/step/'+parent_id;
+            let _url = this.url+'/'+this.tenant+'/step/'+parent_id+'?with=model';
             if (id !== null) {
                 _url += '/'+id;
             }
@@ -39,10 +46,13 @@ export const useStepsStore = defineStore({
 
                 if (response.status === 200) {
                     this.steps = response.data.data;
+                    console.log('this.steps', this.steps);
                 }
             } catch (error) {
                 this.steps = { error: true };
-                toastr.error(error.response.status+': '+error.response.statusText);
+                if(error.response.status !== 404) {
+                    toastr.error(error.response.status + ': ' + error.response.statusText);
+                }
             }
         },
         create(step){
@@ -51,31 +61,52 @@ export const useStepsStore = defineStore({
         update(step, id) {
             this.steps[id] = step;
         },
-        delete(id) {
+        async delete(id) {
+            console.log('ID: ', id);
             // add isDeleting prop to user being deleted
-            this.steps.find(x => x.id === id).isDeleting = true;
+            // this.steps.find(x => x.id === id).isDeleting = true;
 
             // remove activity from list after deleted
-            this.steps = this.activities.filter(x => x.id !== id);
+            // this.steps = this.activities.filter(x => x.id !== id);
+
+            try {
+                let response = await axios.delete(negotium_api_url.value + '/' + user.value.tenant + '/step/delete/' + id, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ` + user.value.token,
+                    },
+                });
+
+                if(response.status === 204 ) {
+                    toastr.success('Step successfully deleted');
+                    this.fetchSteps(this.profile.id);
+                }
+            } catch (error) {
+                toastr.error(error.response.status+': '+error.response.statusText);
+            }
         },
-        selectStep(id) {
-            this.step = this.steps.find(x => x.id === id);
+        selectStep(step) {
+            // this.step = this.steps.find(x => x.id === id);
+            this.step = step;
+            console.log('Step: ', step);
         },
         editStep(id) {
             this.editMode = true;
         },
         saveStep() {
             this.editMode = false;
+        },
+        setEdit(boolean) {
+            this.editMode = boolean;
+        },
+        setProfile(profile) {
+            this.profile = profile;
         }
     },
     getters: {
         // TODO: Add functionality similar to computed state
-        editMode() {
+        isEdit() {
             return this.editMode;
-        },
-        get() {
-            console.log('It gets here:', this.steps);
-            return this.steps;
         }
     }
 });

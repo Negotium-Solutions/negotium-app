@@ -1,12 +1,13 @@
 <script setup>
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
+import ProfilesList from "@/Components/admin/profile/ProfilesList.vue";
+import StepsList from "@/Components/admin/step/StepsList.vue";
 import { computed, reactive } from "vue";
 import axios from "axios";
 import { router, usePage } from "@inertiajs/vue3";
-import { useToastr } from "@/toastr.js";
 import { useActivitiesStore, useStepsStore } from "@/stores";
 
-const activities = useActivitiesStore();
+const activitiesStore = useActivitiesStore();
 
 defineProps({
   profileTypes: {
@@ -14,7 +15,6 @@ defineProps({
   }
 });
 
-const toastr = useToastr();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
@@ -46,60 +46,27 @@ const activityForm = reactive({
   }
 });
 
-function editProfileType(index)
+function editProfileType(profile)
 {
-  stepsStore.fetchSteps(1);
-  console.log('stepsStore', stepsStore.get);
+  stepsStore.fetchSteps(profile.id);
+  stepsStore.profile = profile;
   pageProps.isEdit = true;
-  pageProps.activeProfile = page.props.profileTypes[index];
+  pageProps.activeProfile = profile;
   form.name = pageProps.activeProfile.name;
   resetProfileType();
-}
-
-function deleteProfileType(id)
-{
-  axios.delete(negotium_api_url.value+'/'+user.value.tenant+'/client-type/delete/'+id, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ` + user.value.token,
-    },
-  }).then((response) => {
-    console.log(response);
-    if (response.status === 204) {
-      toastr.success('Item successfully deleted.');
-      router.get('/profile-manager');
-    }
-  })
-  .catch( (error) => {
-    toastr.error(error.response.status+': '+error.response.statusText);
-  });
 }
 
 function editStep(step)
 {
   console.log('stepsStore', stepsStore.get);
   pageProps.activeStep = step;
-  activities.setActivities(pageProps.activeStep.activities.columns);
+  // activities.setActivities(pageProps.activeStep.activities.columns);
   pageProps.showStep = true;
 }
 
 function deleteStep(id)
 {
 
-}
-
-function deleteActivity(index)
-{
-  let _activity = [];
-  let counter = 0;
-  pageProps.activeStep.activities.columns.forEach((activity, ind) => {
-    if(index !== ind) {
-      _activity[counter] = pageProps.activeStep.activities.columns[ind];
-      counter++;
-    }
-  });
-  pageProps.activeStep.activities.columns = _activity;
-  pageProps.pendingChanges = true;
 }
 
 function selectActivityType(id) {
@@ -157,7 +124,7 @@ function addActivity()
     break;
   }
   let _activity = activityForm;
-  pageProps.activeStep.activities.columns.push(_activity);
+  // pageProps.activeStep.activities.columns.push(_activity);
   pageProps.pendingChanges = true;
 }
 
@@ -183,49 +150,19 @@ window.onbeforeunload = function() {
     </template>
 
     <div class="row content-container">
-      <div class="card col-md-2" v-if="!pageProps.isEdit">
-        <div class="card-header">
-          <span class="left-heading">Profile Creator</span>
-        </div>
-        <div class="card-body table-responsive table-hover">
-          <div v-for="(profileType, index) in profileTypes" v-on:click="editProfileType(index)" class="row profile-types" :class="{ 'is-edit-profile': pageProps.activeProfile.id === profileType.id }">
-            <div class="col-md-8">
-              {{ profileType.name }}
-            </div>
-            <div class="col-md-4 text-right align-middle">
-              <a v-on:click="deleteProfileType(profileType.id)">X</a>
-            </div>
-          </div>
-        </div>
+
+      <ProfilesList :profileTypes="profileTypes" v-if="stepsStore.isEdit === false"></ProfilesList>
+
+      <StepsList></StepsList>
+
+      <div class="col-md-1" v-if="activitiesStore.activities.length > 0" style="margin: 0px; padding: 0px;">
+        <hr class="mt-4 hr-middle" />
       </div>
 
-      <div class="card col-md-2" v-if="pageProps.isEdit">
+      <div class="card col-md-3" v-if="activitiesStore.activities.length > 0">
         <div class="card-header">
-          <span class="left-heading">Profile Creator</span>
-          <span v-if="pageProps.isEdit" class="float-right"><a :href="route('profile-manager')"><i class="fa fa-arrow-left"></i></a></span>
-          <div class="mt-2">
-            <small>Profile name</small>
-            <p><small class="font-weight-bold">{{ pageProps.activeProfile.name }}</small></p>
-          </div>
-        </div>
-        <div class="card-body table-responsive table-hover">
-          <div v-for="(step, index) in stepsStore.steps" v-on:click="editStep(step)" class="row profile-types">
-            <div class="col-md-8">
-              {{ step.name }}
-            </div>
-            <div class="col-md-4 text-right align-middle">
-              <a v-on:click="deleteStep(step.id)">X</a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <hr class="col-md-1 mt-4 hr-middle" v-if="pageProps.showStep" />
-
-      <div class="card col-md-3" v-if="pageProps.showStep">
-        <div class="card-header">
-          <p class="left-heading">{{ pageProps.activeStep.name }}</p>
-          <small>{{ pageProps.activeStep.activities.columns.length }} Activities</small>
+          <p class="left-heading">{{ activitiesStore.step.name }}</p>
+          <small>{{ activitiesStore.activities.length }} Activities</small>
         </div>
         <div class="card-body">
           <form>
@@ -308,18 +245,19 @@ window.onbeforeunload = function() {
         </div>
       </div>
 
-      <hr class="col-md-1 mt-4 hr-middle" v-if="pageProps.showStep" />
+      <div class="col-md-1" v-if="activitiesStore.activities.length > 0" style="margin: 0px; padding: 0px;">
+        <hr class="mt-4 hr-middle" />
+      </div>
 
-      <div class="card col-md-3" v-if="pageProps.showStep">
+      <div class="card col-md-3" v-if="activitiesStore.activities.length > 0">
         <div class="card-header">
           <span class="left-heading">Activities</span>
         </div>
         <div class="card-body">
-          <!-- <div v-if="1===2" class="row edit-activity" v-for="(column, column_index) in pageProps.activeStep.activities.columns"> -->
-          <div class="row edit-activity" v-for="(column, column_index) in activities.getAll()">
+          <div class="row edit-activity" v-for="activity in activitiesStore.activities">
             <div class="col-md-8">
-              <small class="activity-type">{{ column.type }}</small>
-              <p class="activity-name">{{ column.title }}</p>
+              <small class="activity-type">{{ activity.type }}</small>
+              <p class="activity-name">{{ activity.label }}</p>
             </div>
             <div class="col-md-4 text-right">
               <a class="delete-activity mr-2"><i class="fa fa-edit"></i></a>
