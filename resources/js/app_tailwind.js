@@ -1,5 +1,6 @@
 import './bootstrap';
 import '../css/app.css';
+import '../css/tailwind.css';
 
 import { createApp, h } from 'vue';
 import { createInertiaApp } from '@inertiajs/vue3';
@@ -9,7 +10,6 @@ import { createPinia } from 'pinia';
 import PrimeVue from 'primevue/config';
 import 'primevue/resources/themes/aura-light-green/theme.css';
 import ConfirmationService from 'primevue/confirmationservice';
-import ToastService from 'primevue/toastservice';
 
 const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
@@ -23,7 +23,6 @@ createInertiaApp({
             .use(createPinia())
             .use(PrimeVue, { unstyled: false })
             .use(ConfirmationService)
-            .use(ToastService)
             .mount(el);
     },
     progress: {

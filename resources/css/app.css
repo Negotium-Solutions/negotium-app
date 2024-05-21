@@ -1,6 +1,9 @@
+/*
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+*/
+@import 'primeicons/primeicons.css';
 
 .btn-cs-light {
     width: 75px;

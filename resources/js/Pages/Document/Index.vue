@@ -7,7 +7,7 @@ import "../../../../public/adminlte/plugins/datatables-responsive/js/responsive.
 import "../../../../public/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css";
 import "../../../../public/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css";
 import axios from 'axios';
-import {router, usePage} from '@inertiajs/vue3';
+import { router, usePage } from '@inertiajs/vue3';
 import { computed } from "vue";
 import { useToastr } from "@/toastr.js";
 

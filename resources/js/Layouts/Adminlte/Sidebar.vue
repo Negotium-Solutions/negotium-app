@@ -112,6 +112,14 @@ import NavLink from "@/Components/NavLink.vue";
             </Link>
           </li>
           <li class="nav-item">
+            <Link :href="route('profile-manager')" class="nav-link">
+              <i class="nav-icon fas fa-user-cog"></i>
+              <p>
+                Profile Manager
+              </p>
+            </Link>
+          </li>
+          <li class="nav-item">
             <Link href="#" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>
