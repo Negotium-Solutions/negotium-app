@@ -3,6 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 */
+@import '/node_modules/primeflex/primeflex.css';
 @import 'primeicons/primeicons.css';
 
 .btn-cs-light {

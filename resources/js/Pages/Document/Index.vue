@@ -1,121 +1,72 @@
 <script setup>
-import { AuthenticatedLayout } from '@/Layouts/Adminlte'
-import "../../../../public/adminlte/plugins/datatables/jquery.dataTables.min.js";
-import "../../../../public/adminlte/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js";
-import "../../../../public/adminlte/plugins/datatables-responsive/js/dataTables.responsive.min.js";
-import "../../../../public/adminlte/plugins/datatables-responsive/js/responsive.bootstrap4.min.js";
-import "../../../../public/adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css";
-import "../../../../public/adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css";
-import axios from 'axios';
-import { router, usePage } from '@inertiajs/vue3';
-import { computed } from "vue";
-import { useToastr } from "@/toastr.js";
+import {AuthenticatedLayout, BreadcrumbHeader} from '@/Layouts/Negotium';
+import {onMounted, reactive, ref} from "vue";
+import DataTable from "primevue/datatable";
+import Column from "primevue/column";
+import { useDocumentsStore } from "@/stores";
+import Button from "primevue/button";
+import Toast from "primevue/toast";
+import { useConfirm } from "primevue/useconfirm";
+import { useToast } from "primevue/usetoast";
 
+const toast = useToast();
+const useDocumentStore = useDocumentsStore();
 defineProps({
-  documents: {
-    type: Array,
-  }
+  documents: Object
 });
 
-const toastr = useToastr();
-const page = usePage();
-const user = computed(() => page.props.auth.user);
-const negotium_api_url = computed(() => page.props.negotium_api_url);
+onMounted(() => {
 
-$(function () {
-  $("#documents-table").DataTable({
-    "responsive": true, "lengthChange": false, "autoWidth": false, "searching": false,
-  });
 });
+
+const breadcrumbs_items = ref([{'label': 'Documents'}]);
+
+const confirm = useConfirm();
 
 function deleteDocument(id) {
-  axios.delete(negotium_api_url.value+'/'+user.value.tenant+'/document/delete/'+id, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-      Authorization: `Bearer ` + user.value.token,
+  confirm.require({
+    message: 'Are you sure you want to delete this document?',
+    header: 'Danger Zone',
+    icon: 'pi pi-info-circle',
+    rejectLabel: 'Cancel',
+    acceptLabel: 'Delete',
+    rejectClass: 'p-button-secondary p-button-outlined',
+    acceptClass: 'p-button-danger',
+    accept: () => {
+      toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Record deleted', life: 3000 });
     },
-  }).then((response) => {
-    console.log(response);
-    if (response.status === 204) {
-      toastr.success('Item successfully deleted.');
-      router.get('/document');
+    reject: () => {
+      toast.add({ severity: 'error', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
     }
-  })
-  .catch( (error) => {
-    toastr.error(error.response.status+': '+error.response.statusText);
   });
 }
+
 </script>
 
 <template>
-    <AuthenticatedLayout>
-        <template #header>
-          <div class="col-sm-6">
-            <h1 class="m-0">Documents</h1>
-            <ol class="breadcrumb sm">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Documents</li>
-            </ol>
-          </div><!-- /.col -->
-          <div class="col-sm-6 text-right pt-2">
-              <a :href="route('document.create')" class="btn btn-sm btn-dark">Add Document</a>
-          </div><!-- /.col -->
-        </template>
+  <AuthenticatedLayout>
+    <template #header>
+      <BreadcrumbHeader :name="'Documents'" :items="breadcrumbs_items" ></BreadcrumbHeader>
+    </template>
+    <div class="card">
 
-        <div class="row">
-              <div class="col-lg-12">
-
-                <div class="card">
-                  <!-- /.card-header -->
-                  <div class="card-body">
-                    <table id="documents-table" class="table table-bordered table-striped">
-                      <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Type</th>
-                        <th>Size</th>
-                        <th>Uploader</th>
-                        <th class="text-right">Actions</th>
-                      </tr>
-                      </thead>
-                      <tbody>
-                        <tr v-for="document in documents">
-                          <td>{{ document.name }}</td>
-                          <td>{{ document.type }}</td>
-                          <td>{{ document.size / 1000 }}KB</td>
-                          <td>{{ document.user !== null ? document.user.first_name : '' }} {{ document.user !== null ? document.user.last_name : '' }}</td>
-                          <td class="text-right">
-                            <a :href="route('document.edit', document.id)" class="btn btn-sm btn-edit"><i class="fa fa-edit"></i></a>
-                            <a v-on:click="deleteDocument(document.id)" class="btn btn-sm btn-delete"><i class="fa fa-trash"></i></a>
-                          </td>
-                        </tr>
-                      </tbody>
-                      <tfoot>
-                        <tr>
-                          <th>Name</th>
-                          <th>Type</th>
-                          <th>Size</th>
-                          <th>Uploader</th>
-                          <th class="text-right">Actions</th>
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                  <!-- /.card-body -->
-                </div>
-                <!-- /.card -->
-
-              </div>
-          </div>
-        <!-- /.row -->
-    </AuthenticatedLayout>
+      <DataTable :value="documents" paginator :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
+        <Column field="name" header="Name" style="width: 25%"></Column>
+        <Column field="type" header="Type" style="width: 25%"></Column>
+        <Column field="size" header="Size" style="width: 25%"></Column>
+        <Column class="column-actions" header="Actions" style="text-align: right;">
+          <template #body="{ data, frozenRow, index }">
+            <Button class="p-button-secondary" type="button" :icon="'pi pi-pencil'" text size="small" @click="editDocument(data.id)" />
+            <Button class="p-button-secondary" type="button" :icon="'pi pi-times'" text size="small" @click="deleteDocument(data.id)" />
+          </template>
+        </Column>
+      </DataTable>
+    </div>
+  </AuthenticatedLayout>
+  <Toast/>
 </template>
 <style>
-  .btn-edit {
-    color: lawngreen;
-  }
-
-  .btn-delete {
-    color: orangered;
-  }
+.column-actions > .p-column-header-content {
+  float: right;
+}
 </style>
