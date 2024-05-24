@@ -24,16 +24,19 @@ export const useDocumentsStore = defineStore({
             this.user = user;
             this.tenant = user.tenant;
         },
-        async fetchDocuments(parent_id, id = null) {
-            let _url = this.url+'/'+this.tenant+'/documents/'+parent_id+'?with=model';
+        async fetchDocuments(id = null) {
+            let _url = this.url+'/'+this.tenant+'/document';
             if (id !== null) {
                 _url += '/'+id;
             }
 
+            console.log('_url', _url);
+
             this.documents = { loading: true };
 
+            let response = Response;
             try {
-                const response = await axios.get(_url, {
+                response = await axios.get(_url, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ` + this.user.token,
@@ -46,6 +49,8 @@ export const useDocumentsStore = defineStore({
             } catch (error) {
                 this.documents = error.response;
             }
+
+            return response;
         },
         async create(step){
             // Todo: add functionality
@@ -54,10 +59,9 @@ export const useDocumentsStore = defineStore({
             // Todo: add functionality
         },
         async delete(id) {
-            console.log('ID: ', id);
-
+            let response = Response;
             try {
-                let response = await axios.delete(negotium_api_url.value + '/' + user.value.tenant + '/documents/delete/' + id, {
+                response = await axios.delete(negotium_api_url.value + '/' + user.value.tenant + '/document/delete/' + id, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ` + user.value.token,
@@ -65,12 +69,13 @@ export const useDocumentsStore = defineStore({
                 });
 
                 if(response.status === 204 ) {
-                    toastr.success('Step successfully deleted');
-                    this.fetchSteps(this.profile.id);
+                    this.document = response.data;
                 }
             } catch (error) {
-                toastr.error(error.response.status+': '+error.response.statusText);
+                this.document = error.response;
             }
+
+            return response;
         }
     },
     getters: {
