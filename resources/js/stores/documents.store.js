@@ -16,7 +16,8 @@ export const useDocumentsStore = defineStore({
         document: Object,
         url: '',
         user: Object,
-        tenant: ''
+        tenant: '',
+        isLoaded: false
     }),
     actions: {
         init(url, user) {
@@ -76,6 +77,9 @@ export const useDocumentsStore = defineStore({
             }
 
             return response;
+        },
+        setDocuments(documents) {
+            this.documents = documents;
         }
     },
     getters: {

@@ -16,22 +16,15 @@ const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
 const useDocumentStore = useDocumentsStore();
-useDocumentsStore().init(negotium_api_url, user.value);
+useDocumentStore.init(negotium_api_url, user.value);
 
 const props = defineProps({
   documents: Array
 });
 
-const pageProps = reactive( {
-  documents: Array,
-  isLoaded: false
-});
-
 onMounted(() => {
-  pageProps.documents = props.documents;
-  console.log('pageProps.documents.length', pageProps.documents.length);
-  console.log('pageProps.documents', pageProps.documents);
-  pageProps.isLoaded = true;
+  useDocumentStore.setDocuments(props.documents);
+  useDocumentStore.isLoaded = true;
 });
 
 const breadcrumbs_items = ref([{'label': 'Documents'}]);
@@ -55,6 +48,7 @@ function deleteDocument(id) {
           toast.add({ severity: 'info', summary: 'Confirmed', detail: 'Document deleted successfully', life: 3000 });
           let reload_response = useDocumentsStore().fetchDocuments();
           reload_response.then((_result) => {
+            this.pagePr
             console.log('_result', _result);
           })
         }
@@ -75,7 +69,7 @@ function deleteDocument(id) {
     </template>
     <div class="card">
 
-      <DataTable v-if="pageProps.isLoaded" :value="pageProps.documents" paginator :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
+      <DataTable v-if="useDocumentStore.isLoaded" :value="useDocumentStore.documents" paginator :rows="10" :rowsPerPageOptions="[5, 10, 20, 50]" tableStyle="min-width: 50rem">
         <Column field="name" header="Name" style="width: 25%"></Column>
         <Column field="type" header="Type" style="width: 25%"></Column>
         <Column field="size" header="Size" style="width: 25%"></Column>
