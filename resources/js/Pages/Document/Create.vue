@@ -1,5 +1,5 @@
 <script setup>
-import { AuthenticatedLayout } from '@/Layouts/Adminlte';
+import { AuthenticatedLayout } from '@/Layouts/Negotium';
 import axios from "axios";
 import { computed, reactive } from 'vue';
 import { usePage, router } from '@inertiajs/vue3';

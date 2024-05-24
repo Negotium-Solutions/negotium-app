@@ -65,7 +65,7 @@ function deleteDocument(id) {
 <template>
   <AuthenticatedLayout>
     <template #header>
-      <BreadcrumbHeader :name="'Documents'" :items="breadcrumbs_items" ></BreadcrumbHeader>
+      <BreadcrumbHeader :name="'Documents'" :items="breadcrumbs_items" :buttons="[{'label': 'Create', 'severity': 'contrast', 'href': '/document/create'}]"></BreadcrumbHeader>
     </template>
     <div class="card">
 

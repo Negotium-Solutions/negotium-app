@@ -5,16 +5,21 @@ import Button from "primevue/button";
 
 const home = ref({ label: 'Home' });
 
-defineProps({
+const props = defineProps({
   name: String,
   items: Array,
-  buttons: [{'label': 'Cancel'}, {'label': 'Save'}]
+  buttons: []
 });
 </script>
 <template>
   <div class="card justify-content-left">
     <div class="flex justify-content-between flex-wrap pt-3">
-      <div class="heading flex align-items-center justify-content-center">{{ name }}</div> <div class="flex align-items-center justify-content-center"><Button v-for="(_button, index) in [{'label': 'Cancel', 'severity': 'contrast'}, {'label': 'Save', 'severity': 'secondary'}]" :label="_button.label" :severity="_button.severity" class="mr-2" :key="index" raised></Button></div>
+      <div class="heading flex align-items-center justify-content-center">{{ name }}</div>
+      <div class="flex align-items-center justify-content-center">
+        <a v-for="(button, index) in props.buttons" :href="button.href">
+          <Button :label="button.label" :severity="button.severity" class="mr-2" :key="index" raised></Button>
+        </a>
+      </div>
     </div>
     <Breadcrumb :home="home" :model="items" class="pt-0">
       <template #item="{ item }">
