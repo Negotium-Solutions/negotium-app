@@ -11,7 +11,6 @@ class ProcessController extends Controller
 {
     public function index(Request $request)
     {
-
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
@@ -38,6 +37,19 @@ class ProcessController extends Controller
 
     public function create()
     {
+        $categoriesResponse = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/process-category');
 
+        $categoriesResponseData = json_decode($categoriesResponse->body(), true);
+
+        $categories = $categoriesResponseData['data'];
+
+        $parameters = [
+            'categories' => $categories
+        ];
+
+        return Inertia::render('Process/Create', $parameters);
     }
 }
