@@ -1,14 +1,14 @@
 <script setup>
-import { Link } from '@inertiajs/vue3';
-import DropdownLink from "@/Components/DropdownLink.vue";
-import NavLink from "@/Components/NavLink.vue";
+const props = defineProps({
+  'processes': Object
+});
 </script>
 
 <template>
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-light-dark elevation-4">
     <!-- Brand Logo -->
-    <table class="brand-link-logo">
+    <table class="brand-link-logo" v-if="1 === 2">
       <tr>
         <td>
           <a href="index3.html" class="brand-link" style="border-bottom: none;">
@@ -42,47 +42,47 @@ import NavLink from "@/Components/NavLink.vue";
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-briefcase"></i>
               <p>
                 Create
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
-            <Link :href="route('dashboard')" :class="{ active: route().current('dashboard') || route().current('dashboard.create') || route().current('dashboard.edit') }" class="nav-link">
+            <a :href="route('dashboard')" :class="{ active: route().current('dashboard') || route().current('dashboard.create') || route().current('dashboard.edit') }" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Dashboard
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Profiles
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a :href="route('process')" class="nav-link">
               <i class="nav-icon fas fa-print"></i>
               <p>
                 Processes
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item mt-1 mr-3 mb-1 ml-3">
             <hr color="#c2c7d0"/>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-bar"></i>
               <p>
                 Workboard
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
             <a :href="route('document')" :class="{ active: route().current('document') }" class="nav-link">
@@ -93,39 +93,39 @@ import NavLink from "@/Components/NavLink.vue";
             </a>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-line"></i>
               <p>
                 Reports
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item mt-1 mr-3 mb-1 ml-3">
             <hr color="#c2c7d0"/>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-bar"></i>
               <p>
                 Admin
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
-            <Link :href="route('profile-manager')" class="nav-link">
+            <a :href="route('profile-manager')" class="nav-link">
               <i class="nav-icon fas fa-user-cog"></i>
               <p>
                 Profile Manager
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-file"></i>
               <p>
                 Help & Support
               </p>
-            </Link>
+            </a>
           </li>
 
         </ul>
@@ -134,36 +134,36 @@ import NavLink from "@/Components/NavLink.vue";
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-briefcase"></i>
               <p>
                 Notifications
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
-            <Link href="#" class="nav-link">
+            <a href="#" class="nav-link">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Settings
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
-            <Link :href="route('profile.edit')" class="nav-link">
+            <a :href="route('profile.edit')" class="nav-link">
               <i class="nav-icon fas fa-users"></i>
               <p>
                 Profile
               </p>
-            </Link>
+            </a>
           </li>
           <li class="nav-item">
-              <Link :href="route('logout')" method="post" class="nav-link">
+              <a :href="route('logout')" method="post" class="nav-link">
                 <i class="nav-icon fas fa-user-astronaut"></i>
                 <p>
                   Logout
                 </p>
-              </Link>
+              </a>
           </li>
         </ul>
 

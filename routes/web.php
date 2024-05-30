@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\Admin\ProfileManagerController;
+use App\Http\Controllers\ProcessController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -21,6 +22,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/document/edit/{id}', [DocumentController::class, 'edit'])->name('document.edit');
 
     Route::get('/profile-manager', [ProfileManagerController::class, 'index'])->name('profile-manager');
+
+
+    Route::get('/process', [ProcessController::class, 'index'])->name('process');
+    Route::get('/process/create', [ProcessController::class, 'create'])->name('process.create');
 });
 
 require __DIR__.'/auth.php';
