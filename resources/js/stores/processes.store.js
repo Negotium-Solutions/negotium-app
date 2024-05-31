@@ -1,17 +1,15 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
 
-export const useStepsStore = defineStore({
+export const useProcessesStore = defineStore({
     id: 'processes',
     state: () => ({
         loading: false,
-        steps: [],
-        step: {
+        processes: [],
+        process: {
             'id': null,
             'name': null,
-            'parent_id': null,
-            'order': null,
-            'model_id': null
+            'process_category_id': null
         },
         response: {
             'code': 0,
@@ -27,13 +25,13 @@ export const useStepsStore = defineStore({
             this.user = user;
             this.tenant = user.tenant;
         },
-        async fetchProcesses(parent_id, id = null)
+        async fetchProcesses(category_id, id = null)
         {
             this.loading = true;
-            this.steps = [];
+            this.processes = [];
             this.resetResponse();
 
-            let _url = this.url+'/'+this.user.tenant+'/step/'+parent_id;
+            let _url = this.url+'/'+this.user.tenant+'/process/'+category_id;
             if (id !== null) {
                 _url = _url + '/'+id;
             }
