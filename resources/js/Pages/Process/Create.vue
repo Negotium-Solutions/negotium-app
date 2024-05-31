@@ -1,9 +1,20 @@
 <script setup>
-
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, computed } from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
+import { useProcessesStore } from "@/stores";
+import { usePage } from "@inertiajs/vue3";
+
+const toast = useToast();
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+const negotium_api_url = computed(() => page.props.negotium_api_url);
+
+const useProcessStore = useProcessesStore();
+useProcessStore.init(negotium_api_url, user.value);
 
 const props = defineProps({
   categories: Array,
@@ -11,7 +22,8 @@ const props = defineProps({
 });
 
 const pageProps = reactive({
-  selectedCategory: 0,
+  isFormSubmitted: false,
+  selectedCategory: { id: null, name: 'Select category', color: 'white' },
   categories: [],
   addCategoryOption: {
     id: 0,
@@ -27,7 +39,34 @@ onMounted(() => {
 });
 
 function clickCategory() {
+ // TODO: Add category button as per the designs, to a new category
+  console.log('Category clicked!!');
+}
 
+function createProcess()
+{
+  this.pageProps.isFormSubmitted = true;
+  useProcessStore.process.process_category_id = pageProps.selectedCategory.id;
+  const response = useProcessStore.create();
+  response.then((result) => {
+    console.log('Result: ', result);
+    if(result.status === 'error') {
+      toast.add({severity: 'error', summary: 'Error', detail: result.message, life: 3000});
+    } else {
+      toast.add({severity: 'success', summary: 'Success', detail: result.message, life: 5000});
+      setTimeout(() => {
+        window.location = '/step/create/'+useProcessStore.process.id;
+      }, 3000);
+    }
+  });
+}
+
+function isInValidProcessName() {
+  return this.pageProps.isFormSubmitted && (useProcessStore.process.name === null);
+}
+
+function isInValidProcessCategoryName() {
+  return this.pageProps.isFormSubmitted && (useProcessStore.process.process_category_id === null);
 }
 </script>
 
@@ -42,8 +81,8 @@ function clickCategory() {
         </ol>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-3">
-        <a :href="route('process.create')" class="btn btn-sm btn-default w-24 mr-2">Cancel</a>
-        <a :href="route('process.create')" class="btn btn-sm btn-dark w-24">Save</a>
+        <a :href="route('process')" class="btn btn-sm btn-outline-secondary w-24 mr-2">Cancel</a>
+        <a :href="route('process.create')" class="btn btn-sm btn-dark w-24">Save Draft</a>
       </div><!-- /.col -->
     </template>
 
@@ -61,12 +100,13 @@ function clickCategory() {
               <div class="card-body">
                 <div class="form-group">
                   <label for="process-name" class="font-weight-normal">Process name</label>
-                  <input type="text" class="form-control form-control-md rounded" id="process-name" placeholder="What do you want to call this process?">
+                  <input v-model="useProcessStore.process.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?" :class="{'is-invalid-custom': isInValidProcessName()}">
+                  <span v-if="isInValidProcessName()" id="process-name-error" class="error invalid-feedback">This field is required</span>
                 </div>
 
                 <div class="form-group">
                   <label for="category" class="font-weight-normal">Category</label>
-                  <Dropdown @click="clickCategory()" v-model="pageProps.selectedCategory" :options="pageProps.categories" filter optionLabel="category" placeholder="Select a category" class="w-full md:w-14rem border">
+                  <Dropdown @click="clickCategory()" v-model="pageProps.selectedCategory" :options="pageProps.categories" filter optionLabel="category" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
                     <template #value="slotProps">
                       <div v-if="slotProps.value" class="w-100">
                         <span>{{ slotProps.value.name }}</span>
@@ -86,6 +126,7 @@ function clickCategory() {
                       </div>
                     </template>
                   </Dropdown>
+                  <span v-if="isInValidProcessCategoryName()" id="category-error" class="error invalid-feedback">This field is required</span>
                 </div>
               </div>
               <!-- /.card-body -->
@@ -97,13 +138,14 @@ function clickCategory() {
         </div>
         <div class="col-md-2 col-sm-12 md:mt-12 md:pt-12 pl-0">
           <div class="btn-group-vertical btn-block">
-            <button type="button" class="btn bg-olive btn-block active">Start</button>
-            <button type="button" class="btn bg-olive btn-block">Create Step</button>
+            <button type="button" class="btn btn-md bg-olive btn-block active">Start</button>
+            <button type="button" class="btn btn-md bg-olive btn-block" @click="createProcess()">Create Step</button>
           </div>
         </div>
       </div>
 
     </div>
+    <Toast/>
   </AuthenticatedLayout>
 </template>
 
@@ -112,5 +154,9 @@ function clickCategory() {
   height: 100px;
 }
 
+.bg-olive:hover {
+  background-color: #2e7555 !important;
+  border-color: #2b6b4f;
+}
 /* p-dropdown-empty-message btn-md border btn-primary mt-3 m-2 */
 </style>
