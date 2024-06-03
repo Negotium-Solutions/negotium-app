@@ -1,7 +1,7 @@
 <script setup>
 
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, computed } from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
 
@@ -16,6 +16,14 @@ const pageProps = reactive({
   selectedOption: "d",
   selectedCategory: 0
 });
+
+function activitiesCounter(steps) {
+  let counter = 0;
+  steps.forEach((step) => {
+    counter += step.activities.length;
+  });
+  return counter;
+}
 
 const sortByOptions = ref([
   { name: 'Latest First', code: 'd' },
@@ -116,7 +124,7 @@ function filterByCategory(category_id) {
               </div>
             </div>
             <div class="card-body">
-              <div>{{ process.steps ? process.steps.length : 0 }} Steps | {{ process.steps && (typeof process.steps.activities !== 'undefined') ? process.steps.activities.length : 0 }} Activities</div>
+              <div>{{ process.steps.length }} Steps | {{ activitiesCounter(process.steps) }} Activities</div>
             </div>
           </div>
         </div> -->
