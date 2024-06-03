@@ -13,6 +13,9 @@
         <link rel="stylesheet" href="{{asset('adminlte/plugins/fontawesome-free/css/all.min.css')}}">
         <!-- Theme style -->
         <link rel="stylesheet" href="{{asset('adminlte/dist/css/adminlte.min.css')}}">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Young+Serif">
 
         <!-- Scripts -->
         @routes

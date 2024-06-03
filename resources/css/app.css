@@ -29,3 +29,14 @@
     background-position: right calc(.375em + .1875rem) center;
     background-size: calc(.75em + .375rem) calc(.75em + .375rem);
 }
+
+/* Dropdown styling */
+
+
+.p-dropdown-label, .p-dropdown-item-label{
+    font-size: 14px;
+}
+
+.p-dropdown{
+    border: 1px solid #dee2e6 !important;
+}

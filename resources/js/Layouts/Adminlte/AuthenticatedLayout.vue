@@ -11,11 +11,11 @@ import { Sidebar } from "@/Layouts/Adminlte";;
                 <!-- Page Content -->
 
                 <!-- Content Wrapper. Contains page content -->
-                <div class="content-wrapper">
+                <div class="content-wrapper bg-white">
                     <!-- Content Header (Page header) -->
-                    <div class="content-header bg-white shadow" v-if="$slots.header">
+                    <div class="content-header" v-if="$slots.header">
                         <div class="container-fluid">
-                            <div class="row mb-2">
+                            <div class="row px-3 pt-3">
                                 <slot name="header" />
                             </div><!-- /.row -->
                         </div><!-- /.container-fluid -->
@@ -23,7 +23,7 @@ import { Sidebar } from "@/Layouts/Adminlte";;
                     <!-- /.content-header -->
 
                     <!-- Main content -->
-                    <div class="content mt-5">
+                    <div class="content">
                         <div class="container-fluid mt-7">
                             <main>
                                 <slot />
