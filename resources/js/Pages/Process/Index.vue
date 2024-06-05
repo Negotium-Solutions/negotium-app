@@ -45,10 +45,10 @@ function filterByCategory(category_id) {
   pageProps.processes = [];
   let counter = 0;
   props.processes.forEach((process, index) => {
-    if(process.category && process.category.id === category_id) {
+    if(process.category.id === category_id) {
       pageProps.processes.push(process);
       counter++;
-    } else if (category_id == 0) {
+    } else if (category_id === 0) {
       pageProps.processes.push(process);
     }
   });
@@ -103,7 +103,7 @@ function filterByCategory(category_id) {
                 </button>
             </div>
           </div>
-          <div class="mt-1 text-xs leading-3 text-blue-400">Category type 4</div>
+          <div class="mt-1 text-xs leading-3" :style="'color: '+process.category.color">{{ process.category.name }}</div>
           <div class="shrink-0 mt-3 h-px rounded-sm bg-neutral-700"></div>
           <div class="mt-2.5 text-sm leading-5 text-neutral-700">
             00 Steps | 00 Activities
@@ -118,7 +118,7 @@ function filterByCategory(category_id) {
             <div class="card-header">
               <h3 class="card-title font-weight-bold">
                 {{ process.name }} <br/>
-                <small v-if="process.category" class="font-medium" :style="'color: '+process.category.color">{{ process.category.name }}</small>
+                <small v-if="process.category" class="font-medium">{{ process.category.name }}</small>
               </h3>
               <div class="card-tools">
               </div>
