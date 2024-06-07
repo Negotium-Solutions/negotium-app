@@ -105,11 +105,11 @@ function deleteProcess(process) {
       <div class="row mb-3">
         <div class="col-md-8">
           <div class="row">
-            <div class="col-md-3 mb-2">
-              <button class="btn btn-sm btn-block btn-outline-dark w-100" :class="{ active : processStore.isSelectedCategory(0) }" @click="processStore.toogleCategory(0)">All</button>
+            <div class="pr-1 mb-2">
+              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white" :class="{ 'bg-neutral-700 text-white' : pageProps.selectedCategory === 0 }" @click="filterByCategory(0)">All</button>
             </div>
-            <div v-for="(category, index) in props.categories" :key="index" class="col-md-3 col-sm-12 mb-2">
-              <button class="btn btn-sm btn-block btn-outline-dark" :class="{ active : processStore.isSelectedCategory(category.id) }" @click="processStore.toogleCategory(category.id)"><i class="fa fa-square" :style="'color: '+category.color"></i>&nbsp;&nbsp;{{category.name}}</button>
+            <div v-for="(category, index) in props.categories" :key="index" class="px-1 mb-2">
+              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white" :class="{ 'bg-neutral-700 text-white' : category.id === pageProps.selectedCategory }" @click="filterByCategory(category.id)"><i class="fa fa-square" :style="'color: '+category.color"></i>&nbsp;&nbsp;{{category.name}}</button>
             </div>
           </div>
         </div>
@@ -120,15 +120,14 @@ function deleteProcess(process) {
       </div>
 
       <div class="row">
-        <div class="col-md-3" v-for="(process, index) in processStore.filterByCategory" :key="index">
-          <div class="card card-default">
-            <div class="card-header">
-              <h3 class="card-title font-weight-bold">
-                {{ process.name }} <br/>
-                <small v-if="process.category" class="font-medium">{{ process.category.name }}</small>
-              </h3>
-              <div class="card-tools">
-                <button type="button" data-toggle="dropdown" class="btn btn-tool">
+        <div class="col-md-3 mb-3" v-for="(process, index) in processStore.filterByCategory" :key="index">
+        <div class="flex flex-col px-4 py-6 rounded-lg border border-solid bg-neutral-50 border-neutral-700">
+          <div class="flex gap-5">
+            <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
+              {{ process.name }}
+            </div>
+            <div class="flex flex-col items-center">
+                <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0">
                   <i class="pi pi-ellipsis-v"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu dropdown-menu-right">
@@ -140,14 +139,19 @@ function deleteProcess(process) {
                     <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
                   </a>
                 </div>
-              </div>
-            </div>
-            <div class="card-body">
-              <div>{{ process.steps.length }} Steps | {{ (typeof process.steps.activities !== 'undefined') ? process.steps.activities.length : 0 }} Activities</div>
             </div>
           </div>
-        </div> -->
-      </div>
+          <div v-if="process.category" class="mt-1 text-xs leading-3" :style="'color: '+process.category.color">{{ process.category.name }}</div>
+          <div class="shrink-0 mt-3 h-px rounded-sm bg-neutral-700"></div>
+          <div class="mt-2.5 text-sm leading-5 text-neutral-700">
+            <div>{{ process.steps.length }} Steps | {{ (typeof process.steps.activities !== 'undefined') ? process.steps.activities.length : 0 }} Activities</div>
+          </div>
+          <div class="mt-2 text-xs leading-3 text-neutral-700">
+            000 Profiles linked
+          </div>
+        </div>
+        </div>
+        </div>
 
     </div>
   </AuthenticatedLayout>
