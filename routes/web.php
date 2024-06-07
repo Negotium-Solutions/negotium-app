@@ -25,6 +25,8 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/process', [ProcessController::class, 'index'])->name('process');
     Route::get('/process/create', [ProcessController::class, 'create'])->name('process.create');
+    Route::get('/process/edit/{process_id}', [ProcessController::class, 'edit'])->name('process.edit');
+    Route::get('/process/edit/{process_id}/{step_id?}', [ProcessController::class, 'edit'])->name('process.edit');
 
     Route::get('/step/create/{process_id}', [StepController::class, 'create'])->name('step.create');
 });

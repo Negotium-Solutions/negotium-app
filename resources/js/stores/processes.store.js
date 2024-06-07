@@ -11,6 +11,7 @@ export const useProcessesStore = defineStore({
             'name': null,
             'process_category_id': null
         },
+        selected_categories: [0],
         response: {
             'code': 0,
             'status': '',
@@ -35,6 +36,7 @@ export const useProcessesStore = defineStore({
             if (id !== null) {
                 _url = _url + '/'+id;
             }
+            _url += '?with=category,steps.activities';
 
             try {
                 const response = await axios.get(_url, {
@@ -45,7 +47,11 @@ export const useProcessesStore = defineStore({
                 });
 
                 if (response.status === 200) {
-                    this.processes = response.data.data;
+                    if (id !== null) {
+                        this.processes = response.data.data;
+                    } else {
+                        this.process = response.data.data;
+                    }
                     this.loading = false;
                     this.setResponse(response.status, 'success', response.data.message, [], []);
                 }
@@ -61,7 +67,6 @@ export const useProcessesStore = defineStore({
             this.processes = [];
 
             if(this.process.name === null || this.process.process_category_id === null) {
-                console.log('process', this.process);
                 // TODO: Move this message to an error messages config file and just call the config file here
                 this.setResponse(500, 'error', 'Please check required fields', [], []);
 
@@ -79,7 +84,6 @@ export const useProcessesStore = defineStore({
                 });
 
                 if (response.status === 201) {
-                    console.log('response.data', response.data);
                     this.process.id = response.data.data.id;
                     this.loading = false;
                     this.setResponse(response.status, 'success', response.data.message, [], []);
@@ -95,8 +99,32 @@ export const useProcessesStore = defineStore({
         update(process, id) {
             this.resetResponse();
         },
-        delete(id) {
+        async delete(_process)
+        {
+            this.loading = true;
             this.resetResponse();
+
+            let _url = this.url+'/'+this.user.tenant+'/process/delete/'+_process.id;
+
+            try {
+                const response = await axios.delete(_url, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ` + this.user.token,
+                    },
+                });
+
+                if (response.status === 204) {
+                    this.loading = false;
+                    this.setResponse(response.status, 'success', response.data.message, [], []);
+                    // Remove item on successful deletion
+                    this.processes = this.processes.filter((item) => item.id !== _process.id);
+                }
+            } catch (error) {
+                this.setResponse(error.response.status,'error', error.response.statusText, [], []);
+            }
+
+            return this.response;
         },
         resetResponse() {
             this.response = {
@@ -114,12 +142,40 @@ export const useProcessesStore = defineStore({
                 'errors': errors,
                 'data': data
             }
+        },
+        setProcesses(processes) {
+            this.processes = processes;
+        },
+        getProcesses() {
+            return this.processes;
+        },
+        isSelectedCategory(category_id) {
+            return this.selected_categories.some((item) => item === category_id)
+        },
+        toogleCategory(category_id) {
+            if(category_id === 0 || (this.selected_categories.length === 1 && this.selected_categories[0] === 0)) {
+                this.selected_categories = [];
+                this.selected_categories.push(category_id);
+            } else {
+                if( this.selected_categories.some((item) => item === category_id) ) {
+                    this.selected_categories = this.selected_categories.filter((i) => i !== category_id);
+                } else {
+                    this.selected_categories.push(category_id);
+                }
+            }
         }
     },
     getters: {
         // TODO: Add functionality similar to computed state
         isLoaded() {
             return this.loaded;
+        },
+        filterByCategory(state) {
+            if(state.selected_categories.some((item) => item === 0)) {
+                return this.processes;
+            }
+
+            return this.processes.filter((item) => state.selected_categories.indexOf(item.process_category_id) >= 0);
         }
     }
 });

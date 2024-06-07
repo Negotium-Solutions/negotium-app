@@ -44,6 +44,7 @@ const props = defineProps({
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-briefcase"></i>
+              <i class="pi pi-briefcase"></i>
               <p>
                 Create
               </p>
