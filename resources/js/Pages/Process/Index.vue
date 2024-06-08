@@ -88,6 +88,7 @@ function deleteProcess(process) {
 <template>
   <AuthenticatedLayout>
     <template #header>
+      <div class="d-flex w-100">
       <div class="col-sm-6">
         <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto']">Processes</h1>
         <ol class="breadcrumb sm">
@@ -95,9 +96,10 @@ function deleteProcess(process) {
           <li class="breadcrumb-item active">Processes</li>
         </ol>
       </div><!-- /.col -->
-      <div class="col-sm-6 text-right pt-3">
+      <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
         <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded border border-neutral-700 justify-center items-center text-white">Create Process</a>
       </div><!-- /.col -->
+      </div>
     </template>
 
     <div class="content-container pl-4 pr-4">
@@ -106,10 +108,10 @@ function deleteProcess(process) {
         <div class="col-md-8">
           <div class="row">
             <div class="pr-1 mb-2">
-              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white" :class="{ 'bg-neutral-700 text-white' : pageProps.selectedCategory === 0 }" @click="filterByCategory(0)">All</button>
+              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white" :class="{ 'bg-neutral-700 text-white' : processStore.isSelectedCategory(0) }" @click="processStore.toogleCategory(0)">All</button>
             </div>
             <div v-for="(category, index) in props.categories" :key="index" class="px-1 mb-2">
-              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white" :class="{ 'bg-neutral-700 text-white' : category.id === pageProps.selectedCategory }" @click="filterByCategory(category.id)"><i class="fa fa-square" :style="'color: '+category.color"></i>&nbsp;&nbsp;{{category.name}}</button>
+              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white" :class="{ 'bg-neutral-700 text-white' : processStore.isSelectedCategory(category.id) }" @click="processStore.toogleCategory(category.id)"><i class="fa fa-square" :style="'color: '+category.color"></i>&nbsp;&nbsp;{{category.name}}</button>
             </div>
           </div>
         </div>
