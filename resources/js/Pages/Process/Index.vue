@@ -52,9 +52,6 @@ processStore.setProcesses(props.processes);
 
 onMounted(() =>{
   pageProps.processes = props.processes;
-  for(let v in props.categories){
-    console.log(props.categories[v])
-  }
 });
 
 function deleteProcess(process) {
