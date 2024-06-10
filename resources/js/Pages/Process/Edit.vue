@@ -5,7 +5,7 @@ import { onMounted, reactive, computed } from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import { useProcessesStore, useStepsStore, useGlobalsStore } from "@/stores";
+import { useProcessesStore, useStepsStore, useGlobalsStore, useActivityGroupsStore } from "@/stores";
 import { usePage } from "@inertiajs/vue3";
 import ProcessInformation from "@/Pages/Process/Partials/ProcessInformation.vue";
 import StepInformation from "@/Pages/Process/Partials/StepInformation.vue";
@@ -18,6 +18,7 @@ import ActivityForm from "@/Pages/Process/Partials/ActivityForm.vue";
 const stepStore = useStepsStore();
 const processStore = useProcessesStore();
 const globalsStore = useGlobalsStore();
+const activityGroupsStore = useActivityGroupsStore();
 
 // Constants
 const toast = useToast();
@@ -28,7 +29,8 @@ const props = defineProps({
   process: {},
   model_id: null,
   parent_id: null,
-  step_id: 0
+  step_id: 0,
+  activity_groups: {}
 });
 const pageProps = reactive({
   activiveForm: null
@@ -42,6 +44,7 @@ onMounted(() => {
   stepStore.init(negotium_api_url, user.value);
   stepStore.step.model_id = props.model_id;
   stepStore.steps = props.process.steps;
+  activityGroupsStore.setActivityGroups(props.activity_groups);
 });
 </script>
 
