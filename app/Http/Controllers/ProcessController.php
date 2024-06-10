@@ -61,14 +61,22 @@ class ProcessController extends Controller
             'Accept' => 'application/json'
         ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/process/'.$id.'?with=category,steps.activities');
 
+        $activityGroupsResponse = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/activity-group?with=activity_types');
+
         $processResponseData = json_decode($processResponse->body(), true);
+        $activityGroupsResponseData = json_decode($activityGroupsResponse->body(), true);
 
         $process = $processResponseData['data'];
+        $activityGroups = $activityGroupsResponseData['data'];
 
         $parameters = [
             'process' => $process,
             'model_id' => ModelTypeDefinitions::PROCESS,
-            'step_id' => $step_id ?? 0
+            'step_id' => $step_id ?? 0,
+            'activity_groups' => $activityGroups
         ];
 
         return Inertia::render('Process/Edit', $parameters);

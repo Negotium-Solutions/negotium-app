@@ -1,6 +1,6 @@
 <script setup>
 // Define all imports here
-import {useGlobalsStore, useProcessesStore, useStepsStore} from "@/stores";
+import { useGlobalsStore, useProcessesStore, useStepsStore, useActivityGroupsStore } from "@/stores";
 import {computed, onMounted, reactive} from "vue";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
@@ -8,8 +8,9 @@ import { usePage } from "@inertiajs/vue3";
 
 // Define all the use statements here
 const processStore = useProcessesStore();
-const useStepStore = useStepsStore();
+const stepStore = useStepsStore();
 const globalsStore = useGlobalsStore();
+const activityGroupsStore = useActivityGroupsStore();
 const toast = useToast();
 
 // Define all constants here
@@ -26,19 +27,19 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
 
 // Define all functions here
 onMounted(() => {
-  useStepStore.step.model_id = props.model_id;
-  useStepStore.step.parent_id = processStore.process.id;
+  stepStore.step.model_id = props.model_id;
+  stepStore.step.parent_id = processStore.process.id;
   processStore.init(negotium_api_url, user);
 });
 
 function isInValidStepName() {
-  return pageProps.isFormSubmitted && (useStepStore.step.name === '');
+  return pageProps.isFormSubmitted && (stepStore.step.name === '');
 }
 
-function createStep()
+function createActivity()
 {
   this.pageProps.isFormSubmitted = true;
-  const response = useStepStore.create();
+  const response = stepStore.create();
   response.then((result) => {
     if(result.status === 'error') {
       toast.add({severity: 'error', summary: 'Error', detail: result.message, life: 3000});
@@ -55,21 +56,59 @@ function createStep()
     <div class="card card-default">
       <div class="card-header">
         <h3 class="card-title text-bold">Step</h3><br/>
+        <div>
+          <p class="text-sm mt-2">Step Name</p>
+          <p class="text-bold">
+            {{ stepStore.step.name }} <i class="pi pi-file-edit float-right"></i>
+          </p>
+        </div>
       </div>
       <!-- /.card-header -->
       <!-- form start -->
       <form class="form-horizontal">
         <div class="card-body">
-          <div class="form-group">
-            <label for="step-name" class="font-weight-normal">Step Name</label>
-            <input v-model="useStepStore.step.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this step?" :class="{'is-invalid-custom': isInValidStepName()}">
-            <span v-if="isInValidStepName()" id="process-name-error" class="error invalid-feedback">This field is required</span>
+          <div class="form-group mb-0">
+            <label for="step-name" class="mb-0">New Activity</label>
           </div>
+          <p class="mt-3 mb-1">Select activity type</p>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupsStore.getActivityGroup === activity_group.id }" @click="activityGroupsStore.setActivityGroup(activity_group.id)" v-for="(activity_group, index) in activityGroupsStore.getActivityGroups" :key="index">
+              <input type="radio" name="options" :id="'option_'+activity_group.id" autocomplete="off"> {{ activity_group.name }}
+            </label>
+          </div>
+          <p class="mt-3 mb-1">Select <span class="font-weight-bold">user input</span></p>
+          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+            <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupsStore.getActivityType === activity_type.id }" @click="activityGroupsStore.setActivityType(activity_type.id)" v-for="(activity_type, at_index) in activityGroupsStore.getActivityTypesByActivityGroup" :key="at_index">
+              <input type="radio" name="options" :id="'option_'+activity_type.id" autocomplete="off"> {{ activity_type.name }}
+            </label>
+          </div>
+
+          <form class="mt-3">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Activity Name</label>
+                  <input type="text" class="form-control form-control-custom" placeholder="Name">
+                </div>
+              </div>
+              <div class="col-sm-6">
+                <div class="form-group">
+                  <label>Activity Label</label>
+                  <input type="text" class="form-control form-control-custom" placeholder="Label">
+                </div>
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label" for="inputWarning">Guidance note</label>
+              <input type="text" class="form-control form-control-custom" id="inputWarning" placeholder="Type the guidance note">
+            </div>
+          </form>
+
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
           <button @click="globalsStore.cancel()" type="button" class="btn btn-sm btn-outline-light"><i class="pi pi-times mr-1 mt-1"></i> Cancel</button>
-          <button @click="createStep()" type="button" class="btn btn-sm btn-default float-right mr-2"><i class="pi pi-save mr-1"></i> Save</button>
+          <button @click="createActivity()" type="button" class="btn btn-sm btn-default float-right mr-2"><i class="pi pi-save mr-1"></i> Save</button>
         </div>
       </form>
     </div>
