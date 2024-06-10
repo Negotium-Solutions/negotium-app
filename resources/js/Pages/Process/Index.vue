@@ -1,9 +1,23 @@
 <script setup>
 
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref, computed } from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
+import Toast from "primevue/toast";
+import { useToast } from "primevue/usetoast";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
+import { useProcessesStore } from "@/stores";
+import { usePage } from "@inertiajs/vue3";
+
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+const negotium_api_url = computed(() => page.props.negotium_api_url);
+
+const confirm = useConfirm();
+const toast = useToast();
+const processStore = useProcessesStore();
 
 const props = defineProps({
   processes: Array,
@@ -17,26 +31,49 @@ const pageProps = reactive({
   selectedCategory: 0
 });
 
+const activitiesCounter = computed((steps) => {
+  let counter = 0;
+  steps.forEach((step) => {
+    counter += step.activities.length
+  });
+  return counter;
+})
+
 const sortByOptions = ref([
   { name: 'Process', code: 'p' },
   { name: 'Steps', code: 's' },
   { name: 'Activities', code: 'l' }
 ]);
 
+processStore.init(negotium_api_url, user);
+processStore.setProcesses(props.processes);
+
 onMounted(() =>{
   pageProps.processes = props.processes;
 });
 
-function filterByCategory(category_id) {
-  pageProps.selectedCategory = category_id;
-  pageProps.processes = [];
-  let counter = 0;
-  props.processes.forEach((process, index) => {
-    if(process.category.id === category_id) {
-      pageProps.processes.push(process);
-      counter++;
-    } else if (category_id === 0) {
-      pageProps.processes.push(process);
+function deleteProcess(process) {
+  confirm.require({
+    message: 'Are you sure you want to delete this process?',
+    header: 'Warning',
+    icon: 'pi pi-info-circle',
+    rejectLabel: 'Cancel',
+    acceptLabel: 'Delete',
+    rejectClass: 'btn-sm btn-outline-light border',
+    acceptClass: 'btn-sm btn-danger',
+    accept: () => {
+      const response = processStore.delete(process);
+      response.then((result) => {
+        console.log('Result: ', result);
+        if(result.status === 'success') {
+          toast.add({ severity: 'success', summary: 'Success', detail: 'Process deleted successfully.', life: 3000 });
+        } else {
+          toast.add({ severity: 'error', summary: 'Error', detail: 'An error occurred while trying to delete process', life: 3000 });
+        }
+      })
+    },
+    reject: () => {
+      toast.add({ severity: 'error', summary: 'Rejected', detail: 'Operation cancelled', life: 3000 });
     }
   });
 }
@@ -64,10 +101,10 @@ function filterByCategory(category_id) {
         <div class="col-md-7">
           <div class="row">
             <div class="col-md-3 mb-2">
-              <button class="btn btn-sm btn-block btn-outline-dark w-100" :class="{ active : pageProps.selectedCategory === 0 }" @click="filterByCategory(0)">All</button>
+              <button class="btn btn-sm btn-block btn-outline-dark w-100" :class="{ active : processStore.isSelectedCategory(0) }" @click="processStore.toogleCategory(0)">All</button>
             </div>
             <div v-for="(category, index) in props.categories" :key="index" class="col-md-3 col-sm-12 mb-2">
-              <button class="btn btn-sm btn-block btn-outline-dark" :class="{ active : category.id === pageProps.selectedCategory }" @click="filterByCategory(category.id)"><i class="fa fa-square" :style="'color: '+category.color"></i>&nbsp;&nbsp;{{category.name}}</button>
+              <button class="btn btn-sm btn-block btn-outline-dark" :class="{ active : processStore.isSelectedCategory(category.id) }" @click="processStore.toogleCategory(category.id)"><i class="fa fa-square" :style="'color: '+category.color"></i>&nbsp;&nbsp;{{category.name}}</button>
             </div>
           </div>
         </div>
@@ -78,7 +115,7 @@ function filterByCategory(category_id) {
       </div>
 
       <div class="row">
-        <div class="col-md-3" v-for="(process, index) in pageProps.processes" :key="index">
+        <div class="col-md-3" v-for="(process, index) in processStore.filterByCategory" :key="index">
           <div class="card card-default">
             <div class="card-header">
               <h3 class="card-title font-weight-bold">
@@ -86,9 +123,18 @@ function filterByCategory(category_id) {
                 <small class="font-medium" :style="'color: '+process.category.color">{{ process.category.name }}</small>
               </h3>
               <div class="card-tools">
-                <button type="button" class="btn btn-tool">
+                <button type="button" data-toggle="dropdown" class="btn btn-tool">
                   <i class="pi pi-ellipsis-v"></i>
                 </button>
+                <div class="dropdown-menu dropdown-menu dropdown-menu-right">
+                  <a :href="route('process.edit', process.id)" class="dropdown-item">
+                    <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="#" @click="deleteProcess(process)" class="dropdown-item">
+                    <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
+                  </a>
+                </div>
               </div>
             </div>
             <div class="card-body">
@@ -100,6 +146,8 @@ function filterByCategory(category_id) {
 
     </div>
   </AuthenticatedLayout>
+  <Toast/>
+  <ConfirmDialog></ConfirmDialog>
 </template>
 
 <style scoped>
