@@ -75,8 +75,8 @@ function editStep() {
         </ol>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-3">
-        <a :href="route('process')" class="btn btn-sm btn-outline-secondary w-24 mr-2">Cancel</a>
-        <a :href="route('process.create')" class="btn btn-sm btn-dark w-24">Save Draft</a>
+        <a :href="route('process')" class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Cancel</a>
+        <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded border border-neutral-700 justify-center items-center text-white">Save Draft</a>
       </div><!-- /.col -->
     </template>
 
@@ -94,11 +94,9 @@ function editStep() {
               <div class="card-body">
                 <div class="mb-2">
                   <label for="step-name" class="font-weight-normal mb-0 gray"><small>Process name</small></label>
-                  <p class="font-weight-bold mt-0">{{ props.process.name }}</p>
                 </div>
                 <div class="mb-1">
                   <label for="step-name" class="font-weight-normal mb-0 gray"><small>Category</small></label>
-                  <p class="font-weight-bold mt-0">{{ props.process.category.name }}</p>
                 </div>
                 <div class="mt-3">
                   <hr/>
@@ -165,8 +163,8 @@ function editStep() {
         <div class="col-md-2 col-sm-12 md:mt-7 md:pt-12 pl-0">
           <div class="btn-group-vertical btn-block">
             <button type="button" class="btn btn-md btn-outline-light btn-block">Add Standard Step</button>
-            <button type="button" class="btn btn-md btn-outline-light btn-block" @click="">Add decision step</button>
-            <button type="button" class="btn btn-md btn-outline-light btn-block" @click="">End process</button>
+            <button type="button" class="btn btn-md btn-outline-light btn-block">Add decision step</button>
+            <button type="button" class="btn btn-md btn-outline-light btn-block">End process</button>
           </div>
         </div>
       </div>

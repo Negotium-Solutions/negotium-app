@@ -27,7 +27,7 @@ class ProcessController extends Controller
 
         $categories = $categoriesResponseData['data'];
         $processes = $responseData['data'];
-
+        
         $parameters = [
             'categories' => collect($categories),
             'processes' => collect($processes)
