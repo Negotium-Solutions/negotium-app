@@ -1,5 +1,6 @@
 <script setup>
-import {useGlobalsStore, useStepsStore} from "@/stores";
+import { useGlobalsStore, useStepsStore } from "@/stores";
+import { onMounted } from "vue";
 
 const stepStore = useStepsStore();
 const globalsStore = useGlobalsStore();
@@ -7,6 +8,10 @@ const globalsStore = useGlobalsStore();
 const props = defineProps({
   process: {},
   step_id: 0
+});
+
+onMounted(() => {
+  // stepStore.setStep(props.processes.steps[0]); TODO: Fix this to select default step
 });
 
 function setStep(step) {

@@ -47,6 +47,11 @@ const sortByOptions = ref([
   { name: 'Activities', code: 'l' }
 ]);
 
+const breadcrumbItems = ref([
+  { label: 'Home' },
+  { label: 'Processes', class: 'active font-semibold' }
+]);
+
 processStore.init(negotium_api_url, user);
 processStore.setProcesses(props.processes);
 
@@ -79,7 +84,6 @@ function deleteProcess(process) {
     }
   });
 }
-
 </script>
 
 <template>
@@ -88,10 +92,9 @@ function deleteProcess(process) {
       <div class="d-flex w-100">
       <div class="col-sm-6">
         <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto']">Processes</h1>
-        <ol class="breadcrumb sm">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Processes</li>
-        </ol>
+        <Breadcrumb :model="breadcrumbItems" :class="'p-0 text-sm'">
+          <template #separator> <i class="pi pi-arrow-right text-sm"></i></template>
+        </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
         <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded border border-neutral-700 justify-center items-center text-white">Create Process</a>
