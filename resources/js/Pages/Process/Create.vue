@@ -91,13 +91,13 @@ function isInValidProcessCategoryName() {
       <div class="row justify-content-md-center">
         <div class="col-md-4 col-sm-12 pr-0">
           <div class="card card-default">
-            <div class="card-header">
-              <h3 class="card-title text-bold">Process Info</h3>
+            <div class="card-header border-b border-transparent">
+              <h3 class="text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-loose">Process Info</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->
             <form class="form-horizontal">
-              <div class="card-body">
+              <div class="card-body pt-0">
                 <div class="form-group">
                   <label for="process-name" class="font-weight-normal">Process name</label>
                   <input v-model="useProcessStore.process.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?" :class="{'is-invalid-custom': isInValidProcessName()}">
@@ -106,7 +106,7 @@ function isInValidProcessCategoryName() {
 
                 <div class="form-group">
                   <label for="category" class="font-weight-normal">Category</label>
-                  <Dropdown @click="clickCategory()" v-model="pageProps.selectedCategory" :options="pageProps.categories" filter optionLabel="category" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
+                  <Dropdown @click="clickCategory()" v-model="pageProps.selectedCategory" :options="pageProps.categories" filter optionLabel="name" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
                     <template #value="slotProps">
                       <div v-if="slotProps.value" class="w-100">
                         <span>{{ slotProps.value.name }}</span>
@@ -121,10 +121,17 @@ function isInValidProcessCategoryName() {
                         <span>{{ slotProps.option.name }}</span>
                       </div>
                       <div class="w-100" v-else>
-                        <span>{{ slotProps.option.name }}</span>
+                        <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-tight">{{ slotProps.option.name }}</span>
                         <i class="fa fa-square float-right" :style="'color: '+slotProps.option.color"></i>
                       </div>
                     </template>
+                      <template #footer>
+                        <div class="w-100">
+                        <div class="h-[30px] px-4 py-2 rounded border border-neutral-700 justify-center items-center mx-2 my-2 text-center text-xs font-normal font-['Roboto'] leading-3 hover:bg-neutral-700 hover:text-white">
+                          Create new category
+                        </div>
+                        </div>
+                      </template>
                   </Dropdown>
                   <span v-if="isInValidProcessCategoryName()" id="category-error" class="error invalid-feedback">This field is required</span>
                 </div>
@@ -152,6 +159,21 @@ function isInValidProcessCategoryName() {
 <style scoped>
 .p-dropdown-empty-message {
   height: 100px;
+}
+
+input.p-dropdown-filter,.p-dropdown-filter-container{
+  width: 100%;
+    height: calc(2.25rem + 2px);
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #495057;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    box-shadow: inset 0 0 0 transparent;
+    transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
 .bg-olive:hover {
