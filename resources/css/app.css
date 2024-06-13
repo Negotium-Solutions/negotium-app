@@ -8,7 +8,7 @@
     display: block;
 }
 
-.form-control-custom {
+.form-control-custom, .p-dropdown-panel > .p-dropdown-header > .p-dropdown-filter-container > .p-dropdown-filter {
     width: 100%;
     height: calc(2.25rem + 2px);
     font-size: 1rem;
@@ -21,6 +21,10 @@
     border-radius: .25rem;
     box-shadow: inset 0 0 0 transparent;
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+}
+
+.p-dropdown-panel > .p-dropdown-header > .p-dropdown-filter-container > .p-dropdown-filter{
+    margin-bottom: 5px;
 }
 
 .is-invalid-custom {

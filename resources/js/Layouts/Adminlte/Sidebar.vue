@@ -6,13 +6,13 @@ const props = defineProps({
 
 <template>
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-light-dark elevation-4">
+  <aside class="main-sidebar sidebar-light-dark elevation-4 fixed inset-0" style="position:fixed;">
     <!-- Brand Logo -->
-    <table class="brand-link-logo" v-if="1 === 2">
+    <table class="brand-link-logo border-b border-transparent">
       <tr>
         <td>
-          <a href="index3.html" class="brand-link" style="border-bottom: none;">
-            <span class="brand-text font-weight-light">Negotium</span>
+          <a href="/" class="brand-link text-center border-b border-transparent">
+            <span class="text-neutral-700 text-4xl font-bold font-['Young+Serif'] w-full">Negotium</span>
           </a>
         </td>
         <td v-if="false" class="text-right pr-2">
@@ -37,14 +37,13 @@ const props = defineProps({
       </div>
 
       <!-- Sidebar Menu -->
-        <nav id="sidebar-container" class="mt-2">
+        <nav id="sidebar-container" class="flex flex-col">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-briefcase"></i>
-              <i class="pi pi-briefcase"></i>
               <p>
                 Create
               </p>
