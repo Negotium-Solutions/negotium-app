@@ -1,0 +1,218 @@
+.sidemenu-admin{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Admin.svg') no-repeat center;
+  mask: url('../icons/Admin.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-admin{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-dashboard{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Dashboard.svg') no-repeat center;
+  mask: url('../icons/Dashboard.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-dashboard{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-profiles{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Profiles.svg') no-repeat center;
+  mask: url('../icons/Profiles.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-profiles{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-processes{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Processes.svg') no-repeat center;
+  mask: url('../icons/Processes.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-processes{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-workboard{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/WorkBoard.svg') no-repeat center;
+  mask: url('../icons/WorkBoard.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-workboard{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-documents{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Documents.svg') no-repeat center;
+  mask: url('../icons/Documents.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-documents{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-reports{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Reports.svg') no-repeat center;
+  mask: url('../icons/Reports.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-reports{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-help{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Help.svg') no-repeat center;
+  mask: url('../icons/Help.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-help{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-notifications{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Notifications.svg') no-repeat center;
+  mask: url('../icons/Notifications.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-notifications{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-settings{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Settings.svg') no-repeat center;
+  mask: url('../icons/Settings.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-settings{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-profile{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Users.svg') no-repeat center;
+  mask: url('../icons/Users.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-profile{
+  background-color: #FFFFFF;
+}
+
+.sidemenu-exit{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/Exit.svg') no-repeat center;
+  mask: url('../icons/Exit.svg') no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;    
+}
+
+.active .sidemenu-exit{
+  background-color: #FFFFFF;
+}
+
+.edit{
+  background-color: #353535;
+-webkit-mask: url(@/assets/icons/Profile.svg) no-repeat center;
+mask: url(@/assets/icons/Profile.svg) no-repeat center;
+height:16px !important;
+width:16px !important;
+margin-right:10px;
+margin-left:32px;        
+}
+
+.email{
+  background-color: #353535;
+-webkit-mask: url(@/assets/icons/Email.svg) no-repeat center;
+mask: url(@/assets/icons/Email.svg) no-repeat center;
+height:16px !important;
+width:16px !important;
+margin-right:10px;    
+}
+
+.send{
+  background-color: #353535;
+-webkit-mask: url(@/assets/icons/Send.svg) no-repeat center;
+mask: url(@/assets/icons/Send.svg) no-repeat center;
+height:16px !important;
+width:16px !important;
+margin-right:32px;    
+}
+
+.right-arrow{
+  background-color: #353535;
+-webkit-mask: url(@/assets/icons/Uparrow.svg) no-repeat center;
+mask: url(@/assets/icons/Uparrow.svg) no-repeat center;
+height:16px !important;
+width:16px !important;
+margin-right:16px; 
+margin-left:16px;    
+}
+
+
+
+.more-elipses{
+  background-color: #353535;
+  -webkit-mask: url(@/assets/icons/Kebab.svg) no-repeat center;
+  mask: url(@/assets/icons/Kebab.svg) no-repeat center;
+  height:20px !important;
+  width:20px !important;
+  margin-right:10px;   
+  float: right;
+  display: inline;
+}
