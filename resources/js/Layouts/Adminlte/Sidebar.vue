@@ -1,4 +1,34 @@
 <script setup>
+import { ref, onMounted } from 'vue'
+
+const csrfToken = ref('')
+onMounted(() => {
+
+  csrfToken.value = document.querySelector('meta[name="csrf-token"]').content
+  handleProfileSidebarPosition()
+  // Add a global event listener
+  // for window resize
+  window.addEventListener
+  ('resize', handleProfileSidebarPosition);
+})
+
+function handleProfileSidebarPosition(){
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  if(h > 800){
+    document.getElementById('sidebar-profiles').style.position = 'fixed'
+    document.getElementById('sidebar-profiles').style.bottom = 0
+  } else {
+    document.getElementById('sidebar-profiles').style.position = null
+    document.getElementById('sidebar-profiles').style.bottom = null
+  }
+}
+
+function logout(){
+  document.getElementById('logout').submit()
+}
+
 const props = defineProps({
   'processes': Object
 });
@@ -8,7 +38,7 @@ const props = defineProps({
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-light-dark elevation-4 fixed inset-0" style="position:fixed;">
     <!-- Brand Logo -->
-    <table class="brand-link-logo border-b border-transparent">
+    <table class="brand-link-logo border-b border-transparent my-3">
       <tr>
         <td>
           <a href="/" class="brand-link text-center border-b border-transparent">
@@ -37,94 +67,74 @@ const props = defineProps({
       </div>
 
       <!-- Sidebar Menu -->
-        <nav id="sidebar-container" class="flex flex-col">
+        <nav id="sidebar-container" class="flex flex-col pt-3">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-briefcase"></i>
-              <p>
-                Create
-              </p>
+            <a href="#" class="nav-link d-flex">          
+              <i class="nav-icon sidemenu-admin"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Create</span>
             </a>
           </li>
           <li class="nav-item">
-            <a :href="route('dashboard')" :class="{ active: route().current('dashboard') || route().current('dashboard.create') || route().current('dashboard.edit') }" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Dashboard
-              </p>
+            <a :href="route('dashboard')" :class="{ active: route().current('dashboard') || route().current('dashboard.create') || route().current('dashboard.edit') }" class="nav-link d-flex align-self-center">          
+              <i class="nav-icon sidemenu-dashboard"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Profiles
-              </p>
+            <a href="#" class="nav-link d-flex align-self-center">          
+              <i class="nav-icon sidemenu-profiles"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Profiles</span>
             </a>
           </li>
           <li class="nav-item">
-            <a :href="route('process')" class="nav-link">
-              <i class="nav-icon fas fa-print"></i>
-              <p>
-                Processes
-              </p>
+            <a :href="route('process')" :class="{ active: route().current('process') }" class="nav-link d-flex align-self-center">          
+              <i class="nav-icon sidemenu-processes"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Processes</span>
             </a>
           </li>
           <li class="nav-item mt-1 mr-3 mb-1 ml-3">
-            <hr color="#c2c7d0"/>
+            <hr class="h-0.5 opacity-10 bg-neutral-700 rounded-sm" />
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-bar"></i>
-              <p>
-                Workboard
-              </p>
+            <a href="#" class="nav-link d-flex align-self-center">          
+              <i class="nav-icon sidemenu-workboard"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Workboard</span>
             </a>
           </li>
           <li class="nav-item">
-            <a :href="route('document')" :class="{ active: route().current('document') }" class="nav-link">
-              <i class="nav-icon fas fa-file"></i>
-              <p>
-                Documents
-              </p>
+            <a :href="route('document')" :class="{ active: route().current('document') }" class="nav-link d-flex align-self-center">          
+              <i class="nav-icon sidemenu-documents"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Documents</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-line"></i>
-              <p>
-                Reports
-              </p>
+            <a href="#" class="nav-link d-flex align-self-center">          
+              <i class="nav-icon sidemenu-reports"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Reports</span>
             </a>
           </li>
           <li class="nav-item mt-1 mr-3 mb-1 ml-3">
-            <hr color="#c2c7d0"/>
+            <hr class="h-0.5 opacity-10 bg-neutral-700 rounded-sm" />
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chart-bar"></i>
-              <p>
-                Admin
-              </p>
+            <a href="#" class="nav-link d-flex">          
+              <i class="nav-icon sidemenu-admin"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Admin</span>
             </a>
           </li>
           <li class="nav-item">
-            <a :href="route('profile-manager')" class="nav-link">
-              <i class="nav-icon fas fa-user-cog"></i>
-              <p>
-                Profile Manager
-              </p>
+            <a :href="route('profile-manager')" :class="{active: route().current('profile-manager')}" class="nav-link d-flex align-self-center">          
+              <i class="nav-icon sidemenu-profiles"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Profile Manager</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-file"></i>
-              <p>
-                Help & Support
-              </p>
+            <a href="#" class="nav-link d-flex">          
+              <i class="nav-icon sidemenu-help"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Help & Support</span>
             </a>
           </li>
 
@@ -134,39 +144,33 @@ const props = defineProps({
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-briefcase"></i>
-              <p>
-                Notifications
-              </p>
+            <a href="#" class="nav-link d-flex">          
+              <i class="nav-icon sidemenu-notifications"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Notifications</span>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Settings
-              </p>
+            <a href="#" class="nav-link d-flex">          
+              <i class="nav-icon sidemenu-settings"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Settings</span>
             </a>
           </li>
           <li class="nav-item">
-            <a :href="route('profile.edit')" class="nav-link">
-              <i class="nav-icon fas fa-users"></i>
-              <p>
-                Profile
-              </p>
+            <a href="#" class="nav-link d-flex">          
+              <i class="nav-icon sidemenu-profile"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Profile</span>
             </a>
           </li>
           <li class="nav-item">
-              <a :href="route('logout')" method="post" class="nav-link">
-                <i class="nav-icon fas fa-user-astronaut"></i>
-                <p>
-                  Logout
-                </p>
-              </a>
+            <a href="javascript:void(0)" @click="logout" class="nav-link d-flex">          
+              <i class="nav-icon sidemenu-exit"></i>
+              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Logout</span>
+            </a>
           </li>
         </ul>
-
+        <form method="post" :action="route('logout')" id="logout">
+          <input-hidden :value="csrfToken" name="_token"/>
+        </form>
       </nav>
       <!-- /.sidebar-menu -->
     </div>
