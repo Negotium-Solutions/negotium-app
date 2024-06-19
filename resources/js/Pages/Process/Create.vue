@@ -12,9 +12,10 @@ const toast = useToast();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
+const breadCrumbs = [{label: 'Home'}, {label: 'Processes'}, {label: 'Create Process', class: 'active'}];
 
-const useProcessStore = useProcessesStore();
-useProcessStore.init(negotium_api_url, user.value);
+const processStore = useProcessesStore();
+processStore.init(negotium_api_url, user.value);
 
 const props = defineProps({
   categories: Array,
@@ -38,16 +39,11 @@ onMounted(() => {
   });
 });
 
-function clickCategory() {
- // TODO: Add category button as per the designs, to a new category
-  console.log('Category clicked!!');
-}
-
 function createProcess()
 {
   this.pageProps.isFormSubmitted = true;
-  useProcessStore.process.process_category_id = pageProps.selectedCategory.id;
-  const response = useProcessStore.create();
+  processStore.process.process_category_id = pageProps.selectedCategory.id;
+  const response = processStore.create();
   response.then((result) => {
     console.log('Result: ', result);
     if(result.status === 'error') {
@@ -55,18 +51,18 @@ function createProcess()
     } else {
       toast.add({severity: 'success', summary: 'Success', detail: result.message, life: 5000});
       setTimeout(() => {
-        window.location = '/step/create/'+useProcessStore.process.id;
+        window.location = '/process/edit/'+processStore.process.id;
       }, 3000);
     }
   });
 }
 
 function isInValidProcessName() {
-  return this.pageProps.isFormSubmitted && (useProcessStore.process.name === null);
+  return this.pageProps.isFormSubmitted && (processStore.process.name === null);
 }
 
 function isInValidProcessCategoryName() {
-  return this.pageProps.isFormSubmitted && (useProcessStore.process.process_category_id === null);
+  return this.pageProps.isFormSubmitted && (processStore.process.process_category_id === null);
 }
 </script>
 
@@ -75,10 +71,9 @@ function isInValidProcessCategoryName() {
     <template #header>
       <div class="col-sm-6">
         <h1 class="m-0">Processes</h1>
-        <ol class="breadcrumb sm">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Processes</li>
-        </ol>
+        <Breadcrumb :model="breadCrumbs" :class="'p-0 text-sm'">
+          <template #separator> <i class="pi pi-arrow-right text-sm"></i></template>
+        </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-3">
         <a :href="route('process')" class="btn btn-sm btn-outline-secondary w-24 mr-2">Cancel</a>
@@ -100,13 +95,13 @@ function isInValidProcessCategoryName() {
               <div class="card-body pt-0">
                 <div class="form-group">
                   <label for="process-name" class="font-weight-normal">Process name</label>
-                  <input v-model="useProcessStore.process.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?" :class="{'is-invalid-custom': isInValidProcessName()}">
+                  <input v-model="processStore.process.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?" :class="{'is-invalid-custom': isInValidProcessName()}">
                   <span v-if="isInValidProcessName()" id="process-name-error" class="error invalid-feedback">This field is required</span>
                 </div>
 
                 <div class="form-group">
                   <label for="category" class="font-weight-normal">Category</label>
-                  <Dropdown @click="clickCategory()" v-model="pageProps.selectedCategory" :options="pageProps.categories" filter optionLabel="name" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
+                  <Dropdown v-model="pageProps.selectedCategory" :options="pageProps.categories" filter optionLabel="name" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
                     <template #value="slotProps">
                       <div v-if="slotProps.value" class="w-100">
                         <span>{{ slotProps.value.name }}</span>
@@ -145,7 +140,7 @@ function isInValidProcessCategoryName() {
         </div>
         <div class="col-md-2 col-sm-12 md:mt-12 md:pt-12 pl-0">
           <div class="btn-group-vertical btn-block">
-            <button type="button" class="btn btn-md bg-olive btn-block active">Start</button>
+            <button type="button" class="btn btn-md bg-olive btn-block active" @click="createProcess()">Start</button>
             <button type="button" class="btn btn-md bg-olive btn-block" @click="createProcess()">Create Step</button>
           </div>
         </div>
