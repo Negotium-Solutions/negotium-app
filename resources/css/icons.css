@@ -216,3 +216,23 @@ margin-left:16px;
   float: right;
   display: inline;
 }
+
+.add-activity{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/AddActivity.svg') no-repeat center;
+  mask: url('../icons/AddActivity.svg') no-repeat center;
+  height:14px !important;
+  width:14px !important;
+  margin-right:10px;  
+}
+
+.add-title{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/AddTitle.svg') no-repeat center;
+  mask: url('../icons/AddTitle.svg') no-repeat center;
+  height:14px !important;
+  width:14px !important;
+  margin-right:10px;  
+}

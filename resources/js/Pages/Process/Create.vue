@@ -12,6 +12,7 @@ const toast = useToast();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
+const breadCrumbs = [{label: 'Home'}, {label: 'Processes'}, {label: 'Create Process', class: 'active'}];
 
 const processCategoryStore = useProcessCategoryStore();
 processCategoryStore.init(negotium_api_url, user.value);
@@ -36,11 +37,6 @@ onMounted(() => {
     pageProps.categories.push(category);
   });
 });
-
-function clickCategory() {
- // TODO: Add category button as per the designs, to a new category
-  console.log('Category clicked!!');
-}
 
 function createProcess()
 {
@@ -95,10 +91,9 @@ function createCategory() {
     <template #header>
       <div class="col-sm-6">
         <h1 class="m-0">Processes</h1>
-        <ol class="breadcrumb sm">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Processes</li>
-        </ol>
+        <Breadcrumb :model="breadCrumbs" :class="'p-0 text-sm'">
+          <template #separator> <i class="pi pi-arrow-right text-sm"></i></template>
+        </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-3">
         <a :href="route('process')" class="btn btn-sm btn-outline-secondary w-24 mr-2">Cancel</a>
@@ -165,7 +160,7 @@ function createCategory() {
         </div>
         <div class="col-md-2 col-sm-12 md:mt-12 md:pt-12 pl-0">
           <div class="btn-group-vertical btn-block">
-            <button type="button" class="btn btn-md bg-olive btn-block active">Start</button>
+            <button type="button" class="btn btn-md bg-olive btn-block active" @click="createProcess()">Start</button>
             <button type="button" class="btn btn-md bg-olive btn-block" @click="createProcess()">Create Step</button>
           </div>
         </div>

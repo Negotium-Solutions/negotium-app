@@ -70,14 +70,14 @@ function createActivity()
           <div class="form-group mb-0">
             <label for="step-name" class="mb-0">New Activity</label>
           </div>
-          <p class="mt-3 mb-1">Select activity type</p>
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select activity type</p>
+          <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
             <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupsStore.getActivityGroup === activity_group.id }" @click="activityGroupsStore.setActivityGroup(activity_group.id)" v-for="(activity_group, index) in activityGroupsStore.getActivityGroups" :key="index">
               <input type="radio" name="options" :id="'option_'+activity_group.id" autocomplete="off"> {{ activity_group.name }}
             </label>
           </div>
-          <p class="mt-3 mb-1">Select <span class="font-weight-bold">user input</span></p>
-          <div class="btn-group btn-group-toggle" data-toggle="buttons">
+          <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select <span class="font-weight-bold">user input</span></p>
+          <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
             <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupsStore.getActivityType === activity_type.id }" @click="activityGroupsStore.setActivityType(activity_type.id)" v-for="(activity_type, at_index) in activityGroupsStore.getActivityTypesByActivityGroup" :key="at_index">
               <input type="radio" name="options" :id="'option_'+activity_type.id" autocomplete="off"> {{ activity_type.name }}
             </label>
@@ -87,19 +87,19 @@ function createActivity()
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label>Activity Name</label>
+                  <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Activity Name</label>
                   <input type="text" class="form-control form-control-custom" placeholder="Name">
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label>Activity Label</label>
+                  <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Activity Label</label>
                   <input type="text" class="form-control form-control-custom" placeholder="Label">
                 </div>
               </div>
             </div>
             <div class="form-group">
-              <label class="col-form-label" for="inputWarning">Guidance note</label>
+              <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3" for="inputWarning">Guidance note</label>
               <input type="text" class="form-control form-control-custom" id="inputWarning" placeholder="Type the guidance note">
             </div>
           </form>

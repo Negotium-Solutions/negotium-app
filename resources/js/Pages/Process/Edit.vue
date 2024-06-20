@@ -1,7 +1,7 @@
 <script setup>
 // Imports
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import { onMounted, reactive, computed } from "vue";
+import {onMounted, reactive, computed, ref} from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
@@ -36,6 +36,11 @@ const pageProps = reactive({
   activiveForm: null
 });
 
+const breadcrumbItems = ref([
+  { label: 'Process Information' },
+  { label: 'Step & Activities', class: 'active font-semibold' }
+]);
+
 // Initialise objects
 processStore.process = props.process;
 
@@ -53,14 +58,13 @@ onMounted(() => {
     <template #header>
       <div class="col-sm-6">
         <h1 class="m-0">Processes</h1>
-        <ol class="breadcrumb sm">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Processes</li>
-        </ol>
+        <Breadcrumb :model="breadcrumbItems" :class="'p-0 text-sm'">
+          <template #separator> <i class="pi pi-arrow-right text-sm"></i></template>
+        </Breadcrumb>
       </div><!-- /.col -->
-      <div class="col-sm-6 text-right pt-3">
-        <a :href="route('process')" class="btn btn-sm btn-outline-secondary w-24 mr-2">Cancel</a>
-        <a :href="route('process.create')" class="btn btn-sm btn-dark w-24">Save Draft</a>
+      <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
+        <a :href="route('process')" class="px-4 py-2 rounded border border-neutral-700 justify-center items-center border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Cancel</a>
+        <a :href="route('process.create')" class="ml-2 px-4 py-2 bg-neutral-700 rounded border border-neutral-700 justify-center items-center text-white">Save Draft</a>
       </div><!-- /.col -->
     </template>
 
