@@ -169,7 +169,7 @@ const props = defineProps({
           </li>
         </ul>
         <form method="post" :action="route('logout')" id="logout">
-          <input-hidden :value="csrfToken" name="_token"/>
+          <input type="hidden" :value="csrfToken" name="_token"/>
         </form>
       </nav>
       <!-- /.sidebar-menu -->
