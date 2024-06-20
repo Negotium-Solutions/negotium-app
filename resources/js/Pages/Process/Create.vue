@@ -5,7 +5,7 @@ import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import { useProcessesStore } from "@/stores";
+import { useProcessesStore, useProcessCategoryStore } from "@/stores";
 import { usePage } from "@inertiajs/vue3";
 
 const toast = useToast();
@@ -14,8 +14,10 @@ const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
 const breadCrumbs = [{label: 'Home'}, {label: 'Processes'}, {label: 'Create Process', class: 'active'}];
 
+const processCategoryStore = useProcessCategoryStore();
+processCategoryStore.init(negotium_api_url, user.value);
 const processStore = useProcessesStore();
-processStore.init(negotium_api_url, user.value);
+processCategoryStore.init(negotium_api_url, user.value);
 
 const props = defineProps({
   categories: Array,
@@ -25,14 +27,11 @@ const props = defineProps({
 const pageProps = reactive({
   isFormSubmitted: false,
   selectedCategory: { id: null, name: 'Select category', color: 'white' },
-  categories: [],
-  addCategoryOption: {
-    id: 0,
-    name: 'Create new category'
-  }
+  categories: []
 });
 
 onMounted(() => {
+  processCategoryStore.process_categories = props.categories;
   // pageProps.categories.push(pageProps.addCategoryOption);
   props.categories.forEach((category) => {
     pageProps.categories.push(category);
@@ -51,7 +50,7 @@ function createProcess()
     } else {
       toast.add({severity: 'success', summary: 'Success', detail: result.message, life: 5000});
       setTimeout(() => {
-        window.location = '/process/edit/'+processStore.process.id;
+        window.location = '/step/create/'+processStore.process.id;
       }, 3000);
     }
   });
@@ -63,6 +62,27 @@ function isInValidProcessName() {
 
 function isInValidProcessCategoryName() {
   return this.pageProps.isFormSubmitted && (processStore.process.process_category_id === null);
+}
+
+function onFilter(event) {
+  processCategoryStore.process_category.name = event.value;
+}
+
+function createCategory() {
+  const response = processCategoryStore.create();
+  response.then((result) => {
+    if (result.status === 'error') {
+      toast.add({severity: 'error', summary: 'Error', detail: result.message, life: 3000});
+
+      if (result.code === 422) {
+        toast.add({severity: 'error', summary: 'Error', detail: 'The category search textbox is empty, add new category on the search textbox', life: 3000});
+      }
+    } else {
+      toast.add({severity: 'success', summary: 'Success', detail: result.message, life: 5000});
+
+      const categories = processCategoryStore.fetchProcessCategories();
+    }
+  });
 }
 </script>
 
@@ -101,7 +121,7 @@ function isInValidProcessCategoryName() {
 
                 <div class="form-group">
                   <label for="category" class="font-weight-normal">Category</label>
-                  <Dropdown v-model="pageProps.selectedCategory" :options="pageProps.categories" filter optionLabel="name" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
+                  <Dropdown @click="clickCategory()" v-model="pageProps.selectedCategory" :options="processCategoryStore.process_categories" filter @filter="onFilter" optionLabel="name" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
                     <template #value="slotProps">
                       <div v-if="slotProps.value" class="w-100">
                         <span>{{ slotProps.value.name }}</span>
@@ -122,9 +142,9 @@ function isInValidProcessCategoryName() {
                     </template>
                       <template #footer>
                         <div class="w-100">
-                        <div class="h-[30px] px-4 py-2 rounded border border-neutral-700 justify-center items-center mx-2 my-2 text-center text-xs font-normal font-['Roboto'] leading-3 hover:bg-neutral-700 hover:text-white">
-                          Create new category
-                        </div>
+                          <button @click="createCategory()" class="w-100 h-[30px] px-4 py-2 rounded border border-neutral-700 justify-center items-center mx-2 my-2 text-center text-xs font-normal font-['Roboto'] leading-3 hover:bg-neutral-700 hover:text-white">
+                            Create new category
+                          </button>
                         </div>
                       </template>
                   </Dropdown>
