@@ -17,7 +17,7 @@ const breadCrumbs = [{label: 'Home'}, {label: 'Processes'}, {label: 'Create Proc
 const processCategoryStore = useProcessCategoryStore();
 processCategoryStore.init(negotium_api_url, user.value);
 const processStore = useProcessesStore();
-processCategoryStore.init(negotium_api_url, user.value);
+processStore.init(negotium_api_url, user.value);
 
 const props = defineProps({
   categories: Array,
@@ -27,7 +27,9 @@ const props = defineProps({
 const pageProps = reactive({
   isFormSubmitted: false,
   selectedCategory: { id: null, name: 'Select category', color: 'white' },
-  categories: []
+  categories: [],
+  isLoadingCreateProcessCategory: false,
+  isLoadingCreateProcess: false
 });
 
 onMounted(() => {
@@ -38,37 +40,8 @@ onMounted(() => {
   });
 });
 
-function createProcess()
-{
-  this.pageProps.isFormSubmitted = true;
-  processStore.process.process_category_id = pageProps.selectedCategory.id;
-  const response = processStore.create();
-  response.then((result) => {
-    console.log('Result: ', result);
-    if(result.status === 'error') {
-      toast.add({severity: 'error', summary: 'Error', detail: result.message, life: 3000});
-    } else {
-      toast.add({severity: 'success', summary: 'Success', detail: result.message, life: 5000});
-      setTimeout(() => {
-        window.location = '/step/create/'+processStore.process.id;
-      }, 3000);
-    }
-  });
-}
-
-function isInValidProcessName() {
-  return this.pageProps.isFormSubmitted && (processStore.process.name === null);
-}
-
-function isInValidProcessCategoryName() {
-  return this.pageProps.isFormSubmitted && (processStore.process.process_category_id === null);
-}
-
-function onFilter(event) {
-  processCategoryStore.process_category.name = event.value;
-}
-
 function createCategory() {
+  this.pageProps.isLoadingCreateProcessCategory = true;
   const response = processCategoryStore.create();
   response.then((result) => {
     if (result.status === 'error') {
@@ -82,7 +55,39 @@ function createCategory() {
 
       const categories = processCategoryStore.fetchProcessCategories();
     }
+    this.pageProps.isLoadingCreateProcessCategory = false;
   });
+}
+
+function createProcess()
+{
+  this.pageProps.isLoadingCreateProcess = true;
+  this.pageProps.isFormSubmitted = true;
+  processStore.process.process_category_id = pageProps.selectedCategory.id;
+  const response = processStore.create();
+  response.then((result) => {
+    if(result.status === 'error') {
+      toast.add({severity: 'error', summary: 'Error', detail: result.message, life: 3000});
+      this.pageProps.isLoadingCreateProcess = false;
+    } else {
+      let toastMessages = [];
+      toastMessages.push({severity: 'success', summary: 'Success', message: result.message});
+      localStorage.setItem('toastMessages', JSON.stringify(toastMessages));
+      window.location = '/process/edit/'+processStore.process.id;
+    }
+  });
+}
+
+function isInValidProcessName() {
+  return this.pageProps.isFormSubmitted && (processStore.process.name === null);
+}
+
+function isInValidProcessCategoryName() {
+  return this.pageProps.isFormSubmitted && (pageProps.selectedCategory.id === null);
+}
+
+function onFilter(event) {
+  processCategoryStore.process_category.name = event.value;
 }
 </script>
 
@@ -121,7 +126,7 @@ function createCategory() {
 
                 <div class="form-group">
                   <label for="category" class="font-weight-normal">Category</label>
-                  <Dropdown @click="clickCategory()" v-model="pageProps.selectedCategory" :options="processCategoryStore.process_categories" filter @filter="onFilter" optionLabel="name" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
+                  <Dropdown v-model="pageProps.selectedCategory" :options="processCategoryStore.process_categories" filter @filter="onFilter" optionLabel="name" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
                     <template #value="slotProps">
                       <div v-if="slotProps.value" class="w-100">
                         <span>{{ slotProps.value.name }}</span>
@@ -142,8 +147,8 @@ function createCategory() {
                     </template>
                       <template #footer>
                         <div class="w-100">
-                          <button @click="createCategory()" class="w-100 h-[30px] px-4 py-2 rounded border border-neutral-700 justify-center items-center mx-2 my-2 text-center text-xs font-normal font-['Roboto'] leading-3 hover:bg-neutral-700 hover:text-white">
-                            Create new category
+                          <button @click="createCategory()" class="w-100 h-[30px] px-4 py-2 rounded border border-neutral-700 justify-center items-center mx-2 my-2 text-center text-xs font-normal font-['Roboto'] leading-3" :class="{'hover:bg-neutral-700 hover:text-white': !pageProps.isLoadingCreateProcessCategory}" :disabled="pageProps.isLoadingCreateProcessCategory">
+                            {{ !pageProps.isLoadingCreateProcessCategory ? 'Create new category' : 'Loading ...' }}
                           </button>
                         </div>
                       </template>
@@ -161,7 +166,9 @@ function createCategory() {
         <div class="col-md-2 col-sm-12 md:mt-12 md:pt-12 pl-0">
           <div class="btn-group-vertical btn-block">
             <button type="button" class="btn btn-md bg-olive btn-block active" @click="createProcess()">Start</button>
-            <button type="button" class="btn btn-md bg-olive btn-block" @click="createProcess()">Create Step</button>
+            <button type="button" class="btn btn-md bg-olive btn-block" @click="createProcess()" :disabled="pageProps.isLoadingCreateProcess">
+              {{ !pageProps.isLoadingCreateProcess ? 'Create step' : 'Loading ...' }}
+            </button>
           </div>
         </div>
       </div>

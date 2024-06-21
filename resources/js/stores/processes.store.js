@@ -52,13 +52,14 @@ export const useProcessesStore = defineStore({
                     } else {
                         this.process = response.data.data;
                     }
-                    this.loading = false;
                     this.setResponse(response.status, 'success', response.data.message, [], []);
                 }
             } catch (error) {
                 if(error.response.status !== 404) {
                     this.setResponse(error.response.status,'error', error.response.statusText, [], []);
                 }
+            } finally {
+                this.loading = false;
             }
         },
         async create(){
