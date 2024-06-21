@@ -50,6 +50,16 @@ onMounted(() => {
   stepStore.step.model_id = props.model_id;
   stepStore.steps = props.process.steps;
   activityGroupsStore.setActivityGroups(props.activity_groups);
+
+  if (localStorage.getItem('toastMessages') !== null) {
+    let toastMessages = JSON.parse(localStorage.getItem('toastMessages'));
+    toastMessages.forEach((toastMessage) => {
+      toast.add({severity: toastMessage.severity, summary: 'Success', detail: toastMessage.message, life: 5000});
+    });
+    localStorage.removeItem('toastMessages');
+  }
+
+  console.log('toastMessages', globalsStore.getToastMessages);
 });
 </script>
 

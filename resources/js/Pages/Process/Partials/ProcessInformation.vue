@@ -16,7 +16,7 @@ onMounted(() => {
 
 function setStep(step) {
   stepStore.setStep(step);
-  globalsStore.activeForm = globalsStore.STEP_INFORMATION;
+  globalsStore.activeForm = globalsStore.ACTIVITY_FORM;
 }
 </script>
 

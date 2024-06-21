@@ -6,7 +6,7 @@ export const useGlobalsStore = defineStore({
         STEP_INFORMATION: 0,
         STEP_FORM: 1,
         ACTIVITY_FORM: 2,
-        activeForm: 0
+        activeForm: 1
     }),
     actions: {
         setActiveForm(form_id) {
