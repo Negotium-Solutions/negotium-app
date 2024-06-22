@@ -1,57 +1,53 @@
 import { defineStore } from 'pinia';
 import { useToastr } from "@/toastr.js";
 import axios from "axios";
+import { responseHelper } from "@/helpers";
+import { useAPIBaseStore } from "@/stores/api-base.store.js";
 
+const response = new responseHelper();
 const toastr = useToastr();
 
 export const useActivitiesStore = defineStore({
     id: 'activities',
     state: () => ({
-        /** @type {{ name: string, title: string, type: string, attributes: [] }[]} */
+        ...useAPIBaseStore().$state,
+        loading: false,
         activities: {},
-        activity: {},
+        activity: {
+            'id': 0,
+            'name': '',
+            'label': '',
+            'attributes': '',
+            'type_id': 0,
+            'step_id': 0,
+            'guidance_note': ''
+        },
         step: Object,
-        loaded: false,
         url: '',
         user: Object,
         tenant: '',
+        end_point: 'activity'
     }),
     actions: {
+        // ...useAPIBaseStore().$actions,  // Spread the base store actions
         init(url, user) {
             this.url = url;
             this.user = user;
             this.tenant = user.tenant;
         },
-        async fetchActities(step_id, id = null) {
-            let _url = this.url+'/'+this.user.tenant+'/activity/'+step_id;
-            if (id !== null) {
-                _url = _url + '/'+id;
-            }
+        async fetch(id = null, parent_id = null, _with = null)
+        {
+            useAPIBaseStore().init(this.url, this.user, this.tenant, this.end_point);
+            await useAPIBaseStore().fetch(id, parent_id, _with);
 
-            this.activities = { loading: true };
-
-            try {
-                const response = await axios.get(_url, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        Authorization: `Bearer ` + this.user.token,
-                    },
-                });
-
-                if (response.status === 200) {
-                    this.activities = response.data.data;
-                    console.log('this.activities', this.activities);
-                }
-            } catch (error) {
-                console.log('Error: ', error);
-                this.activities = { error: true };
-                if(error.response.status !== 404) {
-                    toastr.error(error.response.status + ': ' + error.response.statusText);
-                }
-            }
+            return useAPIBaseStore().response;
         },
-        create(step){
-            this.steps.push(step);
+        async create(){
+            useAPIBaseStore().init(this.url, this.user, this.tenant, this.end_point);
+            useAPIBaseStore().item = this.activity;
+            await useAPIBaseStore().create();
+
+            return useAPIBaseStore().response;
         },
         update(step, id) {
             this.steps[id] = step;
@@ -62,9 +58,24 @@ export const useActivitiesStore = defineStore({
 
             // remove activity from list after deleted
             this.steps = this.activities.filter(x => x.id !== id);
+        },
+        setActivity(_activity) {
+            this.activity = _activity;
+        },
+        resetActivity() {
+            this.activity = {
+                'id': 0,
+                'name': '',
+                'label': '',
+                'attributes': '',
+                'type_id': 0,
+                'step_id': 0,
+                'guidance_note': ''
+            };
         }
     },
     getters: {
+        // ...useAPIBaseStore().$getters,  // Spread the base store getters
         // TODO: Add functionality similar to computed state
         isLoaded() {
             return this.loaded;
