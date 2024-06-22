@@ -64,7 +64,7 @@ export const useAPIBaseStore = defineStore({
                 }
             }
         },
-        async create(){
+        async create(parent_id = null){
             this.resetResponse();
             this.loading = true;
             this.items = [];
@@ -77,6 +77,10 @@ export const useAPIBaseStore = defineStore({
             }
 
             let _url = this.url+'/'+this.user.tenant+'/'+this.end_point+'/create';
+
+            if(parent_id !== null) {
+                _url += '/'+parent_id
+            }
 
             try {
                 const response = await axios.post(_url, this.item, {
