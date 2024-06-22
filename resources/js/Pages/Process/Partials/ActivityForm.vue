@@ -42,7 +42,7 @@ function isInValidStepName() {
 function createActivity() {
   pageProps.isFormSubmitted = true;
   // const response = activityStore.fetch(stepStore.step.id);
-  const response = activityStore.create();
+  const response = activityStore.create(stepStore.step.id);
 
   response.then((result) => {
     console.log('result: ', result);

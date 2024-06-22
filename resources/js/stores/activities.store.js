@@ -42,10 +42,10 @@ export const useActivitiesStore = defineStore({
 
             return useAPIBaseStore().response;
         },
-        async create(){
+        async create(parent_id = null){
             useAPIBaseStore().init(this.url, this.user, this.tenant, this.end_point);
             useAPIBaseStore().item = this.activity;
-            await useAPIBaseStore().create();
+            await useAPIBaseStore().create(parent_id);
 
             return useAPIBaseStore().response;
         },
