@@ -1,9 +1,10 @@
 <script setup>
-import { useGlobalsStore, useStepsStore } from "@/stores";
+import { useGlobalsStore, useStepsStore, useActivitiesStore } from "@/stores";
 import { onMounted } from "vue";
 
 const stepStore = useStepsStore();
 const globalsStore = useGlobalsStore();
+const activityStore = useActivitiesStore();
 
 const props = defineProps({
   process: {},
@@ -16,12 +17,13 @@ onMounted(() => {
 
 function setStep(step) {
   stepStore.setStep(step);
+  activityStore.setActivities(step.activities);
   globalsStore.activeForm = globalsStore.ACTIVITY_FORM;
 }
 </script>
 
 <template>
-  <div class="col-md-3 col-sm-12 pr-0">
+  <div class="col-md-2 col-sm-12 pr-0">
     <div class="card card-default">
       <div class="card-header border-bottom-0 pb-0">
         <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Process Info</div>

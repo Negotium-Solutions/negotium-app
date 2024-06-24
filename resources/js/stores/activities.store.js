@@ -1,16 +1,9 @@
 import { defineStore } from 'pinia';
-import { useToastr } from "@/toastr.js";
-import axios from "axios";
-import { responseHelper } from "@/helpers";
-import { useAPIBaseStore } from "@/stores/api-base.store.js";
-
-const response = new responseHelper();
-const toastr = useToastr();
+import { ApiHelper } from "@/helpers";
 
 export const useActivitiesStore = defineStore({
     id: 'activities',
     state: () => ({
-        ...useAPIBaseStore().$state,
         loading: false,
         activities: {},
         activity: {
@@ -23,31 +16,35 @@ export const useActivitiesStore = defineStore({
             'guidance_note': ''
         },
         step: Object,
-        url: '',
+        apiUrl: '',
         user: Object,
         tenant: '',
-        end_point: 'activity'
+        end_point: 'activity',
+        apiHelper: Object
     }),
     actions: {
         // ...useAPIBaseStore().$actions,  // Spread the base store actions
-        init(url, user) {
-            this.url = url;
+        init(apiUrl, user) {
+            this.apiUrl = apiUrl;
             this.user = user;
             this.tenant = user.tenant;
-        },
-        async fetch(id = null, parent_id = null, _with = null)
-        {
-            useAPIBaseStore().init(this.url, this.user, this.tenant, this.end_point);
-            await useAPIBaseStore().fetch(id, parent_id, _with);
 
-            return useAPIBaseStore().response;
+            this.apiHelper = new ApiHelper(this.apiUrl, this.user, this.end_point);
+        },
+        async get(id = null, parent_id = null, _with = null)
+        {
+            this.loading = true;
+            const response = await this.apiHelper.get(id, parent_id, _with);
+            this.loading = false;
+            console.log('Response: ', response);
+            return response;
         },
         async create(parent_id = null){
-            useAPIBaseStore().init(this.url, this.user, this.tenant, this.end_point);
-            useAPIBaseStore().item = this.activity;
-            await useAPIBaseStore().create(parent_id);
+            // useAPIBaseStore().init(this.apiUrl, this.user, this.tenant, this.end_point);
+            // useAPIBaseStore().item = this.activity;
+            // await useAPIBaseStore().create(parent_id);
 
-            return useAPIBaseStore().response;
+            // return useAPIBaseStore().response;
         },
         update(step, id) {
             this.steps[id] = step;
@@ -61,6 +58,9 @@ export const useActivitiesStore = defineStore({
         },
         setActivity(_activity) {
             this.activity = _activity;
+        },
+        setActivities(_activities) {
+            this.activities = _activities;
         },
         resetActivity() {
             this.activity = {
