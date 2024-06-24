@@ -74,7 +74,7 @@ function setStep(result = null) {
 </script>
 
 <template>
-  <div class="col-md-4 col-sm-12 pl-0 pr-0">
+  <div class="col-md-3 col-sm-12 pl-0 pr-0">
     <div class="card card-default">
       <div class="card-header">
         <h3 class="card-title text-bold">Step</h3><br/>
@@ -91,11 +91,7 @@ function setStep(result = null) {
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <!--
-          <button @click="globalsStore.cancel()" class="btn btn-sm btn-outline-light"><i class="pi pi-times mr-1 mt-1"></i> Cancel</button>
-          <button @click="createStep()" type="button" class="btn btn-sm btn-default float-right mr-2"><i class="pi pi-save mr-1"></i> Save</button>
-          -->
-          <button @click="createStep()" type="button" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-2 disabled:opacity-50 disabled:cursor-not-allowed">
+          <button @click="createStep()" type="button" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-2 disabled:opacity-50 disabled:cursor-not-allowed" :disabled="stepStore.loading">
             <i class="add-title mr-1"></i>
             <span class="text-blue-400 text-xs font-medium font-['Roboto'] leading-[14px]">Add Title</span>
           </button>

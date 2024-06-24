@@ -33,6 +33,7 @@ onMounted(() => {
   stepStore.step.parent_id = processStore.process.id;
   processStore.init(negotium_api_url, user);
   activityStore.init(negotium_api_url, user);
+  activityStore.get(1);
 });
 
 function isInValidStepName() {

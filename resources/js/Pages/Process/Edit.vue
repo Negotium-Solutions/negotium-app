@@ -5,7 +5,7 @@ import {onMounted, reactive, computed, ref} from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import { useProcessesStore, useStepsStore, useGlobalsStore, useActivityGroupsStore } from "@/stores";
+import { useProcessesStore, useStepsStore, useGlobalsStore, useActivityGroupsStore, useActivitiesStore } from "@/stores";
 import { usePage } from "@inertiajs/vue3";
 import ProcessInformation from "@/Pages/Process/Partials/ProcessInformation.vue";
 import StepInformation from "@/Pages/Process/Partials/StepInformation.vue";
@@ -13,12 +13,14 @@ import HorizontalLine from "@/Pages/Process/Partials/HorizontalLine.vue";
 import StepForm from "@/Pages/Process/Partials/StepForm.vue";
 import DecisionSteps from "@/Pages/Process/Partials/decisionSteps.vue";
 import ActivityForm from "@/Pages/Process/Partials/ActivityForm.vue";
+import ActivityInformation from "@/Pages/Process/Partials/ActivityInformation.vue";
 
 // Use statements
 const stepStore = useStepsStore();
 const processStore = useProcessesStore();
 const globalsStore = useGlobalsStore();
 const activityGroupsStore = useActivityGroupsStore();
+const activityStore = useActivitiesStore();
 
 // Constants
 const toast = useToast();
@@ -85,7 +87,7 @@ onMounted(() => {
         <horizontal-line></horizontal-line>
         <step-form v-if="globalsStore.getActiveForm === globalsStore.STEP_FORM" :model_id="props.model_id" :process="processStore.process"></step-form>
         <activity-form v-if="globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM" :model_id="props.model_id" :process="processStore.process"></activity-form>
-        <step-information v-if="globalsStore.getActiveForm === globalsStore.STEP_INFORMATION" :model_id="props.model_id" :process="processStore.process"></step-information>
+        <activity-information v-if="(globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM) && (activityStore.activities.length > 0)"></activity-information>
         <horizontal-line class="md:mt-16 md:pt-16"></horizontal-line>
         <decision-steps></decision-steps>
       </div>
