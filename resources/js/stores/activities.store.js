@@ -20,7 +20,14 @@ export const useActivitiesStore = defineStore({
         user: Object,
         tenant: '',
         end_point: 'activity',
-        apiHelper: Object
+        apiHelper: Object,
+        response: {
+            'code': 0,
+            'status': '',
+            'message': '',
+            'errors': [],
+            'data': []
+        }
     }),
     actions: {
         // ...useAPIBaseStore().$actions,  // Spread the base store actions
@@ -36,31 +43,43 @@ export const useActivitiesStore = defineStore({
             this.loading = true;
             const response = await this.apiHelper.get(id, parent_id, _with);
             this.loading = false;
-            console.log('Response: ', response);
             return response;
         },
         async create(parent_id = null){
-            // useAPIBaseStore().init(this.apiUrl, this.user, this.tenant, this.end_point);
-            // useAPIBaseStore().item = this.activity;
-            // await useAPIBaseStore().create(parent_id);
+            this.loading = true;
+            if (this.activity.name === '' || this.activity.name === '' || this.activity.type_id === 0) {
+                this.apiHelper.setResponse(500, 'error', 'Please check required fields', [], []);
+                this.loading = false;
+                return this.apiHelper.getResponse();
+            }
 
-            // return useAPIBaseStore().response;
+            try {
+                this.response = await this.apiHelper.create(this.activity, parent_id);
+                this.clearForm();
+            } catch (error) {
+                throw new Error(error);
+            } finally {
+                this.loading = false;
+            }
+
+            return this.response;
         },
         update(step, id) {
             this.steps[id] = step;
         },
-        delete(id) {
-            // add isDeleting prop to user being deleted
-            this.steps.find(x => x.id === id).isDeleting = true;
+        async delete(activity) {
+            try {
+                this.response = await this.apiHelper.delete(activity);
+            } catch (error) {
+                throw new Error(error);
+            } finally {
+                this.loading = false;
+            }
 
-            // remove activity from list after deleted
-            this.steps = this.activities.filter(x => x.id !== id);
+            return this.response;
         },
         setActivity(_activity) {
             this.activity = _activity;
-        },
-        setActivities(_activities) {
-            this.activities = _activities;
         },
         resetActivity() {
             this.activity = {
@@ -72,6 +91,31 @@ export const useActivitiesStore = defineStore({
                 'step_id': 0,
                 'guidance_note': ''
             };
+        },
+        clearForm() {
+            this.activity.name = '';
+            this.activity.label = '';
+            this.activity.guidance_note = '';
+        },
+        setActivities(_activities) {
+            this.activities = _activities;
+        },
+        setResponse(code, status, message, errors, data) {
+            this.response = {
+                'code': code,
+                'status': status,
+                'message': message,
+                'errors': errors,
+                'data': data
+            }
+        },
+        resetResponse() {
+            this.response = {
+                'status': '',
+                'message': '',
+                'errors': [],
+                'data': []
+            }
         }
     },
     getters: {
