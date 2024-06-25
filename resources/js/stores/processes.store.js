@@ -1,15 +1,21 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
+import {ApiHelper} from "@/helpers/index.js";
 
 export const useProcessesStore = defineStore({
     id: 'processes',
     state: () => ({
         loading: false,
+        apiUrl: '',
+        user: Object,
+        tenant: '',
+        end_point: 'process',
         processes: [],
         process: {
             'id': null,
             'name': null,
-            'process_category_id': null
+            'process_category_id': null,
+            'steps': []
         },
         selected_categories: [0],
         response: {
@@ -21,10 +27,28 @@ export const useProcessesStore = defineStore({
         }
     }),
     actions: {
-        init(url, user) {
-            this.url = url;
+        init(apiUrl, user) {
+            this.apiUrl = apiUrl;
             this.user = user;
             this.tenant = user.tenant;
+
+            this.apiHelper = new ApiHelper(this.apiUrl, this.user, this.end_point);
+        },
+        async get(id = null, parent_id = null, _with = null)
+        {
+            this.loading = true;
+            this.response = await this.apiHelper.get(id, parent_id, _with);
+
+            if(this.response.code === 200) {
+                if(id !== null) {
+                    this.process = this.response.data;
+                } else {
+                    this.processes = this.response.data;
+                }
+            }
+            this.loading = false;
+
+            return this.response;
         },
         async fetchProcesses(category_id, id = null)
         {
@@ -32,7 +56,7 @@ export const useProcessesStore = defineStore({
             this.processes = [];
             this.resetResponse();
 
-            let _url = this.url+'/'+this.user.tenant+'/process/'+category_id;
+            let _url = this.apiUrl+'/'+this.user.tenant+'/process/'+category_id;
             if (id !== null) {
                 _url = _url + '/'+id;
             }
@@ -74,7 +98,7 @@ export const useProcessesStore = defineStore({
                 return this.response;
             }
 
-            let _url = this.url+'/'+this.user.tenant+'/process/create';
+            let _url = this.apiUrl+'/'+this.user.tenant+'/process/create';
 
             try {
                 const response = await axios.post(_url, this.process, {
@@ -105,7 +129,7 @@ export const useProcessesStore = defineStore({
             this.loading = true;
             this.resetResponse();
 
-            let _url = this.url+'/'+this.user.tenant+'/process/delete/'+_process.id;
+            let _url = this.apiUrl+'/'+this.user.tenant+'/process/delete/'+_process.id;
 
             try {
                 const response = await axios.delete(_url, {
@@ -144,6 +168,12 @@ export const useProcessesStore = defineStore({
                 'data': data
             }
         },
+        setProcess(process) {
+            this.process = process;
+        },
+        getProcess() {
+            return this.process;
+        },
         setProcesses(processes) {
             this.processes = processes;
         },
@@ -164,6 +194,16 @@ export const useProcessesStore = defineStore({
                     this.selected_categories.push(category_id);
                 }
             }
+        },
+        getStep(step_id) {
+            let step = {};
+            this.process.steps.forEach((_step) => {
+                if(step_id === _step.id) {
+                    step = _step;
+                }
+            });
+
+            return step;
         }
     },
     getters: {

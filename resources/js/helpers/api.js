@@ -8,11 +8,19 @@ class ApiHelper {
         this.user = user;
         this.tenant = user.tenant;
         this.end_point = end_point;
+        this.response = {
+            'code': 0,
+            'status': '',
+            'message': '',
+            'errors': [],
+            'data': []
+        };
+        this.loading = false;
     }
     async get(id = null, parent_id = null, _with = null)
     {
         this.loading = true;
-        this.items = [];
+        this.resetResponse();
 
         let _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point;
 
@@ -29,38 +37,32 @@ class ApiHelper {
         }
 
         try {
-            const response = await axios.get(_url, {
+            const _response = await axios.get(_url, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ` + this.user.token,
                 },
             });
 
-            if (response.status === 200) {
-                this.items = response.data.data;
-                this.loading = false;
-                return response.data;
+            if (_response.status === 200) {
+                this.setResponse(_response.status, 'success', _response.data.message, [], _response.data.data);
             }
         } catch (error) {
             if(error.response.status !== 404) {
-                throw error;
+                this.setResponse(error.response.status,'error', error.response.statusText, [], []);
             } else {
-                return error.data;
+                this.setResponse(error.response.status,'success', 'Items retrieved successfully', [], []);
             }
+        } finally {
+            this.loading = false
         }
+
+        return this.response;
     }
 
-    async create(parent_id = null){
-        this.resetResponse();
+    async create(item, parent_id = null){
         this.loading = true;
-        this.items = [];
-
-        if(this.item.name === '') {
-            // TODO: Move this message to an error messages config file and just call the config file here
-            this.setResponse(500, 'error', 'Please check required fields', [], []);
-
-            return this.response;
-        }
+        this.resetResponse();
 
         let _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point+'/create';
 
@@ -69,21 +71,18 @@ class ApiHelper {
         }
 
         try {
-            const response = await axios.post(_url, this.item, {
+            const _response = await axios.post(_url, item, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                     Authorization: `Bearer ` + this.user.token,
                 },
             });
 
-            if (response.status === 201) {
-                this.item.id = response.data.data.id;
-                this.setResponse(response.status, 'success', response.data.message, [], response.data.data);
+            if (_response.status === 201) {
+                this.setResponse(_response.status, 'success', _response.data.message, [], _response.data);
             }
         } catch (error) {
-            if(error.response.status !== 404) {
-                this.setResponse(error.response.status, 'error', error.response.statusText, [], []);
-            }
+            this.setResponse(error.response.status,'error', error.response.statusText, [], []);
         } finally {
             this.loading = false;
         }
@@ -111,13 +110,12 @@ class ApiHelper {
             });
 
             if (response.status === 204) {
-                this.loading = false;
                 this.setResponse(response.status, 'success', response.data.message, [], []);
-                // Remove item on successful deletion
-                this.processes = this.processes.filter((_item) => _item.id !== _process.id);
             }
         } catch (error) {
             this.setResponse(error.response.status,'error', error.response.statusText, [], []);
+        } finally {
+            this.loading = false;
         }
 
         return this.response;
@@ -142,11 +140,29 @@ class ApiHelper {
         }
     }
 
+    getResponse() {
+        return this.response;
+    }
+
     setItem(_item) {
         this.item = _item;
     }
 
     resetItem() {
         this.item = {};
+    }
+
+    // Checks api call is done loading
+    isDoneLoading(result = null, callback = null) {
+        const checkCondition = () => {
+            if (this.loading) {
+                setTimeout(checkCondition, 100); // Check the condition every 100ms
+            } else {
+                if(callback !== null) {
+                    callback(result);
+                }
+            }
+        };
+        checkCondition();
     }
 }
