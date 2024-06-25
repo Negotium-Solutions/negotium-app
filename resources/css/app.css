@@ -56,3 +56,7 @@ li.active > a > span.p-menuitem-text {
 .negotium-primary {
     color: #10b981;
 }
+
+.max-w-hr{
+    max-width:36px !important;
+} 

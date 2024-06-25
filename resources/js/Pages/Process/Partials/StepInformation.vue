@@ -33,7 +33,7 @@ function showForm(form_id)
 </script>
 
 <template>
-  <div class="col-md-4 col-sm-12 pl-0 pr-0">
+  <div class="col-lg-5 col-md-4 col-sm-12 pl-0 pr-0">
     <div class="card card-default">
       <div class="card-header">
         <div class="mb-2 text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Step</div>

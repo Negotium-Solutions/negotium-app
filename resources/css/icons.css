@@ -236,3 +236,33 @@ margin-left:16px;
   width:14px !important;
   margin-right:10px;  
 }
+
+.standard-step{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/StandardStep.svg') no-repeat center;
+  mask: url('../icons/StandardStep.svg') no-repeat center;
+  height:14px !important;
+  width:14px !important;
+  margin-right:10px;  
+}
+
+.decision-step{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/DecisionStep.svg') no-repeat center;
+  mask: url('../icons/DecisionStep.svg') no-repeat center;
+  height:14px !important;
+  width:14px !important;
+  margin-right:10px;  
+}
+
+.end-process{
+  display: block;
+  background-color: #353535;
+  -webkit-mask: url('../icons/EndProcess.svg') no-repeat center;
+  mask: url('../icons/EndProcess.svg') no-repeat center;
+  height:14px !important;
+  width:14px !important;
+  margin-right:10px;  
+}
