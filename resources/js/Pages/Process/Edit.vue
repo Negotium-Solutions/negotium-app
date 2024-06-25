@@ -87,7 +87,7 @@ onMounted(() => {
         <horizontal-line></horizontal-line>
         <step-form v-if="globalsStore.getActiveForm === globalsStore.STEP_FORM" :model_id="props.model_id" :process="processStore.process"></step-form>
         <activity-form v-if="globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM" :model_id="props.model_id" :process="processStore.process"></activity-form>
-        <activity-information v-if="(globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM) && (activityStore.activities.length > 0)"></activity-information>
+        <activity-information v-if="(globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM) && (processStore.getStep(stepStore.step.id).activities.length > 0)"></activity-information>
         <horizontal-line class="md:mt-16 md:pt-16"></horizontal-line>
         <decision-steps></decision-steps>
       </div>
