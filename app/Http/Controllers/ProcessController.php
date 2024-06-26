@@ -81,4 +81,22 @@ class ProcessController extends Controller
 
         return Inertia::render('Process/Edit', $parameters);
     }
+
+    public function show($id)
+    {
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/process/'.$id.'?with=category,steps.activities');
+
+        $responseData = json_decode($response->body(), true);
+
+        $process = $responseData['data'];
+        
+        $parameters = [
+            'process' => collect($process)
+        ];
+
+        return Inertia::render('Process/Show', $parameters);
+    }
 }
