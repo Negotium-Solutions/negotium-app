@@ -4,3 +4,4 @@ export * from './activity-groups.store';
 export * from './process-categories.store';
 export * from './processes.store';
 export * from './globals';
+export * from './factory-worker.store'

@@ -56,3 +56,7 @@ li.active > a > span.p-menuitem-text {
 .negotium-primary {
     color: #10b981;
 }
+
+.negotium-red {
+    color: red;
+}

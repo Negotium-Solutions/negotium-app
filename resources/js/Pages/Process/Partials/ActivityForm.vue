@@ -1,16 +1,17 @@
 <script setup>
 // Define all imports here
 import { useProcessesStore, useStepsStore, useActivityGroupsStore, useActivitiesStore } from "@/stores";
-import {computed, onMounted, reactive} from "vue";
+import { computed, onMounted, reactive } from "vue";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import { usePage } from "@inertiajs/vue3";
+import ActivityFormFactory from "@/Pages/Process/Partials/ActivityFormFactory.vue";
 
 // Define all the use statements here
 const activityStore = useActivitiesStore();
 const processStore = useProcessesStore();
 const stepStore = useStepsStore();
-const activityGroupsStore = useActivityGroupsStore();
+const activityGroupStore = useActivityGroupsStore();
 const toast = useToast();
 
 // Define all constants here
@@ -19,8 +20,7 @@ const props = defineProps({
   model_id: 0
 });
 const pageProps = reactive({
-  isFormSubmitted: false,
-  isShowGuidanceNote: false
+  isFormSubmitted: false
 });
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -53,13 +53,14 @@ async function createActivity() {
   }
 }
 
-function showGuidnanceNote() {
-  this.pageProps.isShowGuidanceNote = true;
+function setActivityGroup(activity_group){
+  activityGroupStore.setActivityGroup(activity_group);
+  activityStore.clearForm();
 }
-
-function setActivityType(id) {
-  activityGroupsStore.setActivityType(id);
-  activityStore.activity.type_id = id;
+function setActivityType(activity_type) {
+  activityGroupStore.setActivityType(activity_type);
+  activityStore.clearForm();
+  activityStore.activity.type_id = activity_type.id;
 }
 
 function enableSubmit() {
@@ -88,42 +89,22 @@ function enableSubmit() {
         <div class="card-body">
           <div class="form-group mb-0">
             <label for="step-name" class="mb-0">New Activity</label>
-            <button v-if="activityStore.activity.type_id > 0" type="button" @click="showGuidnanceNote()" class="float-right font-weight-normal negotium-primary disabled:opacity-50 disabled:cursor-not-allowed" :disabled="pageProps.isShowGuidanceNote">+ Add guidance note</button>
+            <button v-if="activityStore.activity.type_id > 0 && !activityStore.showGuidanceNote" type="button" @click="activityStore.setGuidanceNote(true)" class="float-right font-weight-normal negotium-primary disabled:opacity-50 disabled:cursor-not-allowed">+ Add guidance note</button>
+            <button v-if="activityStore.activity.type_id > 0 && activityStore.showGuidanceNote" type="button" @click="activityStore.setGuidanceNote(false)" class="float-right font-weight-normal negotium-red disabled:opacity-50 disabled:cursor-not-allowed"><span class="red">Remove note</span></button>
           </div>
           <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select activity type</p>
           <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-            <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupsStore.getActivityGroup === activity_group.id }" @click="activityGroupsStore.setActivityGroup(activity_group.id)" v-for="(activity_group, index) in activityGroupsStore.getActivityGroups" :key="index">
+            <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupStore.getActivityGroup().id === activity_group.id }" @click="setActivityGroup(activity_group)" v-for="(activity_group, index) in activityGroupStore.getActivityGroups()" :key="index">
               <input type="radio" name="options" :id="'option_'+activity_group.id" autocomplete="off"> {{ activity_group.name }}
             </label>
           </div>
-          <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select <span class="font-weight-bold">user input</span></p>
-          <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-            <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupsStore.getActivityType === activity_type.id }" @click="setActivityType(activity_type.id)" v-for="(activity_type, at_index) in activityGroupsStore.getActivityTypesByActivityGroup" :key="at_index">
+          <p v-if="activityGroupStore.isSetActivityGroup" class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select <span class="font-weight-bold">user input</span></p>
+          <div v-if="activityGroupStore.isSetActivityGroup" class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+            <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupStore.getActivityType().id === activity_type.id }" @click="setActivityType(activity_type)" v-for="(activity_type, index) in activityGroupStore.getActivityTypesByActivityGroup()" :key="index">
               <input type="radio" name="options" :id="'option_'+activity_type.id" autocomplete="off"> {{ activity_type.name }}
             </label>
           </div>
-
-          <form class="mt-3" v-if="activityStore.activity.type_id > 0">
-            <div class="row">
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Activity Name</label>
-                  <input type="text" v-model="activityStore.activity.name" class="form-control form-control-custom" placeholder="Name">
-                </div>
-              </div>
-              <div class="col-sm-6">
-                <div class="form-group">
-                  <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Activity Label</label>
-                  <input type="text" v-model="activityStore.activity.label" class="form-control form-control-custom" placeholder="Label">
-                </div>
-              </div>
-            </div>
-            <div class="form-group" v-if="pageProps.isShowGuidanceNote">
-              <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3" for="inputWarning">Guidance note</label>
-              <input type="text"  v-model="activityStore.activity.guidance_note" class="form-control form-control-custom" id="inputWarning" placeholder="Type the guidance note">
-            </div>
-          </form>
-
+          <activity-form-factory></activity-form-factory>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">

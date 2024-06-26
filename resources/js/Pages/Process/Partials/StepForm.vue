@@ -1,6 +1,6 @@
 <script setup>
 // Define all imports here
-import { useGlobalsStore, useProcessesStore, useStepsStore } from "@/stores";
+import { useActivitiesStore, useFactoryWorkerStore, useGlobalsStore, useProcessesStore, useStepsStore } from "@/stores";
 import { computed, onMounted, reactive } from "vue";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
@@ -10,7 +10,13 @@ import { usePage } from "@inertiajs/vue3";
 const processStore = useProcessesStore();
 const stepStore = useStepsStore();
 const globalsStore = useGlobalsStore();
+const activityStore = useActivitiesStore();
+const factoryWorkerStore = useFactoryWorkerStore();
 const toast = useToast();
+
+// Pass by referenceform
+// let form = factoryWorkerStore.forms.step;
+let form = factoryWorkerStore.getForm('step');
 
 // Define all constants here
 const props = defineProps({
@@ -37,6 +43,16 @@ function isInValidStepName() {
 
 function createStep()
 {
+  console.log('form: ', form);
+  console.log('reset: ', form)
+  console.log('factoryWorkerStore', factoryWorkerStore.$state);
+
+  if(!form.save()) {
+    form.validationErrors().forEach((error) => {
+      toast.add({severity: 'error', summary: 'Error', detail: error, life: 3000});
+    });
+  };
+  /*
   pageProps.isFormSubmitted = true;
   const response = stepStore.create();
   response.then((result) => {
@@ -49,6 +65,7 @@ function createStep()
       this.isDoneLoadingProcessStore(result, setStep);
     }
   });
+  */
 }
 
 // Wait for the loading on the process to be set to true before calling the setStep
@@ -68,6 +85,9 @@ function setStep(result = null) {
     if(step.id === result.data.id) {
       stepStore.setStep(step);
       globalsStore.activeForm = globalsStore.ACTIVITY_FORM;
+      activityStore.resetActivity();
+      activityStore.activity.step_id = step.id;
+      activityGroupStore.resetActivityGroup();
     }
   });
 }
@@ -85,8 +105,8 @@ function setStep(result = null) {
         <div class="card-body">
           <div class="form-group">
             <label for="step-name" class="font-weight-normal">Step Name</label>
-            <input v-model="stepStore.step.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this step?" :class="{'is-invalid-custom': isInValidStepName()}">
-            <span v-if="isInValidStepName()" id="process-name-error" class="error invalid-feedback">This field is required</span>
+            <input v-model="form.input.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this step?" :class="{'is-invalid-custom': form.isInValid('name')}" required>
+            <span v-if="form.isInValid('name')" id="process-name-error" class="error invalid-feedback">This field is required</span>
           </div>
         </div>
         <!-- /.card-body -->

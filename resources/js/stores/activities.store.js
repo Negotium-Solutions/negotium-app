@@ -5,6 +5,7 @@ export const useActivitiesStore = defineStore({
     id: 'activities',
     state: () => ({
         loading: false,
+        show_guidnace_note: false,
         activities: {},
         activity: {
             'id': 0,
@@ -116,6 +117,9 @@ export const useActivitiesStore = defineStore({
                 'errors': [],
                 'data': []
             }
+        },
+        setGuidanceNote(value) {
+            this.show_guidnace_note = value;
         }
     },
     getters: {
@@ -123,6 +127,9 @@ export const useActivitiesStore = defineStore({
         // TODO: Add functionality similar to computed state
         isLoaded() {
             return this.loaded;
+        },
+        showGuidanceNote() {
+            return this.show_guidnace_note;
         }
     }
 });

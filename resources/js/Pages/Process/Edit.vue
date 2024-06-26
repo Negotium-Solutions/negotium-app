@@ -1,26 +1,31 @@
 <script setup>
 // Imports
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import {onMounted, reactive, computed, ref} from "vue";
+import {onMounted, reactive, computed, ref, onBeforeMount} from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import { useProcessesStore, useStepsStore, useGlobalsStore, useActivityGroupsStore, useActivitiesStore } from "@/stores";
+import {
+  useProcessesStore,
+  useStepsStore,
+  useGlobalsStore,
+  useActivityGroupsStore,
+  useActivitiesStore,
+  useFactoryWorkerStore
+} from "@/stores";
 import { usePage } from "@inertiajs/vue3";
 import ProcessInformation from "@/Pages/Process/Partials/ProcessInformation.vue";
-import StepInformation from "@/Pages/Process/Partials/StepInformation.vue";
 import HorizontalLine from "@/Pages/Process/Partials/HorizontalLine.vue";
 import StepForm from "@/Pages/Process/Partials/StepForm.vue";
 import DecisionSteps from "@/Pages/Process/Partials/decisionSteps.vue";
 import ActivityForm from "@/Pages/Process/Partials/ActivityForm.vue";
-import ActivityInformation from "@/Pages/Process/Partials/ActivityInformation.vue";
 
 // Use statements
 const stepStore = useStepsStore();
 const processStore = useProcessesStore();
 const globalsStore = useGlobalsStore();
 const activityGroupsStore = useActivityGroupsStore();
-const activityStore = useActivitiesStore();
+const factoryWorkerStore = useFactoryWorkerStore();
 
 // Constants
 const toast = useToast();
@@ -60,8 +65,10 @@ onMounted(() => {
     });
     localStorage.removeItem('toastMessages');
   }
+});
 
-  console.log('toastMessages', globalsStore.getToastMessages);
+onBeforeMount(() => {
+  factoryWorkerStore.set('process', props.process);
 });
 </script>
 
@@ -83,11 +90,10 @@ onMounted(() => {
     <div class="content-container pl-4 pr-4">
 
       <div class="row">
-        <process-information :process="processStore.process" :step_id="props.step_id"></process-information>
+        <process-information></process-information>
         <horizontal-line></horizontal-line>
-        <step-form v-if="globalsStore.getActiveForm === globalsStore.STEP_FORM" :model_id="props.model_id" :process="processStore.process"></step-form>
-        <activity-form v-if="globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM" :model_id="props.model_id" :process="processStore.process"></activity-form>
-        <activity-information v-if="(globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM) && (processStore.getStep(stepStore.step.id).activities.length > 0)"></activity-information>
+        <step-form v-if="factoryWorkerStore.getActiveForm === factoryWorkerStore.STEP_FORM" :model_id="props.model_id" :process="factoryWorkerStore.get('process')"></step-form>
+        <activity-form v-if="factoryWorkerStore.getActiveForm === factoryWorkerStore.ACTIVITY_FORM" :model_id="props.model_id" :process="factoryWorkerStore.get('process')"></activity-form>
         <horizontal-line class="md:mt-16 md:pt-16"></horizontal-line>
         <decision-steps></decision-steps>
       </div>
