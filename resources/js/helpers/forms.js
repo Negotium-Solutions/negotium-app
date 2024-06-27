@@ -25,15 +25,17 @@ class formsHelper {
         return this.input[field] === '' && this.isSubmitted;
     }
 
-    save() {
+    set(form) {
+        this.input = form;
+    }
+
+    validate() {
         this.isSubmitted = true;
         this.validation = [];
         if(this.required !== null) {
             for (const field in this.input) {
-                if (this.input.hasOwnProperty(field)) {
-                    if (this.required.includes(field) && this.input[field] === '') {
-                        this.validation.push(`The ${field} field is required!`);
-                    }
+                if (this.input.hasOwnProperty(field) && this.required.includes(field) && (this.input[field] === '')) {
+                    this.validation.push(`The ${field} field is required!`);
                 }
             }
 
@@ -41,8 +43,6 @@ class formsHelper {
                 return false;
             }
         }
-
-        // TODO: Submit functionality here
 
         return true;
     }

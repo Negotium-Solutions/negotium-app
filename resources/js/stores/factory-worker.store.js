@@ -1,8 +1,10 @@
 import { defineStore } from 'pinia';
 import { functionsHelper, formsHelper } from '../helpers';
 
-const _STEP_FORM = 1;
-const _ACTIVITY_FORM = 2;
+const _CATEGORY_FORM = 'category';
+const _PROCESS_FORM = 'process';
+const _STEP_FORM = 'step';
+const _ACTIVITY_FORM = 'activity';
 const functionHelper = new functionsHelper();
 export const useFactoryWorkerStore = defineStore({
     id: 'main',
@@ -30,12 +32,12 @@ export const useFactoryWorkerStore = defineStore({
             this.$state[type] = items;
 
             switch (type) {
-                case 'category':
+                case this.CATEGORY_FORM:
                     if(typeof items.processes !== 'undefined') {
                         this.$state.processes = items.processes;
                     }
                     break;
-                case 'process':
+                case this.PROCESS_FORM:
                     if(typeof items.category !== 'undefined') {
                         this.$state.category = items.category;
                     }
@@ -43,16 +45,15 @@ export const useFactoryWorkerStore = defineStore({
                         this.$state.steps = items.steps;
                     }
                     break;
-                case 'step':
+                case this.STEP_FORM:
                     if(typeof items.process !== 'undefined') {
-                        console.log('What? ', items.process);
                         this.$state.process = items.process;
                     }
                     if(typeof items.activities !== 'undefined') {
                         this.$state.activities = items.activities;
                     }
                     break;
-                case 'activity':
+                case this.ACTIVITY_FORM:
                     if(typeof items.step !== 'undefined') {
                         this.$state.step = items.step;
                     }
@@ -71,21 +72,22 @@ export const useFactoryWorkerStore = defineStore({
             this.$state[type] = null;
 
             switch (type) {
-                case 'category':
+                case this.CATEGORY_FORM:
                     this.$state.processes = null;
                     break;
-                case 'process':
+                case this.PROCESS_FORM:
                     this.$state.steps = null;
                     break;
-                case 'step':
+                case this.STEP_FORM:
                     this.$state.activities = null;
                     break;
                 default:
                     break;
             }
         },
-        setActiveForm(form) {
-            this.activeForm = form;
+        setActiveForm(_form) {
+            this.activeForm = _form;
+            this.getForm(_form).clear();
         },
         getForm(form) {
             return this.forms[form];
@@ -98,6 +100,8 @@ export const useFactoryWorkerStore = defineStore({
         getActiveForm() {
             return this.activeForm;
         },
+        CATEGORY_FORM: () => _CATEGORY_FORM,
+        PROCESS_FORM: () => _PROCESS_FORM,
         STEP_FORM: () => _STEP_FORM,
         ACTIVITY_FORM: () => _ACTIVITY_FORM,
     }

@@ -92,7 +92,7 @@ onBeforeMount(() => {
       <div class="row">
         <process-information></process-information>
         <horizontal-line></horizontal-line>
-        <step-form v-if="factoryWorkerStore.getActiveForm === factoryWorkerStore.STEP_FORM" :model_id="props.model_id" :process="factoryWorkerStore.get('process')"></step-form>
+        <step-form v-if="factoryWorkerStore.getActiveForm === factoryWorkerStore.STEP_FORM" :model_id="props.model_id"></step-form>
         <activity-form v-if="factoryWorkerStore.getActiveForm === factoryWorkerStore.ACTIVITY_FORM" :model_id="props.model_id" :process="factoryWorkerStore.get('process')"></activity-form>
         <horizontal-line class="md:mt-16 md:pt-16"></horizontal-line>
         <decision-steps></decision-steps>

@@ -1,6 +1,7 @@
 <script setup>
 // Define all imports here
-import { useActivitiesStore, useFactoryWorkerStore, useGlobalsStore, useProcessesStore, useStepsStore } from "@/stores";
+import { useFactoryWorkerStore, useProcessesStore, useStepsStore } from "@/stores";
+import { ApiHelper } from "@/helpers";
 import { computed, onMounted, reactive } from "vue";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
@@ -9,18 +10,14 @@ import { usePage } from "@inertiajs/vue3";
 // Define all the use statements here
 const processStore = useProcessesStore();
 const stepStore = useStepsStore();
-const globalsStore = useGlobalsStore();
-const activityStore = useActivitiesStore();
 const factoryWorkerStore = useFactoryWorkerStore();
 const toast = useToast();
 
 // Pass by referenceform
-// let form = factoryWorkerStore.forms.step;
-let form = factoryWorkerStore.getForm('step');
+let form = factoryWorkerStore.getForm(factoryWorkerStore.STEP_FORM);
 
 // Define all constants here
 const props = defineProps({
-  process: {},
   model_id: 0
 });
 const pageProps = reactive({
@@ -29,29 +26,35 @@ const pageProps = reactive({
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
+const apiHelper = new ApiHelper(negotium_api_url.value, user.value, factoryWorkerStore.STEP_FORM);
 
 // Define all functions here
 onMounted(() => {
-  stepStore.step.model_id = props.model_id;
-  stepStore.step.parent_id = processStore.process.id;
-  processStore.init(negotium_api_url, user);
+  form.input.model_id = props.model_id;
+  form.input.parent_id = factoryWorkerStore.process.id;;
+  // processStore.init(negotium_api_url, user);
 });
-
-function isInValidStepName() {
-  return pageProps.isFormSubmitted && (stepStore.step.name === '');
-}
 
 function createStep()
 {
-  console.log('form: ', form);
-  console.log('reset: ', form)
-  console.log('factoryWorkerStore', factoryWorkerStore.$state);
-
-  if(!form.save()) {
+  if(!form.validate()) {
     form.validationErrors().forEach((error) => {
       toast.add({severity: 'error', summary: 'Error', detail: error, life: 3000});
     });
-  };
+  } else {
+    const response = apiHelper.create(form.get(factoryWorkerStore.STEP_FORM));
+
+    response.then((result) => {
+      if(result.status === 'error') {
+        toast.add({severity: 'error', summary: 'Error', detail: result.message, life: 3000});
+      } else {
+        toast.add({severity: 'success', summary: 'Success', detail: result.message, life: 3000});
+        factoryWorkerStore.setActiveForm(factoryWorkerStore.ACTIVITY_FORM)
+        // processStore.fetchProcesses(processStore.process.id);
+        // this.isDoneLoadingProcessStore(result, setStep);
+      }
+    });
+  }
   /*
   pageProps.isFormSubmitted = true;
   const response = stepStore.create();
@@ -80,17 +83,6 @@ function isDoneLoadingProcessStore(result = null, callback = null) {
   checkCondition();
 }
 
-function setStep(result = null) {
-  processStore.process.steps.forEach((step) => {
-    if(step.id === result.data.id) {
-      stepStore.setStep(step);
-      globalsStore.activeForm = globalsStore.ACTIVITY_FORM;
-      activityStore.resetActivity();
-      activityStore.activity.step_id = step.id;
-      activityGroupStore.resetActivityGroup();
-    }
-  });
-}
 </script>
 
 <template>

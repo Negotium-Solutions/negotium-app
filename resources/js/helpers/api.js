@@ -22,7 +22,7 @@ class ApiHelper {
         this.loading = true;
         this.resetResponse();
 
-        let _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point;
+        let _url = this.apiUrl+'/'+this.tenant+'/'+this.end_point;
 
         if(parent_id !== null) {
             _url += '/'+parent_id;
@@ -60,15 +60,18 @@ class ApiHelper {
         return this.response;
     }
 
-    async create(item, parent_id = null){
+    async create(item/*, parent_id = null*/){
         this.loading = true;
         this.resetResponse();
 
-        let _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point+'/create';
+        let _url = this.apiUrl+'/'+this.tenant+'/'+this.end_point+'/create';
 
+        // Todo: Remove from activities backend controller to standardise across
+        /*
         if(parent_id !== null) {
             _url += '/'+parent_id
         }
+        */
 
         try {
             const _response = await axios.post(_url, item, {
@@ -99,7 +102,7 @@ class ApiHelper {
         this.loading = true;
         this.resetResponse();
 
-        let _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point+'/delete/'+_item.id;
+        let _url = this.apiUrl+'/'+this.tenant+'/'+this.end_point+'/delete/'+_item.id;
 
         try {
             const response = await axios.delete(_url, {
