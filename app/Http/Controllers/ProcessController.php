@@ -43,12 +43,20 @@ class ProcessController extends Controller
             'Accept' => 'application/json'
         ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/process-category');
 
+        $formsResponse = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/form?forms=1|2|3|4&with=steps.activities'); // TODO: Create constants for Category = 1, Process = 2, Step = 3, Activity = 4
+
         $categoriesResponseData = json_decode($categoriesResponse->body(), true);
+        $formsResponseData = json_decode($formsResponse->body(), true);
 
         $categories = $categoriesResponseData['data'];
+        $forms = $formsResponseData;
 
         $parameters = [
-            'categories' => $categories
+            'categories' => $categories,
+            'forms' => $forms
         ];
 
         return Inertia::render('Process/Create', $parameters);
