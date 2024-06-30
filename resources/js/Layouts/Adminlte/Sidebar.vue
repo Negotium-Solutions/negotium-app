@@ -23,6 +23,14 @@ function handleProfileSidebarPosition(){
     document.getElementById('sidebar-profiles').style.position = null
     document.getElementById('sidebar-profiles').style.bottom = null
   }
+
+  if(w < 1360){
+    document.getElementById('main-sidebar').style.marginLeft = "-250px"
+    document.getElementById('main-container').style.marginLeft = "0px"
+  } else {
+    document.getElementById('main-sidebar').style.marginLeft = null
+    document.getElementById('main-container').style.marginLeft = "250px"
+  }
 }
 
 function logout(){
@@ -36,7 +44,7 @@ const props = defineProps({
 
 <template>
   <!-- Main Sidebar Container -->
-  <aside class="main-sidebar sidebar-light-dark elevation-4 fixed inset-0" style="position:fixed;">
+  <aside id="main-sidebar" class="main-sidebar sidebar-light-dark elevation-4 fixed inset-0" style="position:fixed;">
     <!-- Brand Logo -->
     <table class="brand-link-logo border-b border-transparent my-3">
       <tr>

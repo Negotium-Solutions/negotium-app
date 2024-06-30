@@ -266,3 +266,13 @@ margin-left:16px;
   width:14px !important;
   margin-right:10px;  
 }
+
+.information{
+  display: block;
+  /* background-color: #353535; */
+  -webkit-mask: url('../icons/Information.svg') no-repeat center;
+  mask: url('../icons/Information.svg') no-repeat center;
+  height:12px !important;
+  width:12px !important;
+  margin-right:10px;  
+}

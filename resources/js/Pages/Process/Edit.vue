@@ -82,13 +82,13 @@ onMounted(() => {
 
     <div class="content-container pl-4 pr-4">
 
-      <div class="row">
+      <div class="row d-flex">
         <process-information :process="processStore.process" :step_id="props.step_id"></process-information>
-        <horizontal-line></horizontal-line>
+        <horizontal-line class="max-w-hr min-w-hr"></horizontal-line>
         <step-form v-if="globalsStore.getActiveForm === globalsStore.STEP_FORM" :model_id="props.model_id" :process="processStore.process"></step-form>
         <activity-form v-if="globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM" :model_id="props.model_id" :process="processStore.process"></activity-form>
         <activity-information v-if="(globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM) && (activityStore.activities.length > 0)"></activity-information>
-        <horizontal-line class="md:mt-16 md:pt-16 max-w-hr"></horizontal-line>
+        <horizontal-line :class="activityStore.activities.length > 0 ? 'md:mt-8 md:pt-8 max-w-hr min-w-hr' : 'md:mt-16 md:pt-16 max-w-hr  min-w-hr'"></horizontal-line>
         <decision-steps></decision-steps>
       </div>
 

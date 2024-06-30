@@ -71,7 +71,7 @@ function enableSubmit() {
 </script>
 
 <template>
-  <div class="col-md-4 col-sm-12 pl-0 pr-0">
+  <div class="col-md-4 col-sm-12 pl-0 pr-0 step-form-min-width">
     <div class="card card-default">
       <div class="card-header">
         <h3 class="card-title text-bold">Step</h3><br/>
@@ -90,7 +90,7 @@ function enableSubmit() {
             <label for="step-name" class="mb-0">New Activity</label>
             <button v-if="activityStore.activity.type_id > 0" type="button" @click="showGuidnanceNote()" class="float-right font-weight-normal negotium-primary disabled:opacity-50 disabled:cursor-not-allowed" :disabled="pageProps.isShowGuidanceNote">+ Add guidance note</button>
           </div>
-          <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select activity type</p>
+          <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Select activity type<i class="information ml-2 bg-sky-700"></i></p>
           <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
             <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupsStore.getActivityGroup === activity_group.id }" @click="activityGroupsStore.setActivityGroup(activity_group.id)" v-for="(activity_group, index) in activityGroupsStore.getActivityGroups" :key="index">
               <input type="radio" name="options" :id="'option_'+activity_group.id" autocomplete="off"> {{ activity_group.name }}
@@ -107,13 +107,13 @@ function enableSubmit() {
             <div class="row">
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Activity Name</label>
+                  <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Activity Name<i class="information ml-2 bg-sky-700"></i></label>
                   <input type="text" v-model="activityStore.activity.name" class="form-control form-control-custom" placeholder="Name">
                 </div>
               </div>
               <div class="col-sm-6">
                 <div class="form-group">
-                  <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Activity Label</label>
+                  <label class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Activity Label<i class="information ml-2 bg-sky-700"></i></label>
                   <input type="text" v-model="activityStore.activity.label" class="form-control form-control-custom" placeholder="Label">
                 </div>
               </div>
