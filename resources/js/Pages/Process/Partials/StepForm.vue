@@ -74,15 +74,15 @@ function setStep(result = null) {
 </script>
 
 <template>
-  <div class="col-md-4 col-sm-12 pl-0 pr-0">
+  <div class="col-md-4 col-sm-12 pl-0 pr-0 step-form-min-width">
     <div class="card card-default">
-      <div class="card-header">
-        <h3 class="card-title text-bold">Step</h3><br/>
+      <div class="card-header border-bottom-0 pb-0">
+        <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Step</div>
       </div>
       <!-- /.card-header -->
       <!-- form start -->
       <form class="form-horizontal">
-        <div class="card-body">
+        <div class="card-body pt-2 pb-2">
           <div class="form-group">
             <label for="step-name" class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step Name</label>
             <input v-model="stepStore.step.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this step?" :class="{'is-invalid-custom': isInValidStepName()}">
