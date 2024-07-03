@@ -53,6 +53,7 @@ class ProcessController extends Controller
 
         $categories = $categoriesResponseData['data'];
         $forms = $formsResponseData;
+        dd($forms);
 
         $parameters = [
             'categories' => $categories,
