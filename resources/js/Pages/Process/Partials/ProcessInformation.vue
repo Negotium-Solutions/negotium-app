@@ -25,7 +25,7 @@ function setStep(step) {
 </script>
 
 <template>
-  <div class="col-lg-3 col-md-3 col-sm-12 pr-0">
+  <div class="col-lg-3 col-md-3 col-sm-12 col-xs-12 pr-0">
     <div class="card card-default">
       <div class="card-header border-bottom-0 pb-0">
         <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Process Info</div>

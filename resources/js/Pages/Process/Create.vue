@@ -101,8 +101,8 @@ function onFilter(event) {
         </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-3">
-        <a :href="route('process')" class="btn btn-sm btn-outline-secondary w-24 mr-2">Cancel</a>
-        <a :href="route('process.create')" class="btn btn-sm btn-dark w-24">Save Draft</a>
+        <a :href="route('process')" class="px-4 py-2 rounded-custom-25 border border-neutral-700 justify-center items-center border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Cancel</a>
+        <a :href="route('process.create')" class="ml-2 px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white">Save Draft</a>
       </div><!-- /.col -->
     </template>
 

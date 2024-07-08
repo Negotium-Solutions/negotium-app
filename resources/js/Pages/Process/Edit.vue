@@ -75,8 +75,8 @@ onMounted(() => {
         </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
-        <a :href="route('process')" class="px-4 py-2 rounded border border-neutral-700 justify-center items-center border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Cancel</a>
-        <a :href="route('process.create')" class="ml-2 px-4 py-2 bg-neutral-700 rounded border border-neutral-700 justify-center items-center text-white">Save Draft</a>
+        <a :href="route('process')" class="px-4 py-2 rounded-custom-25 border border-neutral-700 justify-center items-center border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Cancel</a>
+        <a :href="route('process.create')" class="ml-2 px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white">Save Draft</a>
       </div><!-- /.col -->
     </template>
 
@@ -84,11 +84,11 @@ onMounted(() => {
 
       <div class="row d-flex">
         <process-information :process="processStore.process" :step_id="props.step_id"></process-information>
-        <horizontal-line class="max-w-hr min-w-hr"></horizontal-line>
+        <horizontal-line class="max-w-hr min-w-hr max-md:hidden max-sm:hidden max-xs:hidden"></horizontal-line>
         <step-form v-if="globalsStore.getActiveForm === globalsStore.STEP_FORM" :model_id="props.model_id" :process="processStore.process"></step-form>
         <activity-form v-if="globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM" :model_id="props.model_id" :process="processStore.process"></activity-form>
         <activity-information v-if="(globalsStore.getActiveForm === globalsStore.ACTIVITY_FORM) && (activityStore.activities.length > 0)"></activity-information>
-        <horizontal-line :class="activityStore.activities.length > 0 ? 'md:mt-8 md:pt-8 max-w-hr min-w-hr' : 'md:mt-16 md:pt-16 max-w-hr  min-w-hr'"></horizontal-line>
+        <horizontal-line :class="activityStore.activities.length > 0 ? 'md:mt-8 md:pt-8 max-w-hr min-w-hr max-md:hidden max-sm:hidden max-xs:hidden' : 'md:mt-16 md:pt-16 max-w-hr min-w-hr max-md:hidden max-sm:hidden max-xs:hidden'"></horizontal-line>
         <decision-steps></decision-steps>
       </div>
 

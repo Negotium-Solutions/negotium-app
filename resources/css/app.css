@@ -5,6 +5,10 @@
 @tailwind utilities;
 
 :root {
+    --neg-font-default: #353535;
+
+    --neg-bg-light: #efefef;
+
     --neg-light-grey: rgba(0,0,0,.125);
     --neg-dark-grey:#495057;
 
@@ -39,6 +43,10 @@
 
 .border-neutral-700{
     border-color: var(--neg-light-grey) !important;
+}
+
+.text-neutral-700{
+    border-color: var(--neg-font-default) !important;
 }
 
 /* Success */
@@ -82,6 +90,51 @@
     opacity:1;
     color: var(--neg-red-3);
 }
+
+
+/* Info */
+.text-blue-1{
+    opacity:1;
+    color: var(--neg-blue-1);
+}
+.text-blue-2{
+    opacity:1;
+    color: var(--neg-blue-2);
+}
+.text-blue-3{
+    opacity:1;
+    color: var(--neg-blue-3);
+}
+
+
+.text-light-grey{
+    opacity: 1;
+    color: var(--neg-light-grey);
+}
+
+.text-dark-grey{
+    opacity: 1;
+    color: var(--neg-dark-grey);
+}
+
+.rounded-custom-25{
+    border-radius: 25px;
+}
+
+.btn-group label.btn-outline-secondary{
+    font-weight: 400;
+    color: var(--neg-font-default);
+    border-color: var(--neg-light-grey);
+}
+
+.btn-group label.btn-outline-secondary:not(:disabled):not(.disabled).active,.btn-group label.btn-outline-secondary:hover{
+    background-color: var(--neg-bg-light);
+    border-color: var(--neg-bg-light);
+    color: var(--neg-font-default);
+}
+
+
+
 
 .invalid-feedback {
     display: block;

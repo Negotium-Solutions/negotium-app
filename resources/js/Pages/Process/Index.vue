@@ -93,7 +93,7 @@ function deleteProcess(process) {
         </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
-        <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded border border-neutral-700 justify-center items-center text-white">Create Process</a>
+        <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white">Create Process</a>
       </div><!-- /.col -->
       </div>
     </template>

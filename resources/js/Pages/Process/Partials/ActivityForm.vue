@@ -92,13 +92,13 @@ function enableSubmit() {
           </div>
           <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Select activity type<i class="information ml-2 bg-sky-700"></i></p>
           <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-            <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupsStore.getActivityGroup === activity_group.id }" @click="activityGroupsStore.setActivityGroup(activity_group.id)" v-for="(activity_group, index) in activityGroupsStore.getActivityGroups" :key="index">
+            <label class="btn btn-sm btn-outline-secondary" :class="{ 'active': activityGroupsStore.getActivityGroup === activity_group.id }" @click="activityGroupsStore.setActivityGroup(activity_group.id)" v-for="(activity_group, index) in activityGroupsStore.getActivityGroups" :key="index">
               <input type="radio" name="options" :id="'option_'+activity_group.id" autocomplete="off"> {{ activity_group.name }}
             </label>
           </div>
           <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select <span class="font-weight-bold">user input</span></p>
           <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-            <label class="btn btn-sm btn-secondary" :class="{ 'active': activityGroupsStore.getActivityType === activity_type.id }" @click="setActivityType(activity_type.id)" v-for="(activity_type, at_index) in activityGroupsStore.getActivityTypesByActivityGroup" :key="at_index">
+            <label class="btn btn-sm btn-outline-secondary" :class="{ 'active': activityGroupsStore.getActivityType === activity_type.id }" @click="setActivityType(activity_type.id)" v-for="(activity_type, at_index) in activityGroupsStore.getActivityTypesByActivityGroup" :key="at_index">
               <input type="radio" name="options" :id="'option_'+activity_type.id" autocomplete="off"> {{ activity_type.name }}
             </label>
           </div>
@@ -127,17 +127,17 @@ function enableSubmit() {
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <button @click="activityStore.resetActivity()" type="button" class="h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-2 disabled:opacity-50 disabled:cursor-not-allowed">
+          <button @click="activityStore.resetActivity()" type="button" class="h-[38px] p-3 bg-white rounded-custom-25 border border-neutral-700 justify-center items-center gap-2 inline-flex ml-2 disabled:opacity-50 disabled:cursor-not-allowed">
             Cancel
           </button>
           <button type="button" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-2 disabled:opacity-50 disabled:cursor-not-allowed" disabled>
             <i class="add-title mr-1"></i>
-            <span class="text-blue-400 text-xs font-medium font-['Roboto'] leading-[14px]">Add Title</span>
+            <span class="text-blue-1 disabled:text-blue-3 text-xs font-medium font-['Roboto'] leading-[14px]">Add Title</span>
           </button>
           <button @click="createActivity()" type="button" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex disabled:opacity-50 disabled:cursor-not-allowed" :disabled="!enableSubmit() || processStore.loading">
             <i class="add-activity mr-1"></i>
-            <span class="text-emerald-400 text-xs font-medium font-['Roboto'] leading-[14px]" v-if="!processStore.loading">Add Activity</span>
-            <span class="text-emerald-400 text-xs font-medium font-['Roboto'] leading-[14px]" v-if="processStore.loading">Loading ...</span>
+            <span class="text-green-1 disabled:text-green-2 text-xs font-medium font-['Roboto'] leading-[14px]" v-if="!processStore.loading">Add Activity</span>
+            <span class="text-green-2 text-xs font-medium font-['Roboto'] leading-[14px]" v-if="processStore.loading">Loading ...</span>
           </button>
         </div>
       </form>
