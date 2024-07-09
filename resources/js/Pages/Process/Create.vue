@@ -5,16 +5,19 @@ import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import { useProcessesStore } from "@/stores";
+import { useProcessesStore, useProcessCategoryStore } from "@/stores";
 import { usePage } from "@inertiajs/vue3";
 
 const toast = useToast();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
+const breadCrumbs = [{label: 'Home'}, {label: 'Processes'}, {label: 'Create Process', class: 'active'}];
 
-const useProcessStore = useProcessesStore();
-useProcessStore.init(negotium_api_url, user.value);
+const processCategoryStore = useProcessCategoryStore();
+processCategoryStore.init(negotium_api_url, user.value);
+const processStore = useProcessesStore();
+processStore.init(negotium_api_url, user.value);
 
 const props = defineProps({
   categories: Array,
@@ -25,48 +28,66 @@ const pageProps = reactive({
   isFormSubmitted: false,
   selectedCategory: { id: null, name: 'Select category', color: 'white' },
   categories: [],
-  addCategoryOption: {
-    id: 0,
-    name: 'Create new category'
-  }
+  isLoadingCreateProcessCategory: false,
+  isLoadingCreateProcess: false
 });
 
 onMounted(() => {
+  processCategoryStore.process_categories = props.categories;
   // pageProps.categories.push(pageProps.addCategoryOption);
   props.categories.forEach((category) => {
     pageProps.categories.push(category);
   });
 });
 
-function clickCategory() {
- // TODO: Add category button as per the designs, to a new category
-  console.log('Category clicked!!');
+function createCategory() {
+  this.pageProps.isLoadingCreateProcessCategory = true;
+  const response = processCategoryStore.create();
+  response.then((result) => {
+    if (result.status === 'error') {
+      toast.add({severity: 'error', summary: 'Error', detail: result.message, life: 3000});
+
+      if (result.code === 422) {
+        toast.add({severity: 'error', summary: 'Error', detail: 'The category search textbox is empty, add new category on the search textbox', life: 3000});
+      }
+    } else {
+      toast.add({severity: 'success', summary: 'Success', detail: result.message, life: 5000});
+
+      const categories = processCategoryStore.fetchProcessCategories();
+    }
+    this.pageProps.isLoadingCreateProcessCategory = false;
+  });
 }
 
 function createProcess()
 {
+  this.pageProps.isLoadingCreateProcess = true;
   this.pageProps.isFormSubmitted = true;
-  useProcessStore.process.process_category_id = pageProps.selectedCategory.id;
-  const response = useProcessStore.create();
+  processStore.process.process_category_id = pageProps.selectedCategory.id;
+  const response = processStore.create();
   response.then((result) => {
-    console.log('Result: ', result);
     if(result.status === 'error') {
       toast.add({severity: 'error', summary: 'Error', detail: result.message, life: 3000});
+      this.pageProps.isLoadingCreateProcess = false;
     } else {
-      toast.add({severity: 'success', summary: 'Success', detail: result.message, life: 5000});
-      setTimeout(() => {
-        window.location = '/step/create/'+useProcessStore.process.id;
-      }, 3000);
+      let toastMessages = [];
+      toastMessages.push({severity: 'success', summary: 'Success', message: result.message});
+      localStorage.setItem('toastMessages', JSON.stringify(toastMessages));
+      window.location = '/process/edit/'+processStore.process.id;
     }
   });
 }
 
 function isInValidProcessName() {
-  return this.pageProps.isFormSubmitted && (useProcessStore.process.name === null);
+  return this.pageProps.isFormSubmitted && (processStore.process.name === null);
 }
 
 function isInValidProcessCategoryName() {
-  return this.pageProps.isFormSubmitted && (useProcessStore.process.process_category_id === null);
+  return this.pageProps.isFormSubmitted && (pageProps.selectedCategory.id === null);
+}
+
+function onFilter(event) {
+  processCategoryStore.process_category.name = event.value;
 }
 </script>
 
@@ -75,10 +96,9 @@ function isInValidProcessCategoryName() {
     <template #header>
       <div class="col-sm-6">
         <h1 class="m-0">Processes</h1>
-        <ol class="breadcrumb sm">
-          <li class="breadcrumb-item"><a href="#">Home</a></li>
-          <li class="breadcrumb-item active">Processes</li>
-        </ol>
+        <Breadcrumb :model="breadCrumbs" :class="'p-0 text-sm'">
+          <template #separator> <i class="pi pi-arrow-right text-sm"></i></template>
+        </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-3">
         <a :href="route('process')" class="btn btn-sm btn-outline-secondary w-24 mr-2">Cancel</a>
@@ -100,13 +120,13 @@ function isInValidProcessCategoryName() {
               <div class="card-body pt-0">
                 <div class="form-group">
                   <label for="process-name" class="font-weight-normal">Process name</label>
-                  <input v-model="useProcessStore.process.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?" :class="{'is-invalid-custom': isInValidProcessName()}">
+                  <input v-model="processStore.process.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?" :class="{'is-invalid-custom': isInValidProcessName()}">
                   <span v-if="isInValidProcessName()" id="process-name-error" class="error invalid-feedback">This field is required</span>
                 </div>
 
                 <div class="form-group">
                   <label for="category" class="font-weight-normal">Category</label>
-                  <Dropdown @click="clickCategory()" v-model="pageProps.selectedCategory" :options="pageProps.categories" filter optionLabel="name" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
+                  <Dropdown v-model="pageProps.selectedCategory" :options="processCategoryStore.process_categories" filter @filter="onFilter" optionLabel="name" placeholder="Select a category" class="w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': isInValidProcessCategoryName()}">
                     <template #value="slotProps">
                       <div v-if="slotProps.value" class="w-100">
                         <span>{{ slotProps.value.name }}</span>
@@ -127,9 +147,9 @@ function isInValidProcessCategoryName() {
                     </template>
                       <template #footer>
                         <div class="w-100">
-                        <div class="h-[30px] px-4 py-2 rounded border border-neutral-700 justify-center items-center mx-2 my-2 text-center text-xs font-normal font-['Roboto'] leading-3 hover:bg-neutral-700 hover:text-white">
-                          Create new category
-                        </div>
+                          <button @click="createCategory()" class="w-100 h-[30px] px-4 py-2 rounded border border-neutral-700 justify-center items-center mx-2 my-2 text-center text-xs font-normal font-['Roboto'] leading-3" :class="{'hover:bg-neutral-700 hover:text-white': !pageProps.isLoadingCreateProcessCategory}" :disabled="pageProps.isLoadingCreateProcessCategory">
+                            {{ !pageProps.isLoadingCreateProcessCategory ? 'Create new category' : 'Loading ...' }}
+                          </button>
                         </div>
                       </template>
                   </Dropdown>
@@ -145,8 +165,10 @@ function isInValidProcessCategoryName() {
         </div>
         <div class="col-md-2 col-sm-12 md:mt-12 md:pt-12 pl-0">
           <div class="btn-group-vertical btn-block">
-            <button type="button" class="btn btn-md bg-olive btn-block active">Start</button>
-            <button type="button" class="btn btn-md bg-olive btn-block" @click="createProcess()">Create Step</button>
+            <button type="button" class="btn btn-md bg-olive btn-block active" @click="createProcess()">Start</button>
+            <button type="button" class="btn btn-md bg-olive btn-block" @click="createProcess()" :disabled="pageProps.isLoadingCreateProcess">
+              {{ !pageProps.isLoadingCreateProcess ? 'Create step' : 'Loading ...' }}
+            </button>
           </div>
         </div>
       </div>

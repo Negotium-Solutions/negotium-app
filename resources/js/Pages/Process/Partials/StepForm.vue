@@ -8,7 +8,7 @@ import { usePage } from "@inertiajs/vue3";
 
 // Define all the use statements here
 const processStore = useProcessesStore();
-const useStepStore = useStepsStore();
+const stepStore = useStepsStore();
 const globalsStore = useGlobalsStore();
 const toast = useToast();
 
@@ -26,50 +26,79 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
 
 // Define all functions here
 onMounted(() => {
-  useStepStore.step.model_id = props.model_id;
-  useStepStore.step.parent_id = processStore.process.id;
+  stepStore.step.model_id = props.model_id;
+  stepStore.step.parent_id = processStore.process.id;
   processStore.init(negotium_api_url, user);
 });
 
 function isInValidStepName() {
-  return pageProps.isFormSubmitted && (useStepStore.step.name === '');
+  return pageProps.isFormSubmitted && (stepStore.step.name === '');
 }
 
 function createStep()
 {
   pageProps.isFormSubmitted = true;
-  const response = useStepStore.create();
+  const response = stepStore.create();
   response.then((result) => {
     if(result.status === 'error') {
       toast.add({severity: 'error', summary: 'Error', detail: result.message, life: 3000});
     } else {
       toast.add({severity: 'success', summary: 'Success', detail: result.message, life: 3000});
+
       processStore.fetchProcesses(processStore.process.id);
+      this.isDoneLoadingProcessStore(result, setStep);
+    }
+  });
+}
+
+// Wait for the loading on the process to be set to true before calling the setStep
+function isDoneLoadingProcessStore(result = null, callback = null) {
+  const checkCondition = () => {
+      if (processStore.loading) {
+        setTimeout(checkCondition, 100); // Check the condition every 100ms
+      } else {
+        callback(result);
+      }
+  };
+  checkCondition();
+}
+
+function setStep(result = null) {
+  processStore.process.steps.forEach((step) => {
+    if(step.id === result.data.id) {
+      stepStore.setStep(step);
+      globalsStore.activeForm = globalsStore.ACTIVITY_FORM;
     }
   });
 }
 </script>
 
 <template>
-  <div class="col-md-4 col-sm-12 pl-0 pr-0">
+  <div class="col-md-4 col-sm-12 pl-0 pr-0 step-form-min-width">
     <div class="card card-default">
-      <div class="card-header">
-        <h3 class="card-title text-bold">Step</h3><br/>
+      <div class="card-header border-bottom-0 pb-0">
+        <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Step</div>
       </div>
       <!-- /.card-header -->
       <!-- form start -->
       <form class="form-horizontal">
-        <div class="card-body">
+        <div class="card-body pt-2 pb-2">
           <div class="form-group">
-            <label for="step-name" class="font-weight-normal">Step Name</label>
-            <input v-model="useStepStore.step.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this step?" :class="{'is-invalid-custom': isInValidStepName()}">
+            <label for="step-name" class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step Name</label>
+            <input v-model="stepStore.step.name" type="text" class="form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this step?" :class="{'is-invalid-custom': isInValidStepName()}">
             <span v-if="isInValidStepName()" id="process-name-error" class="error invalid-feedback">This field is required</span>
           </div>
         </div>
         <!-- /.card-body -->
         <div class="card-footer">
-          <button @click="globalsStore.cancel()" class="btn btn-sm btn-outline-light"><i class="pi pi-times mr-1 mt-1"></i> Cancel</button>
-          <button @click="createStep()" type="button" class="btn btn-sm btn-default float-right mr-2"><i class="pi pi-save mr-1"></i> Save</button>
+          <button @click="createStep()" type="button" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-2 disabled:opacity-50 disabled:cursor-not-allowed" :disabled="stepStore.loading">
+            <i class="add-title mr-1"></i>
+            <span class="text-blue-400 text-xs font-medium font-['Roboto'] leading-[14px]">Add Title</span>
+          </button>
+          <button type="button" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+            <i class="add-activity mr-1"></i>
+            <span class="text-emerald-400 text-xs font-medium font-['Roboto'] leading-[14px]">Add Activity</span>
+          </button>
         </div>
       </form>
     </div>
