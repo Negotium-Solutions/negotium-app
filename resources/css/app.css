@@ -8,6 +8,10 @@
     display: block;
 }
 
+.sidebar .active > span{
+    color: #FFFFFF;
+}
+
 .form-control-custom, .p-dropdown-panel > .p-dropdown-header > .p-dropdown-filter-container > .p-dropdown-filter {
     width: 100%;
     height: calc(2.25rem + 2px);
@@ -43,4 +47,23 @@
 
 .p-dropdown{
     border: 1px solid #dee2e6 !important;
+}
+
+li.active > a > span.p-menuitem-text {
+    color: #10b981;
+}
+
+.negotium-primary {
+    color: #10b981;
+}
+
+.min-w-hr{
+    min-width:20px !important;
+} 
+.max-w-hr{
+    max-width:36px !important;
+} 
+
+.step-form-min-width{
+    min-width: 388px;
 }
