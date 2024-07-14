@@ -6,7 +6,9 @@ import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
+import Avatar from 'primevue/avatar';
 import { usePage } from "@inertiajs/vue3";
+import { useProfilesManagerStore } from "@/stores";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -14,10 +16,10 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
 
 const confirm = useConfirm();
 const toast = useToast();
+const profileManagerStore = useProfilesManagerStore();
 
 const props = defineProps({
-  profileTypes: Array,
-  profiles: [],
+  profileTypes: Array
 });
 
 const pageProps = reactive({
@@ -25,15 +27,16 @@ const pageProps = reactive({
 });
 
 onMounted(() =>{
-
+  profileManagerStore.set('profile_types', props.profileTypes);
+  profileManagerStore.set('profile_type', props.profileTypes[0]);
 });
 
-function selectProfileType(id) {
-
+function selectProfileType(profile) {
+  console.log('Profile: ', profile);
 }
 
-function isSelectedProfileType(id) {
-
+function isSelectedProfileType(profile) {
+  // return profile.id ===
 }
 
 </script>
@@ -55,16 +58,28 @@ function isSelectedProfileType(id) {
       <div class="row mb-3">
         <div class="col-md-12">
           <div class="row">
-            <div v-for="(profileType, index) in props.profileTypes" :key="index" class="px-1 mb-2">
-              <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white', { 'bg-neutral-700 text-white' : isSelectedProfileType(profileType.id) }]" @click="selectProfileType(profileType.id)">{{profileType.name}}</button>
+            <div v-for="(profile_type, index) in props.profileTypes" :key="index" class="px-1 mb-2">
+              <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white', { 'bg-neutral-700 text-white' : profileManagerStore.isSelected('profile_type', profile_type) }]" @click="profileManagerStore.set('profile_type', profile_type)">{{profile_type.name}}</button>
             </div>
           </div>
         </div>
       </div>
 
       <div class="row">
-        <div class="col-md-2 col-sm-12">Profiles</div>
-        <div class="col-md-4 col-sm-12">Profile View</div>
+        <div class="col-md-2 col-sm-12">
+          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile)">
+            <Avatar class="p-overlay-badge" image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" size="small" />
+            <span v-if="profileManagerStore.profile_type.name == 'Individual'"> {{ profile.first_name }} {{ profile.last_name }}</span>
+            <span v-if="profileManagerStore.profile_type.name == 'Business'"> {{ profile.company_name }}</span>
+          </div>
+        </div>
+        <div class="col-md-4 col-sm-12">
+          <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)">
+            <Avatar class="p-overlay-badge" image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" size="small" />
+            <span v-if="profileManagerStore.profile_type.name == 'Individual'"> {{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }}</span>
+            <span v-if="profileManagerStore.profile_type.name == 'Business'"> {{ profileManagerStore.profile.company_name }}</span>
+          </div>
+        </div>
         <div class="col-md-6 col-sm-12">Processes</div>
       </div>
     </div>
