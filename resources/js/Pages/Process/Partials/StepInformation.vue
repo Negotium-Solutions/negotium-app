@@ -33,12 +33,12 @@ function showForm(form_id)
 </script>
 
 <template>
-  <div class="col-md-4 col-sm-12 pl-0 pr-0">
+  <div class="col-lg-5 col-md-4 col-sm-12 pl-0 pr-0 step-form-min-width">
     <div class="card card-default">
       <div class="card-header">
-        <h3 class="card-title text-bold">Step</h3><br/>
+        <div class="mb-2 text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Step</div>
         <div>
-          <p class="text-sm mt-2">Step Name</p>
+          <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step Name</div>
           <p class="text-bold">
             {{ stepStore.step.name }} <i class="pi pi-file-edit float-right"></i>
           </p>
@@ -52,9 +52,15 @@ function showForm(form_id)
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
         </div>
         <!-- /.card-body -->
-        <div class="card-footer">
-          <button @click="showForm(globalsStore.STEP_FORM)" type="button" class="btn btn-sm btn-default float-right mr-2"><i class="pi pi-microchip mr-1"></i> Add Step</button>
-          <button @click="showForm(globalsStore.ACTIVITY_FORM)" type="button" class="btn btn-sm btn-default float-right mr-2"><i class="pi pi-microchip-ai mr-1"></i> Add Activity</button>
+        <div class="card-footer w-100 px-8 py-4 bg-zinc-100 border-l border-r border-b border-zinc-300">
+          <button @click="showForm(globalsStore.STEP_FORM)" type="button" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-2">
+            <i class="add-title mr-1"></i>
+            <span class="text-blue-400 text-xs font-medium font-['Roboto'] leading-[14px]">Add Step</span>
+          </button>
+          <button @click="showForm(globalsStore.ACTIVITY_FORM)" type="button" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex">
+            <i class="add-activity mr-1"></i>
+            <span class="text-emerald-400 text-xs font-medium font-['Roboto'] leading-[14px]">Add Activity</span>
+          </button>
         </div>
       </form>
     </div>
