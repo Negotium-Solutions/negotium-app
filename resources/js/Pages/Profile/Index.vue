@@ -46,7 +46,9 @@ function isSelectedProfileType(profile) {
     <template #header>
       <div class="d-flex w-100">
       <div class="col-sm-6">
-        <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto']">Profiles</h1>
+        <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto']">
+          Profiles
+        </h1>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
         <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded border border-neutral-700 justify-center items-center text-white">Add Profile</a>
@@ -79,8 +81,27 @@ function isSelectedProfileType(profile) {
             <span v-if="profileManagerStore.profile_type.name == 'Individual'"> {{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }}</span>
             <span v-if="profileManagerStore.profile_type.name == 'Business'"> {{ profileManagerStore.profile.company_name }}</span>
           </div>
+          <button class="btn-sm btn-light col-md-12 mb-1 text-left">Processes <i class="fa fa-chevron-right float-right"></i></button>
+          <button class="btn-sm btn-light col-md-12 mb-1 text-left">Communications <i class="fa fa-chevron-right float-right"></i></button>
         </div>
-        <div class="col-md-6 col-sm-12">Processes</div>
+        <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-md-6 col-sm-12">
+          <div class="card">
+            <div class="card-header">
+              Profiles <button class="btn-sm btn-dark float-right">Assign Process</button>
+            </div>
+            <div class="card-body">
+              <table class="table-sm">
+                <tr>
+                  <td>Select</td><td>Process Name</td><td>Current Posistion</td><td>Last opened</td><td>Date edited</td><td>actions</td>
+                </tr>
+                <tr v-for="(process, index) in profileManagerStore.processes" :key="index">
+                  <td><checkbox></checkbox></td><td>{{ process.name }}</td><td>Step 12 - Action 11</td><td>2024-07-11 00:00</td><td>2024-07-11 00:00</td>
+                  <td><button class="btn-sm">View</button></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </AuthenticatedLayout>

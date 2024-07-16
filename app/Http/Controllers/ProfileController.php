@@ -22,7 +22,7 @@ class ProfileController extends Controller
         $responseProfileTypes = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles');
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes');
 
         $profileTypes = isset(json_decode($responseProfileTypes->body(), true)['data']) ? json_decode($responseProfileTypes->body(), true)['data'] : [];
 
