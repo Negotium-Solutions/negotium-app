@@ -70,24 +70,56 @@ function isSelectedProfileType(profile) {
       <div class="row">
         <div class="col-md-2 col-sm-12">
           <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile)">
-            <Avatar class="p-overlay-badge" image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" size="small" />
-            <span v-if="profileManagerStore.profile_type.name == 'Individual'"> {{ profile.first_name }} {{ profile.last_name }}</span>
-            <span v-if="profileManagerStore.profile_type.name == 'Business'"> {{ profile.company_name }}</span>
+            <Avatar class="p-overlay-badge align-middle" image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg"  />
+            <span v-if="profileManagerStore.profile_type.name == 'Individual'"> {{ profile.first_name }} {{ profile.last_name }} </span>
+            <span v-if="profileManagerStore.profile_type.name == 'Business'"> {{ profile.company_name }} </span>
+            <div class="row mb-2"></div>
           </div>
         </div>
         <div class="col-md-4 col-sm-12">
+          
           <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)">
-            <Avatar class="p-overlay-badge" image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" size="small" />
-            <span v-if="profileManagerStore.profile_type.name == 'Individual'"> {{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }}</span>
-            <span v-if="profileManagerStore.profile_type.name == 'Business'"> {{ profileManagerStore.profile.company_name }}</span>
+            <div class="row mb-2">
+              <Avatar class="align-top" image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" size="small" />
+              <span v-if="profileManagerStore.profile_type.name == 'Individual'" >
+                <h2 class="font-bold"> {{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </h2>
+              </span>
+              <span v-if="profileManagerStore.profile_type.name == 'Business'">
+                <h2 class="font bold"> {{ profileManagerStore.profile.company_name }} </h2>
+              </span>
+            </div>  
+
+            <div><button class="btn-sm btn-light text-left justify-right">New Client</button>  </div>
+            <div class="row mb-1"></div>
+
+            <div class="row mb-3 ">
+              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
+              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send message</button>
+              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">+ Add Note</button>
+            </div>
+
+            <div class="row mb-3"></div>
+            <h2 class="font-bold">Profile navigation</h2>
+            <div class="row mb-3"></div>
+            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Processes <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Communications <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Documents <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Profile Details <i class="fa fa-chevron-right float-right"></i></button></div>
+
+            <div class="row mb-28"></div>
+
+            <h2 class="font-bold">Client view</h2>
+            <div class="row mb-3"></div>
+            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Requested information <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Profile Access <i class="fa fa-chevron-right float-right"></i></button></div>
+
           </div>
-          <button class="btn-sm btn-light col-md-12 mb-1 text-left">Processes <i class="fa fa-chevron-right float-right"></i></button>
-          <button class="btn-sm btn-light col-md-12 mb-1 text-left">Communications <i class="fa fa-chevron-right float-right"></i></button>
         </div>
         <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-md-6 col-sm-12">
           <div class="card">
             <div class="card-header">
-              Profiles <button class="btn-sm btn-dark float-right">Assign Process</button>
+              Processes <button class="btn-sm btn-dark float-right">Assign Process</button>
             </div>
             <div class="card-body">
               <table class="table-sm">
