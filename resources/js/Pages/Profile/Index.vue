@@ -19,7 +19,8 @@ const toast = useToast();
 const profileManagerStore = useProfilesManagerStore();
 
 const props = defineProps({
-  profileTypes: Array
+  profileTypes: Array,
+  api_url: String
 });
 
 const pageProps = reactive({
@@ -70,7 +71,7 @@ function isSelectedProfileType(profile) {
       <div class="row">
         <div class="col-md-2 col-sm-12">
           <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile)">
-            <Avatar class="p-overlay-badge align-middle" image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg"  />
+            <Avatar class="p-overlay-badge align-middle" :image="props.api_url + profile.avatar"  />
             <span v-if="profileManagerStore.profile_type.name == 'Individual'"> {{ profile.first_name }} {{ profile.last_name }} </span>
             <span v-if="profileManagerStore.profile_type.name == 'Business'"> {{ profile.company_name }} </span>
             <div class="row mb-2"></div>
@@ -80,7 +81,7 @@ function isSelectedProfileType(profile) {
           
           <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)">
             <div class="row mb-2">
-              <Avatar class="align-top" image="https://primefaces.org/cdn/primevue/images/organization/walter.jpg" size="small" />
+              <Avatar class="align-top" :image="props.api_url + profileManagerStore.profile.avatar" size="small" />
               <span v-if="profileManagerStore.profile_type.name == 'Individual'" >
                 <h2 class="font-bold"> {{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </h2>
               </span>
