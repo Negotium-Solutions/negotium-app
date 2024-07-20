@@ -33,6 +33,11 @@ export const useProfilesManagerStore = defineStore({
                         this.$state.profiles = items.profiles;
                     }
                     break;
+                case this.PROFILE:
+                    if(typeof items.processes !== 'undefined') {
+                        this.$state.processes = items.processes;
+                    }
+                    break;
                 default:
                     break;
             }
