@@ -81,13 +81,26 @@ function isSelectedProfileType(profile) {
           
           <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)">
             <div class="row mb-2">
-              <Avatar class="align-top" :image="props.api_url + profileManagerStore.profile.avatar" size="small" />
-              <span v-if="profileManagerStore.profile_type.name == 'Individual'" >
-                <h2 class="font-bold"> {{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </h2>
-              </span>
-              <span v-if="profileManagerStore.profile_type.name == 'Business'">
-                <h2 class="font bold"> {{ profileManagerStore.profile.company_name }} </h2>
-              </span>
+              <table>
+                <tr>
+                  <td rowspan="2">
+                    <Avatar class="align-top" :image="props.api_url + profileManagerStore.profile.avatar" size="small" />
+                  </td>
+                  <td class="pl-2">
+                    <span v-if="profileManagerStore.profile_type.name == 'Individual'" >
+                      <h2 class="font-bold"> {{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </h2>
+                    </span>
+                    <span v-if="profileManagerStore.profile_type.name == 'Business'">
+                      <h2 class="font bold"> {{ profileManagerStore.profile.company_name }} </h2>
+                    </span>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="pl-2">
+                    {{ profileManagerStore.profile.email }}
+                  </td>
+                </tr>
+              </table>
             </div>  
 
             <div><button class="btn-sm btn-light text-left justify-right">New Client</button>  </div>
