@@ -13,7 +13,7 @@ import { Sidebar } from "@/Layouts/Adminlte";;
                 <!-- Content Wrapper. Contains page content -->
                 <div id="main-container" class="content-wrapper bg-white">
                     <!-- Content Header (Page header) -->
-                    <div class="content-header" v-if="$slots.header">
+                    <div class="content-header custom-content-header" v-if="$slots.header">
                         <div class="container-fluid">
                             <div class="row px-3 pt-3">
                                 <slot name="header" />

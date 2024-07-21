@@ -39,6 +39,10 @@
     border-color: var(--neg-light-grey) !important;
 }
 
+.bg-zinc-100{
+    background-color: var(--neg-light-grey) !important;
+}
+
 .text-neutral-700{
     border-color: var(--neg-font-default) !important;
 }
@@ -125,4 +129,8 @@
     background-color: var(--neg-bg-light);
     border-color: var(--neg-bg-light);
     color: var(--neg-font-default);
+}
+
+.custom-content-header{
+    background-color: var(--neg-bg-light);
 }
