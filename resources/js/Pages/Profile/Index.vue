@@ -59,7 +59,7 @@ function isSelectedProfileType(profile) {
         <div class="col-md-12">
           <div class="row">
             <div v-for="(profile_type, index) in props.profileTypes" :key="index" class="px-1 mb-2">
-              <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white', { 'bg-neutral-700 text-white' : profileManagerStore.isSelected('profile_type', profile_type) }]" @click="profileManagerStore.set('profile_type', profile_type)">{{profile_type.name}}</button>
+              <button :class="['float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-2 text-xs font-bold', { 'bg-neutral-700' : profileManagerStore.isSelected('profile_type', profile_type) }]" @click="profileManagerStore.set('profile_type', profile_type)">{{profile_type.name}}</button>
             </div>
           </div>
         </div>
