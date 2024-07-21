@@ -46,18 +46,15 @@ function isSelectedProfileType(profile) {
   <AuthenticatedLayout>
     <template #header>
       <div class="d-flex w-100">
-      <div class="col-sm-6">
-        <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto']">
-          Profiles
-        </h1>
-      </div><!-- /.col -->
-      <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
-        <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded border border-neutral-700 justify-center items-center text-white">Add Profile</a>
-      </div><!-- /.col -->
+        <div class="col-sm-6">
+          <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto']">
+            Profiles
+          </h1>
+        </div><!-- /.col -->
+        <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
+          <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white">Add Profile</a>
+        </div><!-- /.col -->
       </div>
-    </template>
-
-    <div class="content-container pl-4 pr-4">
       <div class="row mb-3">
         <div class="col-md-12">
           <div class="row">
@@ -66,7 +63,10 @@ function isSelectedProfileType(profile) {
             </div>
           </div>
         </div>
-      </div>
+        </div>
+    </template>
+
+    <div class="content-container pl-4 pr-4">
 
       <div class="row">
         <div class="col-md-2 col-sm-12">
