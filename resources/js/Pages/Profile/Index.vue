@@ -83,7 +83,7 @@ function isSelectedProfileType(profile) {
             <div class="row mb-2 pl-4">
               <table class="w-100">
                 <tr>
-                  <td rowspan="2">
+                  <td rowspan="3">
                     <Avatar class="align-top" :image="props.api_url + profileManagerStore.profile.avatar" />
                   </td>
                   <td class="pl-2">
@@ -100,16 +100,18 @@ function isSelectedProfileType(profile) {
                     {{ profileManagerStore.profile.email }}
                   </td>
                 </tr>
+                <tr>
+                  <td class="pl-2">
+                    <button class="btn-sm btn-light text-left justify-right">New Client</button>
+                  </td>
+                </tr>
               </table>
-            </div>  
+            </div>
 
-            <div><button class="btn-sm btn-light text-left justify-right">New Client</button>  </div>
-            <div class="row mb-1"></div>
-
-            <div class="row mb-3 ">
-              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
-              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send message</button>
-              <button class="flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">+ Add Note</button>
+            <div class="row mb-3 d-flex-none w-100">
+              <button class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
+              <button class="ml-auto flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send message</button>
+              <button class="ml-1 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">+ Add Note</button>
             </div>
 
             <div class="row mb-3"></div>
@@ -130,7 +132,7 @@ function isSelectedProfileType(profile) {
 
           </div>
         </div>
-        <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-md-6 col-sm-12">
+        <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-md-6 col-sm-12 pt-2">
           <div class="card">
             <div class="card-header">
               Processes <button class="btn-sm btn-dark float-right">Assign Process</button>
