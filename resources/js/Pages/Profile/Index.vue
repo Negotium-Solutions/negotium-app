@@ -30,6 +30,7 @@ const pageProps = reactive({
 onMounted(() =>{
   profileManagerStore.set('profile_types', props.profileTypes);
   profileManagerStore.set('profile_type', props.profileTypes[0]);
+  profileManagerStore.set('profile', props.profileTypes[0].profiles[0]);
 });
 
 function selectProfileType(profile) {
@@ -83,7 +84,7 @@ function isSelectedProfileType(profile) {
             <div class="row mb-2">
               <table>
                 <tr>
-                  <td rowspan="2">
+                  <td rowspan="3">
                     <Avatar class="align-top" :image="props.api_url + profileManagerStore.profile.avatar" size="small" />
                   </td>
                   <td class="pl-2">
@@ -100,10 +101,15 @@ function isSelectedProfileType(profile) {
                     {{ profileManagerStore.profile.email }}
                   </td>
                 </tr>
+                <tr>
+                  <td class="pl-2">
+                    <button class="btn-sm btn-light text-left justify-right">New Client</button>  
+                  </td>
+                </tr>
               </table>
             </div>  
 
-            <div><button class="btn-sm btn-light text-left justify-right">New Client</button>  </div>
+            
             <div class="row mb-1"></div>
 
             <div class="row mb-3 ">
