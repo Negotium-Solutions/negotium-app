@@ -144,7 +144,7 @@ function handleProfileDivHeight(){
             <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></button></div>
             <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Details <i class="fa fa-chevron-right float-right"></i></button></div>
 
-            <div class="row mb-28"></div>
+            <div class="row mb-3"></div>
 
             <h2 class="font-bold">Client view</h2>
             <div class="row mb-3"></div>
