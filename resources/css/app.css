@@ -27,6 +27,19 @@
     transition: border-color .15s ease-in-out, box-shadow .15s ease-in-out;
 }
 
+.profile-info .p-avatar > img{
+    max-width: unset !important;
+    border-radius: 7px !important;
+    width: 80px !important;
+    height: 80px !important;
+}
+
+.p-avatar > img{
+    border-radius: 7px !important;
+    width: 40px !important;
+    height: 40px !important;
+}
+
 .p-dropdown-panel > .p-dropdown-header > .p-dropdown-filter-container > .p-dropdown-filter{
     margin-bottom: 5px;
 }
