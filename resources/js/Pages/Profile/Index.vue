@@ -109,10 +109,10 @@ function handleProfileDivHeight(){
                   </td>
                   <td class="pl-2">
                     <span v-if="profileManagerStore.profile_type.name == 'Individual'" >
-                      <div class="w-60 text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">{{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </div>
+                      <div class="w-60 h-10 text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-loose">{{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </div>
                     </span>
                     <span v-if="profileManagerStore.profile_type.name == 'Business'">
-                      <div class="w-60 text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">{{ profileManagerStore.profile.company_name }} </div>
+                      <div class="w-60 h-10 text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-loose">{{ profileManagerStore.profile.company_name }} </div>
                     </span>
                   </td>
                 </tr>
@@ -138,18 +138,18 @@ function handleProfileDivHeight(){
             <div class="row mb-3"></div>
             <h2 class="font-bold">Profile navigation</h2>
             <div class="row mb-3"></div>
-            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Processes <i class="fa fa-chevron-right float-right"></i></button></div>
-            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Communications <i class="fa fa-chevron-right float-right"></i></button></div>
-            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Documents <i class="fa fa-chevron-right float-right"></i></button></div>
-            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></button></div>
-            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Profile Details <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 bg-slate-500 text-white">Processes <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Communications <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Documents <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Details <i class="fa fa-chevron-right float-right"></i></button></div>
 
             <div class="row mb-28"></div>
 
             <h2 class="font-bold">Client view</h2>
             <div class="row mb-3"></div>
-            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Requested information <i class="fa fa-chevron-right float-right"></i></button></div>
-            <div><button class="btn-sm btn-light col-md-12 mb-1 text-left">Profile Access <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Requested information <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Access <i class="fa fa-chevron-right float-right"></i></button></div>
 
           </div>
         </div>
