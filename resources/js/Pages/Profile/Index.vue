@@ -30,6 +30,11 @@ const pageProps = reactive({
 onMounted(() =>{
   profileManagerStore.set('profile_types', props.profileTypes);
   profileManagerStore.set('profile_type', props.profileTypes[0]);
+  handleProfileDivHeight()
+  // Add a global event listener
+  // for window resize
+  window.addEventListener
+  ('resize', handleProfileDivHeight);
 });
 
 function selectProfileType(profile) {
@@ -38,6 +43,21 @@ function selectProfileType(profile) {
 
 function isSelectedProfileType(profile) {
   // return profile.id ===
+}
+
+function handleProfileDivHeight(){
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  var element = document.getElementById('profiles-header');
+  var height = element.offsetHeight;
+  var newHeight = h -  height
+  document.getElementById('profiles-content').style.minHeight = newHeight+'px'
+  document.getElementById('profiles-sidebar').style.minHeight = newHeight+'px'
+  document.getElementById('profiles-detail').style.minHeight = newHeight+'px'
+  if(document.getElementById('profiles-detail-content')){
+  document.getElementById('profiles-detail-content').style.minHeight = newHeight+'px'
+  }
 }
 
 </script>
@@ -68,30 +88,31 @@ function isSelectedProfileType(profile) {
     <template #profile>
     <div class="content-container pr-4">
 
-      <div class="row">
-        <div class="col-lg-2 col-md-3 col-sm-12">
-          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile)" class="w-60 h-14 pl-6 pr-2 py-2 border-b border-gray-200 justify-start items-center gap-3 inline-flex">
-            <Avatar class="p-overlay-badge align-middle mr-2" size="large" :image="props.api_url + profile.avatar"  />
-            <span v-if="profileManagerStore.profile_type.name == 'Individual'"  class="w-[164px] text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.first_name }} {{ profile.last_name }} </span>
-            <span v-if="profileManagerStore.profile_type.name == 'Business'" class="w-[164px] text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.company_name }} </span>
+      <div class="row" id="profiles-sidebar">
+        <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0 mr-2">
+          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile);handleProfileDivHeight()" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex">
+            <div class="w-100 pl-6 pr-2 d-flex">
+            <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="props.api_url + profile.avatar"  />
+            <span v-if="profileManagerStore.profile_type.name == 'Individual'"  class="flex items-center justify-center text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.first_name }} {{ profile.last_name }} </span>
+            <span v-if="profileManagerStore.profile_type.name == 'Business'" class="flex items-center justify-center text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.company_name }} </span>
             <div class="row mb-2"></div>
+            </div>
           </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-12 pt-4 profile-info">
-          
-          <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)">
+        <div class="col-lg-3 col-md-4 col-sm-12 profile-info" id="profiles-detail">
+          <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-4 border-right pr-3 pl-3" id="profiles-detail-content">
             <div class="row mb-2 pl-4">
               <table class="w-100">
                 <tr>
-                  <td rowspan="3">
+                  <td rowspan="3" class="w-[60px]">
                     <Avatar class="align-top" :image="props.api_url + profileManagerStore.profile.avatar" />
                   </td>
                   <td class="pl-2">
                     <span v-if="profileManagerStore.profile_type.name == 'Individual'" >
-                      <div class="w-[164px] text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">{{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </div>
+                      <div class="w-60 text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">{{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </div>
                     </span>
                     <span v-if="profileManagerStore.profile_type.name == 'Business'">
-                      <div class="w-[164px] text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">{{ profileManagerStore.profile.company_name }} </div>
+                      <div class="w-60 text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">{{ profileManagerStore.profile.company_name }} </div>
                     </span>
                   </td>
                 </tr>
@@ -102,7 +123,7 @@ function isSelectedProfileType(profile) {
                 </tr>
                 <tr>
                   <td class="pl-2">
-                    <button class="btn-sm btn-light text-left justify-right">New Client</button>
+                    <button class="btn-sm btn-light text-left justify-right pl-2">New Client</button>
                   </td>
                 </tr>
               </table>

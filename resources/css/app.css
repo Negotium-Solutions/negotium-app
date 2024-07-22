@@ -40,6 +40,10 @@
     height: 40px !important;
 }
 
+.border-right{
+    border-right: 1px solid var(--neg-light-grey);
+}
+
 .p-dropdown-panel > .p-dropdown-header > .p-dropdown-filter-container > .p-dropdown-filter{
     margin-bottom: 5px;
 }
