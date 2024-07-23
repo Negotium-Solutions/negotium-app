@@ -1,0 +1,136 @@
+:root {
+    --neg-font-default: #353535;
+
+    --neg-bg-light: #efefef;
+
+    --neg-light-grey: rgba(0,0,0,.125);
+    --neg-dark-grey:#495057;
+
+    --neg-primary-1: #F9F871; /* yellow 1 */
+    --neg-primary-2: #FFE171; /* yellow 2 */
+    --neg-primary-3: #FFCA80; /* yellow 3 */
+    --neg-dark-1: #051e24; /* rich black */
+    --neg-dark-2: #002b33; /* gun metal 1 */
+    --neg-dark-3: #08313a; /* gun metal 2 */
+    --neg-light-1: #325660; /* dark slate grey */
+    --neg-light-2: #c4d7e2; /* columbia blue 1 */
+    --neg-light-3: #c4d7e2; /* columbia blue 1 */
+    --neg-light-4: #d0dfe8; /* columbia blue 2 */
+    --neg-light-5: #f0f5f8; /* anti-flash white */
+    --neg-light-6: #ffffff; /* white */
+    --neg-green-1: #418b5c; /* sea green */
+    --neg-green-2: #54ae75; /* jade */
+    --neg-green-3: #74be8f; /* mint */
+    --neg-orange-1: #ffa033; /* orange peel */
+    --neg-orange-2: #ffb157; /* sandy brown */
+    --neg-orange-3: #ffc685; /* sunset */
+    --neg-red-1: #f14141; /* imperial red */
+    --neg-red-2: #f25757; /* bittersweet */
+    --neg-red-3: #f57a7a; /* light coral */
+    --neg-blue-1: #4dbbd1; /* moonstone */
+    --neg-blue-2: #78cbdc; /* sky blue */
+    --neg-blue-3: #9edae6; /* non-photo blue */
+    --neg-brown-1: #ada185; /* khaki */
+    --neg-brown-2: #d6d0c2; /* bone */
+    --neg-brown-3: #e7e3da; /* alabaster */
+}
+
+.border-neutral-700{
+    border-color: var(--neg-light-grey) !important;
+}
+
+.bg-zinc-100{
+    background-color: var(--neg-light-grey) !important;
+}
+
+.text-neutral-700{
+    border-color: var(--neg-font-default) !important;
+}
+
+/* Success */
+.text-green-1{
+    opacity:1;
+    color: var(--neg-green-1);
+}
+.text-green-2{
+    opacity:1;
+    color: var(--neg-green-2);
+}
+.text-green-3{
+    opacity:1;
+    color: var(--neg-green-3);
+}
+
+/* Warning */
+.text-orange-1{
+    opacity:1;
+    color: var(--neg-orange-1);
+}
+.text-orange-2{
+    opacity:1;
+    color: var(--neg-orange-2);
+}
+.text-orange-3{
+    opacity:1;
+    color: var(--neg-orange-3);
+}
+
+/* Danger */
+.text-red-1{
+    opacity:1;
+    color: var(--neg-green-1);
+}
+.text-red-2{
+    opacity:1;
+    color: var(--neg-red-2);
+}
+.text-red-3{
+    opacity:1;
+    color: var(--neg-red-3);
+}
+
+
+/* Info */
+.text-blue-1{
+    opacity:1;
+    color: var(--neg-blue-1);
+}
+.text-blue-2{
+    opacity:1;
+    color: var(--neg-blue-2);
+}
+.text-blue-3{
+    opacity:1;
+    color: var(--neg-blue-3);
+}
+
+
+.text-light-grey{
+    opacity: 1;
+    color: var(--neg-light-grey);
+}
+
+.text-dark-grey{
+    opacity: 1;
+    color: var(--neg-dark-grey);
+}
+
+.rounded-custom-25{
+    border-radius: 25px;
+}
+
+.btn-group label.btn-outline-secondary{
+    font-weight: 400;
+    color: var(--neg-font-default);
+    border-color: var(--neg-light-grey);
+}
+
+.btn-group label.btn-outline-secondary:not(:disabled):not(.disabled).active,.btn-group label.btn-outline-secondary:hover{
+    background-color: var(--neg-bg-light);
+    border-color: var(--neg-bg-light);
+    color: var(--neg-font-default);
+}
+
+.profile-header{
+    background-color: var(--neg-bg-light);
+}
