@@ -31,6 +31,7 @@ export const useProfilesManagerStore = defineStore({
                 case this.PROFILE_TYPE:
                     if(typeof items.profiles !== 'undefined') {
                         this.$state.profiles = items.profiles;
+                        this.$state.profile = items.profiles[0];
                     }
                     break;
                 case this.PROFILE:

@@ -30,6 +30,7 @@ const pageProps = reactive({
 onMounted(() =>{
   profileManagerStore.set('profile_types', props.profileTypes);
   profileManagerStore.set('profile_type', props.profileTypes[0]);
+  profileManagerStore.set('profile', props.profileTypes[0].profiles[0]);
   handleProfileDivHeight()
   // Add a global event listener
   // for window resize
