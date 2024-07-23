@@ -7,12 +7,33 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class ProfileController extends Controller
 {
+    /**
+     * Display the user's profile form.
+     */
+    public function index(Request $request): Response
+    {
+        $responseProfileTypes = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes,profiles.documents');
+
+        $profileTypes = isset(json_decode($responseProfileTypes->body(), true)['data']) ? json_decode($responseProfileTypes->body(), true)['data'] : [];
+
+        $parameters = [
+            'profileTypes' => $profileTypes,
+            'api_url' => env('NEGOTIUM_IMAGES_URL')
+        ];
+
+        return Inertia::render('Profile/Index', $parameters);
+    }
+
     /**
      * Display the user's profile form.
      */

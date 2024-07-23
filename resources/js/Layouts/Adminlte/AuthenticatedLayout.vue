@@ -20,10 +20,25 @@ import { Sidebar } from "@/Layouts/Adminlte";;
                             </div><!-- /.row -->
                         </div><!-- /.container-fluid -->
                     </div>
+                    <div class="content-header profile-header" id="profiles-header" v-if="$slots.header2">
+                        <div class="container-fluid">
+                            <div class="row px-3 pt-3">
+                                <slot name="header2" />
+                            </div><!-- /.row -->
+                        </div><!-- /.container-fluid -->
+                    </div>
                     <!-- /.content-header -->
 
                     <!-- Main content -->
-                    <div class="content">
+                    <div class="content pl-0" id="profiles-content" v-if="$slots.profile">
+                        <div class="container-fluid pl-0">
+                            <main>
+                                <slot name="profile" />
+                            </main>
+                        </div>
+                        <!-- /.container-fluid -->
+                    </div>
+                    <div class="content" v-else>
                         <div class="container-fluid mt-7">
                             <main>
                                 <slot />

@@ -20,8 +20,11 @@ Route::middleware('auth')->group(function () {
     Route::post('/document/store', [DocumentController::class, 'store'])->name('document.store');
     Route::get('/document/edit/{id}', [DocumentController::class, 'edit'])->name('document.edit');
 
+    // Profile Manager
     Route::get('/profile-manager', [ProfileManagerController::class, 'index'])->name('profile-manager');
 
+    // Profiles
+    Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
 
     Route::get('/process', [ProcessController::class, 'index'])->name('process');
     Route::get('/process/create', [ProcessController::class, 'create'])->name('process.create');
