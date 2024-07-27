@@ -1,0 +1,13 @@
+# config/messages.yaml
+success:
+  created: "Item created successfully!"
+  updated: "Item updated successfully!"
+  deleted: "Item deleted successfully!"
+error:
+  not_found: "Item not found."
+  unauthorized: "You are not authorized to perform this action."
+info:
+  welcome: "Welcome to the application!"
+  goodbye: "Goodbye! See you again soon."
+warning:
+  outdated: "This item is outdated."
