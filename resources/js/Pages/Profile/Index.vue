@@ -9,6 +9,7 @@ import { useConfirm } from "primevue/useconfirm";
 import Avatar from 'primevue/avatar';
 import { usePage } from "@inertiajs/vue3";
 import { useProfilesManagerStore } from "@/stores";
+import ProcessIndex from "@/Pages/Profile/Process/Index.vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -20,7 +21,8 @@ const profileManagerStore = useProfilesManagerStore();
 
 const props = defineProps({
   profileTypes: Array,
-  api_url: String
+  api_url: String,
+  process_messages: Array
 });
 
 const pageProps = reactive({
@@ -154,24 +156,7 @@ function handleProfileDivHeight(){
 
           </div>
         </div>
-        <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-md-6 col-sm-12 pt-2">
-          <div class="card">
-            <div class="card-header">
-              Processes <button class="btn-sm btn-dark float-right">Assign Process</button>
-            </div>
-            <div class="card-body">
-              <table class="table-sm">
-                <tr>
-                  <td>Select</td><td>Process Name</td><td>Current Posistion</td><td>Last opened</td><td>Date edited</td><td>actions</td>
-                </tr>
-                <tr v-for="(process, index) in profileManagerStore.processes" :key="index">
-                  <td><checkbox></checkbox></td><td>{{ process.name }}</td><td>Step 12 - Action 11</td><td>2024-07-11 00:00</td><td>2024-07-11 00:00</td>
-                  <td><button class="btn-sm">View</button></td>
-                </tr>
-              </table>
-            </div>
-          </div>
-        </div>
+        <process-index :process_messages="process_messages"></process-index> 
       </div>
     </div>
     </template>
