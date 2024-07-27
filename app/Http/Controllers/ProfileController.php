@@ -31,6 +31,9 @@ class ProfileController extends Controller
             'api_url' => env('NEGOTIUM_IMAGES_URL')
         ];
 
+        dd(config('messages.processes.no_processes_assigned_to_profile'));
+        // dd(config('messages.success.created'));
+
         return Inertia::render('Profile/Index', $parameters);
     }
 
