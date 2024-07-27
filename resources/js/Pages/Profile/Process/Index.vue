@@ -19,7 +19,32 @@ const props = defineProps({
             </tr>
             <tr v-for="(process, index) in profileManagerStore.processes" :key="index">
               <td><checkbox></checkbox></td><td>{{ process.name }}</td><td>Step 12 - Action 11</td><td>2024-07-11 00:00</td><td>2024-07-11 00:00</td>
-              <td><button class="btn-sm">View</button></td>
+              <td>
+                <button class="btn-sm">View</button>
+                <div class="flex flex-col items-center">
+                <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0">
+                  <i class="pi pi-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item">
+                    <small>View Process</small> 
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item">
+                    <small>Details</small> 
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item">
+                    <small>Stop</small> 
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item">
+                    <small>Remove</small> 
+                  </a>
+                </div>
+            </div>
+              </td>
+              
             </tr>
           </table>
           <div v-else>
