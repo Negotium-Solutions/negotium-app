@@ -1,5 +1,5 @@
 # config/profiles/messages.yaml
 processes:
-  no_processes_assigned_to_profile: You haven't assigned any processes to this profile. <br/>
+  no_processes_assigned_to_profile: <b>You haven't assigned any processes to this profile.</b> <br/>
                                     Easily assign one or multiple processes to the profile <br/>
-                                    by clicking on 'Assign Process' in the top right corner.
+                                    by clicking on 'Assign Process' in the top right corner. 
