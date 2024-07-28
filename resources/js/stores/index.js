@@ -5,3 +5,4 @@ export * from './process-categories.store';
 export * from './processes.store';
 export * from './profiles-manager.store'
 export * from './globals';
+export * from './categories.store';

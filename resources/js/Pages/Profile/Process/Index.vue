@@ -1,13 +1,15 @@
 <script setup>
-import { useProfilesManagerStore, useProcessesStore } from "@/stores";
+import { useProfilesManagerStore, useProcessesStore, useCategoriesStore } from "@/stores";
 import { computed, onMounted, reactive } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import ProcessBlock from "@/Pages/Profile/Partials/ProcessBlock.vue";
+import CategoryFilter from "@/Pages/Profile/Partials/CategoryFilter.vue";
 
 const profileManagerStore = useProfilesManagerStore();
 const processesStore = useProcessesStore();
+const categoriesStore = useCategoriesStore();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
@@ -21,10 +23,12 @@ const pageProps = reactive({
 });
 
 onMounted(() => {
-  processesStore.init(negotium_api_url, user)
+  processesStore.init(negotium_api_url, user);
   const processes = processesStore.get(null, null, 'category,steps.activities');
-  console.log('Processes: ', processes);
-  console.log('Processes2: ', processesStore.getProcesses());
+  categoriesStore.init(negotium_api_url, user);
+  const categories = categoriesStore.get();
+  console.log('categories: ', categories);
+  console.log('categoriess2: ', categoriesStore.getCategories());
 });
 
 function assignProcess() {
@@ -82,9 +86,11 @@ function assignProcess() {
     </div>
   </div>
   <Button label="Show" @click="visible = true" />
-  <Dialog v-model:visible="pageProps.showProcessModal" modal header="Assign Process" :style="{ width: '50vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+  <Dialog v-model:visible="pageProps.showProcessModal" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <div>
-      <ProcessBlock></ProcessBlock>
+      <category-filter class="mb-2 ml-1"></category-filter>
+      <hr class="mb-3"/>
+      <process-block></process-block>
     </div>
   </Dialog>
 </template>
