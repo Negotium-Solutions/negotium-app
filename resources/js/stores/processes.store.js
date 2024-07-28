@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
-import {ApiHelper} from "@/helpers/index.js";
+import { ApiHelper } from "@/helpers/index.js";
 
 export const useProcessesStore = defineStore({
     id: 'processes',

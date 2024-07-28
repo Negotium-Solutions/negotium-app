@@ -22,7 +22,7 @@ const profileManagerStore = useProfilesManagerStore();
 const props = defineProps({
   profileTypes: Array,
   api_url: String,
-  process_messages: Array
+  process_messages: Object
 });
 
 const pageProps = reactive({
