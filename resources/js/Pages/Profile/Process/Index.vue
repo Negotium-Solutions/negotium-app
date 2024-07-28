@@ -85,7 +85,6 @@ function assignProcess() {
       </div>
     </div>
   </div>
-  <Button label="Show" @click="visible = true" />
   <Dialog v-model:visible="pageProps.showProcessModal" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <div>
       <category-filter class="mb-2 ml-1"></category-filter>
