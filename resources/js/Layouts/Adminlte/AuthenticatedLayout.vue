@@ -30,7 +30,7 @@ import { Sidebar } from "@/Layouts/Adminlte";;
                     <!-- /.content-header -->
 
                     <!-- Main content -->
-                    <div class="content pl-0" id="profiles-content" v-if="$slots.profile">
+                    <div class="content pl-0 pr-0" id="profiles-content" v-if="$slots.profile">
                         <div class="container-fluid pl-0">
                             <main>
                                 <slot name="profile" />
