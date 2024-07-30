@@ -1,18 +1,22 @@
 <script setup>
-import { useProfilesManagerStore, useProcessesStore, useCategoriesStore } from "@/stores";
+import { useProfilesManagerStore, useProcessesStore, useCategoriesStore, useProfileProcessStore } from "@/stores";
 import { computed, onMounted, reactive } from "vue";
 import { usePage } from "@inertiajs/vue3";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import ProcessBlock from "@/Pages/Profile/Partials/ProcessBlock.vue";
 import CategoryFilter from "@/Pages/Profile/Partials/CategoryFilter.vue";
+import Toast from "primevue/toast";
+import {useToast} from "primevue/usetoast";
 
 const profileManagerStore = useProfilesManagerStore();
 const processesStore = useProcessesStore();
 const categoriesStore = useCategoriesStore();
+const profileProcessStore = useProfileProcessStore();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
+const toast = useToast();
 
 const props = defineProps({
   process_messages: Object
@@ -24,15 +28,44 @@ const pageProps = reactive({
 
 onMounted(() => {
   processesStore.init(negotium_api_url, user);
-  const processes = processesStore.get(null, null, 'category,steps.activities');
+  processesStore.get(null, null, 'category,steps.activities');
   categoriesStore.init(negotium_api_url, user);
-  const categories = categoriesStore.get();
-  console.log('categories: ', categories);
-  console.log('categoriess2: ', categoriesStore.getCategories());
+  categoriesStore.get();
+  profileProcessStore.init(negotium_api_url, user);
 });
 
+function ShowAssignProcess() {
+  profileProcessStore.showProcessModal = true;
+}
+
 function assignProcess() {
-  pageProps.showProcessModal = true;
+  profileProcessStore.assignProcesses(toast);
+  profileProcessStore.checkCondition(profileProcessStore.status, setProfileProcesses);
+}
+
+function cancel() {
+  profileProcessStore.selectedProfileProcesses = [];
+  profileProcessStore.showProcessModal = false;
+}
+
+function setProfileProcesses() {
+  profileManagerStore.profile_types.forEach((profile_type, index) => {
+    if(profileManagerStore.profile_type.id === profile_type.id) {
+      profileManagerStore.profile_types[index].profiles.forEach((profile, profile_index) => {
+        if(profileManagerStore.profile.id === profile.id) {
+          let assignedProcessesArray = [];
+          profileProcessStore.selectedProfileProcesses.forEach((item) => {
+            assignedProcessesArray.push(item.process_id);
+          });
+          const assignedProcesses = processesStore.processes.filter((item) => assignedProcessesArray.includes(item.id));
+          const mergedArray = profileManagerStore.profile_types[index].profiles[profile_index].processes.concat(assignedProcesses);
+          profileManagerStore.profile_types[index].profiles[profile_index].processes = mergedArray;
+          profileManagerStore.set('processes', profileManagerStore.profile_types[index].profiles[profile_index].processes);
+          processesStore.selectedProfileProcesses = [];
+        }
+      });
+    }
+  });
 }
 </script>
 <template>
@@ -43,7 +76,7 @@ function assignProcess() {
           <h1 class="text-neutral-700 text-3xl font-bold font-['Roboto']">Processes</h1>
         </div>
         <div class="col-sm-6 text-right">
-          <button @click="assignProcess()" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Assign Process</button>
+          <button @click="ShowAssignProcess()" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Assign Process</button>
         </div>
     </div>
     <div class="col-md-12 pl-2 pr-2">      
@@ -95,11 +128,19 @@ function assignProcess() {
         </table>
       </div>
   </div>
-  <Dialog v-model:visible="pageProps.showProcessModal" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+  <Dialog v-model:visible="profileProcessStore.showProcessModal" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
     <div>
       <category-filter class="mb-2 ml-1"></category-filter>
       <hr class="mb-3"/>
       <process-block></process-block>
+      <hr class="mb-3"/>
+      <div class="row">
+        <div class="col-12 p-4 text-right">
+          <button class="btn btn-sm btn-default mr-2" @click="cancel">Cancel</button>
+          <button class="btn btn-sm btn-default" @click="assignProcess()" :disabled="profileProcessStore.selectedProfileProcesses.length === 0">Add Selected Processes</button>
+        </div>
+      </div>
     </div>
   </Dialog>
+  <Toast/>
 </template>
