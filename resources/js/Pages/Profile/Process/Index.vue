@@ -61,11 +61,11 @@ function setProfileProcesses() {
           const mergedArray = profileManagerStore.profile_types[index].profiles[profile_index].processes.concat(assignedProcesses);
           profileManagerStore.profile_types[index].profiles[profile_index].processes = mergedArray;
           profileManagerStore.set('processes', profileManagerStore.profile_types[index].profiles[profile_index].processes);
-          processesStore.selectedProfileProcesses = [];
         }
       });
     }
   });
+  profileProcessStore.selectedProfileProcesses = [];
 }
 </script>
 <template>
@@ -137,7 +137,8 @@ function setProfileProcesses() {
       <div class="row">
         <div class="col-12 p-4 text-right">
           <button class="btn btn-sm btn-default mr-2" @click="cancel">Cancel</button>
-          <button class="btn btn-sm btn-default" @click="assignProcess()" :disabled="profileProcessStore.selectedProfileProcesses.length === 0">Add Selected Processes</button>
+          <button v-if="!profileProcessStore.status.loading" class="btn btn-sm btn-default" @click="assignProcess()" :disabled="profileProcessStore.selectedProfileProcesses.length === 0 || profileProcessStore.status.loading === true">Add Selected Processes</button>
+          <button v-if="profileProcessStore.status.loading" class="btn btn-sm btn-default" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
         </div>
       </div>
     </div>

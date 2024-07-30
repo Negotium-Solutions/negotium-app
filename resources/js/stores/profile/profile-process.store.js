@@ -118,12 +118,9 @@ export const useProfileProcessStore = defineStore({
         },
         checkCondition(condition, callbackFunction) {
             const check = () => {
-                console.log('Checking condition...');
                 if (condition.loading === true) {
-                    console.log('Still loading ...');
                     setTimeout(check, 100);
                 } else {
-                    console.log('Done loading ...');
                     callbackFunction();
                 }
             };
