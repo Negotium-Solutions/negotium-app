@@ -2,6 +2,7 @@
     --neg-font-default: #353535;
 
     --neg-bg-light: #efefef;
+    --neg-bg-light-rgb: 239, 239, 239;
 
     --neg-light-grey: rgba(0,0,0,.125);
     --neg-dark-grey:#495057;
@@ -133,4 +134,34 @@
 
 .profile-header{
     background-color: var(--neg-bg-light);
+}
+
+.last{
+    width: 1%;
+    white-space: nowrap;
+    border-left: 2px solid var(--neg-bg-light);
+}
+
+.table-row-spacing{
+    border-collapse:separate;
+    border-spacing:0 5px;
+}
+
+th{
+    color: var(--neg-font-default); 
+    font-size: 12px; 
+    font-family: Roboto; 
+    font-weight: 500; 
+    line-height: 12px; 
+    word-wrap: break-word
+}
+
+.table-bg td{
+    color: var(--neg-font-default); 
+    font-size: 14px; 
+    font-family: Roboto; 
+    font-weight: 400; 
+    line-height: 20px; 
+    word-wrap: break-word;
+    background-color: rgba(var(--neg-bg-light-rgb) , 0.25);
 }
