@@ -8,7 +8,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import Avatar from 'primevue/avatar';
 import { usePage } from "@inertiajs/vue3";
-import { useProfilesManagerStore } from "@/stores";
+import { useProfilesManagerStore, useMessagesStore } from "@/stores";
 import ProcessIndex from "@/Pages/Profile/Process/Index.vue";
 
 const page = usePage();
@@ -18,11 +18,13 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
 const confirm = useConfirm();
 const toast = useToast();
 const profileManagerStore = useProfilesManagerStore();
+const messagesStore = useMessagesStore();
 
 const props = defineProps({
   profileTypes: Array,
   api_url: String,
-  process_messages: Object
+  process_messages: Object,
+  messages: Object
 });
 
 const pageProps = reactive({
@@ -36,18 +38,9 @@ onMounted(() =>{
   handleProfileDivHeight()
   // Add a global event listener
   // for window resize
-  console.log(profileManagerStore.profile)
-  window.addEventListener
-  ('resize', handleProfileDivHeight);
+  window.addEventListener('resize', handleProfileDivHeight);
+  messagesStore.init(props.messages);
 });
-
-function selectProfileType(profile) {
-  console.log('Profile: ', profile);
-}
-
-function isSelectedProfileType(profile) {
-  // return profile.id ===
-}
 
 function handleProfileDivHeight(){
   const w = window.innerWidth;

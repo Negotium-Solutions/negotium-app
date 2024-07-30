@@ -38,8 +38,7 @@ export const useCategoriesStore = defineStore({
                 } else {
                     this.categories = this.response.data;
                 }
-            console.log("categories3", this.categories);
-        }
+            }
             this.loading = false;
 
             return this.response;

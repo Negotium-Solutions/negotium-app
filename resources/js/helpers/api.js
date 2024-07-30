@@ -36,8 +36,6 @@ class ApiHelper {
             _url = _url + '?with='+_with;
         }
 
-        console.log("_url", _url);
-
         try {
             const _response = await axios.get(_url, {
                 headers: {

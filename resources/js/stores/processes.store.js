@@ -50,29 +50,6 @@ export const useProcessesStore = defineStore({
 
             return this.response;
         },
-        async assignProcessToProfile(profile_id, process_id)
-        {
-            let _url = this.apiUrl+'/'+this.user.tenant+'/profile/assign-process';
-
-            try {
-                const response = await axios.post(_url, {'profile_id': profile_id, 'process_id': process_id}, {
-                    headers: {
-                        'Content-Type': 'multipart/form-data',
-                        Authorization: `Bearer ` + this.user.token,
-                    },
-                });
-
-                if (response.status === 201) {
-                    this.process.id = response.data.data.id;
-                    this.loading = false;
-                    this.setResponse(response.status, 'success', response.data.message, [], []);
-                }
-            } catch (error) {
-                if(error.response.status !== 404) {
-                    this.setResponse(error.response.status, 'success', error.response.statusText, [], []);
-                }
-            }
-        },
         async fetchProcesses(category_id, id = null)
         {
             this.loading = true;
@@ -227,6 +204,18 @@ export const useProcessesStore = defineStore({
             });
 
             return step;
+        },
+        filterByCategoryExcluding(assigned_processes) {
+            let assigned_processes_array = [];
+            assigned_processes.forEach((process) => {
+                assigned_processes_array.push(process.id);
+            });
+
+            if(this.selected_categories.some((item) => item === 0)) {
+                return this.processes.filter((item) => !assigned_processes_array.includes(item.id));
+            }
+
+            return this.processes.filter((item) => this.selected_categories.indexOf(item.process_category_id) >= 0 && !assigned_processes_array.includes(item.id));
         }
     },
     getters: {
