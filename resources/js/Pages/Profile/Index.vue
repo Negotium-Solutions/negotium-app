@@ -36,6 +36,7 @@ onMounted(() =>{
   handleProfileDivHeight()
   // Add a global event listener
   // for window resize
+  console.log(profileManagerStore.profile)
   window.addEventListener
   ('resize', handleProfileDivHeight);
 });
@@ -78,10 +79,10 @@ function handleProfileDivHeight(){
           <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white">Add Profile</a>
         </div><!-- /.col -->
       </div>
-      <div class="row mb-3">
-        <div class="col-md-12">
+      <div class="row mb-0 mt-1">
+        <div class="col-md-12 pt-4">
           <div class="row">
-            <div v-for="(profile_type, index) in props.profileTypes" :key="index" class="px-1 mb-2">
+            <div v-for="(profile_type, index) in props.profileTypes" :key="index" class="px-1 mb-1">
               <button :class="['float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold', { 'bg-zinc-100' : profileManagerStore.isSelected('profile_type', profile_type) }]" @click="profileManagerStore.set('profile_type', profile_type)">{{profile_type.name}}</button>
             </div>
           </div>
@@ -89,11 +90,11 @@ function handleProfileDivHeight(){
         </div>
     </template>
     <template #profile>
-    <div class="content-container pr-4">
+    <div class="content-container">
 
       <div class="row" id="profiles-sidebar">
-        <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0 mr-2">
-          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile);handleProfileDivHeight()" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex">
+        <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0">
+          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile);handleProfileDivHeight()" :class="profileManagerStore.profile.id == profile.id ?'bg-[#ebebec]':''" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex">
             <div class="w-100 pl-6 pr-2 d-flex">
             <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="props.api_url + profile.avatar"  />
             <span v-if="profileManagerStore.profile_type.name == 'Individual'"  class="flex items-center justify-center text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.first_name }} {{ profile.last_name }} </span>
@@ -102,7 +103,7 @@ function handleProfileDivHeight(){
             </div>
           </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-12 profile-info" id="profiles-detail">
+        <div class="col-lg-3 col-md-4 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail">
           <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-4 border-right pr-3 pl-3" id="profiles-detail-content">
             <div class="row mb-2 pl-4">
               <table class="w-100">
