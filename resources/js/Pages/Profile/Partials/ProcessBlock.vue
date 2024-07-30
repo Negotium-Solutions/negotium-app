@@ -1,37 +1,14 @@
 <script setup>
-  import { useProcessesStore, useProfilesManagerStore } from "@/stores";
-  import { reactive } from "vue";
+  import { useProcessesStore, useProfileProcessStore, useProfilesManagerStore } from "@/stores";
 
   const processStore = useProcessesStore();
+  const profileProcessStore = useProfileProcessStore();
   const profilesManagerStore = useProfilesManagerStore();
-  const pageProps = reactive( {
-    selectedProcesses: []
-  });
-
-  function selectProcess(id){
-    if(pageProps.selectedProcesses.includes(id)) {
-      pageProps.selectedProcesses = pageProps.selectedProcesses.filter((item) => item !== id);
-    } else {
-      pageProps.selectedProcesses.push(id);
-    }
-  }
-
-  function isSelectedProcess(id) {
-    return pageProps.selectedProcesses.includes(id);
-  }
-
-  function addSelectedProcess() {
-    pageProps.selectedProcesses.forEach((process_id) => {
-      console.log('Profile ID: ', profilesManagerStore.profile.id);
-      console.log('Process ID: ', process_id);
-      processStore.assignProcessToProfile(profilesManagerStore.profile.id, process_id);
-    });
-  }
 </script>
 
 <template>
   <div class="row">
-    <div class="col-md-4 col-sm-12 mb-3" v-for="(process, index) in processStore.filterByCategory" :key="index">
+    <div class="col-md-4 col-sm-12 mb-3" v-for="(process, index) in processStore.filterByCategoryExcluding(profilesManagerStore.profile.processes)" :key="index">
       <div class="flex flex-col px-4 py-6 rounded-lg border border-solid bg-neutral-50 border-neutral-700">
         <table class="table table-sm table-borderless">
           <tr>
@@ -47,18 +24,11 @@
               </div>
             </td>
             <td class="align-middle text-right">
-              <button @click="selectProcess(process.id)" class="btn btn-default btn-sm" :class="{ 'isSelected': isSelectedProcess(process.id) }">Select</button>
+              <button @click="profileProcessStore.selectProcess(profilesManagerStore.profile.id, process.id)" class="btn btn-default btn-sm" :class="{ 'isSelected': profileProcessStore.isSelectedProcess(profilesManagerStore.profile.id, process.id) }">Select</button>
             </td>
           </tr>
         </table>
       </div>
-    </div>
-  </div>
-  <hr/>
-  <div class="row">
-    <div class="col-12 p-4 text-right">
-      <button class="btn btn-sm btn-default mr-2" @click="">Cancel</button>
-      <button class="btn btn-sm btn-default" @click="addSelectedProcess()">Add Selected Processes</button>
     </div>
   </div>
 </template>
