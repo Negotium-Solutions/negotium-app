@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
-import {ApiHelper} from "@/helpers/index.js";
+import { ApiHelper } from "@/helpers/index.js";
 
 export const useProcessesStore = defineStore({
     id: 'processes',
@@ -49,6 +49,29 @@ export const useProcessesStore = defineStore({
             this.loading = false;
 
             return this.response;
+        },
+        async assignProcessToProfile(profile_id, process_id)
+        {
+            let _url = this.apiUrl+'/'+this.user.tenant+'/profile/assign-process';
+
+            try {
+                const response = await axios.post(_url, {'profile_id': profile_id, 'process_id': process_id}, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ` + this.user.token,
+                    },
+                });
+
+                if (response.status === 201) {
+                    this.process.id = response.data.data.id;
+                    this.loading = false;
+                    this.setResponse(response.status, 'success', response.data.message, [], []);
+                }
+            } catch (error) {
+                if(error.response.status !== 404) {
+                    this.setResponse(error.response.status, 'success', error.response.statusText, [], []);
+                }
+            }
         },
         async fetchProcesses(category_id, id = null)
         {

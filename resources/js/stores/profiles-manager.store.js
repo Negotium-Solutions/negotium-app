@@ -62,26 +62,12 @@ export const useProfilesManagerStore = defineStore({
                 return this.$state[type].id === item.id;
             }
             return false;
-        },
-        /*
-        setActiveForm(_form) {
-            this.activeForm = _form;
-            this.getForm(_form).clear();
-        },
-        getForm(form) {
-            return this.forms[form];
         }
-        */
     },
     getters: {
         isSet(type) {
             return this.$state[type] !== null;
         },
-        /*
-        getActiveForm() {
-            return this.activeForm;
-        },
-        */
         PROFILE_TYPE: () => _PROFILE_TYPE,
         PROFILES: () => _PROFILES,
         PROFILE: () => _PROFILE
