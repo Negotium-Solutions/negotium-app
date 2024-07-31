@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
-import axios from "axios";
-import { ApiHelper } from "@/helpers/index.js";
+import { ApiHelper } from "@/helpers";
 
 export const useCategoriesStore = defineStore({
     id: 'process-categories',
@@ -9,7 +8,6 @@ export const useCategoriesStore = defineStore({
         apiUrl: '',
         user: Object,
         tenant: '',
-        end_point: 'process-category',
         categories: [],
         response: {
             'code': 0,
@@ -17,16 +15,10 @@ export const useCategoriesStore = defineStore({
             'message': '',
             'errors': [],
             'data': []
-        }
+        },
+        apiHelper: new ApiHelper('process-category')
     }),
     actions: {
-        init(apiUrl, user) {
-            this.apiUrl = apiUrl;
-            this.user = user;
-            this.tenant = user.tenant;
-
-            this.apiHelper = new ApiHelper(this.apiUrl, this.user, this.end_point);
-        },
         async get(id = null, parent_id = null, _with = null)
         {
             this.loading = true;

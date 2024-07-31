@@ -1,37 +1,25 @@
 <script setup>
 import { useProfilesManagerStore, useProcessesStore, useCategoriesStore, useProfileProcessStore } from "@/stores";
 import { computed, onMounted, reactive } from "vue";
-import { usePage } from "@inertiajs/vue3";
 import Dialog from "primevue/dialog";
 import Button from "primevue/button";
 import ProcessBlock from "@/Pages/Profile/Partials/ProcessBlock.vue";
 import CategoryFilter from "@/Pages/Profile/Partials/CategoryFilter.vue";
 import Toast from "primevue/toast";
-import {useToast} from "primevue/usetoast";
+import { useToast } from "primevue/usetoast";
+import { usePage } from "@inertiajs/vue3";
 
 const profileManagerStore = useProfilesManagerStore();
 const processesStore = useProcessesStore();
 const categoriesStore = useCategoriesStore();
 const profileProcessStore = useProfileProcessStore();
-const page = usePage();
-const user = computed(() => page.props.auth.user);
-const negotium_api_url = computed(() => page.props.negotium_api_url);
 const toast = useToast();
-
-const props = defineProps({
-  process_messages: Object
-});
-
-const pageProps = reactive({
-  showProcessModal: false
-});
+const messages = computed(() => usePage().props.messages);
+const no_processes_assigned_to_profile = messages.value.processes.no_processes_assigned_to_profile;
 
 onMounted(() => {
-  processesStore.init(negotium_api_url, user);
   processesStore.get(null, null, 'category,steps.activities');
-  categoriesStore.init(negotium_api_url, user);
   categoriesStore.get();
-  profileProcessStore.init(negotium_api_url, user);
 });
 
 function ShowAssignProcess() {
@@ -119,8 +107,8 @@ function setProfileProcesses() {
         <table v-else class="w-100">
           <tr>
             <td>
-              <div class="text-center" v-html="process_messages.no_processes_assigned_to_profile"></div>
-              <div class="text-center mt-4" >
+              <div class="text-center" v-html="no_processes_assigned_to_profile"></div>
+              <div class="text-center mt-4">
                 <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">View Guide</button>
               </div>
           </td>

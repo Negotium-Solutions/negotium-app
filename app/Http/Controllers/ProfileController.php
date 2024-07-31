@@ -28,9 +28,7 @@ class ProfileController extends Controller
 
         $parameters = [
             'profileTypes' => $profileTypes,
-            'api_url' => env('NEGOTIUM_IMAGES_URL'),
-            'process_messages' => config('messages.processes'),
-            'messages' => config('messages')
+            'api_url' => env('NEGOTIUM_IMAGES_URL')
         ];
 
         return Inertia::render('Profile/Index', $parameters);

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
-import { ApiHelper } from "@/helpers/index.js";
+import { ApiHelper } from "@/helpers";
 
 export const useProcessesStore = defineStore({
     id: 'processes',
@@ -24,16 +24,10 @@ export const useProcessesStore = defineStore({
             'message': '',
             'errors': [],
             'data': []
-        }
+        },
+        apiHelper: new ApiHelper('process')
     }),
     actions: {
-        init(apiUrl, user) {
-            this.apiUrl = apiUrl;
-            this.user = user;
-            this.tenant = user.tenant;
-
-            this.apiHelper = new ApiHelper(this.apiUrl, this.user, this.end_point);
-        },
         async get(id = null, parent_id = null, _with = null)
         {
             this.loading = true;

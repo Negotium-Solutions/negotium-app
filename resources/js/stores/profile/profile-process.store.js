@@ -1,6 +1,13 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
 import { ApiHelper } from "@/helpers/index.js";
+import { usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
+
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+const messages = computed(() => page.props.messages);
+const apiURL = computed(() => page.props.negotium_api_url);
 
 export const useProfileProcessStore = defineStore({
     id: 'profiles',
@@ -11,9 +18,9 @@ export const useProfileProcessStore = defineStore({
         status: {
             loading: false
         },
-        apiUrl: '',
-        user: Object,
-        tenant: '',
+        apiUrl: apiURL.value,
+        user: user.value,
+        tenant: user.value.tenant,
         end_point: 'profile',
         profiles: [],
         profile: {
@@ -29,16 +36,10 @@ export const useProfileProcessStore = defineStore({
             'message': '',
             'errors': [],
             'data': []
-        }
+        },
+        apiHelper: new ApiHelper('profile')
     }),
     actions: {
-        init(apiUrl, user) {
-            this.apiUrl = apiUrl;
-            this.user = user;
-            this.tenant = user.tenant;
-
-            this.apiHelper = new ApiHelper(this.apiUrl, this.user, this.end_point);
-        },
         async get(id = null, parent_id = null, _with = null)
         {
             this.loading = true;
@@ -60,7 +61,7 @@ export const useProfileProcessStore = defineStore({
             this.loading = true;
             this.status.loading = true;
             if(this.selectedProfileProcesses.length === 0) {
-                toast.add({ severity: 'warn', summary: 'Warning', detail: 'No process assigned', life: 3000 });
+                toast.add({ severity: 'warn', summary: 'Warning', detail: messages.value.profile.no_process_assigned, life: 3000 });
                 return false;
             }
 

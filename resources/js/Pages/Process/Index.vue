@@ -48,7 +48,6 @@ const sortByOptions = ref([
   { name: 'Activities', code: 'l' }
 ]);
 
-processStore.init(negotium_api_url, user);
 processStore.setProcesses(props.processes);
 
 onMounted(() =>{

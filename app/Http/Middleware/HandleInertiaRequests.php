@@ -34,7 +34,8 @@ class HandleInertiaRequests extends Middleware
             'auth' => [
                 'user' => $request->user(),
             ],
-            'negotium_api_url' => env('NEGOTIUM_API_URL')
+            'negotium_api_url' => env('NEGOTIUM_API_URL'),
+            'messages' => config('messages')
         ];
     }
 }

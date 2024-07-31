@@ -30,8 +30,6 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
 onMounted(() => {
   stepStore.step.model_id = props.model_id;
   stepStore.step.parent_id = processStore.process.id;
-  processStore.init(negotium_api_url, user);
-  activityStore.init(negotium_api_url, user);
 });
 
 function isInValidStepName() {
