@@ -15,9 +15,7 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
 const breadCrumbs = [{label: 'Home'}, {label: 'Processes'}, {label: 'Create Process', class: 'active'}];
 
 const processCategoryStore = useProcessCategoryStore();
-processCategoryStore.init(negotium_api_url, user.value);
 const processStore = useProcessesStore();
-processStore.init(negotium_api_url, user.value);
 
 const props = defineProps({
   categories: Array,

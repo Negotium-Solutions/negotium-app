@@ -3,6 +3,9 @@ export * from './activities.store';
 export * from './activity-groups.store';
 export * from './process-categories.store';
 export * from './processes.store';
-export * from './profiles-manager.store'
+export * from './profile/profiles-manager.store'
 export * from './globals';
 export * from './categories.store';
+export * from './profile/profile-process.store';
+export * from './messages.store';
+export * from './user/user.store';

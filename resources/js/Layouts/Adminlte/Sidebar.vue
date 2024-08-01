@@ -1,5 +1,6 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted } from 'vue';
+import { Link } from '@inertiajs/vue3';
 
 const csrfToken = ref('')
 onMounted(() => {
@@ -164,15 +165,12 @@ const props = defineProps({
             </a>
           </li>
           <li class="nav-item">
-            <a href="javascript:void(0)" @click="logout" class="nav-link d-flex">          
+            <Link :href="route('logout')" method="post" as="button" class="nav-link d-flex">
               <i class="nav-icon sidemenu-exit"></i>
               <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Logout</span>
-            </a>
+            </Link>
           </li>
         </ul>
-        <form method="post" :action="route('logout')" id="logout">
-          <input type="hidden" :value="csrfToken" name="_token"/>
-        </form>
       </nav>
       <!-- /.sidebar-menu -->
     </div>

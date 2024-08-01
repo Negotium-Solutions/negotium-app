@@ -1,10 +1,8 @@
 import { defineStore } from 'pinia';
-// import { functionsHelper, formsHelper } from '../helpers';
 
 const _PROFILE_TYPE = 'profile_type';
 const _PROFILE = 'profile';
 const _PROFILES = 'profiles';
-// const functionHelper = new functionsHelper();
 export const useProfilesManagerStore = defineStore({
     id: 'profiles_manager',
     state: () => ({
@@ -15,13 +13,6 @@ export const useProfilesManagerStore = defineStore({
         profile: {},
         processes: null,
         process: {},
-        // Other state values
-        /*
-        activeForm: _PROFILE_TYPE_FORM,
-        forms: {
-            profile: new formsHelper({})
-        }
-        */
     }),
     actions: {
         set(type, items) {
