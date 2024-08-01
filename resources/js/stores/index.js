@@ -8,3 +8,4 @@ export * from './globals';
 export * from './categories.store';
 export * from './profile/profile-process.store';
 export * from './messages.store';
+export * from './user/user.store';

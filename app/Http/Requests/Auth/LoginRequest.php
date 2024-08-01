@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Auth\Events\Lockout;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\RateLimiter;
 use Illuminate\Support\Str;
@@ -57,19 +58,21 @@ class LoginRequest extends FormRequest
             } else {
                 $user = User::find($_user->id);
             }
-            $user->id = $response_data->data->user->id;
+
             $user->first_name = $response_data->data->user->first_name;
             $user->last_name = $response_data->data->user->last_name;
             $user->email = $response_data->data->user->email;
+            $user->password = Hash::make($this->password);
             $user->token = $response_data->data->token;
             $user->tenant = $response_data->data->tenant;
             $user->save();
-            Auth::login($user, true);
-        } else {
+        }
+
+        if (! Auth::attempt($this->only('email', 'password'), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
 
             throw ValidationException::withMessages([
-                'email' => $response_data->message
+                'email' => trans('auth.failed'),
             ]);
         }
 
