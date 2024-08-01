@@ -7,6 +7,7 @@ use App\Http\Requests\Auth\LoginRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -41,6 +42,17 @@ class AuthenticatedSessionController extends Controller
      */
     public function destroy(Request $request): RedirectResponse
     {
+        /*
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/logout');
+
+        $responseData = isset(json_decode($response->body(), true)['data']) ? json_decode($response->body(), true)['data'] : [];
+
+        dd($responseData);
+        */
+
         Auth::guard('web')->logout();
 
         $request->session()->invalidate();

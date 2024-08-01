@@ -1,8 +1,14 @@
 import { defineStore } from 'pinia';
 import { useToastr } from "@/toastr.js";
 import axios from "axios";
+import { usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
 
 const toastr = useToastr();
+
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+const apiURL = computed(() => page.props.negotium_api_url);
 
 export const useProcessCategoryStore = defineStore({
     id: 'process-categories',
@@ -18,14 +24,12 @@ export const useProcessCategoryStore = defineStore({
             'message': '',
             'errors': [],
             'data': []
-        }
+        },
+        url: apiURL.value,
+        user: user.value,
+        tenant: user.value.tenant
     }),
     actions: {
-        init(url, user) {
-            this.url = url;
-            this.user = user;
-            this.tenant = user.tenant;
-        },
         async fetchProcessCategories(id = null, _with = null) {
             this.loading = true;
             this.processes = [];

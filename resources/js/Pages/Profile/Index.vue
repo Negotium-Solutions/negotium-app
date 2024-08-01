@@ -8,7 +8,7 @@ import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
 import Avatar from 'primevue/avatar';
 import { usePage } from "@inertiajs/vue3";
-import { useProfilesManagerStore, useMessagesStore } from "@/stores";
+import { useProfilesManagerStore } from "@/stores";
 import ProcessIndex from "@/Pages/Profile/Process/Index.vue";
 
 const page = usePage();
@@ -18,7 +18,6 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
 const confirm = useConfirm();
 const toast = useToast();
 const profileManagerStore = useProfilesManagerStore();
-const messagesStore = useMessagesStore();
 
 const props = defineProps({
   profileTypes: Array,
@@ -36,10 +35,7 @@ onMounted(() =>{
   profileManagerStore.set('profile_type', props.profileTypes[0]);
   profileManagerStore.set('profile', props.profileTypes[0].profiles[0]);
   handleProfileDivHeight()
-  // Add a global event listener
-  // for window resize
   window.addEventListener('resize', handleProfileDivHeight);
-  messagesStore.init(props.messages);
 });
 
 function handleProfileDivHeight(){
@@ -69,7 +65,7 @@ function handleProfileDivHeight(){
           </h1>
         </div><!-- /.col -->
         <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
-          <a :href="route('process.create')" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white">Add Profile</a>
+          <a class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white">Add Profile</a>
         </div><!-- /.col -->
       </div>
       <div class="row mb-0 mt-1">
@@ -87,7 +83,7 @@ function handleProfileDivHeight(){
 
       <div class="row" id="profiles-sidebar">
         <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0">
-          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile);handleProfileDivHeight()" :class="profileManagerStore.profile.id == profile.id ?'bg-[#ebebec]':''" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex">
+          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile);handleProfileDivHeight()" :class="{ 'bg-[#ebebec]': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
             <div class="w-100 pl-6 pr-2 d-flex">
             <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="props.api_url + profile.avatar"  />
             <span v-if="profileManagerStore.profile_type.name == 'Individual'"  class="flex items-center justify-center text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.first_name }} {{ profile.last_name }} </span>
@@ -150,7 +146,7 @@ function handleProfileDivHeight(){
 
           </div>
         </div>
-        <process-index :process_messages="process_messages"></process-index> 
+        <process-index></process-index>
       </div>
     </div>
     </template>

@@ -1,12 +1,18 @@
 import axios from "axios";
+import { usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
+
+const page = usePage();
+const user = computed(() => page.props.auth.user);
+const apiUrl = computed(() => page.props.negotium_api_url);
 
 export { ApiHelper };
 class ApiHelper {
 
-    constructor(apiUrl, user, end_point) {
-        this.apiUrl = apiUrl;
-        this.user = user;
-        this.tenant = user.tenant;
+    constructor(end_point) {
+        this.apiUrl = apiUrl.value;
+        this.user = user.value;
+        this.tenant = user.value.tenant;
         this.end_point = end_point;
         this.response = {
             'code': 0,
