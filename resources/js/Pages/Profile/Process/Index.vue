@@ -16,6 +16,9 @@ const profileProcessStore = useProfileProcessStore();
 const toast = useToast();
 const messages = computed(() => usePage().props.messages);
 const no_processes_assigned_to_profile = messages.value.processes.no_processes_assigned_to_profile;
+const stop_process_confirmation = messages.value.processes.stop_process_confirmation;
+const remove_process_confirmation = messages.value.processes.remove_process_confirmation;
+let profile_name = "";
 
 onMounted(() => {
   processesStore.get(null, null, 'category,steps.activities');
@@ -26,14 +29,25 @@ function ShowAssignProcess() {
   profileProcessStore.showProcessModal = true;
 }
 
+function ShowStopConfimation() {
+  profileProcessStore.showStopConfirmation = true;
+}
+
+function ShowRemoveConfimation() {
+  profileProcessStore.showRemoveConfirmation = true;
+}
+
 function assignProcess() {
-  profileProcessStore.assignProcesses(toast);
+  setProfileName();
+  profileProcessStore.assignProcesses(toast, profile_name);
   profileProcessStore.checkCondition(profileProcessStore.status, setProfileProcesses);
 }
 
 function cancel() {
   profileProcessStore.selectedProfileProcesses = [];
   profileProcessStore.showProcessModal = false;
+  profileProcessStore.showStopConfirmation = false;
+  profileProcessStore.showRemoveConfirmation = false;
 }
 
 function setProfileProcesses() {
@@ -54,6 +68,15 @@ function setProfileProcesses() {
     }
   });
   profileProcessStore.selectedProfileProcesses = [];
+}
+
+function setProfileName(){
+  if(profileManagerStore.profile.company_name === null){
+    profile_name = profileManagerStore.profile.first_name + " " + profileManagerStore.profile.last_name
+  }
+  else{
+    profile_name = profileManagerStore.profile.company_name;
+  }
 }
 </script>
 <template>
@@ -90,11 +113,11 @@ function setProfileProcesses() {
                   <small>Details</small>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item">
+                <a class="dropdown-item" @click="ShowStopConfimation()">
                   <small>Stop</small>
                 </a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item">
+                <a class="dropdown-item" @click="ShowRemoveConfimation()">
                   <small class="text-danger">Remove</small>
                 </a>
               </div>
@@ -129,6 +152,21 @@ function setProfileProcesses() {
           <button v-if="profileProcessStore.status.loading" class="btn btn-sm btn-default" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
         </div>
       </div>
+    </div>
+  </Dialog>
+  <Dialog v-model:visible="profileProcessStore.showStopConfirmation" modal header="Confirm stopping of process">
+    <div class="text-center" v-html="stop_process_confirmation"></div>
+    <div class="col-12 p-4 text-right">
+      <button class="btn btn-sm btn-default mr-2" @click="cancel">Cancel</button>
+      <button class="btn btn-sm btn-default">Yes, Stop</button>
+    </div>
+  </Dialog>
+
+  <Dialog v-model:visible="profileProcessStore.showRemoveConfirmation" modal header="Confirm removal of process">
+    <div class="text-center" v-html="remove_process_confirmation"></div>
+    <div class="col-12 p-4 text-right">
+      <button class="btn btn-sm btn-default mr-2" @click="cancel">Cancel</button>
+      <button class="btn btn-sm btn-default">Yes, Remove</button>
     </div>
   </Dialog>
   <Toast/>

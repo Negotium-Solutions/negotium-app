@@ -3,5 +3,14 @@ processes:
   no_processes_assigned_to_profile: <b>You haven't assigned any processes to this profile.</b> <br/>
                                     Easily assign one or multiple processes to the profile <br/>
                                     by clicking on 'Assign Process' in the top right corner.
+  stop_process_confirmation: Are you sure you want to stop the process named <br/>
+                             {processName} from {profileName}'s profile? <br/><br/>
+                             By stopping this process, no one will be allowed to <br/>
+                             complete it until is resumed. 
+  remove_process_confirmation: Are you sure you want to romove the process named <br/>
+                               {processName} from {profileName}'s profile? <br/><br/>
+                               This will remove the process from this profile only. 
 profile:
   no_process_assigned: You haven't selected any process to be assigned to this profile
+  success_assigning_processes: processes assigned successfully to 
+  error_assigning_processes: We weren't able to assign the selected processes, please try again.
