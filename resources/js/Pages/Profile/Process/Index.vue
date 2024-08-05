@@ -2,23 +2,26 @@
 import { useProfilesManagerStore, useProcessesStore, useCategoriesStore, useProfileProcessStore } from "@/stores";
 import { computed, onMounted, reactive } from "vue";
 import Dialog from "primevue/dialog";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useConfirm } from "primevue/useconfirm";
 import Button from "primevue/button";
 import ProcessBlock from "@/Pages/Profile/Partials/ProcessBlock.vue";
 import CategoryFilter from "@/Pages/Profile/Partials/CategoryFilter.vue";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import { usePage } from "@inertiajs/vue3";
+import { FunctionsHelper } from "@/helpers";
 
 const profileManagerStore = useProfilesManagerStore();
 const processesStore = useProcessesStore();
 const categoriesStore = useCategoriesStore();
 const profileProcessStore = useProfileProcessStore();
 const toast = useToast();
+const confirm = useConfirm();
+const functionsHelper = new FunctionsHelper();
 const messages = computed(() => usePage().props.messages);
 const no_processes_assigned_to_profile = messages.value.processes.no_processes_assigned_to_profile;
 const stop_process_confirmation = messages.value.processes.stop_process_confirmation;
-const remove_process_confirmation = messages.value.processes.remove_process_confirmation;
-let profile_name = "";
 
 onMounted(() => {
   processesStore.get(null, null, 'category,steps.activities');
@@ -38,8 +41,7 @@ function ShowRemoveConfimation() {
 }
 
 function assignProcess() {
-  setProfileName();
-  profileProcessStore.assignProcesses(toast, profile_name);
+  profileProcessStore.assignProcesses(toast, setProfileName());
   profileProcessStore.checkCondition(profileProcessStore.status, setProfileProcesses);
 }
 
@@ -71,13 +73,47 @@ function setProfileProcesses() {
 }
 
 function setProfileName(){
+  let profile_name = '';
   if(profileManagerStore.profile.company_name === null){
     profile_name = profileManagerStore.profile.first_name + " " + profileManagerStore.profile.last_name
-  }
-  else{
+  } else {
     profile_name = profileManagerStore.profile.company_name;
   }
+
+  return profile_name;
 }
+
+function showRemoveProcessConfirmation() {
+  confirm.require({
+    header: 'Confirm removal of process',
+    message: remove_process_confirmation,
+    acceptLabel: 'Yes, Remove',
+    acceptClass: 'btn btn-sm btn-default mr-2',
+    rejectLabel: 'Cancel',
+    rejectClass: 'btn btn-sm btn-default mr-2',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Save'
+    },
+    accept: () => {
+      toast.add({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+    },
+    reject: () => {
+      //
+    }
+  });
+}
+
+const placeHolders = {
+  'processName': profileManagerStore.process.name,
+  'profileName': setProfileName()
+};
+const remove_process_confirmation = functionsHelper.replaceTextVariables(messages.value.processes.remove_process_confirmation, placeHolders);
+
 </script>
 <template>
   <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-7 col-md-5 col-sm-12 pl-0 pr-0">
@@ -96,31 +132,35 @@ function setProfileName(){
             <th>Select</th><th>Process Name</th><th>Current Posistion</th><th>Last opened</th><th>Date edited</th><th>Actions</th>
           </tr>
           <tr v-for="(process, index) in profileManagerStore.processes" :key="index">
-            <td><input type="checkbox"></td><td>{{ process.name }}</td><td>Step 12 - Action 11</td><td>2024-07-11 00:00</td><td>2024-07-11 00:00</td>
+            <td><input type="checkbox"></td>
+            <td>{{ process.name }}</td>
+            <td>Step 12 - Action 11</td>
+            <td>2024-07-11 00:00</td>
+            <td>2024-07-11 00:00</td>
             <td class="last pl-2">
               <div class="d-flex">
-              <button class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">View</button>
-              <div class="flex flex-col items-center pl-2">
-              <button type="button" data-toggle="dropdown" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 inline-flex">
-                <i class="pi pi-ellipsis-v"></i>
-              </button>
-              <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item">
-                  <small>View Process</small>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item">
-                  <small>Details</small>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" @click="ShowStopConfimation()">
-                  <small>Stop</small>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" @click="ShowRemoveConfimation()">
-                  <small class="text-danger">Remove</small>
-                </a>
-              </div>
+                <button class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">View</button>
+                <div class="flex flex-col items-center pl-2">
+                <button type="button" data-toggle="dropdown" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 inline-flex">
+                  <i class="pi pi-ellipsis-v"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu dropdown-menu-right">
+                  <a class="dropdown-item">
+                    <small>View Process</small>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item">
+                    <small>Details</small>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" @click="ShowStopConfimation()">
+                    <small>Stop</small>
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" @click="showRemoveProcessConfirmation()">
+                    <small class="text-danger">Remove</small>
+                  </a>
+                </div>
               </div>
           </div>
             </td>
@@ -161,13 +201,12 @@ function setProfileName(){
       <button class="btn btn-sm btn-default">Yes, Stop</button>
     </div>
   </Dialog>
-
-  <Dialog v-model:visible="profileProcessStore.showRemoveConfirmation" modal header="Confirm removal of process">
-    <div class="text-center" v-html="remove_process_confirmation"></div>
-    <div class="col-12 p-4 text-right">
-      <button class="btn btn-sm btn-default mr-2" @click="cancel">Cancel</button>
-      <button class="btn btn-sm btn-default">Yes, Remove</button>
-    </div>
-  </Dialog>
+  <ConfirmDialog>
+    <template #message="slotProps">
+      <div class="flex flex-col items-center w-full gap-4">
+        <p v-html="slotProps.message.message"></p>
+      </div>
+    </template>
+  </ConfirmDialog>
   <Toast/>
 </template>

@@ -7,7 +7,7 @@ processes:
                              {processName} from {profileName}'s profile? <br/><br/>
                              By stopping this process, no one will be allowed to <br/>
                              complete it until is resumed. 
-  remove_process_confirmation: Are you sure you want to romove the process named <br/>
+  remove_process_confirmation: Are you sure you want to remove the process named <br/>
                                {processName} from {profileName}'s profile? <br/><br/>
                                This will remove the process from this profile only. 
 profile:

@@ -4,8 +4,6 @@ import { AuthenticatedLayout } from "@/Layouts/Adminlte";
 import { onMounted, reactive, computed } from "vue";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import ConfirmDialog from "primevue/confirmdialog";
-import { useConfirm } from "primevue/useconfirm";
 import Avatar from 'primevue/avatar';
 import { usePage } from "@inertiajs/vue3";
 import { useProfilesManagerStore } from "@/stores";
@@ -15,7 +13,6 @@ const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
 
-const confirm = useConfirm();
 const toast = useToast();
 const profileManagerStore = useProfilesManagerStore();
 
@@ -152,7 +149,6 @@ function handleProfileDivHeight(){
     </template>
   </AuthenticatedLayout>
   <Toast/>
-  <ConfirmDialog></ConfirmDialog>
 </template>
 
 <style scoped>
