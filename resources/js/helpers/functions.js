@@ -2,6 +2,14 @@ export { FunctionsHelper };
 class FunctionsHelper {
     /**
      * Replace specific placeholders wrapped in curly braces with corresponding replacement text.
+     * Example usage
+     * const originalText = "This is a {placeholder} and here is another {example}.";
+     * const replacements = {
+     *      placeholder: "`placeholder replaced text`",
+     *      example: "`example replaced text`"
+     * };
+     * const newText = replacePlaceholders(originalText, replacements);
+     * Output: This is a `placeholder replaced text` and here is another `example replaced text`
      *
      * @param {string} text - The input string containing placeholders wrapped in curly braces.
      * @param {Object} replacements - An object mapping placeholders to their replacement texts.
@@ -18,16 +26,4 @@ class FunctionsHelper {
         });
     }
 
-    /*
-    // Example usage
-    const originalText = "This is a {placeholder} and here is another {example}.";
-    const replacements = {
-        placeholder: "`placeholder replaced text`",
-        example: "`example replaced text`"
-    };
-
-    const newText = replacePlaceholders(originalText, replacements);
-    console.log(newText);
-    Output: This is a `placeholder replaced text` and here is another `example replaced text`.
-    **/
 }
