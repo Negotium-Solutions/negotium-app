@@ -1,6 +1,6 @@
 <script setup>
 import { useProfilesManagerStore, useProcessesStore, useCategoriesStore, useProfileProcessStore } from "@/stores";
-import { computed, onMounted, reactive } from "vue";
+import { computed, onMounted } from "vue";
 import Dialog from "primevue/dialog";
 import ConfirmDialog from "primevue/confirmdialog";
 import { useConfirm } from "primevue/useconfirm";
@@ -63,7 +63,7 @@ function setProfileProcesses() {
 
 function setProfileName(){
   let profile_name = '';
-  if(profileManagerStore.profile.company_name === null){
+  if(profileManagerStore.profile.profile_type_id === 1){
     profile_name = profileManagerStore.profile.first_name + " " + profileManagerStore.profile.last_name
   } else {
     profile_name = profileManagerStore.profile.company_name;
@@ -89,7 +89,11 @@ function showRemoveProcessConfirmation() {
       label: 'Save'
     },
     accept: () => {
-      toast.add({ severity: 'success', detail: profileManagerStore.process.name + " " + messages.value.processes.success_removing_process, life: 3000 });
+      try{
+        toast.add({ severity: 'success', detail: profileManagerStore.process.name + " " + messages.value.processes.success_removing_process, life: 3000 });
+      }catch (error) {
+        toast.add({ severity: 'error', detail: functionsHelper.replaceTextVariables(messages.value.processes.error_removing_process, profileManagerStore.getRemoveProcessVariables), life: 3000 });
+      }
     },
     reject: () => {
       //
@@ -114,7 +118,11 @@ function showStopProcessConfirmation() {
       label: 'Save'
     },
     accept: () => {
-      toast.add({ severity: 'success', detail: profileManagerStore.process.name + " " + messages.value.processes.success_stopping_process, life: 3000 });
+      try{
+        toast.add({ severity: 'success', detail: profileManagerStore.process.name + " " + messages.value.processes.success_stopping_process, life: 3000 });
+      }catch (error) {
+        toast.add({ severity: 'error', detail: functionsHelper.replaceTextVariables(messages.value.processes.error_stopping_process, profileManagerStore.getRemoveProcessVariables), life: 3000 });
+      }
     },
     reject: () => {
       //

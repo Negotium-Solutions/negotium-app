@@ -12,6 +12,8 @@ processes:
                                This will remove the process from this profile only.
   success_stopping_process: stopped successfully.
   success_removing_process: removed successfully.
+  error_stopping_process: We weren't able to stop {processName}, please try again.
+  error_removing_process: We weren't able to remove {processName}, please try again.
 profile:
   no_process_assigned: You haven't selected any process to be assigned to this profile
   success_assigning_processes: processes assigned successfully to 
