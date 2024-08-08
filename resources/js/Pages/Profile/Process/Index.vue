@@ -18,7 +18,7 @@ const categoriesStore = useCategoriesStore();
 const profileProcessStore = useProfileProcessStore();
 const toast = useToast();
 const confirm = useConfirm();
-const functionsHelper = new FunctionsHelper();
+// const functionsHelper = new FunctionsHelper();
 const messages = computed(() => usePage().props.messages);
 const no_processes_assigned_to_profile = messages.value.processes.no_processes_assigned_to_profile;
 const stop_process_confirmation = messages.value.processes.stop_process_confirmation;
@@ -86,7 +86,7 @@ function setProfileName(){
 function showRemoveProcessConfirmation() {
   confirm.require({
     header: 'Confirm removal of process',
-    message: functionsHelper.replaceTextVariables(messages.value.processes.remove_process_confirmation, profileManagerStore.getRemoveProcessVariables),
+    message: FunctionsHelper.replaceTextVariables(messages.value.processes.remove_process_confirmation, profileManagerStore.getRemoveProcessVariables),
     acceptLabel: 'Yes, Remove',
     acceptClass: 'btn btn-sm btn-default mr-2',
     rejectLabel: 'Cancel',
@@ -128,9 +128,9 @@ function showRemoveProcessConfirmation() {
           <tr v-for="(process, index) in profileManagerStore.processes" :key="index" :class="{ 'bg-gray-200': profileManagerStore.isSelected('process', process)}">
             <td><input type="checkbox"></td>
             <td>{{ process.name }}</td>
-            <td>Step 12 - Action 11</td>
-            <td>2024-07-11 00:00</td>
-            <td>2024-07-11 00:00</td>
+            <td>{{ process.log.step.name }}</td>
+            <td>{{ FunctionsHelper.DateTime(process.log.updated_at) }}</td>
+            <td>{{ FunctionsHelper.DateTime(process.log.created_at) }}</td>
             <td class="last pl-2">
               <div class="d-flex">
                 <button class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">View</button>
