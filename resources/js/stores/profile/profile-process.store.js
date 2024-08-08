@@ -98,6 +98,47 @@ export const useProfileProcessStore = defineStore({
                 this.status.loading = false;
             }
         },
+        async updateProcessLogStatus(process_log_id = 0, process_status_id = 0)
+        {
+            this.loading = true;
+            this.status.loading = true;
+            if(process_log_id === 0 || process_status_id === 0) {
+                toast.add({ severity: 'warn', detail: messages.value.profile.no_process_assigned, life: 3000 });
+                return false;
+            }
+
+            let _url = this.apiUrl+'/'+this.user.tenant+'/process/update-process-log-status';
+
+            const data = {
+                "process_log_id": process_log_id,
+                "process_status_id": process_status_id
+            };
+
+            try {
+                const response = await axios.put(_url, data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ` + this.user.token,
+                    },
+                });
+
+                if (response.status === 200) {
+                    this.setResponse(response.status, 'success', response.data.message, [], []);
+                    toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_assigning_processes + " " + profile_name, life: 3000 });
+                    this.showProcessModal = false;
+                    // this.selectedProfileProcesses = [];
+                    this.loading = false;
+                    this.status.loading = false;
+                }
+            } catch (error) {
+                if(error.response.status !== 404) {
+                    this.setResponse(error.response.status, 'success', error.response.statusText, [], []);
+                    toast.add({ severity: 'error', summary: 'Error', detail: messages.value.profile.error_assigning_processes, life: 3000 });
+                }
+                this.loading = false;
+                this.status.loading = false;
+            }
+        },
         selectProcess(profile_id, process_id){
             let item = {
               'profile_id': profile_id,
@@ -148,6 +189,11 @@ export const useProfileProcessStore = defineStore({
         }
     },
     getters: {
-
+        PROCESS_STATUS_ASSIGNED: () => 1,
+        PROCESS_STATUS_ACTIVE: () => 2,
+        PROCESS_STATUS_COMPLETED: () => 3,
+        PROCESS_STATUS_STOPPED: () => 4,
+        PROCESS_STATUS_RESUMED: () => 5,
+        PROCESS_STATUS_ARCHIVED: () => 6
     }
 });
