@@ -9,8 +9,13 @@ processes:
                              complete it until is resumed. 
   remove_process_confirmation: Are you sure you want to remove the process named <br/>
                                {processName} from {profileName}'s profile? <br/><br/>
-                               This will remove the process from this profile only. 
+                               This will remove the process from this profile only.
+  success_stopping_process: stopped successfully.
+  success_removing_process: removed successfully.
+  error_stopping_process: We weren't able to stop {processName}, please try again.
+  error_removing_process: We weren't able to remove {processName}, please try again.
 profile:
   no_process_assigned: You haven't selected any process to be assigned to this profile
   success_assigning_processes: processes assigned successfully to 
   error_assigning_processes: We weren't able to assign the selected processes, please try again.
+
