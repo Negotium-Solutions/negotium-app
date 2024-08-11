@@ -117,19 +117,22 @@ function setProfileProcesses() {
       </div>
   </div>
   <Dialog v-model:visible="profileProcessStore.showProcessModal" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
-    <div>
-      <category-filter class="mb-2 ml-1"></category-filter>
-      <hr class="mb-3"/>
-      <process-block></process-block>
-      <hr class="mb-3"/>
-      <div class="row">
-        <div class="col-12 p-4 text-right">
-          <button class="btn btn-sm btn-default mr-2" @click="cancel">Cancel</button>
-          <button v-if="!profileProcessStore.status.loading" class="btn btn-sm btn-default" @click="assignProcess()" :disabled="profileProcessStore.selectedProfileProcesses.length === 0 || profileProcessStore.status.loading === true">Add Selected Processes</button>
-          <button v-if="profileProcessStore.status.loading" class="btn btn-sm btn-default" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+      <template #header>
+        <div class="row">
+          <div class="text-[#353535] text-2xl font-bold font-['Roboto'] leading-loose w-100">Assign process</div>
+          <category-filter class="mb-2 ml-1"></category-filter>
         </div>
-      </div>
-    </div>
+      </template>
+      <process-block></process-block>      
+      <template #footer>
+        <div class="row">
+          <div class="col-12 p-4 text-right">
+            <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="cancel">Cancel</button>
+            <button v-if="!profileProcessStore.status.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" @click="assignProcess()" :disabled="profileProcessStore.selectedProfileProcesses.length === 0 || profileProcessStore.status.loading === true">Add Selected Processes</button>
+            <button v-if="profileProcessStore.status.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+          </div>
+        </div>
+      </template>
   </Dialog>
-  <Toast/>
+  <!-- <Toast  position="top-center"/> -->
 </template>
