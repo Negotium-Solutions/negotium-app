@@ -1,5 +1,6 @@
 :root {
     --neg-font-default: #353535;
+    --neg-grey:rgba(53, 53, 53, .25);
 
     --neg-bg-light: #efefef;
     --neg-bg-light-rgb: 239, 239, 239;
@@ -52,7 +53,7 @@
   } 
 
 .border-neutral-700{
-    border-color: var(--neg-light-grey) !important;
+    border-color: var(--neg-grey) !important;
 }
 
 .bg-zinc-100{
@@ -190,6 +191,40 @@ th{
     line-height: 20px; 
     word-wrap: break-word;
     background-color: rgba(var(--neg-bg-light-rgb) , 0.25);
+}
+
+.p-dialog .p-dialog-header {
+    border-bottom: 2px solid var(--neg-grey) !important;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
+    padding: 0px !important;
+}
+
+.p-dialog .p-dialog-header-icons {
+    display: flex;
+    position: relative;
+    top: -1.5rem;
+    background: #F2F6F7;
+    border-radius: 4px;
+}
+
+.p-dialog .p-dialog-content {
+    background: #ffffff;
+    color: #334155;
+    padding: 0 1.5rem 0 1.5rem !important;
+}
+
+.p-dialog .p-dialog-footer {
+    border-top:  2px solid var(--neg-grey) !important;
+    padding: 0px !important;
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-left: 1.5rem;
+    margin-right: 1.5rem;
+    margin-top: 1rem;
 }
 
 .p-component {

@@ -118,7 +118,7 @@ function setProfileProcesses() {
   </div>
   <Dialog v-model:visible="profileProcessStore.showProcessModal" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
       <template #header>
-        <div class="row">
+        <div class="row m-0 p-0 pb-2">
           <div class="text-[#353535] text-2xl font-bold font-['Roboto'] leading-loose w-100">Assign process</div>
           <category-filter class="mb-2 ml-1"></category-filter>
         </div>
