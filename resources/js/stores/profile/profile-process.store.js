@@ -3,11 +3,13 @@ import axios from "axios";
 import { ApiHelper } from "@/helpers/index.js";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
+//import { useToast } from "primevue/usetoast";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const messages = computed(() => page.props.messages);
 const apiURL = computed(() => page.props.negotium_api_url);
+//const toast = useToast();
 
 export const useProfileProcessStore = defineStore({
     id: 'profiles',
@@ -115,7 +117,10 @@ export const useProfileProcessStore = defineStore({
             };
 
             try {
-                const response = await axios.put(_url, data, {
+                const response = await axios({
+                    method: 'post',
+                    url: _url,
+                    data: data,
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ` + this.user.token,
@@ -124,16 +129,17 @@ export const useProfileProcessStore = defineStore({
 
                 if (response.status === 200) {
                     this.setResponse(response.status, 'success', response.data.message, [], []);
-                    toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_assigning_processes + " " + profile_name, life: 3000 });
+                    toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_stopping_process + " " + profile_name, life: 3000 });
                     this.showProcessModal = false;
                     // this.selectedProfileProcesses = [];
                     this.loading = false;
                     this.status.loading = false;
                 }
             } catch (error) {
+                console.log('Error1: ', error);
                 if(error.response.status !== 404) {
                     this.setResponse(error.response.status, 'success', error.response.statusText, [], []);
-                    toast.add({ severity: 'error', summary: 'Error', detail: messages.value.profile.error_assigning_processes, life: 3000 });
+                    toast.add({ severity: 'error', summary: 'Error', detail: messages.value.profile.error_stopping_process, life: 3000 });
                 }
                 this.loading = false;
                 this.status.loading = false;

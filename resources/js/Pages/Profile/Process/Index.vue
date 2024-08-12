@@ -71,7 +71,7 @@ function setProfileName(){
   return profile_name;
 }
 
-function showRemoveProcessConfirmation(status) {
+function showRemoveProcessConfirmation(process_log_id, process_status_id) {
   confirm.require({
     header: 'Confirm removal of process',
     message: FunctionsHelper.replaceTextVariables(messages.value.processes.remove_process_confirmation, profileManagerStore.getRemoveProcessVariables),
@@ -89,7 +89,7 @@ function showRemoveProcessConfirmation(status) {
     },
     accept: () => {
       try{
-
+        profileProcessStore.updateProcessLogStatus(process_log_id, process_status_id);
         toast.add({ severity: 'success', detail: profileManagerStore.process.name + " " + messages.value.processes.success_removing_process, life: 3000 });
       }catch (error) {
         toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.error_removing_process, profileManagerStore.getRemoveProcessVariables), life: 3000 });
@@ -101,7 +101,7 @@ function showRemoveProcessConfirmation(status) {
   });
 }
 
-function showStopProcessConfirmation() {
+function showStopProcessConfirmation(process_log_id, process_status_id) {
   confirm.require({
     header: 'Confirm stopping of process',
     message: FunctionsHelper.replaceTextVariables(messages.value.processes.stop_process_confirmation, profileManagerStore.getRemoveProcessVariables),
@@ -119,6 +119,7 @@ function showStopProcessConfirmation() {
     },
     accept: () => {
       try{
+        profileProcessStore.updateProcessLogStatus(process_log_id, process_status_id);
         toast.add({ severity: 'success', detail: profileManagerStore.process.name + " " + messages.value.processes.success_stopping_process, life: 3000 });
       }catch (error) {
         toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.error_stopping_process, profileManagerStore.getRemoveProcessVariables), life: 3000 });
@@ -169,16 +170,16 @@ function showStopProcessConfirmation() {
                     <small>Details</small>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(profileProcessStore.PROCESS_STATUS_ACTIVE)">
+                  <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(process.log.id, profileProcessStore.PROCESS_STATUS_ACTIVE)">
                     <small>Resume</small>
                   </a>
-                  <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(profileProcessStore.PROCESS_STATUS_STOPPED)">
+                  <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(process.log.id, profileProcessStore.PROCESS_STATUS_STOPPED)">
                     <small>Stop</small>
                   </a>
-                  <a v-if="process.log.status.name === 'assigned'" class="dropdown-item" @click="showRemoveProcessConfirmation(profileProcessStore.PROCESS_STATUS_ARCHIVED)">
+                  <a v-if="process.log.status.name === 'assigned'" class="dropdown-item" @click="showRemoveProcessConfirmation(process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED)">
                     <small class="text-danger cursor-pointer">Remove</small>
                   </a>
-                  <a v-if="process.log.status.name === 'completed'" class="dropdown-item cursor-pointer" @click="showRemoveProcessConfirmation(profileProcessStore.PROCESS_STATUS_ARCHIVED)">
+                  <a v-if="process.log.status.name === 'completed'" class="dropdown-item cursor-pointer" @click="showRemoveProcessConfirmation(process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED)">
                     <small class="text-danger">Archive</small>
                   </a>
                 </div>

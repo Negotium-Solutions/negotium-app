@@ -62,7 +62,7 @@ export const useProfilesManagerStore = defineStore({
         getRemoveProcessVariables() {
           return {
               'processName': this.process.name,
-              'profileName': this.profile.company_name !== null ? this.profile.company_name : this.profile.first_name + ' ' + this.profile.last_name
+              'profileName': this.profile.profile_type_id !== 1 ? this.profile.company_name : this.profile.first_name + ' ' + this.profile.last_name
           }
         },
         PROFILE_TYPE: () => _PROFILE_TYPE,
