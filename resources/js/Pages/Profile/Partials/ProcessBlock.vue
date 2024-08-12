@@ -33,9 +33,3 @@
     </div>
   </div>
 </template>
-<style scoped>
-  .isSelected {
-    background-color: grey;
-    color: white;
-  }
-</style>

@@ -145,12 +145,12 @@ function showStopProcessConfirmation() {
     <div class="col-md-12 pl-2 pr-2">      
         <table v-if="profileManagerStore.processes.length > 0" class="table-sm w-100 table-row-spacing table-bg">
           <tr>
-            <th>Select</th><th>Process Name</th><th>Current Posistion</th><th>Last opened</th><th>Date edited</th><th>Actions</th>
+            <th>Select</th><th>Process Name</th><th>Current Posistion</th><th>Last Opened</th><th>Date Added</th><th>Actions</th>
           </tr>
           <tr v-for="(process, index) in profileManagerStore.processes" :key="index" :class="{ 'bg-gray-200': profileManagerStore.isSelected('process', process)}">
             <td><input type="checkbox"></td>
             <td>{{ process.name }}</td>
-            <td>Step 12 - Action 11</td>
+            <td>Step 12 - Task 11</td>
             <td>2024-07-11 00:00</td>
             <td>2024-07-11 00:00</td>
             <td class="last pl-2">
@@ -195,7 +195,7 @@ function showStopProcessConfirmation() {
         </table>
       </div>
   </div>
-  <Dialog v-model:visible="profileProcessStore.showProcessModal" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+  <Dialog v-model:visible="profileProcessStore.showProcessModal" :draggable="false" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
       <template #header>
         <div class="row m-0 p-0 pb-2">
           <div class="text-[#353535] text-2xl font-bold font-['Roboto'] leading-loose w-100">Assign process</div>
@@ -214,11 +214,18 @@ function showStopProcessConfirmation() {
       </template>
   </Dialog>
   <ConfirmDialog>
-    <template #message="slotProps">
-      <div class="flex flex-col items-center w-full gap-4">
-        <p v-html="slotProps.message.message"></p>
+    <template #container="{ message, acceptCallback, rejectCallback }">
+      <div class="flex flex-col w-full gap-4 p-4">
+        <span class="text-2xl font-bold font-['Roboto'] leading-loose">{{ message.header }}</span>
+        <p class="text-base font-normal font-['Nunito'] leading-normal" v-html="message.message"></p>
+      </div>
+      <div class="row">
+        <div class="col-12 py-3 px-4 text-right">
+          <Button label="Cancel" outlined @click="rejectCallback" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2"></Button>
+          <Button v-if="message.message.includes('remove')" label="Yes, Remove" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
+          <Button v-if="message.message.includes('stop')" label="Yes, Stop" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
+        </div>
       </div>
     </template>
   </ConfirmDialog>
-  <Toast/>
 </template>
