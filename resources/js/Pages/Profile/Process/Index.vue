@@ -145,12 +145,12 @@ function showStopProcessConfirmation() {
     <div class="col-md-12 pl-2 pr-2">      
         <table v-if="profileManagerStore.processes.length > 0" class="table-sm w-100 table-row-spacing table-bg">
           <tr>
-            <th>Select</th><th>Process Name</th><th>Current Posistion</th><th>Last opened</th><th>Date edited</th><th>Actions</th>
+            <th>Select</th><th>Process Name</th><th>Current Posistion</th><th>Last Opened</th><th>Date Added</th><th>Actions</th>
           </tr>
           <tr v-for="(process, index) in profileManagerStore.processes" :key="index" :class="{ 'bg-gray-200': profileManagerStore.isSelected('process', process)}">
             <td><input type="checkbox"></td>
             <td>{{ process.name }}</td>
-            <td>Step 12 - Action 11</td>
+            <td>Step 12 - Task 11</td>
             <td>2024-07-11 00:00</td>
             <td>2024-07-11 00:00</td>
             <td class="last pl-2">
@@ -195,7 +195,7 @@ function showStopProcessConfirmation() {
         </table>
       </div>
   </div>
-  <Dialog v-model:visible="profileProcessStore.showProcessModal" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
+  <Dialog v-model:visible="profileProcessStore.showProcessModal" :draggable="false" modal header="Assign Process" :style="{ width: '75vw' }" :breakpoints="{ '1199px': '75vw', '575px': '90vw' }">
       <template #header>
         <div class="row m-0 p-0 pb-2">
           <div class="text-[#353535] text-2xl font-bold font-['Roboto'] leading-loose w-100">Assign process</div>
