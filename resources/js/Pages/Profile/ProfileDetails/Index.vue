@@ -1,5 +1,5 @@
 <script setup>
-import {useProfilesManagerStore} from "@/stores/index.js";
+import { useProfilesManagerStore } from "@/stores/index.js";
 
 const profileManagerStore = useProfilesManagerStore();
 </script>

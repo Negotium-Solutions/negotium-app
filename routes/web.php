@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
     // Profiles
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/details', [ProfileController::class, 'details'])->name('profile.details');
 
     Route::get('/process', [ProcessController::class, 'index'])->name('process');
     Route::get('/process/create', [ProcessController::class, 'create'])->name('process.create');

@@ -3,13 +3,11 @@ import axios from "axios";
 import { ApiHelper } from "@/helpers/index.js";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
-//import { useToast } from "primevue/usetoast";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const messages = computed(() => page.props.messages);
 const apiURL = computed(() => page.props.negotium_api_url);
-//const toast = useToast();
 
 export const useProfileProcessStore = defineStore({
     id: 'profiles',
@@ -34,6 +32,7 @@ export const useProfileProcessStore = defineStore({
             'steps': []
         },
         selected_categories: [0],
+        excluded_processes: [],
         response: {
             'code': 0,
             'status': '',
@@ -87,13 +86,12 @@ export const useProfileProcessStore = defineStore({
                     this.setResponse(response.status, 'success', response.data.message, [], []);
                     toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_assigning_processes + " " + profile_name, life: 3000 });
                     this.showProcessModal = false;
-                    // this.selectedProfileProcesses = [];
                     this.loading = false;
                     this.status.loading = false;
                 }
             } catch (error) {
                 if(error.response.status !== 404) {
-                    this.setResponse(error.response.status, 'success', error.response.statusText, [], []);
+                    this.setResponse(error.response.status, 'error', error.response.statusText, [], []);
                     toast.add({ severity: 'error', summary: 'Error', detail: messages.value.profile.error_assigning_processes, life: 3000 });
                 }
                 this.loading = false;
@@ -105,7 +103,7 @@ export const useProfileProcessStore = defineStore({
             this.loading = true;
             this.status.loading = true;
             if(process_log_id === 0 || process_status_id === 0) {
-                toast.add({ severity: 'warn', detail: messages.value.profile.no_process_assigned, life: 3000 });
+                this.setResponse(422, 'error', messages.value.error.input_validation_error, [], []);
                 return false;
             }
 
@@ -117,10 +115,7 @@ export const useProfileProcessStore = defineStore({
             };
 
             try {
-                const response = await axios({
-                    method: 'post',
-                    url: _url,
-                    data: data,
+                const response = await axios.post(_url, data, {
                     headers: {
                         'Content-Type': 'multipart/form-data',
                         Authorization: `Bearer ` + this.user.token,
@@ -129,21 +124,26 @@ export const useProfileProcessStore = defineStore({
 
                 if (response.status === 200) {
                     this.setResponse(response.status, 'success', response.data.message, [], []);
-                    toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_stopping_process + " " + profile_name, life: 3000 });
                     this.showProcessModal = false;
-                    // this.selectedProfileProcesses = [];
+                    this.loading = false;
+                    this.status.loading = false;
+                }
+
+                if (response.status === 204) {
+                    this.setResponse(response.status, 'success', response.statusText, [], []);
+                    this.showProcessModal = false;
                     this.loading = false;
                     this.status.loading = false;
                 }
             } catch (error) {
-                console.log('Error1: ', error);
                 if(error.response.status !== 404) {
-                    this.setResponse(error.response.status, 'success', error.response.statusText, [], []);
-                    toast.add({ severity: 'error', summary: 'Error', detail: messages.value.profile.error_stopping_process, life: 3000 });
+                    this.setResponse(error.response.status, 'error', error.response.statusText, [], []);
                 }
                 this.loading = false;
                 this.status.loading = false;
             }
+
+            return true;
         },
         selectProcess(profile_id, process_id){
             let item = {
@@ -166,12 +166,12 @@ export const useProfileProcessStore = defineStore({
 
             return this.selectedProfileProcesses.some(_item => _item.profile_id === item.profile_id && _item.process_id === item.process_id)
         },
-        checkCondition(condition, callbackFunction) {
+        checkCondition(state, callbackFunction) {
             const check = () => {
-                if (condition.loading === true) {
+                if (state.loading === true) {
                     setTimeout(check, 100);
                 } else {
-                    callbackFunction();
+                    callbackFunction(state);
                 }
             };
             check();

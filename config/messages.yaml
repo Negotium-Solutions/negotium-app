@@ -6,6 +6,7 @@ success:
 error:
   not_found: "Item not found."
   unauthorized: "You are not authorized to perform this action."
+  input_validation_error: "Input validation error."
 info:
   welcome: "Welcome to the application!"
   goodbye: "Goodbye! See you again soon."

@@ -8,6 +8,7 @@ import Avatar from 'primevue/avatar';
 import { usePage } from "@inertiajs/vue3";
 import { useProfilesManagerStore } from "@/stores";
 import ProcessIndex from "@/Pages/Profile/Process/Index.vue";
+import ProfileDetailsIndex from "@/Pages/Profile/ProfileDetails/Index.vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -128,11 +129,11 @@ function handleProfileDivHeight(){
             <div class="row mb-3"></div>
             <h2 class="font-bold">Profile navigation</h2>
             <div class="row mb-3"></div>
-            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 bg-slate-500 text-white">Processes <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><a :href="route('profile')" :class="{' bg-slate-500 text-white' : route().current('profile')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Processes <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.details')" :class="{' bg-slate-500 text-white' : route().current('profile.details')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Details <i class="fa fa-chevron-right float-right"></i></a></div>
             <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Communications <i class="fa fa-chevron-right float-right"></i></button></div>
             <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Documents <i class="fa fa-chevron-right float-right"></i></button></div>
             <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></button></div>
-            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Details <i class="fa fa-chevron-right float-right"></i></button></div>
 
             <div class="row mb-3"></div>
 
@@ -143,7 +144,8 @@ function handleProfileDivHeight(){
 
           </div>
         </div>
-        <process-index></process-index>
+        <process-index v-if="route().current('profile')"></process-index>
+        <profile-details-index v-if="route().current('profile.details')"></profile-details-index>
       </div>
     </div>
     </template>
