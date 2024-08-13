@@ -34,12 +34,15 @@ onMounted(() =>{
   profileManagerStore.set('profile_type', props.profileTypes[0]);
   profileManagerStore.set('profile', props.profileTypes[0].profiles[0]);
   handleProfileDivHeight()
+  window.addEventListener('DOMContentLoaded',handleProfileMenuDivHeight);
   window.addEventListener('resize', handleProfileDivHeight);
+  window.addEventListener('resize', handleProfileMenuDivHeight);
 });
 
 function handleProfileDivHeight(){
   const w = window.innerWidth;
   const h = window.innerHeight;
+
 
   var element = document.getElementById('profiles-header');
   var height = element.offsetHeight;
@@ -49,6 +52,28 @@ function handleProfileDivHeight(){
   document.getElementById('profiles-detail').style.minHeight = newHeight+'px'
   if(document.getElementById('profiles-detail-content')){
   document.getElementById('profiles-detail-content').style.minHeight = newHeight+'px'
+  }
+}
+
+function handleProfileMenuDivHeight(){
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+  if(document.getElementById('profile-view-menu')){
+    let clientViewMenuWidth = document.getElementById('profile-view-menu').offsetWidth
+    if(h > 835){
+      document.getElementById('client-view-menu').style.position = 'fixed'
+      document.getElementById('client-view-menu').style.bottom = '1.5rem'
+      if(clientViewMenuWidth > 0){
+        document.getElementById('client-view-menu').style.width = clientViewMenuWidth+'px'
+      }
+    } else {
+      document.getElementById('client-view-menu').style.position = null
+      document.getElementById('client-view-menu').style.bottom = null
+      if(clientViewMenuWidth > 0){
+        document.getElementById('client-view-menu').style.width = clientViewMenuWidth+'px'
+      }
+    }
   }
 }
 
@@ -91,8 +116,8 @@ function handleProfileDivHeight(){
             </div>
           </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail">
-          <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-4 border-right pr-3 pl-3" id="profiles-detail-content">
+        <div class="col-lg-3 col-md-4 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail" style="position:relative">
+          <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-4 border-right pr-3 pl-3 col-md-12" id="profiles-detail-content">
             <div class="row mb-2 pl-2">
               <table class="w-100">
                 <tr>
@@ -128,8 +153,8 @@ function handleProfileDivHeight(){
             </div>
 
             <div class="row mb-3"></div>
-            <h2 class="font-bold">Profile navigation</h2>
-            <div class="row mb-3"></div>
+            <div id="profile-view-menu">
+            <h2 class="font-bold mb-2">Profile navigation</h2>
             <div><a :href="route('profile')" :class="{' bg-slate-500 text-white' : route().current('profile')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Processes <i class="fa fa-chevron-right float-right"></i></a></div>
             <div><a :href="route('profile.details')" :class="{' bg-slate-500 text-white' : route().current('profile.details')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Details <i class="fa fa-chevron-right float-right"></i></a></div>
             <div><a :href="route('profile.communications')" :class="{' bg-slate-500 text-white' : route().current('profile.communications')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Communications <i class="fa fa-chevron-right float-right"></i></a></div>
@@ -137,12 +162,12 @@ function handleProfileDivHeight(){
             <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></button></div>
 
             <div class="row mb-3"></div>
-
-            <h2 class="font-bold">Client view</h2>
-            <div class="row mb-3"></div>
-            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Requested information <i class="fa fa-chevron-right float-right"></i></button></div>
-            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Access <i class="fa fa-chevron-right float-right"></i></button></div>
-
+          </div>
+          <div class="row col-md-12 p-0 m-0" id="client-view-menu">
+            <h2 class="font-bold mb-2 col-md-12 p-0">Client view</h2>
+            <div class="col-md-12 p-0"><button class=" col-md-12 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Requested information <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div class="col-md-12 p-0"><button class=" col-md-12 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Access <i class="fa fa-chevron-right float-right"></i></button></div>
+          </div>
           </div>
         </div>
         <process-index v-if="route().current('profile')"></process-index>

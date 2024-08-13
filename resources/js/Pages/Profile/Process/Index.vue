@@ -220,7 +220,7 @@ function showStopProcessConfirmation(process_log_id, process_status_id) {
 
           </tr>
         </table>
-        <table v-else class="w-100">
+        <table v-else class="w-100 mt-4 pt-4">
           <tr>
             <td>
               <div class="text-center" v-html="no_processes_assigned_to_profile"></div>

@@ -17,12 +17,12 @@ const no_communications_for_profile = messages.value.processes.no_communications
       </div>
       <div class="col-sm-6 text-right">
         <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
-        <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send message</button>
+        <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white ml-1">Send message</button>
       </div>
     </div>
     <div class="col-md-12 pl-2 pr-2">
       <!-- <table v-if="profileManagerStore.communications.length > 0" class="table-sm w-100 table-row-spacing table-bg">      </table>-->
-      <table class="w-100">
+      <table class="w-100 mt-4 pt-4">
         <tr>
           <td>
             <div class="text-center" v-html="no_communications_for_profile"></div>
