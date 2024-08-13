@@ -6,7 +6,7 @@
 </script>
 
 <template>
-    <div class="row">
+    <div class="row m-0 p-0">
         <div class="pr-1 mb-2">
             <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white', { 'bg-neutral-700 text-white' : processStore.isSelectedCategory(0) }]" @click="processStore.toogleCategory(0)">All</button>
         </div>

@@ -93,18 +93,18 @@ function handleProfileDivHeight(){
         </div>
         <div class="col-lg-3 col-md-4 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail">
           <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-4 border-right pr-3 pl-3" id="profiles-detail-content">
-            <div class="row mb-2 pl-4">
+            <div class="row mb-2 pl-2">
               <table class="w-100">
                 <tr>
-                  <td rowspan="3" class="w-[60px]">
-                    <Avatar class="align-top" :image="props.api_url + profileManagerStore.profile.avatar" />
+                  <td rowspan="3" class="w-[60px] align-top">
+                    <Avatar class="align-top fit-hw" :image="props.api_url + profileManagerStore.profile.avatar" />
                   </td>
                   <td class="pl-2">
                     <span v-if="profileManagerStore.profile_type.name == 'Individual'" >
-                      <div class="w-60 h-10 text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-loose">{{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </div>
+                      <div class="w-60 text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </div>
                     </span>
                     <span v-if="profileManagerStore.profile_type.name == 'Business'">
-                      <div class="w-60 h-10 text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-loose">{{ profileManagerStore.profile.company_name }} </div>
+                      <div class="w-60 text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.profile.company_name }} </div>
                     </span>
                   </td>
                 </tr>
@@ -152,7 +152,14 @@ function handleProfileDivHeight(){
     </div>
     </template>
   </AuthenticatedLayout>
-  <Toast/>
+  <Toast position="top-center">
+    <template #message="slotProps">
+        <div class="flex flex-column align-items-start" style="flex: 1">
+            <div class="font-medium text-sm my-1 text-900">{{ slotProps.message.detail }}</div>
+        </div>
+    </template>
+  </Toast>
+  <ConfirmDialog></ConfirmDialog>
 </template>
 
 <style scoped>
