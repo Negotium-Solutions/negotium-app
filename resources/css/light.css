@@ -198,6 +198,16 @@ th{
     background-color: rgba(var(--neg-bg-light-rgb) , 0.25);
 }
 
+.p-toast .p-toast-message.p-toast-message-error{
+    color: var(--neg-font-default) !important;
+    background: rgba(230, 137, 146, 0.50) !important;
+}
+
+.p-toast .p-toast-message .p-toast-message-content {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
 .p-dialog:not(.p-confirm-dialog) .p-dialog-header {
     border-bottom: 2px solid var(--neg-grey) !important;
     margin-left: 1.5rem;

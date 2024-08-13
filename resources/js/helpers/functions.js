@@ -15,7 +15,7 @@ class FunctionsHelper {
      * @param {Object} replacements - An object mapping placeholders to their replacement texts.
      * @returns {string} - The modified string with placeholders replaced.
      */
-    replaceTextVariables(text, replacements) {
+    static replaceTextVariables(text, replacements) {
         // Regular expression to match placeholders within curly braces
         const regex = /\{(\w+)\}/g;
 
@@ -24,6 +24,24 @@ class FunctionsHelper {
             // p1 is the captured placeholder without curly braces
             return replacements.hasOwnProperty(p1) ? replacements[p1] : match;
         });
+    }
+
+    /**
+     * Static method to format a date string.
+     *
+     * @param {string} dateStr - The date string to format.
+     * @returns {string} - The formatted date string.
+     */
+    static DateTime(dateStr) {
+        const dateObject = new Date(dateStr);
+
+        const year = dateObject.getFullYear();
+        const month = String(dateObject.getMonth() + 1).padStart(2, '0'); // Months are zero-indexed
+        const day = String(dateObject.getDate()).padStart(2, '0');
+        const hours = String(dateObject.getHours()).padStart(2, '0');
+        const minutes = String(dateObject.getMinutes()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}`;
     }
 
 }

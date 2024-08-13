@@ -18,7 +18,6 @@ const categoriesStore = useCategoriesStore();
 const profileProcessStore = useProfileProcessStore();
 const toast = useToast();
 const confirm = useConfirm();
-const functionsHelper = new FunctionsHelper();
 const messages = computed(() => usePage().props.messages);
 const no_processes_assigned_to_profile = messages.value.processes.no_processes_assigned_to_profile;
 
@@ -72,10 +71,10 @@ function setProfileName(){
   return profile_name;
 }
 
-function showRemoveProcessConfirmation() {
+function showRemoveProcessConfirmation(process, process_log_id, process_status_id) {
   confirm.require({
     header: 'Confirm removal of process',
-    message: functionsHelper.replaceTextVariables(messages.value.processes.remove_process_confirmation, profileManagerStore.getRemoveProcessVariables),
+    message: FunctionsHelper.replaceTextVariables(messages.value.processes.remove_process_confirmation, profileManagerStore.getRemoveProcessVariables),
     acceptLabel: 'Yes, Remove',
     acceptClass: 'btn btn-sm btn-default mr-2',
     rejectLabel: 'Cancel',
@@ -90,9 +89,41 @@ function showRemoveProcessConfirmation() {
     },
     accept: () => {
       try{
-        toast.add({ severity: 'success', detail: profileManagerStore.process.name + " " + messages.value.processes.success_removing_process, life: 3000 });
-      }catch (error) {
-        toast.add({ severity: 'error', detail: functionsHelper.replaceTextVariables(messages.value.processes.error_removing_process, profileManagerStore.getRemoveProcessVariables), life: 3000 });
+        const updateProcessLogStatus = profileProcessStore.updateProcessLogStatus(process_log_id, process_status_id);
+
+        updateProcessLogStatus.then((data) => {
+          if(data === false) {
+            toast.add({ severity: 'error', detail: profileProcessStore.response.message, life: 3000 });
+          } else {
+            profileProcessStore.checkCondition(
+              profileProcessStore.$state,
+  (profileManagerStore) => {
+                if (profileManagerStore.response.code === 204) {
+                  toast.add({
+                    severity: 'success',
+                    detail: profileManagerStore.response.message,
+                    life: 3000
+                  });
+                } else {
+                  console.log('profileManagerStore', profileManagerStore);
+                  profileProcessStore.excluded_processes.push(process);
+                  toast.add({
+                    severity: 'success',
+                    detail: process.name + " " + messages.value.processes.success_removing_process,
+                    life: 3000
+                  });
+                }
+              }
+            );
+
+            setTimeout(function() {
+              // TODO: Jaco - Please add loader to prevent user from clicking anything
+              location.reload();
+            }, 3000);
+          }
+        });
+      } catch (error) {
+        toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.error_removing_process, profileManagerStore.getRemoveProcessVariables), life: 3000 });
       }
     },
     reject: () => {
@@ -101,10 +132,10 @@ function showRemoveProcessConfirmation() {
   });
 }
 
-function showStopProcessConfirmation() {
+function showStopProcessConfirmation(process_log_id, process_status_id) {
   confirm.require({
     header: 'Confirm stopping of process',
-    message: functionsHelper.replaceTextVariables(messages.value.processes.stop_process_confirmation, profileManagerStore.getRemoveProcessVariables),
+    message: FunctionsHelper.replaceTextVariables(messages.value.processes.stop_process_confirmation, profileManagerStore.getRemoveProcessVariables),
     acceptLabel: 'Yes, Stop',
     acceptClass: 'btn btn-sm btn-default mr-2',
     rejectLabel: 'Cancel',
@@ -119,9 +150,10 @@ function showStopProcessConfirmation() {
     },
     accept: () => {
       try{
+        profileProcessStore.updateProcessLogStatus(process_log_id, process_status_id);
         toast.add({ severity: 'success', detail: profileManagerStore.process.name + " " + messages.value.processes.success_stopping_process, life: 3000 });
       }catch (error) {
-        toast.add({ severity: 'error', detail: functionsHelper.replaceTextVariables(messages.value.processes.error_stopping_process, profileManagerStore.getRemoveProcessVariables), life: 3000 });
+        toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.error_stopping_process, profileManagerStore.getRemoveProcessVariables), life: 3000 });
       }
     },
     reject: () => {
@@ -147,12 +179,12 @@ function showStopProcessConfirmation() {
           <tr>
             <th>Select</th><th>Process Name</th><th>Current Posistion</th><th>Last Opened</th><th>Date Added</th><th>Actions</th>
           </tr>
-          <tr v-for="(process, index) in profileManagerStore.processes" :key="index" :class="{ 'bg-gray-200': profileManagerStore.isSelected('process', process)}">
+          <tr v-for="(process, index) in processesStore.filterByExcludedProcesses(profileManagerStore.processes, profileProcessStore.excluded_processes)" :key="index" :class="{ 'bg-gray-200': profileManagerStore.isSelected('process', process)}">
             <td><input type="checkbox"></td>
             <td>{{ process.name }}</td>
-            <td>Step 12 - Task 11</td>
-            <td>2024-07-11 00:00</td>
-            <td>2024-07-11 00:00</td>
+            <td>{{ process.log.step.name }}</td>
+            <td>{{ FunctionsHelper.DateTime(process.log.updated_at) }}</td>
+            <td>{{ FunctionsHelper.DateTime(process.log.created_at) }}</td>
             <td class="last pl-2">
               <div class="d-flex">
                 <button class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">View</button>
@@ -161,20 +193,25 @@ function showStopProcessConfirmation() {
                   <i class="pi pi-ellipsis-v"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                  <a class="dropdown-item">
+                  <a class="dropdown-item cursor-pointer">
                     <small>View Process</small>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item">
+                  <a class="dropdown-item cursor-pointer">
                     <small>Details</small>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" @click="showStopProcessConfirmation()">
+                  <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(process.log.id, profileProcessStore.PROCESS_STATUS_ACTIVE)">
+                    <small>Resume</small>
+                  </a>
+                  <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(process.log.id, profileProcessStore.PROCESS_STATUS_STOPPED)">
                     <small>Stop</small>
                   </a>
-                  <div class="dropdown-divider"></div>
-                  <a class="dropdown-item" @click="showRemoveProcessConfirmation()">
-                    <small class="text-danger">Remove</small>
+                  <a v-if="process.log.status.name === 'assigned'" class="dropdown-item" @click="showRemoveProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED)">
+                    <small class="text-danger cursor-pointer">Remove</small>
+                  </a>
+                  <a v-if="process.log.status.name === 'completed'" class="dropdown-item cursor-pointer" @click="showRemoveProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED)">
+                    <small class="text-danger">Archive</small>
                   </a>
                 </div>
               </div>
@@ -183,7 +220,7 @@ function showStopProcessConfirmation() {
 
           </tr>
         </table>
-        <table v-else class="w-100">
+        <table v-else class="w-100 mt-4 pt-4">
           <tr>
             <td>
               <div class="text-center" v-html="no_processes_assigned_to_profile"></div>

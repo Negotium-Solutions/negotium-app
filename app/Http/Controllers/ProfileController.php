@@ -22,7 +22,7 @@ class ProfileController extends Controller
         $responseProfileTypes = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes,profiles.documents');
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes.log.status,profiles.processes.log.step,profiles.documents');
 
         $profileTypes = isset(json_decode($responseProfileTypes->body(), true)['data']) ? json_decode($responseProfileTypes->body(), true)['data'] : [];
 
@@ -80,5 +80,45 @@ class ProfileController extends Controller
         $request->session()->regenerateToken();
 
         return Redirect::to('/');
+    }
+
+    /**
+     * Display the user's profile details.
+     */
+    public function details(Request $request): Response
+    {
+        $responseProfileTypes = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes.log.status,profiles.processes.log.step,profiles.documents');
+
+        $profileTypes = isset(json_decode($responseProfileTypes->body(), true)['data']) ? json_decode($responseProfileTypes->body(), true)['data'] : [];
+
+        $parameters = [
+            'profileTypes' => $profileTypes,
+            'api_url' => env('NEGOTIUM_IMAGES_URL')
+        ];
+
+        return Inertia::render('Profile/Index', $parameters);
+    }
+
+    /**
+     * Display the user's profile communications.
+     */
+    public function communications(Request $request): Response
+    {
+        $responseProfileTypes = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes.log.status,profiles.processes.log.step,profiles.documents');
+
+        $profileTypes = isset(json_decode($responseProfileTypes->body(), true)['data']) ? json_decode($responseProfileTypes->body(), true)['data'] : [];
+
+        $parameters = [
+            'profileTypes' => $profileTypes,
+            'api_url' => env('NEGOTIUM_IMAGES_URL')
+        ];
+
+        return Inertia::render('Profile/Index', $parameters);
     }
 }
