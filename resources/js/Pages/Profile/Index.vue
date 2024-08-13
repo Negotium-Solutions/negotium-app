@@ -34,7 +34,8 @@ onMounted(() =>{
   profileManagerStore.set('profile_type', props.profileTypes[0]);
   profileManagerStore.set('profile', props.profileTypes[0].profiles[0]);
   handleProfileDivHeight()
-  window.addEventListener('DOMContentLoaded',handleProfileMenuDivHeight);
+  handleProfileMenuDivHeight()
+  document.addEventListener('DOMContentLoaded',handleProfileMenuDivHeight);
   window.addEventListener('resize', handleProfileDivHeight);
   window.addEventListener('resize', handleProfileMenuDivHeight);
 });
@@ -58,20 +59,20 @@ function handleProfileDivHeight(){
 function handleProfileMenuDivHeight(){
   const w = window.innerWidth;
   const h = window.innerHeight;
-
+console.log(h)
   if(document.getElementById('profile-view-menu')){
     let clientViewMenuWidth = document.getElementById('profile-view-menu').offsetWidth
     if(h > 835){
       document.getElementById('client-view-menu').style.position = 'fixed'
       document.getElementById('client-view-menu').style.bottom = '1.5rem'
       if(clientViewMenuWidth > 0){
-        document.getElementById('client-view-menu').style.width = clientViewMenuWidth+'px'
+        // document.getElementById('client-view-menu').style.width = clientViewMenuWidth+'px'
       }
     } else {
       document.getElementById('client-view-menu').style.position = null
       document.getElementById('client-view-menu').style.bottom = null
       if(clientViewMenuWidth > 0){
-        document.getElementById('client-view-menu').style.width = clientViewMenuWidth+'px'
+        // document.getElementById('client-view-menu').style.width = clientViewMenuWidth+'px'
       }
     }
   }
@@ -163,7 +164,7 @@ function handleProfileMenuDivHeight(){
 
             <div class="row mb-3"></div>
           </div>
-          <div class="row col-md-12 p-0 m-0" id="client-view-menu">
+          <div class="row col-lg-3 col-md-4 pr-4" id="client-view-menu">
             <h2 class="font-bold mb-2 col-md-12 p-0">Client view</h2>
             <div class="col-md-12 p-0"><button class=" col-md-12 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Requested information <i class="fa fa-chevron-right float-right"></i></button></div>
             <div class="col-md-12 p-0"><button class=" col-md-12 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Access <i class="fa fa-chevron-right float-right"></i></button></div>
