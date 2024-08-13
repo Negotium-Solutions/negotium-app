@@ -132,7 +132,7 @@ function showRemoveProcessConfirmation(process, process_log_id, process_status_i
   });
 }
 
-function showStopProcessConfirmation(process_log_id, process_status_id) {
+function showStopProcessConfirmation(process, process_log_id, process_status_id) {
   confirm.require({
     header: 'Confirm stopping of process',
     message: FunctionsHelper.replaceTextVariables(messages.value.processes.stop_process_confirmation, profileManagerStore.getRemoveProcessVariables),
@@ -150,8 +150,39 @@ function showStopProcessConfirmation(process_log_id, process_status_id) {
     },
     accept: () => {
       try{
-        profileProcessStore.updateProcessLogStatus(process_log_id, process_status_id);
-        toast.add({ severity: 'success', detail: profileManagerStore.process.name + " " + messages.value.processes.success_stopping_process, life: 3000 });
+        const updateProcessLogStatus = profileProcessStore.updateProcessLogStatus(process_log_id, process_status_id);
+
+        updateProcessLogStatus.then((data) => {
+          if(data === false) {
+            toast.add({ severity: 'error', detail: profileProcessStore.response.message, life: 3000 });
+          } else {
+            profileProcessStore.checkCondition(
+                profileProcessStore.$state,
+                (profileManagerStore) => {
+                  if (profileManagerStore.response.code === 204) {
+                    toast.add({
+                      severity: 'success',
+                      detail: profileManagerStore.response.message,
+                      life: 3000
+                    });
+                  } else {
+                    console.log('profileManagerStore', profileManagerStore);
+                    profileProcessStore.excluded_processes.push(process);
+                    toast.add({
+                      severity: 'success',
+                      detail: process.name + " " + messages.value.processes.success_stopping_process,
+                      life: 3000
+                    });
+                  }
+                }
+            );
+
+            setTimeout(function() {
+              // TODO: Jaco - Please add loader to prevent user from clicking anything
+              location.reload();
+            }, 3000);
+          }
+        });
       }catch (error) {
         toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.error_stopping_process, profileManagerStore.getRemoveProcessVariables), life: 3000 });
       }
@@ -201,10 +232,10 @@ function showStopProcessConfirmation(process_log_id, process_status_id) {
                     <small>Details</small>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(process.log.id, profileProcessStore.PROCESS_STATUS_ACTIVE)">
+                  <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ACTIVE)">
                     <small>Resume</small>
                   </a>
-                  <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(process.log.id, profileProcessStore.PROCESS_STATUS_STOPPED)">
+                  <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showStopProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_STOPPED)">
                     <small>Stop</small>
                   </a>
                   <a v-if="process.log.status.name === 'assigned'" class="dropdown-item" @click="showRemoveProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED)">
