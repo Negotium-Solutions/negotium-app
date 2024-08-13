@@ -24,7 +24,6 @@
         @if ( !in_array(request()->route()->getName(), [null, 'login' , 'register', 'forgot.request']) )
             @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @else
-            <!-- @vite(['resources/js/app_tailwind.js', "resources/js/Pages/{$page['component']}.vue"]) -->
         @endif
         @inertiaHead
     </head>
