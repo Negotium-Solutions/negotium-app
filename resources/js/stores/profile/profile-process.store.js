@@ -32,6 +32,7 @@ export const useProfileProcessStore = defineStore({
             'steps': []
         },
         selected_categories: [0],
+        excluded_processes: [],
         response: {
             'code': 0,
             'status': '',
@@ -85,18 +86,64 @@ export const useProfileProcessStore = defineStore({
                     this.setResponse(response.status, 'success', response.data.message, [], []);
                     toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_assigning_processes + " " + profile_name, life: 3000 });
                     this.showProcessModal = false;
-                    // this.selectedProfileProcesses = [];
                     this.loading = false;
                     this.status.loading = false;
                 }
             } catch (error) {
                 if(error.response.status !== 404) {
-                    this.setResponse(error.response.status, 'success', error.response.statusText, [], []);
+                    this.setResponse(error.response.status, 'error', error.response.statusText, [], []);
                     toast.add({ severity: 'error', summary: 'Error', detail: messages.value.profile.error_assigning_processes, life: 3000 });
                 }
                 this.loading = false;
                 this.status.loading = false;
             }
+        },
+        async updateProcessLogStatus(process_log_id = 0, process_status_id = 0)
+        {
+            this.loading = true;
+            this.status.loading = true;
+            if(process_log_id === 0 || process_status_id === 0) {
+                this.setResponse(422, 'error', messages.value.error.input_validation_error, [], []);
+                return false;
+            }
+
+            let _url = this.apiUrl+'/'+this.user.tenant+'/process/update-process-log-status';
+
+            const data = {
+                "process_log_id": process_log_id,
+                "process_status_id": process_status_id
+            };
+
+            try {
+                const response = await axios.post(_url, data, {
+                    headers: {
+                        'Content-Type': 'multipart/form-data',
+                        Authorization: `Bearer ` + this.user.token,
+                    },
+                });
+
+                if (response.status === 200) {
+                    this.setResponse(response.status, 'success', response.data.message, [], []);
+                    this.showProcessModal = false;
+                    this.loading = false;
+                    this.status.loading = false;
+                }
+
+                if (response.status === 204) {
+                    this.setResponse(response.status, 'success', response.statusText, [], []);
+                    this.showProcessModal = false;
+                    this.loading = false;
+                    this.status.loading = false;
+                }
+            } catch (error) {
+                if(error.response.status !== 404) {
+                    this.setResponse(error.response.status, 'error', error.response.statusText, [], []);
+                }
+                this.loading = false;
+                this.status.loading = false;
+            }
+
+            return true;
         },
         selectProcess(profile_id, process_id){
             let item = {
@@ -119,12 +166,12 @@ export const useProfileProcessStore = defineStore({
 
             return this.selectedProfileProcesses.some(_item => _item.profile_id === item.profile_id && _item.process_id === item.process_id)
         },
-        checkCondition(condition, callbackFunction) {
+        checkCondition(state, callbackFunction) {
             const check = () => {
-                if (condition.loading === true) {
+                if (state.loading === true) {
                     setTimeout(check, 100);
                 } else {
-                    callbackFunction();
+                    callbackFunction(state);
                 }
             };
             check();
@@ -148,6 +195,11 @@ export const useProfileProcessStore = defineStore({
         }
     },
     getters: {
-
+        PROCESS_STATUS_ASSIGNED: () => 1,
+        PROCESS_STATUS_ACTIVE: () => 2,
+        PROCESS_STATUS_COMPLETED: () => 3,
+        PROCESS_STATUS_STOPPED: () => 4,
+        PROCESS_STATUS_RESUMED: () => 5,
+        PROCESS_STATUS_ARCHIVED: () => 6
     }
 });
