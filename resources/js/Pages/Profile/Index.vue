@@ -9,6 +9,7 @@ import { usePage } from "@inertiajs/vue3";
 import { useProfilesManagerStore } from "@/stores";
 import ProcessIndex from "@/Pages/Profile/Process/Index.vue";
 import ProfileDetailsIndex from "@/Pages/Profile/ProfileDetails/Index.vue";
+import ProfileCommunicationsIndex from "@/Pages/Profile/Communications/Index.vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -131,7 +132,7 @@ function handleProfileDivHeight(){
             <div class="row mb-3"></div>
             <div><a :href="route('profile')" :class="{' bg-slate-500 text-white' : route().current('profile')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Processes <i class="fa fa-chevron-right float-right"></i></a></div>
             <div><a :href="route('profile.details')" :class="{' bg-slate-500 text-white' : route().current('profile.details')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Details <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Communications <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><a :href="route('profile.communications')" :class="{' bg-slate-500 text-white' : route().current('profile.communications')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Communications <i class="fa fa-chevron-right float-right"></i></a></div>
             <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Documents <i class="fa fa-chevron-right float-right"></i></button></div>
             <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></button></div>
 
@@ -146,6 +147,7 @@ function handleProfileDivHeight(){
         </div>
         <process-index v-if="route().current('profile')"></process-index>
         <profile-details-index v-if="route().current('profile.details')"></profile-details-index>
+        <profile-communications-index v-if="route().current('profile.communications')"></profile-communications-index>
       </div>
     </div>
     </template>
