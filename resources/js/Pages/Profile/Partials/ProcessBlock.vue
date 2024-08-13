@@ -7,7 +7,7 @@
 </script>
 
 <template>
-  <div class="row">
+  <div class="row my-3">
     <div class="col-md-4 col-sm-12 mb-3" v-for="(process, index) in processStore.filterByCategoryExcluding(profilesManagerStore.profile.processes)" :key="index">
       <div class="flex flex-col px-4 py-6 rounded-lg border border-solid bg-neutral-50 border-neutral-700">
         <table class="table table-sm table-borderless">
@@ -24,7 +24,8 @@
               </div>
             </td>
             <td class="align-middle text-right">
-              <button @click="profileProcessStore.selectProcess(profilesManagerStore.profile.id, process.id)" class="btn btn-default btn-sm" :class="{ 'isSelected': profileProcessStore.isSelectedProcess(profilesManagerStore.profile.id, process.id) }">Select</button>
+              <button v-if="profileProcessStore.isSelectedProcess(profilesManagerStore.profile.id, process.id)" @click="profileProcessStore.selectProcess(profilesManagerStore.profile.id, process.id)"  class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" :class="{ 'isSelected': profileProcessStore.isSelectedProcess(profilesManagerStore.profile.id, process.id) }">Unselect</button>
+              <button v-else @click="profileProcessStore.selectProcess(profilesManagerStore.profile.id, process.id)"  class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" :class="{ 'isSelected': profileProcessStore.isSelectedProcess(profilesManagerStore.profile.id, process.id) }">Select</button>
             </td>
           </tr>
         </table>
@@ -32,9 +33,3 @@
     </div>
   </div>
 </template>
-<style scoped>
-  .isSelected {
-    background-color: grey;
-    color: white;
-  }
-</style>

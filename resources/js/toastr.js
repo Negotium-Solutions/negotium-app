@@ -3,7 +3,7 @@ import 'toastr/build/toastr.min.css';
 
 export function useToastr() {
     toastr.options = {
-        "closeButton": true,
+        "closeButton": false,
         "debug": false,
         "newestOnTop": false,
         "progressBar": false,

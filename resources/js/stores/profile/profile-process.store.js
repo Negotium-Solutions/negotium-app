@@ -14,6 +14,8 @@ export const useProfileProcessStore = defineStore({
     state: () => ({
         selectedProfileProcesses: [],
         showProcessModal: false,
+        showStopConfirmation: false,
+        showRemoveConfirmation: false,
         loading: false,
         status: {
             loading: false
@@ -56,12 +58,12 @@ export const useProfileProcessStore = defineStore({
 
             return this.response;
         },
-        async assignProcesses(toast)
+        async assignProcesses(toast, profile_name)
         {
             this.loading = true;
             this.status.loading = true;
             if(this.selectedProfileProcesses.length === 0) {
-                toast.add({ severity: 'warn', summary: 'Warning', detail: messages.value.profile.no_process_assigned, life: 3000 });
+                toast.add({ severity: 'warn', detail: messages.value.profile.no_process_assigned, life: 3000 });
                 return false;
             }
 
@@ -81,7 +83,7 @@ export const useProfileProcessStore = defineStore({
 
                 if (response.status === 201) {
                     this.setResponse(response.status, 'success', response.data.message, [], []);
-                    toast.add({ severity: 'success', summary: 'Success', detail: response.data.message, life: 3000 });
+                    toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_assigning_processes + " " + profile_name, life: 3000 });
                     this.showProcessModal = false;
                     // this.selectedProfileProcesses = [];
                     this.loading = false;
@@ -90,7 +92,7 @@ export const useProfileProcessStore = defineStore({
             } catch (error) {
                 if(error.response.status !== 404) {
                     this.setResponse(error.response.status, 'success', error.response.statusText, [], []);
-                    toast.add({ severity: 'error', summary: 'Error', detail: error.response.statusText, life: 3000 });
+                    toast.add({ severity: 'error', summary: 'Error', detail: messages.value.profile.error_assigning_processes, life: 3000 });
                 }
                 this.loading = false;
                 this.status.loading = false;
