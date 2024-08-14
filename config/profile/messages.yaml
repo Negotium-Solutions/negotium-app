@@ -6,17 +6,22 @@ processes:
   stop_process_confirmation: Are you sure you want to stop the process named <br/>
                              {processName} from {profileName}'s profile? <br/><br/>
                              By stopping this process, no one will be allowed to <br/>
-                             complete it until is resumed. 
+                             complete it until is resumed.
+  resume_process_confirmation: Are you sure you want to resume the process named <br/>
+                              {processName} from {profileName}'s profile? <br/><br/>
+                              By resuming this process, you will be able to complete it.
   remove_process_confirmation: Are you sure you want to remove the process named <br/>
                                {processName} from {profileName}'s profile? <br/><br/>
                                This will remove the process from this profile only.
   success_stopping_process: stopped successfully.
   success_removing_process: removed successfully.
+  success_resuming_process: resumed successfully.
   no_communications_for_profile: <b>You haven't send any communications to this profile.</b> <br/>
                                 Easily send messages or email to this profile by clicking on <br/>
                                 'Send Email' or 'Send Message' in the top right corner.
   error_stopping_process: We weren't able to stop {processName}, please try again.
   error_removing_process: We weren't able to remove {processName}, please try again.
+  error_resuming_process: We weren't able to resume {processName}, please try again.
 profile:
   no_process_assigned: You haven't selected any process to be assigned to this profile
   success_assigning_processes: processes assigned successfully to 
