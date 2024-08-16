@@ -158,96 +158,98 @@ function showProcessConfirmation(process, process_log_id, process_status_id, but
 </script>
 <template>
   <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-7 col-md-5 col-sm-12 pl-0 pr-0 height-overflow" id="profiles-processes">
-    <div class="d-flex w-100 pt-3 pl-2 pr-2">
+    <div v-if="profileManagerStore.processes.length > 0">
+      <div class="d-flex w-100 pt-3 pl-2 pr-2">
         <div class="col-sm-12">
           <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Recent Processes</h1>
         </div>
-    </div>
-    <div class="recent-processes d-flex w-100 pt-3 pl-2 pr-2">
-      <div class="row col-md-12 p-0 w-100 mr-0 ml-0">
-        <div class="col-md-6 mb-2 py-1">
-          <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
-            <table class="table table-sm table-borderless p-0 mb-0">
-              <tr>
-                <td style="width: 70%;" class="py-0">
-                  <div class="flex gap-5">
-                    <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
-                      Process Name
+      </div>
+      <div class="recent-processes d-flex w-100 pt-3 pl-2 pr-2">
+        <div class="row col-md-12 p-0 w-100 mr-0 ml-0">
+          <div class="col-md-6 mb-2 py-1">
+            <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
+              <table class="table table-sm table-borderless p-0 mb-0">
+                <tr>
+                  <td style="width: 70%;" class="py-0">
+                    <div class="flex gap-5">
+                      <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
+                        Process Name
+                      </div>
                     </div>
-                  </div>
-                  <div class="text-sm leading-5 text-neutral-600">
-                    <div>Step 4 - Activity 11</div>
-                  </div>
-                </td>
-                <td class="align-right text-right py-0">
-                  <button class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Continue</button>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="py-0">
-                  <font class="text-success text-sm font-normal font-['Nunito']">Up to date</font>
-                  <font class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: 00/00/0000 00:00</font>
-                </td>
-              </tr>
-            </table>
+                    <div class="text-sm leading-5 text-neutral-600">
+                      <div>Step 4 - Activity 11</div>
+                    </div>
+                  </td>
+                  <td class="align-right text-right py-0">
+                    <button class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Continue</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="py-0">
+                    <font class="text-success text-sm font-normal font-['Nunito']">Up to date</font>
+                    <font class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: 00/00/0000 00:00</font>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 mb-2 py-1">
-          <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
-            <table class="table table-sm table-borderless p-0 mb-0">
-              <tr>
-                <td style="width: 70%;" class="py-0">
-                  <div class="flex gap-5">
-                    <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
-                      Process Name
+          <div class="col-md-6 mb-2 py-1">
+            <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
+              <table class="table table-sm table-borderless p-0 mb-0">
+                <tr>
+                  <td style="width: 70%;" class="py-0">
+                    <div class="flex gap-5">
+                      <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
+                        Process Name
+                      </div>
                     </div>
-                  </div>
-                  <div class="text-sm leading-5 text-neutral-600">
-                    <div>Step 4 - Activity 11</div>
-                  </div>
-                </td>
-                <td class="align-right text-right py-0">
-                  <button class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Continue</button>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="py-0">
-                  <font class="text-success text-sm font-normal font-['Nunito']">Up to date</font>
-                  <font class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: 00/00/0000 00:00</font>
-                </td>
-              </tr>
-            </table>
+                    <div class="text-sm leading-5 text-neutral-600">
+                      <div>Step 4 - Activity 11</div>
+                    </div>
+                  </td>
+                  <td class="align-right text-right py-0">
+                    <button class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Continue</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="py-0">
+                    <font class="text-success text-sm font-normal font-['Nunito']">Up to date</font>
+                    <font class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: 00/00/0000 00:00</font>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
-        </div>
-        <div class="col-md-6 mb-2 py-1">
-          <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
-            <table class="table table-sm table-borderless p-0 mb-0">
-              <tr>
-                <td style="width: 70%;" class="py-0">
-                  <div class="flex gap-5">
-                    <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
-                      Process Name
+          <div class="col-md-6 mb-2 py-1">
+            <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
+              <table class="table table-sm table-borderless p-0 mb-0">
+                <tr>
+                  <td style="width: 70%;" class="py-0">
+                    <div class="flex gap-5">
+                      <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
+                        Process Name
+                      </div>
                     </div>
-                  </div>
-                  <div class="text-sm leading-5 text-neutral-600">
-                    <div>Step 4 - Activity 11</div>
-                  </div>
-                </td>
-                <td class="align-right text-right py-0">
-                  <button class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Continue</button>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2" class="py-0">
-                  <font class="text-success text-sm font-normal font-['Nunito']">Up to date</font>
-                  <font class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: 00/00/0000 00:00</font>
-                </td>
-              </tr>
-            </table>
+                    <div class="text-sm leading-5 text-neutral-600">
+                      <div>Step 4 - Activity 11</div>
+                    </div>
+                  </td>
+                  <td class="align-right text-right py-0">
+                    <button class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Continue</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td colspan="2" class="py-0">
+                    <font class="text-success text-sm font-normal font-['Nunito']">Up to date</font>
+                    <font class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: 00/00/0000 00:00</font>
+                  </td>
+                </tr>
+              </table>
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </div> 
 
     <div class="d-flex w-100 pt-3 pl-2 pr-2 pb-3">
         <div class="col-sm-6">
