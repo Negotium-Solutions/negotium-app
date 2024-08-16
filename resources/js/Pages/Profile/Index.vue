@@ -94,7 +94,7 @@ console.log(h)
         <div class="col-md-12 pt-4">
           <div class="row">
             <div v-for="(profile_type, index) in props.profileTypes" :key="index" class="px-1 mb-1">
-              <button :class="['float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold', { 'bg-zinc-100' : profileManagerStore.isSelected('profile_type', profile_type) }]" @click="profileManagerStore.set('profile_type', profile_type)">{{profile_type.name}}</button>
+              <button class="float-right h-[38px] py-3 px-2 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs" :class="profileManagerStore.isSelected('profile_type', profile_type) ? 'bg-zinc-100 font-bold' : 'font-normal'" @click="profileManagerStore.set('profile_type', profile_type)">{{profile_type.name}}</button>
             </div>
           </div>
         </div>

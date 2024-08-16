@@ -79,7 +79,7 @@
 }
 
 .bg-zinc-100{
-    background-color: var(--neg-light-grey) !important;
+    background-color: var(--neg-bg-light) !important;
 }
 
 .text-neutral-700{
