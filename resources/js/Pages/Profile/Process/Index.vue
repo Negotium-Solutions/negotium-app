@@ -160,7 +160,7 @@ function showProcessConfirmation(process, process_log_id, process_status_id, but
   <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-7 col-md-5 col-sm-12 pl-0 pr-0 height-overflow" id="profiles-processes">
     <div class="d-flex w-100 pt-3 pl-2 pr-2">
         <div class="col-sm-12">
-          <h1 class="text-neutral-700 text-3xl font-bold font-['Roboto']">Recent Processes</h1>
+          <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Recent Processes</h1>
         </div>
     </div>
     <div class="recent-processes d-flex w-100 pt-3 pl-2 pr-2">
@@ -251,7 +251,7 @@ function showProcessConfirmation(process, process_log_id, process_status_id, but
 
     <div class="d-flex w-100 pt-3 pl-2 pr-2 pb-3">
         <div class="col-sm-6">
-          <h1 class="text-neutral-700 text-3xl font-bold font-['Roboto']">Processes</h1>
+          <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Processes</h1>
         </div>
         <div class="col-sm-6 text-right">
           <button @click="ShowAssignProcess()" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Assign Process</button>

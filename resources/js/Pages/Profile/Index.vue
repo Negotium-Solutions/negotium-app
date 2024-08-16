@@ -115,7 +115,7 @@ console.log(h)
           </div>
         </div>
         <div class="col-lg-3 col-md-4 col-sm-12 pl-0 pr-0 profile-info height-overflow" id="profiles-detail" style="position:relative">
-          <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-4 border-right pr-3 pl-3 col-md-12 height-overflow" id="profiles-detail-content">
+          <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-3 border-right pr-3 pl-3 col-md-12 height-overflow" id="profiles-detail-content">
             <div class="row mb-2 pl-2">
               <table class="w-100">
                 <tr>
@@ -124,10 +124,10 @@ console.log(h)
                   </td>
                   <td class="pl-2">
                     <span v-if="profileManagerStore.profile_type.name == 'Individual'" >
-                      <div class="w-60 text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </div>
+                      <div class="w-60 text-neutral-700 text-[1.5rem] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </div>
                     </span>
                     <span v-if="profileManagerStore.profile_type.name == 'Business'">
-                      <div class="w-60 text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.profile.company_name }} </div>
+                      <div class="w-60 text-neutral-700 text-[1.5rem] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.profile.company_name }} </div>
                     </span>
                   </td>
                 </tr>
