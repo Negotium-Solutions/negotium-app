@@ -48,12 +48,9 @@ function handleProfileDivHeight(){
   var element = document.getElementById('profiles-header');
   var height = element.offsetHeight;
   var newHeight = h -  height
-  document.getElementById('profiles-content').style.minHeight = newHeight+'px'
-  document.getElementById('profiles-sidebar').style.minHeight = newHeight+'px'
-  document.getElementById('profiles-detail').style.minHeight = newHeight+'px'
-  if(document.getElementById('profiles-detail-content')){
-  document.getElementById('profiles-detail-content').style.minHeight = newHeight+'px'
-  }
+  document.getElementById('profiles').style.minHeight = newHeight+'px'
+  document.getElementById('profiles').style.height = newHeight+'px'
+  document.getElementById('profiles').style.maxHeight = newHeight+'px'
 }
 
 function handleProfileMenuDivHeight(){
@@ -106,8 +103,8 @@ console.log(h)
     <template #profile>
     <div class="content-container">
 
-      <div class="row" id="profiles-sidebar">
-        <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0">
+      <div class="row" id="profiles">
+        <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0 height-overflow" id="profiles-sidebar">
           <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="profileManagerStore.set('profile', profile);handleProfileDivHeight()" :class="{ 'bg-[#ebebec]': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
             <div class="w-100 pl-6 pr-2 d-flex">
             <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="props.api_url + profile.avatar"  />
@@ -117,8 +114,8 @@ console.log(h)
             </div>
           </div>
         </div>
-        <div class="col-lg-3 col-md-4 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail" style="position:relative">
-          <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-4 border-right pr-3 pl-3 col-md-12" id="profiles-detail-content">
+        <div class="col-lg-3 col-md-4 col-sm-12 pl-0 pr-0 profile-info height-overflow" id="profiles-detail" style="position:relative">
+          <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-4 border-right pr-3 pl-3 col-md-12 height-overflow" id="profiles-detail-content">
             <div class="row mb-2 pl-2">
               <table class="w-100">
                 <tr>

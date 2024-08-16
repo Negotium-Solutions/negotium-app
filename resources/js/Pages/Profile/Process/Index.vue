@@ -33,7 +33,22 @@ const error_resuming_process = messages.value.processes.error_resuming_process;
 onMounted(() => {
   processesStore.get(null, null, 'category,steps.activities');
   categoriesStore.get();
+  handleProfileDivHeight()
+  window.addEventListener('resize', handleProfileDivHeight);
 });
+
+function handleProfileDivHeight(){
+  const w = window.innerWidth;
+  const h = window.innerHeight;
+
+
+  var element = document.getElementById('profiles-header');
+  var height = element.offsetHeight;
+  var newHeight = h -  height
+  if(document.getElementById('profiles-processes')){
+  document.getElementById('profiles-processes').style.height = newHeight+'px'
+  }
+}
 
 function ShowAssignProcess() {
   profileProcessStore.showProcessModal = true;
@@ -142,7 +157,7 @@ function showProcessConfirmation(process, process_log_id, process_status_id, but
 
 </script>
 <template>
-  <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-7 col-md-5 col-sm-12 pl-0 pr-0">
+  <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-7 col-md-5 col-sm-12 pl-0 pr-0 height-overflow" id="profiles-processes">
     <div class="d-flex w-100 pt-3 pl-2 pr-2">
         <div class="col-sm-12">
           <h1 class="text-neutral-700 text-3xl font-bold font-['Roboto']">Recent Processes</h1>
