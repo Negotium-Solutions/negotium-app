@@ -23,12 +23,15 @@ const no_processes_assigned_to_profile = messages.value.processes.no_processes_a
 const stop_process_confirmation = messages.value.processes.stop_process_confirmation;
 const resume_process_confirmation = messages.value.processes.resume_process_confirmation;
 const remove_process_confirmation = messages.value.processes.remove_process_confirmation;
+const archive_process_confirmation = messages.value.processes.archive_process_confirmation;
 const success_stopping_process = messages.value.processes.success_stopping_process;
 const success_removing_process = messages.value.processes.success_removing_process;
 const success_resuming_process = messages.value.processes.success_resuming_process;
+const success_archiving_process = messages.value.processes.success_archiving_process;
 const error_stopping_process = messages.value.processes.error_stopping_process;
 const error_removing_process = messages.value.processes.error_removing_process;
 const error_resuming_process = messages.value.processes.error_resuming_process;
+const error_archiving_process = messages.value.processes.error_archiving_process;
 
 onMounted(() => {
   processesStore.get(null, null, 'category,steps.activities');
@@ -80,9 +83,9 @@ function setProfileName(){
   return profile_name;
 }
 
-function showProcessConfirmation(process, process_log_id, process_status_id, button_label, confirmation_message, success_message, error_message) {
+function showProcessConfirmation(process, process_log_id, process_status_id, button_label, header_label, confirmation_message, success_message, error_message) {
   confirm.require({
-    header: 'Confirm stopping of process',
+    header: header_label,
     message: FunctionsHelper.replaceTextVariables(confirmation_message, profileManagerStore.getRemoveProcessVariables),
     acceptLabel: 'Yes, ' + button_label,
     acceptClass: 'btn btn-sm btn-default mr-2',
@@ -179,16 +182,16 @@ function showProcessConfirmation(process, process_log_id, process_status_id, but
                     <small>Details</small>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', resume_process_confirmation, success_resuming_process, error_resuming_process)">
+                  <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'Confirm resuming of process.', resume_process_confirmation, success_resuming_process, error_resuming_process)">
                     <small>Resume</small>
                   </a>
-                  <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', stop_process_confirmation, success_stopping_process, error_stopping_process)">
+                  <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', 'Confirm stopping of process.', stop_process_confirmation, success_stopping_process, error_stopping_process)">
                     <small>Stop</small>
                   </a>
-                  <a v-if="process.log.status.name === 'assigned'" class="dropdown-item" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', remove_process_confirmation, success_removing_process, error_removing_process)">
+                  <a v-if="process.log.status.name === 'assigned'" class="dropdown-item" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', 'Confirm removal of process.', remove_process_confirmation, success_removing_process, error_removing_process)">
                     <small class="text-danger cursor-pointer">Remove</small>
                   </a>
-                  <a v-if="process.log.status.name === 'completed'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', remove_process_confirmation, success_removing_process, error_removing_process)">
+                  <a v-if="process.log.status.name === 'completed'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', 'Confirm archiving of process.', archive_process_confirmation, success_archiving_process, error_archiving_process)">
                     <small class="text-danger">Archive</small>
                   </a>
                 </div>
