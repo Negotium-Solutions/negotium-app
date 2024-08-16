@@ -1,11 +1,11 @@
 :root {
     --neg-font-default: #353535;
     --neg-grey:rgba(53, 53, 53, .25);
+    --neg-light-grey:rgba(53, 53, 53, .75);
 
     --neg-bg-light: #efefef;
     --neg-bg-light-rgb: 239, 239, 239;
 
-    --neg-light-grey: rgba(0,0,0,.125);
     --neg-dark-grey:#495057;
 
     --neg-primary-1: #F9F871; /* yellow 1 */
@@ -52,6 +52,22 @@
     background: var(--neg-dark-grey); 
   } 
 
+  .recent-processes.d-flex {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; /* Optional: Adds space between items */
+  }
+  
+  .recent-processes .flex-item {
+    flex: 1 1 calc(50% - 1rem); /* Each item takes up roughly 50% of the container width minus space for the gap */
+    box-sizing: border-box; /* Ensures padding and border are included in the width */
+  }
+
+  /* Special case for the third item */
+.recent-processes .half-width {
+    flex: 1 1 50%; /* Ensures the third item takes exactly 50% of the width */
+  }
+
 .border-neutral-700{
     border-color: var(--neg-grey) !important;
 }
@@ -62,6 +78,10 @@
 
 .text-neutral-700{
     color: var(--neg-font-default);
+}
+
+.text-neutral-600{
+    color: var(--neg-light-grey);
 }
 
 .text-white{
