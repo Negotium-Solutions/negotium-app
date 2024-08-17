@@ -5,15 +5,19 @@ import {computed, onMounted} from "vue";
 import { useProfilesManagerStore, useProfileProcessStore } from "@/stores";
 import { FunctionsHelper } from "@/helpers";
 import Dialog from "primevue/dialog";
+import ConfirmDialog from "primevue/confirmdialog";
+import Button from "primevue/button";
 import CategoryFilter from "@/Pages/Profile/Partials/CategoryFilter.vue";
 import ProcessBlock from "@/Pages/Profile/Partials/ProcessBlock.vue";
 import NegotiumButton from "@/Components/negotium/Button.vue";
 import { useToast } from "primevue/usetoast";
-import {usePage} from "@inertiajs/vue3";
+import { usePage } from "@inertiajs/vue3";
+import { useConfirm } from "primevue/useconfirm";
 
 const profileManagerStore = useProfilesManagerStore();
 const profileProcessStore = useProfileProcessStore();
 const toast = useToast();
+const confirm = useConfirm();
 
 const messages = computed(() => usePage().props.messages);
 const process_messages = messages.value.processes;
@@ -49,6 +53,35 @@ function ShowAssignProcess() {
 
 function assignProcess() {
   profileProcessStore.assignProcesses(toast, profileManagerStore.getProfileName(profileManagerStore.profile));
+}
+
+function showProcessConfirmation(process, process_log_id, process_status_id, button_label, confirmation_message, success_message, error_message) {
+  confirm.require({
+    header: 'Confirm stopping of process',
+    message: FunctionsHelper.replaceTextVariables(confirmation_message, profileManagerStore.getRemoveProcessVariables),
+    acceptLabel: 'Yes, ' + button_label,
+    acceptClass: 'btn btn-sm btn-default mr-2',
+    rejectLabel: 'Cancel',
+    rejectClass: 'btn btn-sm btn-default mr-2',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Save'
+    },
+    accept: () => {
+      try{
+        profileProcessStore.updateProcessLogStatus(process_log_id, process_status_id);
+      }catch (error) {
+        toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(error_message, profileManagerStore.getRemoveProcessVariables), life: 3000 });
+      }
+    },
+    reject: () => {
+      //
+    }
+  });
 }
 
 </script>
@@ -91,16 +124,16 @@ function assignProcess() {
                       <small>Details</small>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', resume_process_confirmation, success_resuming_process, error_resuming_process)">
+                    <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', process_messages.resume_process_confirmation, process_messages.success_resuming_process, process_messages.error_resuming_process)">
                       <small>Resume</small>
                     </a>
-                    <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', stop_process_confirmation, success_stopping_process, error_stopping_process)">
+                    <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', process_messages.stop_process_confirmation, process_messages.success_stopping_process, process_messages.error_stopping_process)">
                       <small>Stop</small>
                     </a>
-                    <a v-if="process.log.status.name === 'assigned'" class="dropdown-item" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', remove_process_confirmation, success_removing_process, error_removing_process)">
+                    <a v-if="process.log.status.name === 'assigned'" class="dropdown-item" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', process_messages.remove_process_confirmation, process_messages.success_removing_process, process_messages.error_removing_process)">
                       <small class="text-danger cursor-pointer">Remove</small>
                     </a>
-                    <a v-if="process.log.status.name === 'completed'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', remove_process_confirmation, success_removing_process, error_removing_process)">
+                    <a v-if="process.log.status.name === 'completed'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', process_messages.remove_process_confirmation, process_messages.success_removing_process, process_messages.error_removing_process)">
                       <small class="text-danger">Archive</small>
                     </a>
                   </div>
@@ -141,7 +174,6 @@ function assignProcess() {
       </template>
     </Dialog>
 
-    <!--
     <ConfirmDialog>
       <template #container="{ message, acceptCallback, rejectCallback }">
         <div class="flex flex-col w-full gap-4 p-4">
@@ -157,14 +189,5 @@ function assignProcess() {
         </div>
       </template>
     </ConfirmDialog>
-    -->
-
-
-
-
-
-
-
-
   </ExtendProfileLayout>
 </template>
