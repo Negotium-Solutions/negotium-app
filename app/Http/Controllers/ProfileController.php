@@ -7,31 +7,59 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use \Illuminate\Http\Client\PendingRequest as PendingRequest;
 
 class ProfileController extends Controller
 {
+    private const PROFILES_KEY = 'profiles';
+    private const NAVIGATION_PROCESSES = 'processes';
+    private PendingRequest $http;
+    private string $url;
+    private string $apiImagesUrl;
+
+    public function __construct()
+    {
+        $this->http = Http::withHeaders([
+            'Authorization' => 'Bearer '. Auth::user()->token,
+            'Accept' => 'application/json'
+        ]);
+        $this->url = env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant;
+        $this->apiUrl = env('NEGOTIUM_API_URL');
+        $this->apiImagesUrl = env('NEGOTIUM_IMAGES_URL');
+    }
+
     /**
      * Display the user's profile form.
      */
-    public function index(Request $request): Response
+    public function index(Request $request, $id = null, $navigation = 'processes'): Response
     {
-        $responseProfileTypes = Http::withHeaders([
-            'Authorization' => 'Bearer '. Auth::user()->token,
-            'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes.log.status,profiles.processes.log.step,profiles.documents');
+        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
+        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
 
-        $profileTypes = isset(json_decode($responseProfileTypes->body(), true)['data']) ? json_decode($responseProfileTypes->body(), true)['data'] : [];
-
-        $parameters = [
-            'profileTypes' => $profileTypes,
-            'api_url' => env('NEGOTIUM_IMAGES_URL')
+        $lookup = [
+            'processes' => $processes,
+            'processCategories' => $processCategories
         ];
 
-        return Inertia::render('Profile/Index', $parameters);
+        $parameters = [
+            'lookup' => $lookup,
+            'apiUrl' => $this->apiUrl,
+            'apiImagesUrl' => $this->apiImagesUrl,
+            'navigation' => $navigation
+        ];
+
+        $profileTypeId = $request->has('pt') && ($request->input('pt') > 0) ? $request->input('pt') : null;
+
+        $profilesData = self::getProfilesData($id, $profileTypeId, $navigation);
+
+        $parameters = array_merge($parameters, $profilesData);
+
+        return Inertia::render('Profile/Process/Index', $parameters);
     }
 
     /**
@@ -120,5 +148,39 @@ class ProfileController extends Controller
         ];
 
         return Inertia::render('Profile/Index', $parameters);
+    }
+
+    public function getProfilesData($id, $profileTypeId, $navigation) : array
+    {
+        Cache::store('redis')->forget(self::PROFILES_KEY);
+        if (!Cache::has(self::PROFILES_KEY)) {
+            $response = json_decode($this->http->get($this->url.'/profile-type?with=profiles')->getBody(), true)['data'];
+            Cache::store('redis')->put(self::PROFILES_KEY, $response, 86400);
+        }
+
+        $with = '';
+        switch ($navigation) {
+            case self::NAVIGATION_PROCESSES:
+                $navigationProcesses = self::NAVIGATION_PROCESSES;
+                $with .= "{$navigationProcesses}.log.step,{$navigationProcesses}.log.status";
+            break;
+        }
+
+        $profileTypes = Cache::store('redis')->get(self::PROFILES_KEY) ?? [];
+        if(!isset($profileTypeId)) {
+            $profileTypeId = $profileTypes[0]['id'];
+        }
+
+        if(!isset($id)) {
+            $id = $profileTypes[0]['profiles'][0]['id'];
+        }
+
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with={$with}")->getBody(), true)['data'] ?? [];
+
+        return [
+            'profileTypes' => $profileTypes,
+            'profile' => $profile,
+            'profileTypeId' => $profileTypeId
+        ];
     }
 }

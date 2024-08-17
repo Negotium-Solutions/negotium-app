@@ -210,20 +210,6 @@ export const useProcessesStore = defineStore({
             }
 
             return this.processes.filter((item) => this.selected_categories.indexOf(item.process_category_id) >= 0 && !assigned_processes_array.includes(item.id));
-        },
-        filterByExcludedProcesses(processes, excluded_processes) {
-            let excluded_processes_array = [];
-            processes.forEach((process) => {
-                if(process.log.process_status_id === 6) {
-                    excluded_processes_array.push(process.id);
-                }
-            });
-
-            excluded_processes.forEach((process) => {
-                excluded_processes_array.push(process.id);
-            });
-
-            return processes.filter((item) => !excluded_processes_array.includes(item.id));
         }
     },
     getters: {

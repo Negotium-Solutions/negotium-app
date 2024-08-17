@@ -83,11 +83,16 @@ export const useProfileProcessStore = defineStore({
                 });
 
                 if (response.status === 201) {
+                    console.log('assingProcessResponse', response);
                     this.setResponse(response.status, 'success', response.data.message, [], []);
                     toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_assigning_processes + " " + profile_name, life: 3000 });
                     this.showProcessModal = false;
                     this.loading = false;
                     this.status.loading = false;
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
                 }
             } catch (error) {
                 if(error.response.status !== 404) {
@@ -200,6 +205,9 @@ export const useProfileProcessStore = defineStore({
         PROCESS_STATUS_COMPLETED: () => 3,
         PROCESS_STATUS_STOPPED: () => 4,
         PROCESS_STATUS_RESUMED: () => 5,
-        PROCESS_STATUS_ARCHIVED: () => 6
+        PROCESS_STATUS_ARCHIVED: () => 6,
+        isDisabledAssignProcess() {
+            return this.selectedProfileProcesses.length === 0 || this.status.loading === true;
+        }
     }
 });

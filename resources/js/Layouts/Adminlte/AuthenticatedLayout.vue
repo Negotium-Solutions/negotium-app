@@ -1,15 +1,12 @@
 <script setup>
-import { Sidebar } from "@/Layouts/Adminlte";;
+  import { Sidebar } from "@/Layouts/Adminlte";
 </script>
-
 <template>
     <div>
         <div class="min-h-screen bg-gray-100">
-
             <div class="wrapper">
                 <Sidebar></Sidebar>
                 <!-- Page Content -->
-
                 <!-- Content Wrapper. Contains page content -->
                 <div id="main-container" class="content-wrapper bg-white">
                     <!-- Content Header (Page header) -->
@@ -28,7 +25,6 @@ import { Sidebar } from "@/Layouts/Adminlte";;
                         </div><!-- /.container-fluid -->
                     </div>
                     <!-- /.content-header -->
-
                     <!-- Main content -->
                     <div class="content pl-0 pr-0" id="profiles-content" v-if="$slots.profile">
                         <div class="container-fluid pl-0">
@@ -49,7 +45,6 @@ import { Sidebar } from "@/Layouts/Adminlte";;
                     <!-- /.content -->
                 </div>
                 <!-- /.content-wrapper -->
-
                 <!-- Main Footer -->
                 <footer class="main-footer" v-if="false">
                     <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong>

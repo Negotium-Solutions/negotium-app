@@ -93,7 +93,7 @@ const props = defineProps({
             </a>
           </li>
           <li class="nav-item">
-            <a :href="route('profile')" :class="{active: route().current('profile')}" class="nav-link d-flex align-self-center">
+            <a :href="route('profile.navigation')" :class="{active: route().current('profile.navigation')}" class="nav-link d-flex align-self-center">
               <i class="nav-icon sidemenu-profiles"></i>
               <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Profiles</span>
             </a>

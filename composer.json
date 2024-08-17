@@ -10,6 +10,7 @@
         "laravel/framework": "^11.0",
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
+        "predis/predis": "^2.2",
         "tightenco/ziggy": "^2.0"
     },
     "require-dev": {
@@ -62,7 +63,8 @@
         "sort-packages": true,
         "allow-plugins": {
             "pestphp/pest-plugin": true,
-            "php-http/discovery": true
+            "php-http/discovery": true,
+            "phpro/grumphp": true
         }
     },
     "minimum-stability": "stable",

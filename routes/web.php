@@ -25,6 +25,7 @@ Route::middleware('auth')->group(function () {
 
     // Profiles
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
+    Route::get('/profile/{id?}/{navigation?}', [ProfileController::class, 'index'])->name('profile.navigation');
     Route::get('/profile/details', [ProfileController::class, 'details'])->name('profile.details');
     Route::get('/profile/communications', [ProfileController::class, 'communications'])->name('profile.communications');
 
