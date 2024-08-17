@@ -1,7 +1,7 @@
 <script setup>
 
 import ExtendProfileLayout from "@/Pages/Profile/ProfileLayout.vue";
-import { onMounted } from "vue";
+import {computed, onMounted} from "vue";
 import { useProfilesManagerStore, useProfileProcessStore } from "@/stores";
 import { FunctionsHelper } from "@/helpers";
 import Dialog from "primevue/dialog";
@@ -9,10 +9,14 @@ import CategoryFilter from "@/Pages/Profile/Partials/CategoryFilter.vue";
 import ProcessBlock from "@/Pages/Profile/Partials/ProcessBlock.vue";
 import NegotiumButton from "@/Components/negotium/Button.vue";
 import { useToast } from "primevue/usetoast";
+import {usePage} from "@inertiajs/vue3";
 
 const profileManagerStore = useProfilesManagerStore();
 const profileProcessStore = useProfileProcessStore();
 const toast = useToast();
+
+const messages = computed(() => usePage().props.messages);
+const process_messages = messages.value.processes;
 
 const props = defineProps({
   profileTypeId: 0,
@@ -108,7 +112,7 @@ function assignProcess() {
         <table v-else class="w-100 mt-4 pt-4">
           <tr>
             <td>
-              <div class="text-center" v-html="no_processes_assigned_to_profile"></div>
+              <div class="text-center" v-html="process_messages.no_processes_assigned_to_profile"></div>
               <div class="text-center mt-4">
                 <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">View Guide</button>
               </div>
