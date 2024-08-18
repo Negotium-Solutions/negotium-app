@@ -30,7 +30,7 @@ onMounted(() => {
   <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-12 pl-0 pr-0">
     <div class="d-flex w-100 pt-3 pl-2 pr-2 pb-3">
       <div class="col-sm-6">
-        <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Communications</h1>
+        <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Communication</h1>
       </div>
       <div class="col-sm-6 text-right">
         <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
@@ -59,21 +59,21 @@ onMounted(() => {
           <!-- Header -->
           <div class="flex items-center justify-between mb-1">
             <div class="flex items-center">
-              <div class="text-neutral-600 text-sm font-normal font-['Roboto'] leading-tight">Alfredo, Benjamin (4)</div>
+              <div class="text-neutral-400 text-sm font-normal font-['Roboto'] leading-tight">Alfredo, Benjamin (4)</div>
             </div>
             <div class="flex items-center">
-              <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
+              <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-400">12/05/2024 - 13:12</span>
             </div>
           </div>
 
           <!-- Subject -->
-          <div class="font-bold">
+          <div class="flex items-center justify-between mb-1">
             <div class="text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">Subject: Lorem ipsum</div>
           </div>
 
           <!-- Body -->
           <div class="flex items-end justify-between mt-1">
-            <div class="text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
+            <div class="text-sm font-normal font-['Nunito'] leading-tight text-neutral-400 mr-2">
               <span>Lorem ipsum dolor sit amet consectetur. Id blandit sed consequat nunc condimentum sem nunc ullamcorper cursus. Viverra commodo duis gravida pellentesque.</span>
             </div>
             <div class="flex items-end">
@@ -97,12 +97,12 @@ onMounted(() => {
                 <div class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Sent by: Benjamin Button</div>
               </div>
               <div class="flex items-center">
-                <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
+                <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-400">12/05/2024 - 13:12</span>
               </div>
             </div>
             <!-- Body -->
             <div class="flex items-end justify-between mt-1 gap-1">
-              <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
+              <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-400 mr-2">
                 <span>Lorem ipsum dolor sit amet consectetur. Id blandit sed consequat nunc condimentum sem nunc ullamcorper cursus. Viverra commodo duis gravida pellentesque.</span>
               </div>
               <div class="flex items-end">
@@ -126,12 +126,12 @@ onMounted(() => {
                 <div class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Sent by: Paityn Passaquindici Arcand</div>
               </div>
               <div class="flex items-center">
-                <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
+                <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-400">12/05/2024 - 13:12</span>
               </div>
             </div>
             <!-- Body -->
             <div class="flex items-end justify-between mt-1 gap-1">
-              <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
+              <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-400 mr-2">
                 <span>Lorem ipsum dolor sit amet consectetur. Id blandit sed consequat nunc condimentum sem nunc ullamcorper cursus. Viverra commodo duis gravida pellentesque.</span>
               </div>
               <div class="flex items-end">
@@ -154,12 +154,12 @@ onMounted(() => {
                 <div class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Sent by: Lydia Schleifer</div>
               </div>
               <div class="flex items-center">
-                <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
+                <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-400">12/05/2024 - 13:12</span>
               </div>
             </div>
             <!-- Body -->
             <div class="flex items-end justify-between mt-1 gap-1">
-              <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
+              <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-400 mr-2">
                 <span>Lorem ipsum dolor sit amet consectetur. Id blandit sed consequat nunc condimentum sem nunc ullamcorper cursus. Viverra commodo duis gravida pellentesque.</span>
               </div>
               <div class="flex items-end">
@@ -168,7 +168,7 @@ onMounted(() => {
           </div>
         </div>
       </div>
-      <table v-else class="w-100">
+      <table v-else class="w-100 mt-4 pt-4">
         <tr>
           <td>
             <div class="text-center" v-html="no_communications_for_profile"></div>
