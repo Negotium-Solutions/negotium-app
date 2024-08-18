@@ -167,6 +167,10 @@
     border-radius: 25px;
 }
 
+.rounded-custom-50{
+    border-radius: 50%;
+}
+
 .btn-group label.btn-outline-secondary{
     font-weight: 400;
     color: var(--neg-font-default);
