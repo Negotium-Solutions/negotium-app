@@ -1,5 +1,5 @@
 <script setup>
-import { useProfilesManagerStore, useProfileProcessStore } from "@/stores/index.js";
+import { useProfilesManagerStore } from "@/stores/index.js";
 import Button from "primevue/button";
 import { computed, onMounted, ref } from "vue";
 import Dialog from "primevue/dialog";
