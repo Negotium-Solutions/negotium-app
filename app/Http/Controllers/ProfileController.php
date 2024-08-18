@@ -2,123 +2,230 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
+use \Illuminate\Http\Client\PendingRequest as PendingRequest;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
-    public function index(Request $request): Response
+    private const PROFILES_KEY = 'profiles';
+    private PendingRequest $http;
+    private string $url;
+    private string $apiImagesUrl;
+    private array $profileData;
+    private Request $request;
+
+    public function __construct(Request $request)
     {
-        $responseProfileTypes = Http::withHeaders([
+        $this->http = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes.log.status,profiles.processes.log.step,profiles.documents');
-
-        $profileTypes = isset(json_decode($responseProfileTypes->body(), true)['data']) ? json_decode($responseProfileTypes->body(), true)['data'] : [];
-
-        $parameters = [
-            'profileTypes' => $profileTypes,
-            'api_url' => env('NEGOTIUM_IMAGES_URL')
-        ];
-
-        return Inertia::render('Profile/Index', $parameters);
+        ]);
+        $this->url = env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant;
+        $this->apiUrl = env('NEGOTIUM_API_URL');
+        $this->apiImagesUrl = env('NEGOTIUM_IMAGES_URL');
+        $this->request = $request;
+        $this->profileData = $this->setProfilesData();
     }
 
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): Response
+    public function processes($id = null): Response
     {
-        return Inertia::render('Profile/Edit', [
-            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-            'status' => session('status'),
-        ]);
-    }
-
-    /**
-     * Update the user's profile information.
-     */
-    public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
-
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if((int)$id === 0 || $id === null){
+            $id = $this->profileData['profileId'];
         }
+        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
+        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
 
-        $request->user()->save();
+        $lookup = [
+            'processes' => $processes,
+            'processCategories' => $processCategories
+        ];
 
-        return Redirect::route('profile.edit');
-    }
+        $parameters = [
+            'profile' => $profile,
+            'lookup' => $lookup,
+            'apiUrl' => $this->apiUrl,
+            'apiImagesUrl' => $this->apiImagesUrl
+        ];
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
+        $parameters = array_merge($parameters, $this->profileData);
 
-        $user = $request->user();
-
-        Auth::logout();
-
-        $user->delete();
-
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
-
-        return Redirect::to('/');
+        return Inertia::render('Profile/Process/Index', $parameters);
     }
 
     /**
      * Display the user's profile details.
      */
-    public function details(Request $request): Response
+    /**
+     * Display the user's profile form.
+     */
+    public function details($id = null): Response
     {
-        $responseProfileTypes = Http::withHeaders([
-            'Authorization' => 'Bearer '. Auth::user()->token,
-            'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes.log.status,profiles.processes.log.step,profiles.documents');
+        if((int)$id === 0 || $id === null){
+            $id = $this->profileData['profileId'];
+        }
+        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
+        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
 
-        $profileTypes = isset(json_decode($responseProfileTypes->body(), true)['data']) ? json_decode($responseProfileTypes->body(), true)['data'] : [];
-
-        $parameters = [
-            'profileTypes' => $profileTypes,
-            'api_url' => env('NEGOTIUM_IMAGES_URL')
+        $lookup = [
+            'processes' => $processes,
+            'processCategories' => $processCategories
         ];
 
-        return Inertia::render('Profile/Index', $parameters);
+        $parameters = [
+            'profile' => $profile,
+            'lookup' => $lookup,
+            'apiUrl' => $this->apiUrl,
+            'apiImagesUrl' => $this->apiImagesUrl
+        ];
+
+        $parameters = array_merge($parameters, $this->profileData);
+
+        return Inertia::render('Profile/ProfileDetails/Index', $parameters);
+    }
+
+    /**
+     * Display the user's profile details.
+     */
+    /**
+     * Display the user's profile form.
+     */
+    public function editDetails($id = null): Response
+    {
+        if((int)$id === 0 || $id === null){
+            $id = $this->profileData['profileId'];
+        }
+        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
+        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
+
+        $lookup = [
+            'processes' => $processes,
+            'processCategories' => $processCategories
+        ];
+
+        $parameters = [
+            'profile' => $profile,
+            'lookup' => $lookup,
+            'apiUrl' => $this->apiUrl,
+            'apiImagesUrl' => $this->apiImagesUrl
+        ];
+
+        $parameters = array_merge($parameters, $this->profileData);
+
+        return Inertia::render('Profile/ProfileDetails/Edit', $parameters);
     }
 
     /**
      * Display the user's profile communications.
      */
-    public function communications(Request $request): Response
+    public function communications($id = null): Response
     {
-        $responseProfileTypes = Http::withHeaders([
-            'Authorization' => 'Bearer '. Auth::user()->token,
-            'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/profile-type?with=profiles.processes.log.status,profiles.processes.log.step,profiles.documents');
+        if((int)$id === 0 || $id === null){
+            $id = $this->profileData['profileId'];
+        }
+        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
+        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
 
-        $profileTypes = isset(json_decode($responseProfileTypes->body(), true)['data']) ? json_decode($responseProfileTypes->body(), true)['data'] : [];
-
-        $parameters = [
-            'profileTypes' => $profileTypes,
-            'api_url' => env('NEGOTIUM_IMAGES_URL')
+        $lookup = [
+            'processes' => $processes,
+            'processCategories' => $processCategories
         ];
 
-        return Inertia::render('Profile/Index', $parameters);
+        $parameters = [
+            'profile' => $profile,
+            'lookup' => $lookup,
+            'apiUrl' => $this->apiUrl,
+            'apiImagesUrl' => $this->apiImagesUrl
+        ];
+
+        $parameters = array_merge($parameters, $this->profileData);
+
+        return Inertia::render('Profile/Communications/Index', $parameters);
+    }
+
+    public function notes($id = null): Response
+    {
+        if((int)$id === 0 || $id === null){
+            $id = $this->profileData['profileId'];
+        }
+        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
+        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}")->getBody(), true)['data'] ?? [];
+
+        $lookup = [
+            'processes' => $processes,
+            'processCategories' => $processCategories
+        ];
+
+        $parameters = [
+            'profile' => $profile,
+            'lookup' => $lookup,
+            'apiUrl' => $this->apiUrl,
+            'apiImagesUrl' => $this->apiImagesUrl
+        ];
+
+        $parameters = array_merge($parameters, $this->profileData);
+
+        return Inertia::render('Profile/Notes/Index', $parameters);
+    }
+
+    public function documents($id = null): Response
+    {
+        if((int)$id === 0 || $id === null){
+            $id = $this->profileData['profileId'];
+        }
+        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
+        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}")->getBody(), true)['data'] ?? [];
+
+        $lookup = [
+            'processes' => $processes,
+            'processCategories' => $processCategories
+        ];
+
+        $parameters = [
+            'profile' => $profile,
+            'lookup' => $lookup,
+            'apiUrl' => $this->apiUrl,
+            'apiImagesUrl' => $this->apiImagesUrl
+        ];
+
+        $parameters = array_merge($parameters, $this->profileData);
+
+        return Inertia::render('Profile/Documents/Index', $parameters);
+    }
+
+    public function setProfilesData() : array
+    {
+        if (!Cache::has(self::PROFILES_KEY)) {
+            $response = json_decode($this->http->get($this->url.'/profile-type?with=profiles')->getBody(), true)['data'];
+            Cache::store('redis')->put(self::PROFILES_KEY, $response, 86400);
+        }
+
+        $profileTypes = Cache::store('redis')->get(self::PROFILES_KEY) ?? [];
+        $profileTypeId = $this->request->has('pt') && ($this->request->input('pt') > 0) ? $this->request->input('pt') : null;
+        if(!isset($profileTypeId)) {
+            $profileTypeId = $profileTypes[0]['id'];
+        }
+        if(!isset($id)) {
+            $id = $profileTypes[0]['profiles'][0]['id'];
+        }
+
+        return [
+            'profileTypes' => $profileTypes,
+            'profileTypeId' => $profileTypeId,
+            'profileId' => $id
+        ];
     }
 }

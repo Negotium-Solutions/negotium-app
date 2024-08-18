@@ -1,39 +1,27 @@
 <script setup>
 
-import { AuthenticatedLayout } from "@/Layouts/Adminlte";
+import { AuthenticatedLayout } from "@/Layouts/Adminlte/index.js";
 import { onMounted, reactive, computed } from "vue";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import Avatar from 'primevue/avatar';
 import { usePage } from "@inertiajs/vue3";
-import { useProfilesManagerStore } from "@/stores";
-import ProcessIndex from "@/Pages/Profile/Process/Index_old.vue";
-import ProfileDetailsIndex from "@/Pages/Profile/ProfileDetails/Index.vue";
-import ProfileCommunicationsIndex from "@/Pages/Profile/Communications/Index.vue";
-import { FunctionsHelper } from "@/helpers";
+import { useProfilesManagerStore } from "@/stores/index.js";
+import { FunctionsHelper } from "@/helpers/index.js";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
+const props = computed(() => page.props.auth.user);
 
 const toast = useToast();
 const profileManagerStore = useProfilesManagerStore();
-
-const props = defineProps({
-  profileTypes: Array,
-  api_url: String,
-  process_messages: Object,
-  messages: Object
-});
 
 const pageProps = reactive({
 
 });
 
-onMounted(() =>{
-  profileManagerStore.set('profile_types', props.profileTypes);
-  profileManagerStore.set('profile_type', props.profileTypes[0]);
-  profileManagerStore.set('profile', props.profileTypes[0].profiles[0]);
+onMounted(() => {
   handleProfileDivHeight()
   // handleProfileMenuDivHeight()
   document.addEventListener('DOMContentLoaded',handleProfileMenuDivHeight);
@@ -95,8 +83,8 @@ function handleProfileMenuDivHeight(){
       <div class="row mb-0 mt-1">
         <div class="col-md-12 pt-4">
           <div class="row">
-            <div v-for="(profile_type, index) in props.profileTypes" :key="index" class="px-1 mb-1">
-              <button :class="['float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold', { 'bg-zinc-100' : profileManagerStore.isSelected('profile_type', profile_type) }]" @click="profileManagerStore.set('profile_type', profile_type)">{{profile_type.name}}</button>
+            <div v-for="(profileType, index) in profileManagerStore.profileTypes" :key="index" class="px-1 mb-1">
+              <button @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profileType.profiles[0].id})+'?pt='+profileType.id)" :class="['float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold cursor-pointer', { 'bg-zinc-100' : profileManagerStore.isSelected('profileType', profileType) }]">{{profileType.name}}</button>
             </div>
           </div>
         </div>
@@ -107,11 +95,10 @@ function handleProfileMenuDivHeight(){
 
       <div class="row" id="profiles-sidebar">
         <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0">
-          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route('profile', {'id': profile.id, 'profile-navigation': 'processes'}))" :class="{ 'bg-[#ebebec]': route().current('profile') && parseInt(route().params.id) === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
+          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profile.id})+'?pt='+profileManagerStore.profileType.id)" :class="{ 'bg-[#ebebec]': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
             <div class="w-100 pl-6 pr-2 d-flex">
-            <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="props.api_url + profile.avatar"  />
-            <span v-if="profileManagerStore.profile_type.name == 'Individual'"  class="flex items-center justify-center text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.first_name }} {{ profile.last_name }} </span>
-            <span v-if="profileManagerStore.profile_type.name == 'Business'" class="flex items-center justify-center text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.company_name }} </span>
+            <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="profileManagerStore.apiImagesUrl+profile.avatar"  />
+            <span class="flex items-center justify-center text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profileManagerStore.getProfileName(profile) }} </span>
             <div class="row mb-2"></div>
             </div>
           </div>
@@ -122,15 +109,10 @@ function handleProfileMenuDivHeight(){
               <table class="w-100">
                 <tr>
                   <td rowspan="3" class="w-[60px] align-top">
-                    <Avatar class="align-top fit-hw" :image="props.api_url + profileManagerStore.profile.avatar" />
+                    <Avatar class="align-top fit-hw" :image="profileManagerStore.apiImagesUrl+profileManagerStore.profile.avatar" />
                   </td>
                   <td class="pl-2">
-                    <span v-if="profileManagerStore.profile_type.name == 'Individual'" >
-                      <div class="w-60 text-neutral-700 text-[18px] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.profile.first_name }} {{ profileManagerStore.profile.last_name }} </div>
-                    </span>
-                    <span v-if="profileManagerStore.profile_type.name == 'Business'">
-                      <div class="w-60 text-neutral-700 text-[28px] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.profile.company_name }} </div>
-                    </span>
+                    <span class="w-60 text-neutral-700 text-[18px] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.getProfileName(profileManagerStore.profile) }} </span>
                   </td>
                 </tr>
                 <tr>
@@ -155,11 +137,11 @@ function handleProfileMenuDivHeight(){
             <div class="row mb-3"></div>
             <div id="profile-view-menu">
             <h2 class="font-bold mb-2">Profile navigation</h2>
-            <div><a :href="route('profile')" :class="{' bg-slate-500 text-white' : route().current('profile')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Processes <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.details')" :class="{' bg-slate-500 text-white' : route().current('profile.details')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Details <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.communications')" :class="{' bg-slate-500 text-white' : route().current('profile.communications')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Communications <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Documents <i class="fa fa-chevron-right float-right"></i></button></div>
-            <div><button class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div><a :href="route('profile.processes', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.processes')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Processes <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.details', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.details')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Details <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.communications', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.communications')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Communications <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.documents', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Documents <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.notes', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></a></div>
 
             <div class="row mb-3"></div>
           </div>
@@ -170,9 +152,11 @@ function handleProfileMenuDivHeight(){
           </div>
           </div>
         </div>
-        <process-index v-if="route().current('profile')"></process-index>
-        <profile-details-index v-if="route().current('profile.details')"></profile-details-index>
-        <profile-communications-index v-if="route().current('profile.communications')"></profile-communications-index>
+        <!-- Profile Page Start -->
+        <div class="col-lg-7 col-md-5 col-sm-12 pl-0 pr-0">
+          <slot/>
+        </div>
+        <!-- Profile Page End -->
       </div>
     </div>
     </template>
@@ -185,6 +169,3 @@ function handleProfileMenuDivHeight(){
     </template>
   </Toast>
 </template>
-
-<style scoped>
-</style>

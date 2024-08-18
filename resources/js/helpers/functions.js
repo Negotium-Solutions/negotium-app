@@ -27,6 +27,30 @@ class FunctionsHelper {
     }
 
     /**
+     * Static method to navigate to a different location.
+     *
+     * @param {string} location - The url for the intended location.
+     */
+    static navigateTo(location) {
+        window.location = location;
+    }
+
+    /**
+     * Static method for filtering.
+     *
+     * @param {array} items
+     * @param {array} excludedItems
+     */
+    static filterByExcludedItems(items, excludedItems) {
+        let excludedItemsArray = [];
+        excludedItems.forEach((item) => {
+            excludedItemsArray.push(item.id);
+        });
+
+        return items.filter((item) => !excludedItemsArray.includes(item.id));
+    }
+
+    /**
      * Static method to format a date string.
      *
      * @param {string} dateStr - The date string to format.
