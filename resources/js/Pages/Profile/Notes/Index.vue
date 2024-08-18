@@ -31,7 +31,7 @@ onMounted(() => {
   <ExtendProfileLayout>
   <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-12 pl-0 pr-0">
     <div class="d-flex w-100 pt-3 pl-3 pr-3 pb-3">
-      <div class="col-sm-6">
+      <div class="col-sm-6 p-0">
         <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Notes & Reminders</h1>
       </div>
       <div class="col-sm-6 text-right">
@@ -40,32 +40,64 @@ onMounted(() => {
     </div>
     <div class="col-md-12 pl-3 pr-3">
       <div v-if="profileManagerStore"></div>
-      <div v-if="show_default_page === false" class="flex items-start border-b border-gray-300 p-4 bg-white">
-        <div class="flex w-10 h-8 bg-blue-200 rounded-sm justify-center items-center">
-          <span class="font-bold">Note</span>
+      <div v-if="show_default_page === false">
+        <div class="flex items-start border-b border-gray-300 pb-4 bg-white">
+          <div class="flex-1 flex flex-col">
+            <div class="flex items-center justify-between mb-1">
+              <div class="text-neutral-700 text-base font-medium font-['Roboto'] leading-normal">
+                <div  class="h-7 p-2 bg-[#f2f6f7] rounded-lg flex justify-center items-center gap-2 inline-flex">
+                  <div class="text-neutral-700 text-xs font-medium font-['Roboto'] leading-3">Note</div>
+                </div>
+                Note Heading
+              </div>
+              <div class="flex items-center">
+                <span class="font-semibold pr-2">Reminder Date</span>
+                <span class="fa fa-calendar-day"></span>
+                <div class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2">
+                  <i class="fas fa-times"></i>
+                </div>
+              </div>
+            </div>
+            <div class="mt-1 ">
+              <span class="text-neutral-400 text-sm font-normal font-['Nunito'] leading-tight">Lorem ipsum dolor sit amet consectetur. Elit dui tortor id erat sed. Malesuada quam sed nec enim. Et tincidunt imperdiet egestas at massa. Ut in fames ut blandit nam maecenas consequat egestas. Quam vitae elementum nisl venenatis tellus sed. Non cum sit quis.</span>
+            </div>
+            <div class="flex items-center justify-between mt-1">
+              <div class="font-bold">
+                <span class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Added by: <span class="text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">Benjamin Button</span></span>
+              </div>
+              <div class="flex items-center">
+                <span class="text-right text-neutral-400 text-sm font-normal font-['Roboto'] leading-tight">12/05/2024 - 13:12</span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="flex-1 flex flex-col pl-4">
-          <div class="flex items-center justify-between mb-1">
-            <div class="flex items-center">
-              <span class="font-semibold mr-2">Note Heading</span>
+        <div class="flex items-start border-b border-gray-300 pb-4 pt-4 bg-white">
+          <div class="flex-1 flex flex-col">
+            <div class="flex items-center justify-between mb-1">
+              <div class="text-neutral-700 text-base font-medium font-['Roboto'] leading-normal">
+                <div  class="h-7 p-2 bg-[#f2f6f7] rounded-lg flex justify-center items-center gap-2 inline-flex">
+                  <div class="text-neutral-700 text-xs font-medium font-['Roboto'] leading-3">Reminder</div>
+                </div>
+                Reminder Heading
+              </div>
+              <div class="flex items-center">
+                <span class="font-semibold pr-2">Reminder Date</span>
+                <span class="fa fa-calendar-day"></span>
+                <div class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2">
+                  <i class="fas fa-times"></i>
+                </div>
+              </div>
             </div>
-            <div class="flex items-center">
-              <span class="font-semibold pr-2">Reminder Date</span>
-              <span class="fa fa-calendar-day"></span>
-              <button class="btn btn-red text-right">X</button>
+            <div class="mt-1 ">
+              <span class="text-neutral-400 text-sm font-normal font-['Nunito'] leading-tight">Lorem ipsum dolor sit amet consectetur. Elit dui tortor id erat sed. Malesuada quam sed nec enim. Et tincidunt imperdiet egestas at massa. Ut in fames ut blandit nam maecenas consequat egestas. Quam vitae elementum nisl venenatis tellus sed. Non cum sit quis.</span>
             </div>
-          </div>
-          <div class="mt-1 ">
-            <span>You haven't send any communications to this profile.
-                  Easily send messages or email to this profile by clicking on
-                  'Send Email' or 'Send Message' in the top right corner.</span>
-          </div>
-          <div class="flex items-center justify-between mt-1">
-            <div class="font-bold">
-              <span>Added by: Benjamin Button</span>
-            </div>
-            <div class="flex items-center">
-              <span class="text-right">Date Created</span>
+            <div class="flex items-center justify-between mt-1">
+              <div class="font-bold">
+                <span class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Added by: <span class="text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">Benjamin Button</span></span>
+              </div>
+              <div class="flex items-center">
+                <span class="text-right text-neutral-400 text-sm font-normal font-['Roboto'] leading-tight">12/05/2024 - 13:12</span>
+              </div>
             </div>
           </div>
         </div>
