@@ -93,12 +93,12 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
     <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-12 pl-0 pr-0">
 
       <div v-if="profileManagerStore.processes && profileManagerStore.processes.length > 0">
-        <div class="d-flex w-100 pt-3 pl-2 pr-2">
+        <div class="d-flex w-100 pt-3 pl-3 pr-3">
           <div class="col-sm-12">
             <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Recent Processes</h1>
           </div>
         </div>
-        <div class="recent-processes d-flex w-100 pt-3 pl-2 pr-2">
+        <div class="recent-processes d-flex w-100 pt-3 pl-3 pr-3">
           <div class="row col-md-12 p-0 w-100 mr-0 ml-0">
             <div class="col-md-6 mb-2 py-1">
               <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">

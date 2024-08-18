@@ -30,7 +30,7 @@ onMounted(() => {
 <template>
   <ExtendProfileLayout>
   <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-12 pl-0 pr-0">
-    <div class="d-flex w-100 pt-3 pl-2 pr-2 pb-3">
+    <div class="d-flex w-100 pt-3 pl-3 pr-3 pb-3">
       <div class="col-sm-6">
         <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Notes & Reminders</h1>
       </div>
@@ -38,7 +38,7 @@ onMounted(() => {
         <button @click="show_add_note = true" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Add Note or Reminder</button>
       </div>
     </div>
-    <div class="col-md-12 pl-2 pr-2">
+    <div class="col-md-12 pl-3 pr-3">
       <div v-if="profileManagerStore"></div>
       <div v-if="show_default_page === false" class="flex items-start border-b border-gray-300 p-4 bg-white">
         <div class="flex w-10 h-8 bg-blue-200 rounded-sm justify-center items-center">
