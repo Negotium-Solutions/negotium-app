@@ -7,9 +7,6 @@ import { useToast } from "primevue/usetoast";
 import Avatar from 'primevue/avatar';
 import { usePage } from "@inertiajs/vue3";
 import { useProfilesManagerStore } from "@/stores";
-import ProcessIndex from "@/Pages/Profile/Process/Index_old.vue";
-import ProfileDetailsIndex from "@/Pages/Profile/ProfileDetails/Index.vue";
-import ProfileCommunicationsIndex from "@/Pages/Profile/Communications/Index.vue";
 import { FunctionsHelper } from "@/helpers";
 
 const page = usePage();
@@ -170,9 +167,6 @@ function handleProfileMenuDivHeight(){
           </div>
           </div>
         </div>
-        <process-index v-if="route().current('profile')"></process-index>
-        <profile-details-index v-if="route().current('profile.details')"></profile-details-index>
-        <profile-communications-index v-if="route().current('profile.communications')"></profile-communications-index>
       </div>
     </div>
     </template>
