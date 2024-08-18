@@ -26,6 +26,7 @@ const props = defineProps({
   profileTypeId: 0,
   profileTypes: Array,
   profile: Object,
+  processes: Array,
   apiUrl: String,
   apiImagesUrl: String,
   navigation: String,
@@ -91,7 +92,7 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
   <ExtendProfileLayout>
     <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-12 pl-0 pr-0">
 
-      <div v-if="profileManagerStore.processes.length > 0">
+      <div v-if="profileManagerStore.processes && profileManagerStore.processes.length > 0">
         <div class="d-flex w-100 pt-3 pl-2 pr-2">
           <div class="col-sm-12">
             <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Recent Processes</h1>
@@ -193,7 +194,7 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
         </div>
       </div>
       <div class="col-md-12 pl-2 pr-2">
-        <table v-if="profileManagerStore.processes.length > 0" class="table-sm w-100 table-row-spacing table-bg">
+        <table v-if="profileManagerStore.processes && profileManagerStore.processes.length > 0" class="table-sm w-100 table-row-spacing table-bg">
           <tr>
             <th>Select</th><th>Process Name</th><th>Current Posistion</th><th>Last Opened</th><th>Date Added</th><th>Actions</th>
           </tr>
