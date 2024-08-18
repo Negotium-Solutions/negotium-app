@@ -104,7 +104,7 @@ function handleProfileMenuDivHeight(){
           </div>
         </div>
         <div class="col-lg-3 col-md-4 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail" style="position:relative">
-          <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-4 border-right pr-3 pl-3 col-md-12" id="profiles-detail-content">
+          <div v-show="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="pt-3 border-right pr-3 pl-3 col-md-12" id="profiles-detail-content">
             <div class="row mb-2 pl-2">
               <table class="w-100">
                 <tr>
@@ -112,7 +112,7 @@ function handleProfileMenuDivHeight(){
                     <Avatar class="align-top fit-hw" :image="profileManagerStore.apiImagesUrl+profileManagerStore.profile.avatar" />
                   </td>
                   <td class="pl-2">
-                    <span class="w-60 text-neutral-700 text-[18px] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.getProfileName(profileManagerStore.profile) }} </span>
+                    <span class="w-60 text-neutral-700 text-[1.5rem] font-bold font-['Roboto'] leading-tight">{{ profileManagerStore.getProfileName(profileManagerStore.profile) }} </span>
                   </td>
                 </tr>
                 <tr>
