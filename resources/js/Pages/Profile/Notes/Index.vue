@@ -2,11 +2,17 @@
 import { useProfilesManagerStore } from "@/stores/index.js";
 import Button from "primevue/button";
 import { computed, onMounted, ref } from "vue";
-import { usePage } from "@inertiajs/vue3";
 import Dialog from "primevue/dialog";
+import ConfirmDialog from "primevue/confirmdialog";
 import ExtendProfileLayout from "@/Pages/Profile/ProfileLayout.vue";
+import { useToast } from "primevue/usetoast";
+import { usePage } from "@inertiajs/vue3";
+import { useConfirm } from "primevue/useconfirm";
 
 const profileManagerStore = useProfilesManagerStore();
+const toast = useToast();
+const confirm = useConfirm();
+
 const messages = computed(() => usePage().props.messages);
 const no_notes_for_profile = messages.value.note.no_notes_for_profile;
 const show_default_page = false;
@@ -25,6 +31,32 @@ const props = defineProps({
 onMounted(() => {
   profileManagerStore.setProfileData(props);
 });
+
+function showNoteConfirmation()
+{
+  confirm.require({
+    header: 'Confirm removal',
+    message: 'Are you sure you want to remove the {note} named {note heading}?',
+    acceptLabel: 'Yes, Remove',
+    acceptClass: 'btn btn-sm btn-default mr-2',
+    rejectLabel: 'Cancel',
+    rejectClass: 'btn btn-sm btn-default mr-2',
+    rejectProps: {
+      label: 'Cancel',
+      severity: 'secondary',
+      outlined: true
+    },
+    acceptProps: {
+      label: 'Save'
+    },
+    accept: () => {
+    },
+    reject: () => {
+      //
+    }
+  
+})
+}
 </script>
 
 <template>
@@ -53,9 +85,9 @@ onMounted(() => {
               <div class="flex items-center">
                 <span class="font-semibold pr-2">Reminder Date</span>
                 <span class="fa fa-calendar-day"></span>
-                <div class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2">
+                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2" @click="showNoteConfirmation()">
                   <i class="fas fa-times"></i>
-                </div>
+                </button>
               </div>
             </div>
             <div class="mt-1 ">
@@ -83,9 +115,9 @@ onMounted(() => {
               <div class="flex items-center">
                 <span class="font-semibold pr-2">Reminder Date</span>
                 <span class="fa fa-calendar-day"></span>
-                <div class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2">
+                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2">
                   <i class="fas fa-times"></i>
-                </div>
+                </button>
               </div>
             </div>
             <div class="mt-1 ">
@@ -179,5 +211,20 @@ onMounted(() => {
       </div>
     </template>
   </Dialog>
+
+<ConfirmDialog :style="{ width: '400px' }">
+  <template #container="{ message, acceptCallback, rejectCallback }">
+    <div class="flex flex-col w-full gap-4 p-4">
+      <span class="text-2xl font-bold font-['Roboto'] leading-loose">{{ message.header }}</span>
+      <p class="text-base font-normal font-['Nunito'] leading-normal" v-html="message.message"></p>
+    </div>
+    <div class="row">
+      <div class="col-12 py-3 px-4 text-right">
+        <Button label="Cancel" outlined @click="rejectCallback" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2"></Button>
+        <Button :label="'Yes, Remove'" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
+      </div>
+    </div>
+  </template>
+</ConfirmDialog>
   </ExtendProfileLayout>
 </template>
