@@ -84,7 +84,11 @@ export const useProfileProcessStore = defineStore({
 
                 if (response.status === 201) {
                     this.setResponse(response.status, 'success', response.data.message, [], []);
-                    toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_assigning_processes + " " + profile_name, life: 3000 });
+
+                    let removeProcessVariables = {
+                        'profileName': profile_name
+                    };
+                    toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + ' ' + FunctionsHelper.replaceTextVariables(messages.value.profile.success_assigning_processes, removeProcessVariables), life: 3000 });
                     this.showProcessModal = false;
                     this.loading = false;
                     this.status.loading = false;
@@ -94,6 +98,7 @@ export const useProfileProcessStore = defineStore({
                     }, 2000);
                 }
             } catch (error) {
+                console.log('error', error);
                 if(error.response.status !== 404) {
                     this.setResponse(error.response.status, 'error', error.response.statusText, [], []);
                     toast.add({ severity: 'error', summary: 'Error', detail: messages.value.profile.error_assigning_processes, life: 3000 });

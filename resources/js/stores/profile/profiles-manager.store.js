@@ -55,6 +55,20 @@ export const useProfilesManagerStore = defineStore({
                     this.selected_categories.push(category_id);
                 }
             }
+        },
+        setProfileData(props) {
+            // Get selected profile type
+            const profileType = props.profileTypes.filter((item) => parseInt(item.id) === parseInt(props.profileTypeId))[0];
+            this.set('profileTypes', props.profileTypes);
+            this.set('profileType', profileType);
+            this.set('profiles', profileType.profiles);
+            this.set('profile', props.profile);
+            this.set('processes', props.profile.processes);
+            this.set('apiUrl', props.apiUrl);
+            this.set('apiImagesUrl', props.apiImagesUrl);
+            this.set('navigation', props.navigation);
+            this.setLookUp('processes', props.lookup.processes);
+            this.setLookUp('processCategories', props.lookup.processCategories);
         }
     },
     getters: {

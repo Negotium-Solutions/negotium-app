@@ -13,6 +13,15 @@ onMounted(() => {
   ('resize', handleProfileSidebarPosition);
 })
 
+function isProfileMenu()
+{
+  return route().current('profile.processes')
+      || route().current('profile.details')
+      || route().current('profile.communications')
+      || route().current('profile.documents')
+      || route().current('profile.notes');
+}
+
 function handleProfileSidebarPosition(){
   const w = window.innerWidth;
   const h = window.innerHeight;
@@ -93,7 +102,7 @@ const props = defineProps({
             </a>
           </li>
           <li class="nav-item">
-            <a :href="route('profile.navigation')" :class="{active: route().current('profile.navigation')}" class="nav-link d-flex align-self-center">
+            <a :href="route('profile.processes', {'id': 0})" :class="{ active: isProfileMenu() }" class="nav-link d-flex align-self-center">
               <i class="nav-icon sidemenu-profiles"></i>
               <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Profiles</span>
             </a>

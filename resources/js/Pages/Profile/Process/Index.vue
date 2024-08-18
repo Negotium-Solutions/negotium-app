@@ -37,18 +37,7 @@ const pageProps = reactive({
 })
 
 onMounted(() => {
-  // Get selected profile type
-  const profileType = props.profileTypes.filter((item) => parseInt(item.id) === parseInt(props.profileTypeId))[0];
-  profileManagerStore.set('profileTypes', props.profileTypes);
-  profileManagerStore.set('profileType', profileType);
-  profileManagerStore.set('profiles', profileType.profiles);
-  profileManagerStore.set('profile', props.profile);
-  profileManagerStore.set('processes', props.profile.processes);
-  profileManagerStore.set('apiUrl', props.apiUrl);
-  profileManagerStore.set('apiImagesUrl', props.apiImagesUrl);
-  profileManagerStore.set('navigation', props.navigation);
-  profileManagerStore.setLookUp('processes', props.lookup.processes);
-  profileManagerStore.setLookUp('processCategories', props.lookup.processCategories);
+  profileManagerStore.setProfileData(props);
 });
 
 function ShowAssignProcess() {
