@@ -2,6 +2,7 @@
     --neg-font-default: #353535;
     --neg-grey:rgba(53, 53, 53, .25);
     --neg-light-grey:rgba(53, 53, 53, .75);
+    --neg-light-grey-2:rgba(53, 53, 53, .5);
 
     --neg-bg-light: #efefef;
     --neg-bg-light-rgb: 239, 239, 239;
@@ -88,6 +89,10 @@
 
 .text-neutral-600{
     color: var(--neg-light-grey);
+}
+
+.text-neutral-400{
+    color: var(--neg-light-grey-2);
 }
 
 .text-white{
