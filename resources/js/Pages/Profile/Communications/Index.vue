@@ -50,8 +50,8 @@ onMounted(() => {
       <!-- <table v-if="profileManagerStore.communications.length > 0" class="table-sm w-100 table-row-spacing table-bg">      </table>-->
       <div class="flex items-start border-b border-gray-300 p-4 bg-white">
         <!-- Icon Container -->
-        <div class="flex w-24 h-24 bg-[#f2f6f7] rounded-custom-50 justify-center items-center">
-          <span class="text-[1.5rem] font-bold">Email</span>
+        <div class="flex w-[68px] h-[68px] p-2 bg-[#f2f6f7] rounded-custom-50 justify-center items-center">
+          <span class="text-sm font-bold">Email</span>
         </div>
 
         <!-- Details Container -->
@@ -74,9 +74,7 @@ onMounted(() => {
           <!-- Body -->
           <div class="flex items-end justify-between mt-1">
             <div class="text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
-              <span>You haven't send any communications to this profile.
-              Easily send messages or email to this profile by clicking on
-              'Send Email' or 'Send Message' in the top right corner.</span>
+              <span>Lorem ipsum dolor sit amet consectetur. Id blandit sed consequat nunc condimentum sem nunc ullamcorper cursus. Viverra commodo duis gravida pellentesque.</span>
             </div>
             <div class="flex items-end">
               <span class="text-right text-sm font-bold font-['Roboto'] leading-tight text-orange-1">Unread</span>
@@ -86,35 +84,89 @@ onMounted(() => {
       </div>
 
       <div class="flex items-start border-b border-gray-300 p-4 bg-white">
-        <!-- Icon Container -->
-        <div class="flex w-24 h-24 bg-[#dae3e7] rounded-custom-50 justify-center items-center">
-          <span class="text-[1.5rem] font-bold">WA</span>
-        </div>
+          <!-- Icon Container -->
+          <div class="flex w-[68px] h-[68px] p-2 bg-[#dae3e7] rounded-custom-50 justify-center items-center">
+            <span class="text-sm font-bold">WA</span>
+          </div>
 
-        <!-- Details Container -->
-        <div class="flex-1 flex flex-col pl-4">
-          <!-- Header -->
-          <div class="flex items-center justify-between mb-1">
-            <div class="flex items-center">
-              <div class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Sent by: Benjamin Button</div>
+          <!-- Details Container -->
+          <div class="flex-1 flex flex-col pl-4">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center">
+                <div class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Sent by: Benjamin Button</div>
+              </div>
+              <div class="flex items-center">
+                <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
+              </div>
             </div>
-            <div class="flex items-center">
-              <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
-            </div>
-          </div>
-          <!-- Body -->
-          <div class="flex items-end justify-between mt-1 gap-1">
-            <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
-              <span>You haven't send any communications to this profile.
-              Easily send messages or email to this profile by clicking on
-              'Send Email' or 'Send Message' in the top right corner.</span>
-            </div>
-            <div class="flex items-end">
-              <span class="text-right text-sm font-bold font-['Roboto'] leading-tight text-orange-1">Unread</span>
+            <!-- Body -->
+            <div class="flex items-end justify-between mt-1 gap-1">
+              <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
+                <span>Lorem ipsum dolor sit amet consectetur. Id blandit sed consequat nunc condimentum sem nunc ullamcorper cursus. Viverra commodo duis gravida pellentesque.</span>
+              </div>
+              <div class="flex items-end">
+                <span class="text-right text-sm font-bold font-['Roboto'] leading-tight text-orange-1">Unread</span>
+              </div>
             </div>
           </div>
         </div>
-      </div>
+        
+        <div class="flex items-start border-b border-gray-300 p-4 bg-white">
+          <!-- Icon Container -->
+          <div class="flex w-[68px] h-[68px] p-2 bg-[#c1d0d7] rounded-custom-50 justify-center items-center">
+            <span class="text-sm font-bold">SMS</span>
+          </div>
+
+          <!-- Details Container -->
+          <div class="flex-1 flex flex-col pl-4">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center">
+                <div class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Sent by: Paityn Passaquindici Arcand</div>
+              </div>
+              <div class="flex items-center">
+                <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
+              </div>
+            </div>
+            <!-- Body -->
+            <div class="flex items-end justify-between mt-1 gap-1">
+              <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
+                <span>Lorem ipsum dolor sit amet consectetur. Id blandit sed consequat nunc condimentum sem nunc ullamcorper cursus. Viverra commodo duis gravida pellentesque.</span>
+              </div>
+              <div class="flex items-end">
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="flex items-start border-b border-gray-300 p-4 bg-white">
+          <!-- Icon Container -->
+          <div class="flex w-[68px] h-[68px] p-2 bg-[#a8bdc7] rounded-custom-50 justify-center items-center">
+            <span class="text-sm font-bold">I-S</span>
+          </div>
+
+          <!-- Details Container -->
+          <div class="flex-1 flex flex-col pl-4">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-1">
+              <div class="flex items-center">
+                <div class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Sent by: Lydia Schleifer</div>
+              </div>
+              <div class="flex items-center">
+                <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
+              </div>
+            </div>
+            <!-- Body -->
+            <div class="flex items-end justify-between mt-1 gap-1">
+              <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
+                <span>Lorem ipsum dolor sit amet consectetur. Id blandit sed consequat nunc condimentum sem nunc ullamcorper cursus. Viverra commodo duis gravida pellentesque.</span>
+              </div>
+              <div class="flex items-end">
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <table v-else class="w-100">
         <tr>
