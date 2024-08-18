@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
-import { ApiHelper } from "@/helpers/index.js";
+import { ApiHelper, FunctionsHelper } from "@/helpers/index.js";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 
@@ -84,12 +84,21 @@ export const useProfileProcessStore = defineStore({
 
                 if (response.status === 201) {
                     this.setResponse(response.status, 'success', response.data.message, [], []);
-                    toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_assigning_processes + " " + profile_name, life: 3000 });
+
+                    let removeProcessVariables = {
+                        'profileName': profile_name
+                    };
+                    toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + ' ' + FunctionsHelper.replaceTextVariables(messages.value.profile.success_assigning_processes, removeProcessVariables), life: 3000 });
                     this.showProcessModal = false;
                     this.loading = false;
                     this.status.loading = false;
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
                 }
             } catch (error) {
+                console.log('error', error);
                 if(error.response.status !== 404) {
                     this.setResponse(error.response.status, 'error', error.response.statusText, [], []);
                     toast.add({ severity: 'error', summary: 'Error', detail: messages.value.profile.error_assigning_processes, life: 3000 });
@@ -98,7 +107,7 @@ export const useProfileProcessStore = defineStore({
                 this.status.loading = false;
             }
         },
-        async updateProcessLogStatus(process_log_id = 0, process_status_id = 0)
+        async updateProcessLogStatus(process_log_id = 0, process_status_id = 0, toast, action_done)
         {
             this.loading = true;
             this.status.loading = true;
@@ -127,6 +136,15 @@ export const useProfileProcessStore = defineStore({
                     this.showProcessModal = false;
                     this.loading = false;
                     this.status.loading = false;
+
+                    let removeProcessVariables = {
+                        'action': action_done
+                    };
+                    toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.process_success, removeProcessVariables), life: 3000 });
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
                 }
 
                 if (response.status === 204) {
@@ -200,6 +218,9 @@ export const useProfileProcessStore = defineStore({
         PROCESS_STATUS_COMPLETED: () => 3,
         PROCESS_STATUS_STOPPED: () => 4,
         PROCESS_STATUS_RESUMED: () => 5,
-        PROCESS_STATUS_ARCHIVED: () => 6
+        PROCESS_STATUS_ARCHIVED: () => 6,
+        isDisabledAssignProcess() {
+            return this.selectedProfileProcesses.length === 0 || this.status.loading === true;
+        }
     }
 });

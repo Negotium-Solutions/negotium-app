@@ -25,8 +25,13 @@ Route::middleware('auth')->group(function () {
 
     // Profiles
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::get('/profile/details', [ProfileController::class, 'details'])->name('profile.details');
-    Route::get('/profile/communications', [ProfileController::class, 'communications'])->name('profile.communications');
+    // Route::get('/profile/{id?}/{navigation?}', [ProfileController::class, 'index'])->name('profile.navigation');
+    Route::get('/profile/{id?}/processes', [ProfileController::class, 'processes'])->name('profile.processes');
+    Route::get('/profile/{id?}/details', [ProfileController::class, 'details'])->name('profile.details');
+    Route::get('/profile/{id?}/details/edit', [ProfileController::class, 'editDetails'])->name('profile.details.edit');
+    Route::get('/profile/{id?}/documents', [ProfileController::class, 'documents'])->name('profile.documents');
+    Route::get('/profile/{id?}/notes', [ProfileController::class, 'notes'])->name('profile.notes');
+    Route::get('/profile/{id?}/communications', [ProfileController::class, 'communications'])->name('profile.communications');
 
     Route::get('/process', [ProcessController::class, 'index'])->name('process');
     Route::get('/process/create', [ProcessController::class, 'create'])->name('process.create');
