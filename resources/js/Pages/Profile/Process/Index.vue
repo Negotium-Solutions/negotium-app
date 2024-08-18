@@ -1,7 +1,7 @@
 <script setup>
 
 import ExtendProfileLayout from "@/Pages/Profile/ProfileLayout.vue";
-import {computed, onMounted} from "vue";
+import {computed, onMounted, reactive} from "vue";
 import { useProfilesManagerStore, useProfileProcessStore } from "@/stores";
 import { FunctionsHelper } from "@/helpers";
 import Dialog from "primevue/dialog";
@@ -32,6 +32,10 @@ const props = defineProps({
   lookup: null
 });
 
+const pageProps = reactive({
+  acceptLabel: ''
+})
+
 onMounted(() => {
   // Get selected profile type
   const profileType = props.profileTypes.filter((item) => parseInt(item.id) === parseInt(props.profileTypeId))[0];
@@ -55,11 +59,19 @@ function assignProcess() {
   profileProcessStore.assignProcesses(toast, profileManagerStore.getProfileName(profileManagerStore.profile));
 }
 
-function showProcessConfirmation(process, process_log_id, process_status_id, button_label, confirmation_message, success_message, error_message) {
+function showProcessConfirmation(process, process_status_id, buttonLabel, action, action_done)
+{
+  pageProps.acceptLabel = buttonLabel;
+  let removeProcessVariables = {
+    'processName': process.name,
+    'profileName': profileManagerStore.getProfileName(profileManagerStore.profile),
+    'action': action
+  };
+
   confirm.require({
-    header: 'Confirm stopping of process',
-    message: FunctionsHelper.replaceTextVariables(confirmation_message, profileManagerStore.getRemoveProcessVariables),
-    acceptLabel: 'Yes, ' + button_label,
+    header: 'Process Confirmation',
+    message: FunctionsHelper.replaceTextVariables(process_messages.process_confirmation, removeProcessVariables),
+    acceptLabel: 'Yes, ' + buttonLabel,
     acceptClass: 'btn btn-sm btn-default mr-2',
     rejectLabel: 'Cancel',
     rejectClass: 'btn btn-sm btn-default mr-2',
@@ -72,10 +84,10 @@ function showProcessConfirmation(process, process_log_id, process_status_id, but
       label: 'Save'
     },
     accept: () => {
-      try{
-        profileProcessStore.updateProcessLogStatus(process_log_id, process_status_id);
-      }catch (error) {
-        toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(error_message, profileManagerStore.getRemoveProcessVariables), life: 3000 });
+      try {
+        profileProcessStore.updateProcessLogStatus(process.log.id, process_status_id, toast, action_done);
+      } catch (error) {
+        toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(process_messages.process_error, removeProcessVariables), life: 3000 });
       }
     },
     reject: () => {
@@ -124,18 +136,18 @@ function showProcessConfirmation(process, process_log_id, process_status_id, but
                       <small>Details</small>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a v-if="process.log.status.name === 'stopped'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', process_messages.resume_process_confirmation, process_messages.success_resuming_process, process_messages.error_resuming_process)">
+                    <button :disabled="!(process.log.status.name === 'stopped')" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'resume', 'resumed')">
                       <small>Resume</small>
-                    </a>
-                    <a v-if="process.log.status.name === 'active'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', process_messages.stop_process_confirmation, process_messages.success_stopping_process, process_messages.error_stopping_process)">
+                    </button>
+                    <button :disabled="!(process.log.status.name === 'active')" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', 'stop', 'stopped')">
                       <small>Stop</small>
-                    </a>
-                    <a v-if="process.log.status.name === 'assigned'" class="dropdown-item" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', process_messages.remove_process_confirmation, process_messages.success_removing_process, process_messages.error_removing_process)">
-                      <small class="text-danger cursor-pointer">Remove</small>
-                    </a>
-                    <a v-if="process.log.status.name === 'completed'" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, process.log.id, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', process_messages.remove_process_confirmation, process_messages.success_removing_process, process_messages.error_removing_process)">
-                      <small class="text-danger">Archive</small>
-                    </a>
+                    </button>
+                    <button :disabled="!(process.log.status.name === 'assigned')" class="dropdown-item" @click="showProcessConfirmation(process, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', 'remove', 'removed')">
+                      <small class="text-danger cursor-pointer" :class="{'opacity-50': !(process.log.status.name === 'completed')}">Remove</small>
+                    </button>
+                    <button :disabled="!(process.log.status.name === 'completed')" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', 'archive', 'archived')">
+                      <small class="text-danger" :class="{'opacity-50': !(process.log.status.name === 'completed')}">Archive</small>
+                    </button>
                   </div>
                 </div>
               </div>
@@ -175,7 +187,7 @@ function showProcessConfirmation(process, process_log_id, process_status_id, but
     </Dialog>
 
     <ConfirmDialog>
-      <template #container="{ message, acceptCallback, rejectCallback }">
+      <template #container="{ message, acceptCallback, rejectCallback, acceptLabel }">
         <div class="flex flex-col w-full gap-4 p-4">
           <span class="text-2xl font-bold font-['Roboto'] leading-loose">{{ message.header }}</span>
           <p class="text-base font-normal font-['Nunito'] leading-normal" v-html="message.message"></p>
@@ -183,8 +195,7 @@ function showProcessConfirmation(process, process_log_id, process_status_id, but
         <div class="row">
           <div class="col-12 py-3 px-4 text-right">
             <Button label="Cancel" outlined @click="rejectCallback" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2"></Button>
-            <Button v-if="message.message.includes('remove')" label="Yes, Remove" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
-            <Button v-if="message.message.includes('stop')" label="Yes, Stop" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
+            <Button :label="'Yes, '+pageProps.acceptLabel" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
           </div>
         </div>
       </template>

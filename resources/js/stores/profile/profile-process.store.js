@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
-import { ApiHelper } from "@/helpers/index.js";
+import { ApiHelper, FunctionsHelper } from "@/helpers/index.js";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
 
@@ -83,7 +83,6 @@ export const useProfileProcessStore = defineStore({
                 });
 
                 if (response.status === 201) {
-                    console.log('assingProcessResponse', response);
                     this.setResponse(response.status, 'success', response.data.message, [], []);
                     toast.add({ severity: 'success', detail: this.selectedProfileProcesses.length + " " + messages.value.profile.success_assigning_processes + " " + profile_name, life: 3000 });
                     this.showProcessModal = false;
@@ -103,7 +102,7 @@ export const useProfileProcessStore = defineStore({
                 this.status.loading = false;
             }
         },
-        async updateProcessLogStatus(process_log_id = 0, process_status_id = 0)
+        async updateProcessLogStatus(process_log_id = 0, process_status_id = 0, toast, action_done)
         {
             this.loading = true;
             this.status.loading = true;
@@ -132,6 +131,15 @@ export const useProfileProcessStore = defineStore({
                     this.showProcessModal = false;
                     this.loading = false;
                     this.status.loading = false;
+
+                    let removeProcessVariables = {
+                        'action': action_done
+                    };
+                    toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.process_success, removeProcessVariables), life: 3000 });
+
+                    setTimeout(function() {
+                        location.reload();
+                    }, 2000);
                 }
 
                 if (response.status === 204) {
