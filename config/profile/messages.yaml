@@ -8,6 +8,8 @@ processes:
                         This will {action} the process from this profile only.
   process_error: We weren't able to {action} {processName}, please try again.
   process_success: Process {action} successfully.
+
+communication:
   no_communications_for_profile: <b>You haven't send any communications to this profile.</b> <br/>
                                 Easily send messages or email to this profile by clicking on <br/>
                                 'Send Email' or 'Send Message' in the top right corner.
@@ -16,3 +18,9 @@ profile:
   success_assigning_processes: processes assigned successfully to {profileName}.
   error_assigning_processes: We weren't able to assign the selected processes, please try again.
 
+note:
+  no_notes_for_profile: <b>You haven't added a note or set a reminder to this profile.</b> <br/>
+    Easily add a note or set a reminder to this profile by clicking <br/>
+    on 'Add Note' or 'Reminder' in the top right corner.
+  remove_note_confirmation: Are you sure you want to remove the {note} named {noteHeading}?
+  success_removing_note: The {note} called {noteHeading} was removed successfully.

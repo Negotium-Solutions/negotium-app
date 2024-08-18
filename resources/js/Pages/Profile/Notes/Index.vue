@@ -1,24 +1,35 @@
 <script setup>
 import { useProfilesManagerStore } from "@/stores/index.js";
 import Button from "primevue/button";
-import { computed, ref } from "vue";
-import {usePage} from "@inertiajs/vue3";
+import { computed, onMounted, ref } from "vue";
+import { usePage } from "@inertiajs/vue3";
 import Dialog from "primevue/dialog";
+import ExtendProfileLayout from "@/Pages/Profile/ProfileLayout.vue";
 
 const profileManagerStore = useProfilesManagerStore();
 const messages = computed(() => usePage().props.messages);
 const no_notes_for_profile = messages.value.note.no_notes_for_profile;
 const show_default_page = false;
 const show_add_note = ref(false);
-/*
-function showAddNoteModal() {
-  show_add_note = true;
-}
-*/
+
+const props = defineProps({
+  profileTypeId: 0,
+  profileTypes: Array,
+  profile: Object,
+  apiUrl: String,
+  apiImagesUrl: String,
+  navigation: String,
+  lookup: null
+});
+
+onMounted(() => {
+  profileManagerStore.setProfileData(props);
+});
 </script>
 
 <template>
-  <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-7 col-md-5 col-sm-12 pl-0 pr-0">
+  <ExtendProfileLayout>
+  <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-12 pl-0 pr-0">
     <div class="d-flex w-100 pt-4 pl-2 pr-2 pb-3">
       <div class="col-sm-6">
         <h1 class="text-neutral-700 text-3xl font-bold font-['Roboto']">Notes & Reminders</h1>
@@ -130,8 +141,5 @@ function showAddNoteModal() {
       </div>
     </div>
   </Dialog>
+  </ExtendProfileLayout>
 </template>
-
-<style scoped>
-
-</style>
