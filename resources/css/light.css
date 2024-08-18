@@ -255,12 +255,21 @@ th{
 .p-dialog:not(.p-confirm-dialog) .p-dialog-header-icons {
     display: flex;
     position: relative;
-    top: -1.5rem;
     background: #F2F6F7;
     border-radius: 4px;
 }
+    
+.p-dialog:not(.p-confirm-dialog):not(.notes-dialog) .p-dialog-header-icons {
+    top: -1.5rem;
+}
 
 .p-dialog:not(.p-confirm-dialog) .p-dialog-content {
+    background: #ffffff;
+    color: #334155;
+    padding: 0 1.5rem 0 1.5rem !important;
+}
+
+.p-dialog:not(.p-confirm-dialog):not(.notes-dialog) .p-dialog-content {
     background: #ffffff;
     color: #334155;
     padding: 0 1.5rem 0 1.5rem !important;
