@@ -34,24 +34,24 @@ onMounted(() => {
       </div>
       <div class="col-sm-6 text-right">
         <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
-        <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send message</button>
+        <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white ml-2">Send message</button>
       </div>
     </div>
 
     <div class="col-md-12 pl-2 pr-2">
       <div v-if="show_default_page === false">
       <div class="d-flex gap-2 pr-2 ml-3 mb-2">
-        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']" @click="">All</button>
-        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']" @click=""><i class="fa fa-square" :style="'color:LightBlue'"></i>Email</button>
-        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']" @click=""><i class="fa fa-square" :style="'color:LightGray'"></i>WhatsApp</button>
-        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']" @click=""><i class="fa fa-square" :style="'color:Gray'"></i>SMS</button>
-        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']" @click=""><i class="fa fa-square" :style="'color:DarkGrey'"></i>In-System</button>
+        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']">All</button>
+        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']"><i class="fa fa-square" :style="'color:LightBlue'"></i>Email</button>
+        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']"><i class="fa fa-square" :style="'color:LightGray'"></i>WhatsApp</button>
+        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']"><i class="fa fa-square" :style="'color:Gray'"></i>SMS</button>
+        <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white']"><i class="fa fa-square" :style="'color:DarkGrey'"></i>In-System</button>
       </div>
       <!-- <table v-if="profileManagerStore.communications.length > 0" class="table-sm w-100 table-row-spacing table-bg">      </table>-->
       <div class="flex items-start border-b border-gray-300 p-4 bg-white">
         <!-- Icon Container -->
-        <div class="flex w-24 h-24 bg-blue-200 rounded-sm justify-center items-center">
-          <span class="text-xl font-bold">Email</span>
+        <div class="flex w-24 h-24 bg-[#f2f6f7] rounded-custom-50 justify-center items-center">
+          <span class="text-[1.5rem] font-bold">Email</span>
         </div>
 
         <!-- Details Container -->
@@ -59,27 +59,27 @@ onMounted(() => {
           <!-- Header -->
           <div class="flex items-center justify-between mb-1">
             <div class="flex items-center">
-              <span class="font-semibold mr-2">Email Sender</span>
+              <div class="text-neutral-600 text-sm font-normal font-['Roboto'] leading-tight">Alfredo, Benjamin (4)</div>
             </div>
             <div class="flex items-center">
-              <span class="text-right">Send Date</span>
+              <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
             </div>
           </div>
 
           <!-- Subject -->
           <div class="font-bold">
-            <span>Subject: Email Communication</span>
+            <div class="text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">Subject: Lorem ipsum</div>
           </div>
 
           <!-- Body -->
-          <div class="flex items-center justify-between mt-1">
-            <div class="mt-1 ">
+          <div class="flex items-end justify-between mt-1">
+            <div class="text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
               <span>You haven't send any communications to this profile.
-Easily send messages or email to this profile by clicking on
-'Send Email' or 'Send Message' in the top right corner.</span>
+              Easily send messages or email to this profile by clicking on
+              'Send Email' or 'Send Message' in the top right corner.</span>
             </div>
-            <div class="flex items-center">
-              <span class="text-right">Unread</span>
+            <div class="flex items-end">
+              <span class="text-right text-sm font-bold font-['Roboto'] leading-tight text-orange-1">Unread</span>
             </div>
           </div>
         </div>
@@ -87,8 +87,8 @@ Easily send messages or email to this profile by clicking on
 
       <div class="flex items-start border-b border-gray-300 p-4 bg-white">
         <!-- Icon Container -->
-        <div class="flex w-24 h-24 bg-gray-200 rounded-sm justify-center items-center">
-          <span class="text-xl font-bold">WA</span>
+        <div class="flex w-24 h-24 bg-[#dae3e7] rounded-custom-50 justify-center items-center">
+          <span class="text-[1.5rem] font-bold">WA</span>
         </div>
 
         <!-- Details Container -->
@@ -96,21 +96,21 @@ Easily send messages or email to this profile by clicking on
           <!-- Header -->
           <div class="flex items-center justify-between mb-1">
             <div class="flex items-center">
-              <span class="font-semibold mr-2">Send by: WhatsApp Sender</span>
+              <div class="text-neutral-700 text-sm font-normal font-['Roboto'] leading-tight">Sent by: Benjamin Button</div>
             </div>
             <div class="flex items-center">
-              <span class="text-right">Send Date</span>
+              <span class="text-right text-sm font-normal font-['Roboto'] leading-tight text-neutral-600">12/05/2024 - 13:12</span>
             </div>
           </div>
           <!-- Body -->
-          <div class="flex items-center justify-between mt-1">
-            <div class="mt-1 ">
+          <div class="flex items-end justify-between mt-1 gap-1">
+            <div class="flex text-sm font-normal font-['Nunito'] leading-tight text-neutral-600 mr-2">
               <span>You haven't send any communications to this profile.
-Easily send messages or email to this profile by clicking on
-'Send Email' or 'Send Message' in the top right corner.</span>
+              Easily send messages or email to this profile by clicking on
+              'Send Email' or 'Send Message' in the top right corner.</span>
             </div>
-            <div class="flex items-center">
-              <span class="text-right">Unread</span>
+            <div class="flex items-end">
+              <span class="text-right text-sm font-bold font-['Roboto'] leading-tight text-orange-1">Unread</span>
             </div>
           </div>
         </div>
