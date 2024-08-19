@@ -83,6 +83,24 @@
     background-color: var(--neg-bg-light) !important;
 }
 
+.reminder-date-input{
+    color: #495057;
+    border-radius: .5rem 0rem 0rem .5rem;
+    background-color: #f2f6f7;
+    background-clip: padding-box;
+    width: 118px;
+    margin-right:2px;
+    border-width: 0px;
+}
+
+.reminder-date-icon{
+    color: #495057;
+    border-radius: 0rem .5rem .5rem 0rem;
+    background-color: #ffc685;
+    background-clip: padding-box;
+    border-width: 0px;
+}
+
 .text-neutral-700{
     color: var(--neg-font-default);
 }
