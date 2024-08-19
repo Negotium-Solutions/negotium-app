@@ -83,8 +83,12 @@ function showNoteConfirmation()
                 Note Heading
               </div>
               <div class="flex items-center">
-                <span class="font-semibold pr-2">Reminder Date</span>
-                <span class="fa fa-calendar-day"></span>
+                <div class="input-group rounded-custom-25">
+                  <input type="text" class="h-7 w-[50px] text-xs reminder-date-input" aria-label="Reminder Date" value="12/06/2024 - 13:00">
+                  <div class="input-group-append">
+                    <span class="input-group-text h-7 text-[.75rem] reminder-date-icon"><i class="fa fa-calendar-day"></i></span>
+                  </div>
+                </div>
                 <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2" @click="showNoteConfirmation()">
                   <i class="fas fa-times"></i>
                 </button>
@@ -113,9 +117,13 @@ function showNoteConfirmation()
                 Reminder Heading
               </div>
               <div class="flex items-center">
-                <span class="font-semibold pr-2">Reminder Date</span>
-                <span class="fa fa-calendar-day"></span>
-                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2">
+                <div class="input-group rounded-custom-25">
+                  <input type="text" class="h-7 w-[50px] text-xs reminder-date-input" aria-label="Reminder Date" value="12/06/2024 - 13:00">
+                  <div class="input-group-append">
+                    <span class="input-group-text h-7 text-[.75rem] reminder-date-icon"><i class="fa fa-calendar-day"></i></span>
+                  </div>
+                </div>
+                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2" @click="showNoteConfirmation()">
                   <i class="fas fa-times"></i>
                 </button>
               </div>
