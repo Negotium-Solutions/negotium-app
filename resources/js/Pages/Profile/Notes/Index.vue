@@ -32,11 +32,11 @@ onMounted(() => {
   profileManagerStore.setProfileData(props);
 });
 
-function showNoteConfirmation()
+function showNoteConfirmation(type,heading)
 {
   confirm.require({
     header: 'Confirm removal',
-    message: 'Are you sure you want to remove the {note} named {note heading}?',
+    message: 'Are you sure you want to remove the '+type+' named '+heading+'?',
     acceptLabel: 'Yes, Remove',
     acceptClass: 'btn btn-sm btn-default mr-2',
     rejectLabel: 'Cancel',
@@ -50,6 +50,7 @@ function showNoteConfirmation()
       label: 'Save'
     },
     accept: () => {
+      toast.add({ severity: 'success', detail: 'The '+type+' named '+heading+' successfully removed.', life: 3000 });
     },
     reject: () => {
       //
@@ -89,7 +90,7 @@ function showNoteConfirmation()
                     <span class="input-group-text h-7 text-[.75rem] reminder-date-icon"><i class="fa fa-calendar-day"></i></span>
                   </div>
                 </div>
-                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2" @click="showNoteConfirmation()">
+                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2" @click="showNoteConfirmation('Note','Note Heading')">
                   <i class="fas fa-times"></i>
                 </button>
               </div>
@@ -123,7 +124,7 @@ function showNoteConfirmation()
                     <span class="input-group-text h-7 text-[.75rem] reminder-date-icon"><i class="fa fa-calendar-day"></i></span>
                   </div>
                 </div>
-                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2" @click="showNoteConfirmation()">
+                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2" @click="showNoteConfirmation('Reminder','Reminder Heading')">
                   <i class="fas fa-times"></i>
                 </button>
               </div>
