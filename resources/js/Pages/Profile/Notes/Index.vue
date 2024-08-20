@@ -155,20 +155,20 @@ function showNoteConfirmation(type,heading)
       </table>
     </div>
   </div>
-  <Dialog v-model:visible="show_add_note" modal header="Add note or reminder" :style="{ width: '40vw' }" :class="'notes-dialog'" :breakpoints="{ '1199px': '75vw', '575px': '90vw' } ">
+  <Dialog v-model:visible="show_add_note" :draggable="false" modal header="Add note or reminder" :style="{ width: '40vw' }" :class="'notes-dialog'" :breakpoints="{ '1199px': '75vw', '575px': '90vw' } ">
     <template #header>
       <div class="row m-0 p-0 pb-2">
         <div class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto'] leading-loose w-100">Add note or reminder</div>
       </div>
     </template>
     <div>
-      <span class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Note Subject</span>
+      <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 pb-2">Note Subject</span>
       <div class="w-100">
         <input type="text" class="form-control">
       </div>
     </div>
     <div class="mt-2">
-      <span class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Note</span>
+      <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 pb-2">Note</span>
       <div class="form-control-border rounded-sm bg-zinc-100">
         <div class="flex flex-wrap gap-2">
           <button @click="formatText('bold')" class="p-2 text-neutral-700 hover:bg-neutral-700 hover:text-white text-sm">
@@ -205,7 +205,7 @@ function showNoteConfirmation(type,heading)
       </div>
     </div>
     <div class="mt-2">
-      <span class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Set Reminder</span>
+      <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 mb-4">Set Reminder</span>
       <div class="d-flex gap-2 w-100">
         <input type="date" class="form-control">
         <input type="time" class="form-control">
@@ -215,7 +215,7 @@ function showNoteConfirmation(type,heading)
       <div class="row">
         <div class="col-12 p-4 pr-0 text-right">
           <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="cancel">Cancel</button>
-          <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Add Note</button>
+          <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid bg-neutral-700 border-neutral-700 border-opacity-20 text-white hover:bg-neutral-700 hover:text-white">Add Note</button>
         </div>
       </div>
     </template>

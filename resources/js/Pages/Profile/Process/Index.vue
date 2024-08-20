@@ -94,7 +94,7 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
 
       <div v-if="profileManagerStore.processes && profileManagerStore.processes.length > 0">
         <div class="d-flex w-100 pt-3 pl-3 pr-3">
-          <div class="col-sm-12">
+          <div class="col-sm-12 p-0">
             <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Recent Processes</h1>
           </div>
         </div>
@@ -185,7 +185,7 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
         </div>
       </div>
 
-      <div class="d-flex w-100 pt-3 pl-2 pr-2 pb-3">
+      <div class="d-flex w-100 pt-3 pl-3 pr-3 pb-3">
         <div class="col-sm-6">
           <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Processes</h1>
         </div>
@@ -193,7 +193,7 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
           <button @click="ShowAssignProcess()" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Assign Process</button>
         </div>
       </div>
-      <div class="col-md-12 pl-2 pr-2">
+      <div class="col-md-12 pl-3 pr-3">
         <table v-if="profileManagerStore.processes && profileManagerStore.processes.length > 0" class="table-sm w-100 table-row-spacing table-bg">
           <tr>
             <th>Select</th><th>Process Name</th><th>Current Posistion</th><th>Last Opened</th><th>Date Added</th><th>Actions</th>

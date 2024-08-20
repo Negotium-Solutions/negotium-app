@@ -25,7 +25,7 @@ onMounted(() => {
   <ExtendProfileLayout>
   <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-12 pl-0 pr-0">
     <div class="d-flex w-100 pt-3 pl-3 pr-3 pb-4">
-      <div class="col-sm-6">
+      <div class="col-sm-6 p-0">
         <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Profile Details</h1>
       </div>
       <div class="col-sm-6 text-right">
