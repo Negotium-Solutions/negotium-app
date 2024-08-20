@@ -161,7 +161,7 @@ class ProfileController extends Controller
         }
         $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
         $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=notes.user")->getBody(), true)['data'] ?? [];
 
         $lookup = [
             'processes' => $processes,
@@ -208,6 +208,7 @@ class ProfileController extends Controller
 
     public function setProfilesData() : array
     {
+        Cache::store('redis')->forget(self::PROFILES_KEY);
         if (!Cache::has(self::PROFILES_KEY)) {
             $response = json_decode($this->http->get($this->url.'/profile-type?with=profiles')->getBody(), true)['data'];
             Cache::store('redis')->put(self::PROFILES_KEY, $response, 86400);
