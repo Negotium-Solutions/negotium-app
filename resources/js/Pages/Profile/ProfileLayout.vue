@@ -1,6 +1,6 @@
 <script setup>
 import { AuthenticatedLayout } from "@/Layouts/Adminlte/index.js";
-import { onMounted, reactive, computed } from "vue";
+import { onMounted, computed } from "vue";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import Avatar from 'primevue/avatar';
@@ -15,10 +15,6 @@ const props = computed(() => page.props.auth.user);
 
 const toast = useToast();
 const profileManagerStore = useProfilesManagerStore();
-
-const pageProps = reactive({
-
-});
 
 onMounted(() => {
   profileManagerStore.handleProfileDivHeight()

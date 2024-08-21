@@ -100,6 +100,11 @@ class ApiHelper {
         this.resetResponse();
     }
 
+    /**
+     * Deletes an item
+     *
+     * @param {array} _item
+     */
     async delete(_item)
     {
         this.loading = true;
@@ -123,8 +128,6 @@ class ApiHelper {
         } finally {
             this.loading = false;
         }
-
-        return this.response;
     }
 
     resetResponse() {

@@ -24,3 +24,5 @@ note:
     on 'Add Note' or 'Reminder' in the top right corner.
   remove_note_confirmation: Are you sure you want to remove the {note} named {noteHeading}?
   success_removing_note: The {note} called {noteHeading} was removed successfully.
+  success_adding_note: The {note} called {noteHeading}, was successfully added.
+  error_removing_note: We weren't able to remove {note} called {noteHeading}, please try again.

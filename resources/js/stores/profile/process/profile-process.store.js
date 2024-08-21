@@ -10,8 +10,9 @@ const messages = computed(() => page.props.messages);
 const apiURL = computed(() => page.props.negotium_api_url);
 
 export const useProfileProcessStore = defineStore({
-    id: 'profiles',
+    id: 'profile-process',
     state: () => ({
+        acceptLabel: '',
         selectedProfileProcesses: [],
         showProcessModal: false,
         showStopConfirmation: false,
@@ -24,13 +25,6 @@ export const useProfileProcessStore = defineStore({
         user: user.value,
         tenant: user.value.tenant,
         end_point: 'profile',
-        profiles: [],
-        profile: {
-            'id': null,
-            'name': null,
-            'process_category_id': null,
-            'steps': []
-        },
         selected_categories: [0],
         excluded_processes: [],
         response: {
@@ -184,15 +178,41 @@ export const useProfileProcessStore = defineStore({
 
             return this.selectedProfileProcesses.some(_item => _item.profile_id === item.profile_id && _item.process_id === item.process_id)
         },
-        checkCondition(state, callbackFunction) {
-            const check = () => {
-                if (state.loading === true) {
-                    setTimeout(check, 100);
-                } else {
-                    callbackFunction(state);
-                }
+        showProcessConfirmation(toast, confirm, process, process_status_id, buttonLabel, action, action_done)
+        {
+            this.acceptLabel = buttonLabel;
+            let removeProcessVariables = {
+                'processName': process.name,
+                'profileName': 'test test',// this.getProfileName(this.profile),
+                'action': action
             };
-            check();
+
+            confirm.require({
+                header: 'Process Confirmation',
+                message: FunctionsHelper.replaceTextVariables(messages.value.processes.process_confirmation, removeProcessVariables),
+                acceptLabel: 'Yes, ' + buttonLabel,
+                acceptClass: 'btn btn-sm btn-default mr-2',
+                rejectLabel: 'Cancel',
+                rejectClass: 'btn btn-sm btn-default mr-2',
+                rejectProps: {
+                    label: 'Cancel',
+                    severity: 'secondary',
+                    outlined: true
+                },
+                acceptProps: {
+                    label: 'Save'
+                },
+                accept: () => {
+                    try {
+                        this.updateProcessLogStatus(process.log.id, process_status_id, toast, action_done);
+                    } catch (error) {
+                        toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.process_error, removeProcessVariables), life: 3000 });
+                    }
+                },
+                reject: () => {
+                    // Do nothing
+                }
+            });
         },
         resetResponse() {
             this.response = {

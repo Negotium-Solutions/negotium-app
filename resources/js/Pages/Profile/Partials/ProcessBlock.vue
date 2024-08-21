@@ -1,14 +1,19 @@
 <script setup>
   import { useProfileProcessStore, useProfilesManagerStore } from "@/stores";
   import {FunctionsHelper} from "@/helpers/index.js";
+  import {reactive} from "vue";
 
   const profileProcessStore = useProfileProcessStore();
   const profilesManagerStore = useProfilesManagerStore();
+  const pageProps = reactive({
+    'processes': []
+  });
+
 </script>
 
 <template>
   <div class="row my-3">
-    <div class="col-md-4 col-sm-12 mb-3" v-for="(process, index) in FunctionsHelper.filterByExcludedItems(profilesManagerStore.lookup.processes, profilesManagerStore.processes)" :key="index">
+    <div class="col-md-4 col-sm-12 mb-3" v-for="(process, index) in profilesManagerStore.filterByCategoryExcluding" :key="index">
       <div class="flex flex-col px-4 py-6 rounded-lg border border-solid bg-neutral-50 border-neutral-700">
         <table class="table table-sm table-borderless">
           <tr>

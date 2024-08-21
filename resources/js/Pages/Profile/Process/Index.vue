@@ -1,7 +1,7 @@
 <script setup>
 
 import ExtendProfileLayout from "@/Pages/Profile/ProfileLayout.vue";
-import {computed, onMounted, reactive} from "vue";
+import { computed, onMounted } from "vue";
 import { useProfilesManagerStore, useProfileProcessStore } from "@/stores";
 import { FunctionsHelper } from "@/helpers";
 import Dialog from "primevue/dialog";
@@ -26,66 +26,22 @@ const props = defineProps({
   profileTypeId: 0,
   profileTypes: Array,
   profile: Object,
-  processes: Array,
   apiUrl: String,
   apiImagesUrl: String,
   navigation: String,
   lookup: null
 });
 
-const pageProps = reactive({
-  acceptLabel: ''
-})
-
 onMounted(() => {
   profileManagerStore.setProfileData(props);
+  profileManagerStore.set('processes', props.profile.processes);
+  profileManagerStore.setLookUp('processes', props.lookup.processes);
+  profileManagerStore.setLookUp('processCategories', props.lookup.processCategories);
 });
-
-function ShowAssignProcess() {
-  profileProcessStore.showProcessModal = true;
-}
 
 function assignProcess() {
   profileProcessStore.assignProcesses(toast, profileManagerStore.getProfileName(profileManagerStore.profile));
 }
-
-function showProcessConfirmation(process, process_status_id, buttonLabel, action, action_done)
-{
-  pageProps.acceptLabel = buttonLabel;
-  let removeProcessVariables = {
-    'processName': process.name,
-    'profileName': profileManagerStore.getProfileName(profileManagerStore.profile),
-    'action': action
-  };
-
-  confirm.require({
-    header: 'Process Confirmation',
-    message: FunctionsHelper.replaceTextVariables(process_messages.process_confirmation, removeProcessVariables),
-    acceptLabel: 'Yes, ' + buttonLabel,
-    acceptClass: 'btn btn-sm btn-default mr-2',
-    rejectLabel: 'Cancel',
-    rejectClass: 'btn btn-sm btn-default mr-2',
-    rejectProps: {
-      label: 'Cancel',
-      severity: 'secondary',
-      outlined: true
-    },
-    acceptProps: {
-      label: 'Save'
-    },
-    accept: () => {
-      try {
-        profileProcessStore.updateProcessLogStatus(process.log.id, process_status_id, toast, action_done);
-      } catch (error) {
-        toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(process_messages.process_error, removeProcessVariables), life: 3000 });
-      }
-    },
-    reject: () => {
-      //
-    }
-  });
-}
-
 </script>
 
 <template>
@@ -100,18 +56,19 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
         </div>
         <div class="recent-processes d-flex w-100 pt-3 pl-3 pr-3">
           <div class="row col-md-12 p-0 w-100 mr-0 ml-0">
-            <div class="col-md-6 mb-2 py-1">
+
+            <div v-for="(process, index) in profileManagerStore.getRecentProcesses(profileManagerStore.processes, 'desc',4)" :key="index" class="col-md-6 mb-2 py-1">
               <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
                 <table class="table table-sm table-borderless p-0 mb-0">
                   <tr>
                     <td style="width: 70%;" class="py-0">
                       <div class="flex gap-5">
                         <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
-                          Process Name
+                          {{ process.name }}
                         </div>
                       </div>
                       <div class="text-sm leading-5 text-neutral-600">
-                        <div>Step 4 - Activity 11</div>
+                        <div>{{ process.log.step.name }}</div>
                       </div>
                     </td>
                     <td class="align-right text-right py-0">
@@ -120,67 +77,14 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
                   </tr>
                   <tr>
                     <td colspan="2" class="py-0">
-                      <font class="text-success text-sm font-normal font-['Nunito']">Up to date</font>
-                      <font class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: 00/00/0000 00:00</font>
+                      <span class="text-success text-sm font-normal font-['Nunito']">Up to date</span>
+                      <span class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: {{ FunctionsHelper.DateTime(process.log.updated_at) }}</span>
                     </td>
                   </tr>
                 </table>
               </div>
             </div>
-            <div class="col-md-6 mb-2 py-1">
-              <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
-                <table class="table table-sm table-borderless p-0 mb-0">
-                  <tr>
-                    <td style="width: 70%;" class="py-0">
-                      <div class="flex gap-5">
-                        <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
-                          Process Name
-                        </div>
-                      </div>
-                      <div class="text-sm leading-5 text-neutral-600">
-                        <div>Step 4 - Activity 11</div>
-                      </div>
-                    </td>
-                    <td class="align-right text-right py-0">
-                      <button class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Continue</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" class="py-0">
-                      <font class="text-success text-sm font-normal font-['Nunito']">Up to date</font>
-                      <font class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: 00/00/0000 00:00</font>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-            <div class="col-md-6 mb-2 py-1">
-              <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
-                <table class="table table-sm table-borderless p-0 mb-0">
-                  <tr>
-                    <td style="width: 70%;" class="py-0">
-                      <div class="flex gap-5">
-                        <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
-                          Process Name
-                        </div>
-                      </div>
-                      <div class="text-sm leading-5 text-neutral-600">
-                        <div>Step 4 - Activity 11</div>
-                      </div>
-                    </td>
-                    <td class="align-right text-right py-0">
-                      <button class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Continue</button>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td colspan="2" class="py-0">
-                      <font class="text-success text-sm font-normal font-['Nunito']">Up to date</font>
-                      <font class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: 00/00/0000 00:00</font>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
+
           </div>
         </div>
       </div>
@@ -190,7 +94,7 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
           <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Processes</h1>
         </div>
         <div class="col-sm-6 text-right">
-          <button @click="ShowAssignProcess()" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Assign Process</button>
+          <button @click="profileProcessStore.showProcessModal = true" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Assign Process</button>
         </div>
       </div>
       <div class="col-md-12 pl-3 pr-3">
@@ -220,16 +124,16 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
                       <small>Details</small>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <button :disabled="!(process.log.status.name === 'stopped')" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'resume', 'resumed')">
+                    <button :disabled="!(process.log.status.name === 'stopped')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'resume', 'resumed')">
                       <small>Resume</small>
                     </button>
-                    <button :disabled="!(process.log.status.name === 'active')" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', 'stop', 'stopped')">
+                    <button :disabled="!(process.log.status.name === 'active')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', 'stop', 'stopped')">
                       <small>Stop</small>
                     </button>
-                    <button :disabled="!(process.log.status.name === 'assigned')" class="dropdown-item" @click="showProcessConfirmation(process, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', 'remove', 'removed')">
+                    <button :disabled="!(process.log.status.name === 'assigned')" class="dropdown-item" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', 'remove', 'removed')">
                       <small class="text-danger cursor-pointer" :class="{'opacity-50': !(process.log.status.name === 'completed')}">Remove</small>
                     </button>
-                    <button :disabled="!(process.log.status.name === 'completed')" class="dropdown-item cursor-pointer" @click="showProcessConfirmation(process, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', 'archive', 'archived')">
+                    <button :disabled="!(process.log.status.name === 'completed')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', 'archive', 'archived')">
                       <small class="text-danger" :class="{'opacity-50': !(process.log.status.name === 'completed')}">Archive</small>
                     </button>
                   </div>
@@ -262,7 +166,7 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
       <template #footer>
         <div class="row">
           <div class="col-12 p-4 text-right">
-            <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="cancel">Cancel</button>
+            <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="profileProcessStore.showProcessModal = false">Cancel</button>
             <negotium-button v-if="!profileProcessStore.status.loading" @click="assignProcess()" :disabled="profileProcessStore.isDisabledAssignProcess" :value="'Add Selected Processes'"></negotium-button>
             <button v-if="profileProcessStore.status.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
           </div>
@@ -279,7 +183,7 @@ function showProcessConfirmation(process, process_status_id, buttonLabel, action
         <div class="row">
           <div class="col-12 py-3 px-4 text-right">
             <Button label="Cancel" outlined @click="rejectCallback" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2"></Button>
-            <Button :label="'Yes, '+pageProps.acceptLabel" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
+            <Button :label="'Yes, '+profileProcessStore.acceptLabel" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
           </div>
         </div>
       </template>

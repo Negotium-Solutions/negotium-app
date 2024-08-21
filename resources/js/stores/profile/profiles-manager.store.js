@@ -13,7 +13,7 @@ export const useProfilesManagerStore = defineStore({
         profile: {},
         processes: null,
         process: {},
-        selected_categories: [],
+        selected_categories: [0],
         lookup: {
             profileManagerStore: null,
             processes: null
@@ -55,6 +55,9 @@ export const useProfilesManagerStore = defineStore({
                     this.selected_categories.push(category_id);
                 }
             }
+            if (this.selected_categories.length === 0) {
+                this.selected_categories.push(0)
+            }
         },
         setProfileData(props) {
             // Get selected profile type
@@ -63,12 +66,9 @@ export const useProfilesManagerStore = defineStore({
             this.set('profileType', profileType);
             this.set('profiles', profileType.profiles);
             this.set('profile', props.profile);
-            this.set('processes', props.profile.processes);
             this.set('apiUrl', props.apiUrl);
             this.set('apiImagesUrl', props.apiImagesUrl);
             this.set('navigation', props.navigation);
-            this.setLookUp('processes', props.lookup.processes);
-            this.setLookUp('processCategories', props.lookup.processCategories);
         },
         handleProfileDivHeight(){
             let windowHeight = window.innerHeight,
@@ -107,6 +107,20 @@ export const useProfilesManagerStore = defineStore({
                     }
                 }
             }
+        },
+        getRecentProcesses(processes, order = 'asc', maximum = null) {
+            if(maximum === null) {
+                return processes.sort((a, b) => new Date(a.log.updated_at) - new Date(b.log.updated_at));
+            }
+
+            let _processes = [];
+            if(order === 'asc') {
+                _processes = processes.sort((a, b) => new Date(a.log.updated_at) - new Date(b.log.updated_at)).slice(0, maximum);
+            } else {
+                _processes = processes.sort((a, b) => new Date(b.log.updated_at) - new Date(a.log.updated_at)).slice(0, maximum);
+            }
+
+            return _processes;
         }
     },
     getters: {
@@ -119,9 +133,21 @@ export const useProfilesManagerStore = defineStore({
               'profileName': parseInt(this.profile.profile_type_id) !== 1 ? this.profile.company_name : this.profile.first_name + ' ' + this.profile.last_name
           }
         },
+        filterByCategoryExcluding() {
+            let assigned_processes_array = [];
+            this.profile.processes.forEach((process) => {
+                assigned_processes_array.push(process.id);
+            });
+
+            if(this.selected_categories.some((item) => item === 0)) {
+                return this.lookup.processes.filter((item) => !assigned_processes_array.includes(item.id));
+            }
+
+            return this.lookup.processes.filter((item) => this.selected_categories.indexOf(item.process_category_id) >= 0 && !assigned_processes_array.includes(item.id));
+        },
         PROFILE_TYPE: () => 'profileType',
         PROFILES: () => 'profile',
         PROFILE: () => 'profiles',
-        NAVIGATION_PROCESSES: () => 'processes'
+        NAVIGATION_PROCESSES: () => 'processes',
     }
 });

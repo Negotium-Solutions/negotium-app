@@ -2,10 +2,11 @@ export * from './steps.store';
 export * from './activities.store';
 export * from './activity-groups.store';
 export * from './process-categories.store';
-export * from './processes.store';
+export * from './processes/processes.store.js';
 export * from './profile/profiles-manager.store'
 export * from './globals';
 export * from './categories.store';
-export * from './profile/profile-process.store';
+export * from './profile/process/profile-process.store.js';
+export * from './profile/notes/profile-notes.store.js';
 export * from './messages.store';
 export * from './user/user.store';
