@@ -76,7 +76,7 @@ function showNoteConfirmation(type,heading)
       <div v-if="profileManagerStore"></div>
       <div v-if="show_default_page === false">
 
-        <div v-for="(note, index) in profileManagerStore.profile.notes" :index="index" class="flex items-start border-b border-gray-300 pb-4 bg-white">
+        <div v-for="(note, index) in profileManagerStore.profile.notes" :index="index" class="flex items-start border-b border-gray-300 pb-4 bg-white mb-4">
           <div class="flex-1 flex flex-col">
             <div class="flex items-center justify-between mb-1">
               <div class="text-neutral-700 text-base font-medium font-['Roboto'] leading-normal">

@@ -1,5 +1,4 @@
 <script setup>
-
 import { AuthenticatedLayout } from "@/Layouts/Adminlte/index.js";
 import { onMounted, reactive, computed } from "vue";
 import Toast from "primevue/toast";
@@ -22,48 +21,11 @@ const pageProps = reactive({
 });
 
 onMounted(() => {
-  handleProfileDivHeight()
-  // handleProfileMenuDivHeight()
-  document.addEventListener('DOMContentLoaded',handleProfileMenuDivHeight);
-  window.addEventListener('resize', handleProfileDivHeight);
-  window.addEventListener('resize', handleProfileMenuDivHeight);
+  profileManagerStore.handleProfileDivHeight()
+  document.addEventListener('DOMContentLoaded',profileManagerStore.handleProfileMenuDivHeight);
+  window.addEventListener('resize', profileManagerStore.handleProfileDivHeight);
+  window.addEventListener('resize', profileManagerStore.handleProfileMenuDivHeight);
 });
-
-function handleProfileDivHeight(){
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-
-  var element = document.getElementById('profiles-header');
-  var height = element.offsetHeight;
-  var newHeight = h -  height
-  document.getElementById('profiles-content').style.minHeight = newHeight+'px'
-  document.getElementById('profiles-sidebar').style.minHeight = newHeight+'px'
-  document.getElementById('profiles-detail').style.minHeight = newHeight+'px'
-  if(document.getElementById('profiles-detail-content')){
-  document.getElementById('profiles-detail-content').style.minHeight = newHeight+'px'
-  }
-}
-
-function handleProfileMenuDivHeight(){
-  const w = window.innerWidth;
-  const h = window.innerHeight;
-  if(document.getElementById('profile-view-menu')){
-    let clientViewMenuWidth = document.getElementById('profile-view-menu').offsetWidth
-    if(h > 835){
-      document.getElementById('client-view-menu').style.position = 'fixed'
-      document.getElementById('client-view-menu').style.bottom = '1.5rem'
-      if(clientViewMenuWidth > 0){
-        document.getElementById('client-view-menu').style.width = clientViewMenuWidth+'px'
-      }
-    } else {
-      document.getElementById('client-view-menu').style.position = null
-      document.getElementById('client-view-menu').style.bottom = null
-      if(clientViewMenuWidth > 0){
-        document.getElementById('client-view-menu').style.width = clientViewMenuWidth+'px'
-      }
-    }
-  }
-}
 
 </script>
 

@@ -69,6 +69,44 @@ export const useProfilesManagerStore = defineStore({
             this.set('navigation', props.navigation);
             this.setLookUp('processes', props.lookup.processes);
             this.setLookUp('processCategories', props.lookup.processCategories);
+        },
+        handleProfileDivHeight(){
+            let windowHeight = window.innerHeight,
+                profileDetailContent = document.getElementById('profiles-detail-content'),
+                profilesContent = document.getElementById('profiles-content'),
+                profilesSidebar = document.getElementById('profiles-sidebar'),
+                profilesDetail = document.getElementById('profiles-detail'),
+                profilesHeader = document.getElementById('profiles-header'),
+                height = profilesHeader.offsetHeight,
+                newHeight = windowHeight -  height;
+            profilesContent.style.minHeight = newHeight+'px'
+            profilesSidebar.style.minHeight = newHeight+'px'
+            profilesDetail.style.minHeight = newHeight+'px'
+            if(profileDetailContent){
+                profileDetailContent.style.minHeight = newHeight+'px'
+            }
+        },
+        handleProfileMenuDivHeight(){
+            const w = window.innerWidth;
+            const h = window.innerHeight;
+            let profileViewMenu = document.getElementById('profile-view-menu'),
+                clientViewMenu = document.getElementById('client-view-menu');
+            if(profileViewMenu){
+                let clientViewMenuWidth = profileViewMenu.offsetWidth
+                if(h > 835){
+                    clientViewMenu.style.position = 'fixed'
+                    clientViewMenu.style.bottom = '1.5rem'
+                    if(clientViewMenuWidth > 0){
+                        clientViewMenu.style.width = clientViewMenuWidth+'px'
+                    }
+                } else {
+                    clientViewMenu.style.position = null
+                    clientViewMenu.style.bottom = null
+                    if(clientViewMenuWidth > 0){
+                        clientViewMenu.style.width = clientViewMenuWidth+'px'
+                    }
+                }
+            }
         }
     },
     getters: {
