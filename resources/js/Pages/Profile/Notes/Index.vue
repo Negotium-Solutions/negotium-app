@@ -18,7 +18,6 @@ const confirm = useConfirm();
 
 const messages = computed(() => usePage().props.messages);
 const no_notes_for_profile = messages.value.note.no_notes_for_profile;
-const show_default_page = false;
 const show_add_note = ref(false);
 
 const props = defineProps({
@@ -50,7 +49,7 @@ onMounted(() => {
     </div>
     <div class="col-md-12 pl-3 pr-3">
       <div v-if="profileManagerStore"></div>
-      <div v-if="show_default_page === false">
+      <div v-if="profileManagerStore.profile.notes.length > 0">
 
         <div v-for="(note, index) in profileManagerStore.profile.notes" :key="index" class="flex items-start border-b border-gray-300 pb-4 bg-white mb-4">
           <div class="flex-1 flex flex-col">
@@ -62,7 +61,7 @@ onMounted(() => {
                 {{ note.subject }}
               </div>
               <div class="flex items-center">
-                <div class="input-group rounded-custom-25">
+                <div v-if="!(note.reminder_datetime === null)" class="input-group rounded-custom-25">
                   <input type="text" class="h-7 w-[50px] text-xs reminder-date-input" aria-label="Reminder Date" :value="FunctionsHelper.DateTime(note.reminder_datetime)" disabled>
                   <div class="input-group-append">
                     <span class="input-group-text h-7 text-[.75rem] reminder-date-icon"><i class="fa fa-calendar-day"></i></span>
