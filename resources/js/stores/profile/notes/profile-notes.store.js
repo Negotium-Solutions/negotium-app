@@ -48,7 +48,7 @@ export const useProfileNoteStore = defineStore({
             await this.apiHelper.create(this.note);
             this.apiHelper.isDoneLoading(null, () => {
                 let removeProcessVariables = {
-                    'note': this.note.reminder_datetime === null ? 'Note' : 'Reminder',
+                    'note': this.note.reminder_date === '' || this.note.reminder_time === '' ? 'Note' : 'Reminder',
                     'noteHeading': this.note.subject
                 };
                 const response = this.apiHelper.response;
