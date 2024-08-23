@@ -39,8 +39,10 @@ export const useProfileNoteStore = defineStore({
     actions: {
         async create(toast)
         {
+            this.loading = true;
             if(this.note.subject === '' || this.note.note === '') {
                 toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                this.loading = false;
                 return false;
             }
 
@@ -52,9 +54,9 @@ export const useProfileNoteStore = defineStore({
                 };
                 const response = this.apiHelper.response;
                 if (parseInt(response.code) === 201) {
-                    console.log('response', response);
                     toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.note.success_adding_note, removeProcessVariables), life: 3000 });
                     setTimeout(() => {
+                        this.loading = false;
                         location.reload();
                     }, 3000)
                 }
@@ -62,6 +64,7 @@ export const useProfileNoteStore = defineStore({
         },
         async delete(item, toast)
         {
+            this.loading = true;
             await this.apiHelper.delete(item);
             this.apiHelper.isDoneLoading(null, () => {
                 let removeProcessVariables = {
@@ -72,6 +75,7 @@ export const useProfileNoteStore = defineStore({
                 if (parseInt(response.code) === 204) {
                     toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.note.success_removing_note, removeProcessVariables), life: 3000 });
                     setTimeout(() => {
+                        this.loading = false;
                         location.reload();
                     }, 3000)
                 }
