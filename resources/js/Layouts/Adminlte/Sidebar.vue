@@ -27,11 +27,11 @@ function handleProfileSidebarPosition(){
   const h = window.innerHeight;
 
   if(h > 800){
-    document.getElementById('sidebar-profiles').style.position = 'fixed'
-    document.getElementById('sidebar-profiles').style.bottom = 0
+    document.getElementById('sidebar-profiles').style.position = 'fixed';
+    document.getElementById('sidebar-profiles').style.bottom = 0;
   } else {
-    document.getElementById('sidebar-profiles').style.position = null
-    document.getElementById('sidebar-profiles').style.bottom = null
+    document.getElementById('sidebar-profiles').style.position = null;
+    document.getElementById('sidebar-profiles').style.bottom = null;
   }
 
   if(w < 1360){
@@ -42,14 +42,6 @@ function handleProfileSidebarPosition(){
     document.getElementById('main-container').style.marginLeft = "250px"
   }
 }
-
-function logout(){
-  document.getElementById('logout').submit()
-}
-
-const props = defineProps({
-  'processes': Object
-});
 </script>
 
 <template>

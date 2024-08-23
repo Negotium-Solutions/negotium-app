@@ -15,7 +15,6 @@ export const useProfileNoteStore = defineStore({
         note: {
             'subject': '',
             'note': '',
-            'user_email': user.value.email,
             'profile_id': '',
             'reminder_date': '',
             'reminder_time': ''
@@ -53,6 +52,7 @@ export const useProfileNoteStore = defineStore({
                 };
                 const response = this.apiHelper.response;
                 if (parseInt(response.code) === 201) {
+                    console.log('response', response);
                     toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.note.success_adding_note, removeProcessVariables), life: 3000 });
                     setTimeout(() => {
                         location.reload();
