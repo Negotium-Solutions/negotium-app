@@ -10,6 +10,7 @@ import { usePage } from "@inertiajs/vue3";
 import { useConfirm } from "primevue/useconfirm";
 import { FunctionsHelper } from "@/helpers";
 import Editor from 'primevue/editor';
+import NegotiumButton from "@/Components/negotium/Button.vue";
 
 const profileManagerStore = useProfilesManagerStore();
 const profileNoteStore = useProfileNoteStore();
@@ -128,7 +129,8 @@ onMounted(() => {
       <div class="row">
         <div class="col-12 p-4 pr-0 text-right">
           <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="show_add_note = false">Cancel</button>
-          <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid bg-neutral-700 border-neutral-700 border-opacity-20 text-white hover:bg-neutral-700 hover:text-white" @click="profileNoteStore.create(toast)">Add Note</button>
+          <negotium-button v-if="!profileNoteStore.loading"  @click="profileNoteStore.create(toast)" :value="'Add Note'"></negotium-button>
+          <button v-if="profileNoteStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
         </div>
       </div>
     </template>
