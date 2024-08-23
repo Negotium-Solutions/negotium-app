@@ -9,5 +9,6 @@ export * from './categories.store';
 export * from './profile/process/profile-process.store.js';
 export * from './profile/notes/profile-notes.store.js';
 export * from './profile/communications/profile-communications.store.js';
+export * from './profile/documents/profile-documents.store.js';
 export * from './messages.store';
 export * from './user/user.store';
