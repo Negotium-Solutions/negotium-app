@@ -112,7 +112,7 @@ class ProfileController extends Controller
             $id = $this->profileData['profileId'];
         }
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}/?with=communications.user,communications.communicationType,communications.status")->getBody(), true)['data'] ?? [];
-        $communicationTypes = json_decode($this->http->get("{$this->url}/lookup", ["model" => "CommunicationType"])->getBody(), true)['data'] ?? [];
+        $communicationTypes = json_decode($this->http->get("{$this->url}/lookup", ["model" => "CommunicationType", "object" => 1])->getBody(), true)['data'] ?? [];
 
         $lookup = [
           'communicationTypes' => $communicationTypes,

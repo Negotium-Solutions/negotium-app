@@ -47,11 +47,11 @@ onMounted(() => {
       <div v-if="profileManagerStore.profile.communications.length > 0">
         <div class="d-flex gap-2 pr-2 ml-3 mb-2">
           <button :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white', { 'bg-neutral-700 text-white' : profileCommunicationStore.isSelectedCommunication(0) }]" @click="profileCommunicationStore.toogleCommunication(0)">All</button>
-          <button v-for="(communicationType, id) in profileCommunicationStore.lookup.communicationTypes" :key="id" :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white', { 'bg-neutral-700 text-white' : profileCommunicationStore.isSelectedCommunication(id) }]" @click="profileCommunicationStore.toogleCommunication(id)"><i class="fa fa-square" :style="'color:LightBlue'"></i>{{ communicationType }}</button>
+          <button v-for="(communicationType, index) in profileCommunicationStore.lookup.communicationTypes" :key="index" :class="['flex gap-2 justify-center py-2.5 px-3 text-xs leading-3 rounded border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white', { 'bg-neutral-700 text-white' : profileCommunicationStore.isSelectedCommunication(parseInt(communicationType.id)) }]" @click="profileCommunicationStore.toogleCommunication(parseInt(communicationType.id))"><i class="fa fa-square" :style="'color: '+communicationType.color"></i>{{ communicationType.name }}</button>
          </div>
         <div v-for="(communication, index) in profileCommunicationStore.filterByCommunicationType(profileManagerStore.profile.communications)" :key="index" class="flex items-start border-b border-gray-300 p-4 bg-white">
-          <div class="flex w-[68px] h-[68px] p-2 bg-[#f2f6f7] rounded-custom-50 justify-center items-center">
-            <span class="text-sm font-bold">{{ communication.communication_type.name }}</span>
+          <div class="flex w-[70px] h-[70px] p-2 rounded-custom-50 justify-center items-center" :style="'background-color: '+communication.communication_type.color">
+            <span class="text-xs font-bold">{{ communication.communication_type.name }}</span>
           </div>
           <div class="flex-1 flex flex-col pl-4"><div class="flex items-center justify-between mb-1">
             <div class="flex items-center">

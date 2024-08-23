@@ -67,7 +67,10 @@ export const useProfileCommunicationStore = defineStore({
                 return communications;
             }
 
-            return communications.filter((item) => this.selected_communication_type.includes(1));
+            console.log('selected_communication_type', this.selected_communication_type);
+            console.log('selected_communication_type', communications);
+
+            return communications.filter((item) => this.selected_communication_type.includes(item.communication_type_id));
         },
         resetResponse() {
             this.response = {
