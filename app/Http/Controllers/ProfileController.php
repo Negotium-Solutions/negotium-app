@@ -111,14 +111,19 @@ class ProfileController extends Controller
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}/?with=communications.user,communications.communicationType,communications.status")->getBody(), true)['data'] ?? [];
+        $communicationTypes = json_decode($this->http->get("{$this->url}/lookup", ["model" => "CommunicationType", "object" => 1])->getBody(), true)['data'] ?? [];
+
+        $lookup = [
+          'communicationTypes' => $communicationTypes,
+        ];
 
         $parameters = [
             'profile' => $profile,
+            'lookup' => $lookup
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
-
         return Inertia::render('Profile/Communications/Index', $parameters);
     }
 
