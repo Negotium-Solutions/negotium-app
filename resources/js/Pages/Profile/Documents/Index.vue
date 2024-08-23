@@ -50,7 +50,7 @@ onMounted(() => {
           <td>{{ FunctionsHelper.DateTime(document.created_at) }}</td>
           <td class="last pl-2">
             <div class="d-flex">
-              <button class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">View</button>
+              <button @click="profileDocumentStore.viewDocument(document)" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">View</button>
               <div class="flex flex-col items-center pl-2">
                 <button @click="profileDocumentStore.downloadDocument(document.path)" type="button" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 inline-flex">
                   <i class="pi pi-download"></i>

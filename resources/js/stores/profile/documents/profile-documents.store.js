@@ -43,10 +43,13 @@ export const useProfileDocumentStore = defineStore({
         setLookUp(key, value) {
             this.$state['lookup'][key] = value;
         },
-        downloadDocument(url) {
+        viewDocument(document) {
+            window.open(document.path, '_blank'); // Open the document in a new tab
+        },
+        downloadDocument(path) {
             const link = document.createElement('a');
-            link.href = url;
-            //link.download = url.split('/').pop(); // Extracts the file name from the URL
+            link.href = path;
+            link.download = path.split('/').pop(); // Extracts the file name from the URL
             link.click();
         },
         getIconByDocumentType(documentType){
