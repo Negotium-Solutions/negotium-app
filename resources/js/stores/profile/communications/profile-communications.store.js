@@ -44,10 +44,10 @@ export const useProfileCommunicationStore = defineStore({
         setLookUp(key, value) {
             this.$state['lookup'][key] = value;
         },
-        isSelectedCommunication(communication_type_id) {
+        isSelectedCommunicationType(communication_type_id) {
             return this.selected_communication_type.some((item) => item === communication_type_id)
         },
-        toogleCommunication(communication_type_id) {
+        toogleCommunicationType(communication_type_id) {
             if(communication_type_id === 0 || (this.selected_communication_type.length === 1 && this.selected_communication_type[0] === 0)) {
                 this.selected_communication_type = [];
                 this.selected_communication_type.push(communication_type_id);
@@ -66,9 +66,6 @@ export const useProfileCommunicationStore = defineStore({
             if(this.selected_communication_type.length === 1 && this.selected_communication_type[0] === 0) {
                 return communications;
             }
-
-            console.log('selected_communication_type', this.selected_communication_type);
-            console.log('selected_communication_type', communications);
 
             return communications.filter((item) => this.selected_communication_type.includes(item.communication_type_id));
         },

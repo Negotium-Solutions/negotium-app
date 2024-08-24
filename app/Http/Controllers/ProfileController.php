@@ -148,7 +148,7 @@ class ProfileController extends Controller
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=documents.user")->getBody(), true)['data'] ?? [];
 
         $parameters = [
             'profile' => $profile
