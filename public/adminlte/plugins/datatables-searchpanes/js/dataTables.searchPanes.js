@@ -1345,7 +1345,7 @@
          * Populates an array with all of the data for the table
          *
          * @param rowIdx The current row index to be compared
-         * @param arrayFilter The array that is to be populated with row Details
+         * @param arrayFilter The array that is to be populated with row ProfileDetails
          * @param bins The bins object that is to be populated with the row counts
          */
         SearchPane.prototype._populatePaneArray = function (rowIdx, arrayFilter, settings, bins) {

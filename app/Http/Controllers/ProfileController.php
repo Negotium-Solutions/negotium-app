@@ -60,7 +60,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the user's profile details.
+     * Display the user's profile profile-details.
      */
     /**
      * Display the user's profile form.
@@ -70,12 +70,39 @@ class ProfileController extends Controller
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
+
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
         $profileDetails = json_decode($this->http->get("{$this->url}/profile/dynamic-model/{$id}")->getBody(), true)['data'] ?? [];
 
+        $_profileDetailFields = [];
+        foreach ($profileDetails['fields'] as $key => $profileDetail) {
+            $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
+            if( $key === 0 ) {
+                if( $profile['profile_type_id'] == 1 ) {
+                    $profileDetail["label"] = "First Name";
+                    $profileDetail["field"] = "first_name";
+                    $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
+                    $profileDetail["label"] = "Last Name";
+                    $profileDetail["field"] = "last_name";
+                    $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
+                }
+
+                if( $profile['profile_type_id'] == 2 ) {
+                    $profileDetail["label"] = "Company Name";
+                    $profileDetail["field"] = "company_name";
+                    $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
+                }
+
+                $profileDetail["label"] = "Email";
+                $profileDetail["field"] = "email";
+                $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
+            }
+        }
+
         $parameters = [
             'profile' => $profile,
-            'profileDetails' => $profileDetails
+            'profileDetails' => $profileDetails,
+            'profileDetailsFields' => $_profileDetailFields
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -84,7 +111,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the user's profile details.
+     * Display the user's profile profile-details.
      */
     /**
      * Display the user's profile form.

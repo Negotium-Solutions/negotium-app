@@ -2248,7 +2248,7 @@ module.exports = DataWorker;
  *
  * A chunk is an object with 2 attributes : `meta` and `data`. The former is an
  * object containing anything (`percent` for example), see each worker for more
- * details. The latter is the real data (String, Uint8Array, etc).
+ * profile-details. The latter is the real data (String, Uint8Array, etc).
  *
  * @constructor
  * @param {String} name the name of the stream (mainly used for debugging purposes)
@@ -5759,7 +5759,7 @@ module.exports = adler32;
 
 module.exports = {
 
-  /* Allowed flush values; see deflate() and inflate() below for details */
+  /* Allowed flush values; see deflate() and inflate() below for profile-details */
   Z_NO_FLUSH:         0,
   Z_PARTIAL_FLUSH:    1,
   Z_SYNC_FLUSH:       2,
@@ -5898,7 +5898,7 @@ var msg     = require('./messages');
 /* ===========================================================================*/
 
 
-/* Allowed flush values; see deflate() and inflate() below for details */
+/* Allowed flush values; see deflate() and inflate() below for profile-details */
 var Z_NO_FLUSH      = 0;
 var Z_PARTIAL_FLUSH = 1;
 //var Z_SYNC_FLUSH    = 2;
@@ -8185,7 +8185,7 @@ var DISTS = 2;
 /* ===========================================================================*/
 
 
-/* Allowed flush values; see deflate() and inflate() below for details */
+/* Allowed flush values; see deflate() and inflate() below for profile-details */
 //var Z_NO_FLUSH      = 0;
 //var Z_PARTIAL_FLUSH = 1;
 //var Z_SYNC_FLUSH    = 2;

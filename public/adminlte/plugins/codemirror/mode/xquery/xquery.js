@@ -212,7 +212,7 @@ CodeMirror.defineMode("xquery", function() {
       // push the stack so we know to look for it on the next word
       if(word == "element" || word == "attribute" || known.type == "axis_specifier") pushStateStack(state, {type: "xmlconstructor"});
 
-      // if the word is known, return the details of that else just call this a generic 'word'
+      // if the word is known, return the profile-details of that else just call this a generic 'word'
       return known ? known.style : "variable";
     }
   }

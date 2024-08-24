@@ -16,9 +16,9 @@
  *
  * This source file is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for profile-details.
  *
- * For details please refer to: http://www.datatables.net
+ * For profile-details please refer to: http://www.datatables.net
  */
 
 /*jslint evil: true, undef: true, browser: true */
@@ -8474,7 +8474,7 @@
 					return;
 				}
 	
-				// Update the colspan for the details rows (note, only if it already has
+				// Update the colspan for the profile-details rows (note, only if it already has
 				// a colspan)
 				var row, visible = _fnVisbleColumns( ctx );
 	
@@ -10385,7 +10385,7 @@
 	
 		/**
 		 * The `columns` option in the initialisation parameter allows you to define
-		 * details about the way individual columns behave. For a full list of
+		 * profile-details about the way individual columns behave. For a full list of
 		 * column options that can be set, please see
 		 * {@link DataTable.defaults.column}. Note that if you use `columns` to
 		 * define your columns, you must have an entry in the array for every single
@@ -11782,7 +11782,7 @@
 	
 	
 			/**
-			 * Detail the action that will be taken when the drop down menu for the
+			 * ProfileDetails the action that will be taken when the drop down menu for the
 			 * pagination length option is changed. The '_MENU_' variable is replaced
 			 * with a default select list of 10, 25, 50 and 100, and can be replaced
 			 * with a custom select box if required.
@@ -11868,7 +11868,7 @@
 	
 	
 			/**
-			 * Details the actions that will be taken when the user types into the
+			 * ProfileDetails the actions that will be taken when the user types into the
 			 * filtering input text box. The variable "_INPUT_", if used in the string,
 			 * is replaced with the HTML text box for the filtering input allowing
 			 * control over where it appears in the string. If "_INPUT_" is not given
@@ -12582,7 +12582,7 @@
 		 *    //      "platform": {
 		 *    //         "inner": {value}
 		 *    //      },
-		 *    //      "details": [
+		 *    //      "profile-details": [
 		 *    //         {value}, {value}
 		 *    //      ]
 		 *    //   }
@@ -12593,8 +12593,8 @@
 		 *          { "data": "engine" },
 		 *          { "data": "browser" },
 		 *          { "data": "platform.inner" },
-		 *          { "data": "details.0" },
-		 *          { "data": "details.1" }
+		 *          { "data": "profile-details.0" },
+		 *          { "data": "profile-details.1" }
 		 *        ]
 		 *      } );
 		 *    } );
