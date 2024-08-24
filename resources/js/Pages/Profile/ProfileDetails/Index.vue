@@ -9,6 +9,7 @@ const props = defineProps({
   profileTypeId: 0,
   profileTypes: Array,
   profile: Object,
+  profileDetails: [],
   apiUrl: String,
   apiImagesUrl: String,
   navigation: String,
@@ -54,7 +55,7 @@ onMounted(() => {
             </div>
             <div class="d-flex flex-row flex-1 align-items-center gap-28">
               <span class="mb-1 d-flex flex-1 text-neutral-400 text-sm font-normal font-['Nunito'] leading-tight">ID Number</span>
-              <span class="float-right text-right text-sm">{{ profileManagerStore.profile.id }}</span>
+              <span class="float-right text-right text-sm">{{ props.profileDetails.id_number }}</span>
             </div>
           </div>
         </div>
