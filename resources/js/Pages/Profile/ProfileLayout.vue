@@ -95,18 +95,17 @@ onMounted(() => {
             <div class="row mb-3"></div>
             <div id="profile-view-menu">
             <h2 class="font-bold mb-2">Profile navigation</h2>
-            <div><a :href="route('profile.processes', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.processes')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Processes <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.details', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.details')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Details <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.communications', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.communications')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Communications <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.documents', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Documents <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.notes', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.notes')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></a></div>
-
-            <div class="row mb-3"></div>
+            <div><a :href="route('profile.processes', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.processes')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 hover:text-gray-700">Processes <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.details', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.details')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Profile Details <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.communications', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.communications')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Communications <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.documents', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.documents')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Documents <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.notes', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.notes')}" class="w-100 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div class="row mb-7"></div>
           </div>
           <div class="row col-md-12 p-0 m-0" id="client-view-menu">
             <h2 class="font-bold mb-2 col-md-12 p-0">Client view</h2>
-            <div class="col-md-12 p-0"><button class=" col-md-12 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200">Requested information <i class="fa fa-chevron-right float-right"></i></button></div>
-            <div class="col-md-12 p-0"><button class=" col-md-12 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1">Profile Access <i class="fa fa-chevron-right float-right"></i></button></div>
+            <div class="col-md-12 p-0"><a href="" class=" col-md-12 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 hover:text-gray-700">Requested information <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div class="col-md-12 p-0"><a href="" class=" col-md-12 px-4 py-2 rounded justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Profile Access <i class="fa fa-chevron-right float-right"></i></a></div>
           </div>
           </div>
         </div>
