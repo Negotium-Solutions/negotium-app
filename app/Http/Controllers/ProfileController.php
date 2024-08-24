@@ -190,7 +190,7 @@ class ProfileController extends Controller
 
     public function setProfilesData() : array
     {
-        if ($this->request->has('cache') && $this->request->cache === 'clear') {
+        if (true/*$this->request->has('cache') && $this->request->cache === 'clear'*/) {
             Cache::store('redis')->forget(self::PROFILES_KEY);
         }
 
