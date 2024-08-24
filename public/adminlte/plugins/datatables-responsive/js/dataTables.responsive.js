@@ -16,9 +16,9 @@
  *
  * This source file is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for profile-details.
  *
- * For details please refer to: http://www.datatables.net
+ * For profile-details please refer to: http://www.datatables.net
  */
 (function( factory ){
 	if ( typeof define === 'function' && define.amd ) {
@@ -112,7 +112,7 @@ var Responsive = function ( settings, opts ) {
 		return;
 	}
 
-	// details is an object, but for simplicity the user can give it as a string
+	// profile-details is an object, but for simplicity the user can give it as a string
 	// or a boolean
 	if ( opts && typeof opts.details === 'string' ) {
 		opts.details = { type: opts.details };
@@ -201,7 +201,7 @@ $.extend( Responsive.prototype, {
 		this._classLogic();
 		this._resizeAuto();
 
-		// Details handler
+		// ProfileDetails handler
 		var details = this.c.details;
 
 		if ( details.type !== false ) {
@@ -226,7 +226,7 @@ $.extend( Responsive.prototype, {
 				}, 100 );
 			} );
 
-			// Redraw the details box on each draw which will happen if the data
+			// Redraw the profile-details box on each draw which will happen if the data
 			// has changed. This is used until DataTables implements a native
 			// `updated` event for rows
 			dt.on( 'draw.dtr', function () {
@@ -539,7 +539,7 @@ $.extend( Responsive.prototype, {
 				}
 				else if ( className === 'control' || className === 'dtr-control' ) {
 					// Special column that is only visible, when one of the other
-					// columns is hidden. This is used for the details control
+					// columns is hidden. This is used for the profile-details control
 					hasClass = true;
 					col.control = true;
 					return;
@@ -607,7 +607,7 @@ $.extend( Responsive.prototype, {
 	},
 
 	/**
-	 * Show the details for the child row
+	 * Show the profile-details for the child row
 	 *
 	 * @param  {DataTables.Api} row    API instance for the row
 	 * @param  {boolean}        update Update flag
@@ -634,7 +634,7 @@ $.extend( Responsive.prototype, {
 
 
 	/**
-	 * Initialisation for the details handler
+	 * Initialisation for the profile-details handler
 	 *
 	 * @private
 	 */
@@ -666,7 +666,7 @@ $.extend( Responsive.prototype, {
 		var selector = typeof target === 'string' ? target : 'td, th';
 
 		if ( target !== undefined || target !== null ) {
-			// Click handler to show / hide the details rows when they are available
+			// Click handler to show / hide the profile-details rows when they are available
 			$( dt.table().body() )
 				.on( 'click.dtr mousedown.dtr mouseup.dtr', selector, function (e) {
 					// If the table is not collapsed (i.e. there is no hidden columns)
@@ -716,7 +716,7 @@ $.extend( Responsive.prototype, {
 
 
 	/**
-	 * Get the details to pass to a renderer for a row
+	 * Get the profile-details to pass to a renderer for a row
 	 * @param  {int} rowIdx Row index
 	 * @private
 	 */
@@ -1243,7 +1243,7 @@ function _childNodesRestore( dt, row, col ) {
 Responsive.renderer = {
 	listHiddenNodes: function () {
 		return function ( api, rowIdx, columns ) {
-			var ul = $('<ul data-dtr-index="'+rowIdx+'" class="dtr-details"/>');
+			var ul = $('<ul data-dtr-index="'+rowIdx+'" class="dtr-profile-details"/>');
 			var found = false;
 
 			var data = $.each( columns, function ( i, col ) {
@@ -1292,7 +1292,7 @@ Responsive.renderer = {
 			} ).join('');
 
 			return data ?
-				$('<ul data-dtr-index="'+rowIdx+'" class="dtr-details"/>').append( data ) :
+				$('<ul data-dtr-index="'+rowIdx+'" class="dtr-profile-details"/>').append( data ) :
 				false;
 		}
 	},
@@ -1314,7 +1314,7 @@ Responsive.renderer = {
 					'</tr>';
 			} ).join('');
 
-			return $('<table class="'+options.tableClass+' dtr-details" width="100%"/>').append( data );
+			return $('<table class="'+options.tableClass+' dtr-profile-details" width="100%"/>').append( data );
 		}
 	}
 };
@@ -1348,18 +1348,18 @@ Responsive.defaults = {
 	auto: true,
 
 	/**
-	 * Details control. If given as a string value, the `type` property of the
+	 * ProfileDetails control. If given as a string value, the `type` property of the
 	 * default object is set to that value, and the defaults used for the rest
 	 * of the object - this is for ease of implementation.
 	 *
 	 * The object consists of the following properties:
 	 *
-	 * * `display` - A function that is used to show and hide the hidden details
+	 * * `display` - A function that is used to show and hide the hidden profile-details
 	 * * `renderer` - function that is called for display of the child row data.
 	 *   The default function will show the data from the hidden columns
 	 * * `target` - Used as the selector for what objects to attach the child
 	 *   open / close to
-	 * * `type` - `false` to disable the details display, `inline` or `column`
+	 * * `type` - `false` to disable the profile-details display, `inline` or `column`
 	 *   for the two control types
 	 *
 	 * @type {Object|string}

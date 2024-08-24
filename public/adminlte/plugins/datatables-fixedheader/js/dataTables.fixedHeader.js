@@ -17,9 +17,9 @@
  *
  * This source file is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for profile-details.
  *
- * For details please refer to: http://www.datatables.net
+ * For profile-details please refer to: http://www.datatables.net
  */
 
 (function( factory ){
@@ -719,13 +719,13 @@ $.extend( FixedHeader.prototype, {
 	 */
 	_scroll: function ( forceChange )
 	{
-		// ScrollBody details
+		// ScrollBody profile-details
 		var scrollEnabled = this._scrollEnabled();
 		var scrollBody = $(this.s.dt.table().node()).parent();
 		var scrollOffset =  scrollBody.offset();
 		var scrollHeight =  scrollBody.outerHeight();
 
-		// Window details
+		// Window profile-details
 		var windowLeft = $(document).scrollLeft();
 		var windowTop = $(document).scrollTop();
 		var windowHeight = $(window).height();
@@ -735,7 +735,7 @@ $.extend( FixedHeader.prototype, {
 		var position = this.s.position;
 		var headerMode, footerMode;
 
-		// Body Details
+		// Body ProfileDetails
 		var bodyTop = (scrollEnabled ? scrollOffset.top : position.tbodyTop);
 		var bodyLeft = (scrollEnabled ? scrollOffset.left : position.left);
 		var bodyBottom = (scrollEnabled ? scrollOffset.top + scrollHeight : position.tfootTop);

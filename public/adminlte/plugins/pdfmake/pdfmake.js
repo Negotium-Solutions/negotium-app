@@ -19610,7 +19610,7 @@ var PNGImage = /*#__PURE__*/function () {
         this.obj.data['Mask'] = mask;
       } else if (this.image.transparency.indexed) {
         // Create a transparency SMask for the image based on the data
-        // in the PLTE and tRNS sections. See below for details on SMasks.
+        // in the PLTE and tRNS sections. See below for profile-details on SMasks.
         dataDecoded = true;
         return this.loadIndexedAlphaChannel();
       } else if (hasAlphaChannel) {
@@ -29766,7 +29766,7 @@ module.exports = adler32;
 
 module.exports = {
 
-  /* Allowed flush values; see deflate() and inflate() below for details */
+  /* Allowed flush values; see deflate() and inflate() below for profile-details */
   Z_NO_FLUSH:         0,
   Z_PARTIAL_FLUSH:    1,
   Z_SYNC_FLUSH:       2,
@@ -29917,7 +29917,7 @@ var msg     = __webpack_require__(9364);
 /* ===========================================================================*/
 
 
-/* Allowed flush values; see deflate() and inflate() below for details */
+/* Allowed flush values; see deflate() and inflate() below for profile-details */
 var Z_NO_FLUSH      = 0;
 var Z_PARTIAL_FLUSH = 1;
 //var Z_SYNC_FLUSH    = 2;
@@ -32156,7 +32156,7 @@ var DISTS = 2;
 /* ===========================================================================*/
 
 
-/* Allowed flush values; see deflate() and inflate() below for details */
+/* Allowed flush values; see deflate() and inflate() below for profile-details */
 //var Z_NO_FLUSH      = 0;
 //var Z_PARTIAL_FLUSH = 1;
 //var Z_SYNC_FLUSH    = 2;
@@ -50353,7 +50353,7 @@ var runtime = (function (exports) {
   // @@iterator function is called on it. Some browsers' implementations of the
   // iterator prototype chain incorrectly implement this, causing the Generator
   // object to not be returned from this call. This ensures that doesn't happen.
-  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  // See https://github.com/facebook/regenerator/issues/274 for more profile-details.
   define(Gp, iteratorSymbol, function() {
     return this;
   });
@@ -69959,7 +69959,7 @@ var TTFFont = (_class$4 = /*#__PURE__*/function () {
     }
     /**
      * The height of capital letters above the baseline.
-     * See [here](https://en.wikipedia.org/wiki/Cap_height) for more details.
+     * See [here](https://en.wikipedia.org/wiki/Cap_height) for more profile-details.
      * @type {number}
      */
 
@@ -69971,7 +69971,7 @@ var TTFFont = (_class$4 = /*#__PURE__*/function () {
     }
     /**
      * The height of lower case letters in the font.
-     * See [here](https://en.wikipedia.org/wiki/X-height) for more details.
+     * See [here](https://en.wikipedia.org/wiki/X-height) for more profile-details.
      * @type {number}
      */
 

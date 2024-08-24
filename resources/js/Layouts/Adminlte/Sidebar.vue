@@ -16,7 +16,7 @@ onMounted(() => {
 function isProfileMenu()
 {
   return route().current('profile.processes')
-      || route().current('profile.details')
+      || route().current('profile.profile-details')
       || route().current('profile.communications')
       || route().current('profile.documents')
       || route().current('profile.notes');

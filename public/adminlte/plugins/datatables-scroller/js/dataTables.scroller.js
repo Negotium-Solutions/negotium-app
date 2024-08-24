@@ -16,9 +16,9 @@
  *
  * This source file is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
- * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for profile-details.
  *
- * For details please refer to: http://www.datatables.net
+ * For profile-details please refer to: http://www.datatables.net
  */
 
 (function( factory ){
