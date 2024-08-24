@@ -71,9 +71,11 @@ class ProfileController extends Controller
             $id = $this->profileData['profileId'];
         }
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
+        $profileDetails = json_decode($this->http->get("{$this->url}/profile/dynamic-model/{$id}")->getBody(), true)['data'] ?? [];
 
         $parameters = [
-            'profile' => $profile
+            'profile' => $profile,
+            'profileDetails' => $profileDetails
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
