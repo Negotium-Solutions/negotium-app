@@ -1,6 +1,5 @@
 <script setup>
   import { useProfileProcessStore, useProfilesManagerStore } from "@/stores";
-  import {FunctionsHelper} from "@/helpers/index.js";
   import {reactive} from "vue";
 
   const profileProcessStore = useProfileProcessStore();
