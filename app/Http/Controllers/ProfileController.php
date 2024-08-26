@@ -71,38 +71,10 @@ class ProfileController extends Controller
             $id = $this->profileData['profileId'];
         }
 
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
-        $profileDetails = json_decode($this->http->get("{$this->url}/profile/dynamic-model/{$id}")->getBody(), true)['data'] ?? [];
-
-        $_profileDetailFields = [];
-        foreach ($profileDetails['fields'] as $key => $profileDetail) {
-            $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
-            if( $key === 0 ) {
-                if( $profile['profile_type_id'] == 1 ) {
-                    $profileDetail["label"] = "First Name";
-                    $profileDetail["field"] = "first_name";
-                    $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
-                    $profileDetail["label"] = "Last Name";
-                    $profileDetail["field"] = "last_name";
-                    $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
-                }
-
-                if( $profile['profile_type_id'] == 2 ) {
-                    $profileDetail["label"] = "Company Name";
-                    $profileDetail["field"] = "company_name";
-                    $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
-                }
-
-                $profileDetail["label"] = "Email";
-                $profileDetail["field"] = "email";
-                $_profileDetailFields[$profileDetail['dynamic_model_field_group']['name']][] = $profileDetail;
-            }
-        }
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
 
         $parameters = [
-            'profile' => $profile,
-            'profileDetails' => $profileDetails,
-            'profileDetailsFields' => $_profileDetailFields
+            'profile' => $profile
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -121,7 +93,7 @@ class ProfileController extends Controller
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
 
         $parameters = [
             'profile' => $profile,
@@ -190,6 +162,7 @@ class ProfileController extends Controller
 
     public function setProfilesData() : array
     {
+        // Disable validation until caching is required
         if (true/*$this->request->has('cache') && $this->request->cache === 'clear'*/) {
             Cache::store('redis')->forget(self::PROFILES_KEY);
         }
