@@ -12,7 +12,7 @@ const apiURL = computed(() => page.props.negotium_api_url);
 export const useProfileDetailStore = defineStore({
     id: 'profile-profile-details',
     state: () => ({
-        profileDetails: null,
+        profile: null,
         profileDetailsFields: null,
         loading: false,
         status: {
@@ -31,7 +31,7 @@ export const useProfileDetailStore = defineStore({
             'errors': [],
             'data': []
         },
-        apiHelper: new ApiHelper('document')
+        apiHelper: new ApiHelper('profile')
     }),
     actions: {
         set(key, value) {
@@ -42,6 +42,27 @@ export const useProfileDetailStore = defineStore({
         },
         setLookUp(key, value) {
             this.$state['lookup'][key] = value;
+        },
+        async storeDynamicModel(id, toast) {
+            this.loading = true;
+            let hasErrors = false; // Todo: Write a Form Helper to handle validation
+            if (hasErrors) {
+                toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                this.loading = false;
+                return false;
+            }
+
+            await this.apiHelper.update(this.profile, id);
+            this.apiHelper.isDoneLoading(null, () => {
+                let removeProcessVariables = {
+                    'profileName': parseInt(this.profile.profile_type_id) === 1 ? this.profile.first_name + ' ' + this.profile.last_name : this.profile.company_name
+                };
+                const response = this.apiHelper.response;
+                if (parseInt(response.code) === 200) {
+                    toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.profile.success_profile_updated, removeProcessVariables), life: 3000 });
+                    this.loading = false;
+                }
+            });
         },
         resetResponse() {
             this.response = {
