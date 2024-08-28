@@ -255,7 +255,7 @@
             }
         };
         /**
-         * Gets the details required to rebuild the criteria
+         * Gets the profile-details required to rebuild the criteria
          */
         Criteria.prototype.getDetails = function (deFormatDates) {
             if (deFormatDates === void 0) { deFormatDates = false; }
@@ -332,9 +332,9 @@
             }
         };
         /**
-         * Rebuilds the criteria based upon the details passed in
+         * Rebuilds the criteria based upon the profile-details passed in
          *
-         * @param loadedCriteria the details required to rebuild the criteria
+         * @param loadedCriteria the profile-details required to rebuild the criteria
          */
         Criteria.prototype.rebuild = function (loadedCriteria) {
             // Check to see if the previously selected data exists, if so select it
@@ -2504,7 +2504,7 @@
             this.s.criteria = [];
         };
         /**
-         * Gets the details required to rebuild the group
+         * Gets the profile-details required to rebuild the group
          */
         // Eslint upset at empty object but needs to be done
         // eslint-disable-next-line @typescript-eslint/ban-types
@@ -2533,9 +2533,9 @@
             return this.dom.container;
         };
         /**
-         * Rebuilds the group based upon the details passed in
+         * Rebuilds the group based upon the profile-details passed in
          *
-         * @param loadedDetails the details required to rebuild the group
+         * @param loadedDetails the profile-details required to rebuild the group
          */
         Group.prototype.rebuild = function (loadedDetails) {
             // If no criteria are stored then just return
@@ -2750,7 +2750,7 @@
             if (!inserted) {
                 criteria.getNode().insertBefore(this.dom.add);
             }
-            // Add the details for this criteria to the array
+            // Add the profile-details for this criteria to the array
             this.s.criteria.push({
                 criteria: criteria,
                 index: index
@@ -2798,7 +2798,7 @@
         /**
          * Rebuilds a sub group that previously existed
          *
-         * @param loadedGroup The details of a group within this group
+         * @param loadedGroup The profile-details of a group within this group
          */
         Group.prototype._addPrevGroup = function (loadedGroup) {
             var idx = this.s.criteria.length;
@@ -2818,7 +2818,7 @@
         /**
          * Rebuilds a criteria of this group that previously existed
          *
-         * @param loadedCriteria The details of a criteria within the group
+         * @param loadedCriteria The profile-details of a criteria within the group
          */
         Group.prototype._addPrevCriteria = function (loadedCriteria) {
             var idx = this.s.criteria.length;
@@ -2953,7 +2953,7 @@
                 var group = new Group(_this.s.dt, _this.s.opts, _this.s.topGroup, criteria.s.index, true, _this.s.depth + 1);
                 // Add the criteria that is to be moved to the new group
                 group.addCriteria(criteria);
-                // Update the details in the current groups criteria array
+                // Update the profile-details in the current groups criteria array
                 _this.s.criteria[idx].criteria = group;
                 _this.s.criteria[idx].logic = 'AND';
                 _this.s.topGroup.trigger('dtsb-redrawContents');
@@ -3221,7 +3221,7 @@
             return this;
         }
         /**
-         * Gets the details required to rebuild the SearchBuilder as it currently is
+         * Gets the profile-details required to rebuild the SearchBuilder as it currently is
          */
         // eslint upset at empty object but that is what it is
         // eslint-disable-next-line @typescript-eslint/ban-types
@@ -3240,11 +3240,11 @@
         /**
          * Rebuilds the SearchBuilder to a state that is provided
          *
-         * @param details The details required to perform a rebuild
+         * @param details The profile-details required to perform a rebuild
          */
         SearchBuilder.prototype.rebuild = function (details) {
             this.dom.clearAll.click();
-            // If there are no details to rebuild then return
+            // If there are no profile-details to rebuild then return
             if (details === undefined || details === null) {
                 return this;
             }

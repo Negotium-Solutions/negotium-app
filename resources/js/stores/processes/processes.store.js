@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import axios from "axios";
-import { ApiHelper } from "@/helpers";
+import { ApiHelper } from "@/helpers/index.js";
 
 export const useProcessesStore = defineStore({
     id: 'processes',
@@ -198,18 +198,6 @@ export const useProcessesStore = defineStore({
             });
 
             return step;
-        },
-        filterByCategoryExcluding(assigned_processes) {
-            let assigned_processes_array = [];
-            assigned_processes.forEach((process) => {
-                assigned_processes_array.push(process.id);
-            });
-
-            if(this.selected_categories.some((item) => item === 0)) {
-                return this.processes.filter((item) => !assigned_processes_array.includes(item.id));
-            }
-
-            return this.processes.filter((item) => this.selected_categories.indexOf(item.process_category_id) >= 0 && !assigned_processes_array.includes(item.id));
         }
     },
     getters: {

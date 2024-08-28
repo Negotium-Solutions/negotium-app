@@ -17,10 +17,17 @@ profile:
   no_process_assigned: You haven't selected any process to be assigned to this profile
   success_assigning_processes: processes assigned successfully to {profileName}.
   error_assigning_processes: We weren't able to assign the selected processes, please try again.
+  success_profile_updated: Profile {profileName} successfully updated.
 
 note:
   no_notes_for_profile: <b>You haven't added a note or set a reminder to this profile.</b> <br/>
-    Easily add a note or set a reminder to this profile by clicking <br/>
-    on 'Add Note' or 'Reminder' in the top right corner.
+                      Easily add a note or set a reminder to this profile by clicking <br/>
+                      on 'Add Note' or 'Reminder' in the top right corner.
   remove_note_confirmation: Are you sure you want to remove the {note} named {noteHeading}?
   success_removing_note: The {note} called {noteHeading} was removed successfully.
+  success_adding_note: The {note} called {noteHeading}, was successfully added.
+  error_removing_note: We weren't able to remove {note} called {noteHeading}, please try again.
+document:
+  no_documents_for_profile: <b>You haven't uploaded any documents to this profile.</b> <br/>
+                          Easily upload one or multiple documents to this profile by <br/>
+                          clicking on 'Upload Document' in the top right corner.

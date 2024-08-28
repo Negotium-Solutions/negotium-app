@@ -96,10 +96,35 @@ class ApiHelper {
         return this.response;
     }
 
-    update(process, id) {
+    async update(item, id) {
+        this.loading = true;
         this.resetResponse();
+
+        let _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point+'/update/'+id;
+
+        try {
+            const _response = await axios.post(_url, item, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ` + this.user.token,
+                },
+            });
+
+            if (_response.status === 200) {
+                this.setResponse(_response.status, 'success', _response.data.message, [], _response.data);
+            }
+        } catch (error) {
+            this.setResponse(error.response.status,'error', error.response.statusText, [], []);
+        } finally {
+            this.loading = false;
+        }
     }
 
+    /**
+     * Deletes an item
+     *
+     * @param {array} _item
+     */
     async delete(_item)
     {
         this.loading = true;
@@ -123,8 +148,6 @@ class ApiHelper {
         } finally {
             this.loading = false;
         }
-
-        return this.response;
     }
 
     resetResponse() {

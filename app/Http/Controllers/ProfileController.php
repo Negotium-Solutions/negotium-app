@@ -51,9 +51,7 @@ class ProfileController extends Controller
 
         $parameters = [
             'profile' => $profile,
-            'lookup' => $lookup,
-            'apiUrl' => $this->apiUrl,
-            'apiImagesUrl' => $this->apiImagesUrl
+            'lookup' => $lookup
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -62,7 +60,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the user's profile details.
+     * Display the user's profile profile-details.
      */
     /**
      * Display the user's profile form.
@@ -72,20 +70,11 @@ class ProfileController extends Controller
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
-        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
-        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
 
-        $lookup = [
-            'processes' => $processes,
-            'processCategories' => $processCategories
-        ];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
 
         $parameters = [
-            'profile' => $profile,
-            'lookup' => $lookup,
-            'apiUrl' => $this->apiUrl,
-            'apiImagesUrl' => $this->apiImagesUrl
+            'profile' => $profile
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -94,7 +83,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the user's profile details.
+     * Display the user's profile profile-details.
      */
     /**
      * Display the user's profile form.
@@ -104,20 +93,10 @@ class ProfileController extends Controller
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
-        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
-        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
-
-        $lookup = [
-            'processes' => $processes,
-            'processCategories' => $processCategories
-        ];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
 
         $parameters = [
             'profile' => $profile,
-            'lookup' => $lookup,
-            'apiUrl' => $this->apiUrl,
-            'apiImagesUrl' => $this->apiImagesUrl
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -133,24 +112,19 @@ class ProfileController extends Controller
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
-        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
-        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=processes.log.step,processes.log.status")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}/?with=communications.user,communications.communicationType,communications.status")->getBody(), true)['data'] ?? [];
+        $communicationTypes = json_decode($this->http->get("{$this->url}/lookup", ["model" => "CommunicationType", "object" => 1])->getBody(), true)['data'] ?? [];
 
         $lookup = [
-            'processes' => $processes,
-            'processCategories' => $processCategories
+          'communicationTypes' => $communicationTypes,
         ];
 
         $parameters = [
             'profile' => $profile,
-            'lookup' => $lookup,
-            'apiUrl' => $this->apiUrl,
-            'apiImagesUrl' => $this->apiImagesUrl
+            'lookup' => $lookup
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
-
         return Inertia::render('Profile/Communications/Index', $parameters);
     }
 
@@ -159,20 +133,10 @@ class ProfileController extends Controller
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
-        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
-        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}")->getBody(), true)['data'] ?? [];
-
-        $lookup = [
-            'processes' => $processes,
-            'processCategories' => $processCategories
-        ];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=notes.user")->getBody(), true)['data'] ?? [];
 
         $parameters = [
-            'profile' => $profile,
-            'lookup' => $lookup,
-            'apiUrl' => $this->apiUrl,
-            'apiImagesUrl' => $this->apiImagesUrl
+            'profile' => $profile
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -185,20 +149,10 @@ class ProfileController extends Controller
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
-        $processes = json_decode($this->http->get($this->url.'/process?with=category,steps.activities')->getBody(), true)['data'];
-        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}")->getBody(), true)['data'] ?? [];
-
-        $lookup = [
-            'processes' => $processes,
-            'processCategories' => $processCategories
-        ];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=documents.user")->getBody(), true)['data'] ?? [];
 
         $parameters = [
-            'profile' => $profile,
-            'lookup' => $lookup,
-            'apiUrl' => $this->apiUrl,
-            'apiImagesUrl' => $this->apiImagesUrl
+            'profile' => $profile
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -208,6 +162,11 @@ class ProfileController extends Controller
 
     public function setProfilesData() : array
     {
+        // Disable validation until caching is required
+        if (true/*$this->request->has('cache') && $this->request->cache === 'clear'*/) {
+            Cache::store('redis')->forget(self::PROFILES_KEY);
+        }
+
         if (!Cache::has(self::PROFILES_KEY)) {
             $response = json_decode($this->http->get($this->url.'/profile-type?with=profiles')->getBody(), true)['data'];
             Cache::store('redis')->put(self::PROFILES_KEY, $response, 86400);
@@ -225,7 +184,9 @@ class ProfileController extends Controller
         return [
             'profileTypes' => $profileTypes,
             'profileTypeId' => $profileTypeId,
-            'profileId' => $id
+            'profileId' => $id,
+            'apiUrl' => $this->apiUrl,
+            'apiImagesUrl' => $this->apiImagesUrl
         ];
     }
 }

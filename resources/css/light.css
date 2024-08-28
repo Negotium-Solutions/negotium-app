@@ -2,6 +2,7 @@
     --neg-font-default: #353535;
     --neg-grey:rgba(53, 53, 53, .25);
     --neg-light-grey:rgba(53, 53, 53, .75);
+    --neg-light-grey-2:rgba(53, 53, 53, .5);
 
     --neg-bg-light: #efefef;
     --neg-bg-light-rgb: 239, 239, 239;
@@ -82,12 +83,34 @@
     background-color: var(--neg-bg-light) !important;
 }
 
+.reminder-date-input{
+    color: #495057;
+    border-radius: .5rem 0rem 0rem .5rem;
+    background-color: #f2f6f7;
+    background-clip: padding-box;
+    width: 118px;
+    margin-right:2px;
+    border-width: 0px;
+}
+
+.reminder-date-icon{
+    color: #495057;
+    border-radius: 0rem .5rem .5rem 0rem;
+    background-color: #ffc685;
+    background-clip: padding-box;
+    border-width: 0px;
+}
+
 .text-neutral-700{
     color: var(--neg-font-default);
 }
 
 .text-neutral-600{
     color: var(--neg-light-grey);
+}
+
+.text-neutral-400{
+    color: var(--neg-light-grey-2);
 }
 
 .text-white{
@@ -165,6 +188,10 @@
 
 .rounded-custom-25{
     border-radius: 25px;
+}
+
+.rounded-custom-50{
+    border-radius: 50%;
 }
 
 .btn-group label.btn-outline-secondary{
@@ -246,12 +273,21 @@ th{
 .p-dialog:not(.p-confirm-dialog) .p-dialog-header-icons {
     display: flex;
     position: relative;
-    top: -1.5rem;
     background: #F2F6F7;
     border-radius: 4px;
 }
+    
+.p-dialog:not(.p-confirm-dialog):not(.notes-dialog) .p-dialog-header-icons {
+    top: -1.5rem;
+}
 
 .p-dialog:not(.p-confirm-dialog) .p-dialog-content {
+    background: #ffffff;
+    color: #334155;
+    padding: 0 1.5rem 0 1.5rem !important;
+}
+
+.p-dialog:not(.p-confirm-dialog):not(.notes-dialog) .p-dialog-content {
     background: #ffffff;
     color: #334155;
     padding: 0 1.5rem 0 1.5rem !important;
