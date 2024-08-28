@@ -249,6 +249,10 @@
     color: var(--neg-dark-grey);
 }
 
+.rounded-lg{
+    border-radius: 16px !important;
+}
+
 .rounded-custom-25{
     border-radius: 25px;
 }
