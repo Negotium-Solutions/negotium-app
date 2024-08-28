@@ -35,14 +35,14 @@ onMounted(() => {
           </h1>
         </div><!-- /.col -->
         <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
-          <a class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white">Add Profile</a>
+          <a class="px-4 py-2 header-btn rounded-custom-25 border justify-center items-center text-white">Add Profile</a>
         </div><!-- /.col -->
       </div>
       <div class="row mb-0 mt-1">
         <div class="col-md-12 pt-4">
           <div class="row">
             <div v-for="(profileType, index) in profileManagerStore.profileTypes" :key="index" class="px-1 mb-1">
-              <button @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profileType.profiles[0].id})+'?pt='+profileType.id)" :class="['float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold cursor-pointer', { 'bg-zinc-100' : profileManagerStore.isSelected('profileType', profileType) }]">{{profileType.name}}</button>
+              <button @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profileType.profiles[0].id})+'?pt='+profileType.id)" :class="['float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold cursor-pointer', { 'bg-zinc-100 text-yellow-100' : profileManagerStore.isSelected('profileType', profileType) }]">{{profileType.name}}</button>
             </div>
           </div>
         </div>
@@ -53,10 +53,10 @@ onMounted(() => {
 
       <div class="row" id="profiles-sidebar">
         <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0">
-          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profile.id})+'?pt='+profileManagerStore.profileType.id)" :class="{ 'bg-[#ebebec]': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
+          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profile.id})+'?pt='+profileManagerStore.profileType.id)" :class="{ 'bg-slate-500': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
             <div class="w-100 pl-6 pr-2 d-flex">
             <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="profileManagerStore.apiImagesUrl+profile.avatar"  />
-            <span class="flex items-center justify-center text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight"> {{ profileManagerStore.getProfileName(profile) }} </span>
+            <span :class="profileManagerStore.profile.id === profile.id ? 'text-white' : 'text-neutral-700'" class="flex items-center justify-center text-sm font-medium font-['Roboto'] leading-tight"> {{ profileManagerStore.getProfileName(profile) }} </span>
             <div class="row mb-2"></div>
             </div>
           </div>
