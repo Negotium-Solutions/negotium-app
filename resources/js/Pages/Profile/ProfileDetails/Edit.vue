@@ -53,7 +53,9 @@ onMounted(() => {
             <div v-else class="gap-28 mb-1">
               <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700">{{ field.label }}</span>
               <input class="form-control" v-model="profileDetailStore.profile.dynamicModel[field.field]">
-              <span v-if="typeof profileDetailStore.profileDetailsFieldsErrors?.[field.field] !== 'undefined'" id="exampleInputEmail1-error" class="error invalid-feedback">Please enter a email address</span>
+              <div class="input-validation-error" v-if="typeof profileDetailStore.profileDetailsFieldsErrors?.[field.field] !== 'undefined'">
+                <span v-for="(error, index) in profileDetailStore.profileDetailsFieldsErrors?.[field.field]" :key="index" class="error invalid-feedback">{{ error }}</span>
+              </div>
             </div>
           </div>
         </div>
