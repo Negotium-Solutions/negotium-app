@@ -14,6 +14,7 @@ export const useProfileDetailStore = defineStore({
     state: () => ({
         profile: null,
         profileDetailsFields: null,
+        profileDetailsFieldsErrors: null,
         loading: false,
         status: {
             loading: false
@@ -60,6 +61,12 @@ export const useProfileDetailStore = defineStore({
                 const response = this.apiHelper.response;
                 if (parseInt(response.code) === 200) {
                     toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.profile.success_profile_updated, removeProcessVariables), life: 3000 });
+                    this.loading = false;
+                }
+
+                if (parseInt(response.code) === 422) {
+                    this.profileDetailsFieldsErrors = response.errors;
+                    toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
                     this.loading = false;
                 }
             });
