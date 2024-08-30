@@ -49,6 +49,9 @@ onMounted(() => {
             <div v-if="['first_name', 'last_name', 'company_name', 'email'].includes(field.field)" class="gap-28 mb-1">
               <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700">{{ field.label }}</span>
               <input class="form-control" v-model="profileDetailStore.profile[field.field]">
+              <div class="input-validation-error" v-if="typeof profileDetailStore.profileDetailsFieldsErrors?.[field.field] !== 'undefined'">
+                <span v-for="(error, index) in profileDetailStore.profileDetailsFieldsErrors?.[field.field]" :key="index" class="error invalid-feedback">{{ error }}</span>
+              </div>
             </div>
             <div v-else class="gap-28 mb-1">
               <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700">{{ field.label }}</span>

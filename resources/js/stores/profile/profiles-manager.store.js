@@ -38,9 +38,6 @@ export const useProfilesManagerStore = defineStore({
             }
             return false;
         },
-        getProfileName(profile) {
-            return parseInt(profile.profile_type_id) === 1 ? profile.first_name+' '+profile.last_name : profile.company_name;
-        },
         isSelectedCategory(category_id) {
             return this.selected_categories.some((item) => item === category_id)
         },
