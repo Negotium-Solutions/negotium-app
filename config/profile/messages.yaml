@@ -12,7 +12,9 @@ processes:
 communication:
   no_communications_for_profile: <b>You haven't send any communications to this profile.</b> <br/>
                                 Easily send messages or email to this profile by clicking on <br/>
-                                'Send Email' or 'Send Message' in the top right corner.
+                                'Send Email' or 'Send Message' in the top right corner.'
+  success_sending_email: Email for profile {profileName} sent successfully.
+
 profile:
   no_process_assigned: You haven't selected any process to be assigned to this profile
   success_assigning_processes: processes assigned successfully to {profileName}.
