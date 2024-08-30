@@ -178,12 +178,12 @@ export const useProfileProcessStore = defineStore({
 
             return this.selectedProfileProcesses.some(_item => _item.profile_id === item.profile_id && _item.process_id === item.process_id)
         },
-        showProcessConfirmation(toast, confirm, process, process_status_id, buttonLabel, action, action_done)
+        showProcessConfirmation(toast, confirm, process, profile, process_status_id, buttonLabel, action, action_done)
         {
             this.acceptLabel = buttonLabel;
             let removeProcessVariables = {
                 'processName': process.name,
-                'profileName': 'test test',// this.getProfileName(this.profile),
+                'profileName': profile.profile_name,
                 'action': action
             };
 

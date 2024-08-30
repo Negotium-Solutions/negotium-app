@@ -114,7 +114,7 @@ class ApiHelper {
                 this.setResponse(_response.status, 'success', _response.data.message, [], _response.data);
             }
         } catch (error) {
-            this.setResponse(error.response.status,'error', error.response.statusText, [], []);
+            this.setResponse(error.response.status,'error', error.response.statusText, error.response.data.errors, []);
         } finally {
             this.loading = false;
         }
