@@ -52,6 +52,59 @@
     
     background: var(--neg-dark-grey); 
   } 
+.test {
+ margin: px;
+}
+  .main-sidebar{
+    background-color: var(--neg-dark-3);
+  }
+
+  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link{
+    color: var(--neg-light-3) !important;
+  }
+  
+  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link>.nav-icon{
+    background-color: var(--neg-light-1);
+    color: var(--neg-light-1);
+  }
+
+  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link.active{
+    background-color: var(--neg-dark-1);
+    color: var(--neg-light-6);
+  }
+  
+  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link.active>.nav-icon{
+    background-color: var(--neg-primary-1);
+    color: var(--neg-primary-1);
+  }
+
+  .main-sidebar .brand-link{
+    color: var(--neg-primary-1);
+  }
+
+  .sidebar-light-dark .create-btn{
+    background-color: var(--neg-green-1);
+    border-color: var(--neg-green-1) !important;
+    color: var(--neg-light-6) !important;
+    min-width: 75%;
+    width: 75% !important;
+    display: inline-block;
+  }
+
+  .sidebar-light-dark .create-btn:hover{
+    background-color: var(--neg-green-3);
+    border-color: var(--neg-green-3) !important;
+  }
+
+  .header-btn{
+    background-color: var(--neg-blue-3);
+    border-color: var(--neg-blue-3);
+  }
+
+  .header-btn:hover{
+    background-color: var(--neg-blue-1);
+    border-color: var(--neg-blue-1);
+  }
 
   .height-overflow{
     height: 100%;
@@ -79,8 +132,16 @@
     border-color: var(--neg-grey) !important;
 }
 
+.bg-slate-500{
+    background-color: var(--neg-light-1);
+}
+
 .bg-zinc-100{
-    background-color: var(--neg-bg-light) !important;
+    background-color: var(--neg-light-1) !important;
+}
+
+.border-zinc-500{
+    border-color: var(--neg-light-1) !important;
 }
 
 .reminder-date-input{
@@ -102,7 +163,7 @@
 }
 
 .text-neutral-700{
-    color: var(--neg-font-default);
+    color: var(--neg-dark-1);
 }
 
 .text-neutral-600{
@@ -175,6 +236,10 @@
     color: var(--neg-blue-3);
 }
 
+.text-yellow-100{
+    opacity:1;
+    color: var(--neg-primary-1) !important;
+}
 
 .text-light-grey{
     opacity: 1;
@@ -184,6 +249,10 @@
 .text-dark-grey{
     opacity: 1;
     color: var(--neg-dark-grey);
+}
+
+.rounded-lg{
+    border-radius: 16px !important;
 }
 
 .rounded-custom-25{
@@ -213,7 +282,8 @@
 }
 
 .profile-header{
-    background-color: var(--neg-bg-light);
+    background-color: var(--neg-bg-light-6);
+    border-bottom: 1px solid var(--neg-light-4);
 }
 
 .last{

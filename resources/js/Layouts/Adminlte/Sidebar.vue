@@ -52,7 +52,7 @@ function handleProfileSidebarPosition(){
       <tr>
         <td>
           <a href="/" class="brand-link text-center border-b border-transparent">
-            <span class="text-neutral-700 text-4xl font-bold font-['Young+Serif'] w-full">Negotium</span>
+            <span class="text-4xl font-bold font-['Young+Serif'] w-full">Negotium</span>
           </a>
         </td>
         <td v-if="false" class="text-right pr-2">
@@ -65,15 +65,8 @@ function handleProfileSidebarPosition(){
       <!-- Sidebar user panel (optional) -->
 
       <!-- SidebarSearch Form -->
-      <div class="form-inline mt-3">
-        <div class="input-group" data-widget="sidebar-search">
-          <input class="form-control form-control-sidebar" type="search" placeholder="Search" aria-label="Search">
-          <div class="input-group-append">
-            <button class="btn btn-sidebar">
-              <i class="fas fa-search fa-fw"></i>
-            </button>
-          </div>
-        </div>
+      <div class="mt-2 mb-3 text-center">
+        <a href="javascript:void(0)" class="create-btn px-4 py-2 border rounded-custom-25 justify-center items-center">Create</a>
       </div>
 
       <!-- Sidebar Menu -->
@@ -84,25 +77,25 @@ function handleProfileSidebarPosition(){
           <li class="nav-item">
             <a href="#" class="nav-link d-flex">          
               <i class="nav-icon sidemenu-admin"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Create</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Create</span>
             </a>
           </li>
           <li class="nav-item">
             <a :href="route('dashboard')" :class="{ active: route().current('dashboard') || route().current('dashboard.create') || route().current('dashboard.edit') }" class="nav-link d-flex align-self-center">          
               <i class="nav-icon sidemenu-dashboard"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Dashboard</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Dashboard</span>
             </a>
           </li>
           <li class="nav-item">
             <a :href="route('profile.processes', {'id': 0})" :class="{ active: isProfileMenu() }" class="nav-link d-flex align-self-center">
               <i class="nav-icon sidemenu-profiles"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Profiles</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Profiles</span>
             </a>
           </li>
           <li class="nav-item">
             <a :href="route('process')" :class="{ active: route().current('process') }" class="nav-link d-flex align-self-center">          
               <i class="nav-icon sidemenu-processes"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Processes</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Processes</span>
             </a>
           </li>
           <li class="nav-item mt-1 mr-3 mb-1 ml-3">
@@ -111,19 +104,19 @@ function handleProfileSidebarPosition(){
           <li class="nav-item">
             <a href="#" class="nav-link d-flex align-self-center">          
               <i class="nav-icon sidemenu-workboard"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Workboard</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Workboard</span>
             </a>
           </li>
           <li class="nav-item">
             <a :href="route('document')" :class="{ active: route().current('document') }" class="nav-link d-flex align-self-center">          
               <i class="nav-icon sidemenu-documents"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Documents</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Documents</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link d-flex align-self-center">          
               <i class="nav-icon sidemenu-reports"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Reports</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Reports</span>
             </a>
           </li>
           <li class="nav-item mt-1 mr-3 mb-1 ml-3">
@@ -132,13 +125,13 @@ function handleProfileSidebarPosition(){
           <li class="nav-item">
             <a href="#" class="nav-link d-flex">          
               <i class="nav-icon sidemenu-admin"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Admin</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Admin</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link d-flex">          
               <i class="nav-icon sidemenu-help"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Help & Support</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Help & Support</span>
             </a>
           </li>
 
@@ -150,25 +143,25 @@ function handleProfileSidebarPosition(){
           <li class="nav-item">
             <a href="#" class="nav-link d-flex">          
               <i class="nav-icon sidemenu-notifications"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Notifications</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Notifications</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link d-flex">          
               <i class="nav-icon sidemenu-settings"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Settings</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Settings</span>
             </a>
           </li>
           <li class="nav-item">
             <a href="#" class="nav-link d-flex">          
               <i class="nav-icon sidemenu-profile"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Profile</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Profile</span>
             </a>
           </li>
           <li class="nav-item">
             <Link :href="route('logout')" method="post" as="button" class="nav-link d-flex">
               <i class="nav-icon sidemenu-exit"></i>
-              <span class="ml-2 text-neutral-700 text-sm font-normal font-['Roboto'] leading-normal">Logout</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Logout</span>
             </Link>
           </li>
         </ul>
