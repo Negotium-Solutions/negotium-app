@@ -5,16 +5,21 @@ import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import Avatar from 'primevue/avatar';
 import { usePage } from "@inertiajs/vue3";
-import { useProfilesManagerStore } from "@/stores/index.js";
+import { useProfileNoteStore, useProfilesManagerStore, useProfileCommunicationStore } from "@/stores/index.js";
 import { FunctionsHelper } from "@/helpers/index.js";
+import Editor from "primevue/editor";
+import NegotiumButton from "@/Components/negotium/Button.vue";
+import Button from "primevue/button";
+import Dialog from "primevue/dialog";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
-const props = computed(() => page.props.auth.user);
 
 const toast = useToast();
 const profileManagerStore = useProfilesManagerStore();
+const profileNoteStore = useProfileNoteStore();
+const profileCommunicationStore = useProfileCommunicationStore();
 
 onMounted(() => {
   profileManagerStore.handleProfileDivHeight()
@@ -87,9 +92,9 @@ onMounted(() => {
             </div>
 
             <div class="row mb-3 d-flex-none w-100">
-              <button class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
+              <button @click="profileCommunicationStore.showSendEmail(profileManagerStore.profile.id)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
               <button class="ml-auto flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send message</button>
-              <button class="ml-1 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">+ Add Note</button>
+              <button @click="profileNoteStore.showAddNote(profileManagerStore.profile.id)" class="ml-1 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">+ Add Note</button>
             </div>
 
             <div class="row mb-3"></div>
@@ -118,6 +123,66 @@ onMounted(() => {
     </div>
     </template>
   </AuthenticatedLayout>
+  <Dialog v-model:visible="profileNoteStore.show_add_note" :draggable="false" modal header="Add note or reminder" :style="{ width: '40vw' }" :class="'notes-dialog'" :breakpoints="{ '1199px': '75vw', '575px': '90vw' } ">
+    <template #header>
+      <div class="row m-0 p-0 pb-2">
+        <div class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto'] leading-loose w-100">Add note or reminder</div>
+      </div>
+    </template>
+    <div>
+      <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 pb-2">Note Subject</span>
+      <div class="w-100">
+        <input v-model="profileNoteStore.note.subject" type="text" class="form-control">
+      </div>
+    </div>
+    <div class="mt-2">
+      <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 pb-2">Note</span>
+      <Editor v-model="profileNoteStore.note.note" editorStyle="height: 120px" />
+    </div>
+    <div class="mt-2">
+      <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 mb-4">Set Reminder</span>
+      <div class="d-flex gap-2 w-100">
+        <input v-model="profileNoteStore.note.reminder_date" type="date" class="form-control">
+        <input v-model="profileNoteStore.note.reminder_time" type="time" class="form-control">
+      </div>
+    </div>
+    <template #footer>
+      <div class="row">
+        <div class="col-12 p-4 pr-0 text-right">
+          <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="profileNoteStore.show_add_note = false">Cancel</button>
+          <negotium-button v-if="!profileNoteStore.loading"  @click="profileNoteStore.create(toast)" :value="'Add Note'"></negotium-button>
+          <button v-if="profileNoteStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+        </div>
+      </div>
+    </template>
+  </Dialog>
+  <!-- Email Dialog -->
+  <Dialog v-model:visible="profileCommunicationStore.show_send_email" :draggable="false" modal header="Send Email" :style="{ width: '63vw' }" :class="'notes-dialog'" :breakpoints="{ '1199px': '75vw', '575px': '90vw' } ">
+    <template #header>
+      <div class="row m-0 p-0 pb-2">
+        <div class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto'] leading-loose w-100">Send Email</div>
+      </div>
+    </template>
+    <div class="w-100 mb-2">
+      <input v-model="profileCommunicationStore.communication._to" type="text" class="form-control" placeholder="To:">
+    </div>
+    <div class="w-100">
+      <input v-model="profileCommunicationStore.communication.subject" type="text" class="form-control" placeholder="Subject: ">
+    </div>
+    <div class="mt-2">
+      <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 pb-2">Message</span>
+      <Editor v-model="profileCommunicationStore.communication.message" editorStyle="height: 120px" />
+    </div>
+    <template #footer>
+      <div class="row">
+        <div class="col-12 p-4 pr-0 text-right">
+          <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="profileCommunicationStore.show_send_email = false; this.profileCommunicationStore.resetCommunication()">Cancel</button>
+          <negotium-button v-if="!profileCommunicationStore.loading"  @click="profileCommunicationStore.create(toast, profileManagerStore.profile)" :value="'Send'"></negotium-button>
+          <button v-if="profileCommunicationStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+        </div>
+      </div>
+    </template>
+  </Dialog>
   <Toast position="top-center">
     <template #message="slotProps">
         <div class="flex flex-column align-items-start" style="flex: 1">

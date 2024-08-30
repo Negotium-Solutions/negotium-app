@@ -65,9 +65,7 @@ onMounted(() => {
               <div class="text-neutral-700 text-sm font-medium font-['Roboto'] leading-tight">{{ communication.subject }}</div>
             </div>
             <div class="flex items-end justify-between mt-1">
-              <div class="text-sm font-normal font-['Nunito'] leading-tight text-neutral-400 mr-2">
-                <span>{{ communication.message }}</span>
-              </div>
+              <div class="text-sm font-normal font-['Nunito'] leading-tight text-neutral-400 mr-2" v-html="communication.message"></div>
               <div class="flex items-end">
                 <span class="text-right text-sm font-bold font-['Roboto'] leading-tight text-orange-1">{{ communication.status_id === 2 ? communication.status.name : ''}}</span>
               </div>

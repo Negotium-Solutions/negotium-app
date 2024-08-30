@@ -3,6 +3,7 @@ import axios from "axios";
 import { ApiHelper, FunctionsHelper } from "@/helpers/index.js";
 import { usePage } from "@inertiajs/vue3";
 import { computed } from "vue";
+import { CommunicationConstants } from "@/constants/index.js";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -12,12 +13,15 @@ const apiURL = computed(() => page.props.negotium_api_url);
 export const useProfileCommunicationStore = defineStore({
     id: 'profile-communications',
     state: () => ({
+        show_send_email: false,
         communication: {
             'subject': '',
-            'note': '',
-            'user_email': user.value.email,
-            'profile_id': '',
-            'communication_type': ''
+            'message': '',
+            '_to': '',
+            to: [],
+            'cc': [],
+            'bcc': [],
+            'communication_type_id': null
         },
         loading: false,
         status: {
@@ -41,6 +45,38 @@ export const useProfileCommunicationStore = defineStore({
         apiHelper: new ApiHelper('communication')
     }),
     actions: {
+        async create(toast, profile)
+        {
+            this.loading = true;
+            if(this.communication.to === '' || this.communication.subject === '' || this.communication.message === '') {
+                toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                this.loading = false;
+                return false;
+            }
+
+            let _url = this.apiUrl+'/'+this.user.tenant+'/communication/send-email/'+profile.id;
+            this.communication.to = [this.communication._to]; // Todo: fix this to use an input that can tab and create array, check primevue for this
+
+            await this.apiHelper._post(_url, this.communication);
+            this.apiHelper.isDoneLoading(null, () => {
+                const response = this.apiHelper.response;
+                if (parseInt(response.code) === 200) {
+                    let removeProcessVariables = {
+                        'profileName': profile.profile_name
+                    };
+                    toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.communication.success_sending_email, removeProcessVariables), life: 3000 });
+                    setTimeout(() => {
+                        this.loading = false;
+                        location.reload();
+                    }, 3000)
+                }
+
+                if (parseInt(response.code) === 422) {
+                    // ToDo: Handle errors
+                    console.log('response', response);
+                }
+            });
+        },
         setLookUp(key, value) {
             this.$state['lookup'][key] = value;
         },
@@ -69,6 +105,10 @@ export const useProfileCommunicationStore = defineStore({
 
             return communications.filter((item) => this.selected_communication_type.includes(item.communication_type_id));
         },
+        showSendEmail(profile_id) {
+          this.show_send_email = true;
+          this.communication.communication_type_id = CommunicationConstants.COMMUNICATION_TYPE_EMAIL;
+        },
         resetResponse() {
             this.response = {
                 'status': '',
@@ -85,6 +125,18 @@ export const useProfileCommunicationStore = defineStore({
                 'errors': errors,
                 'data': data
             }
+        },
+        resetCommunication() {
+            this.loading = false;
+            this.communication = {
+                'subject': '',
+                'message': '',
+                '_to': '',
+                to: [],
+                'cc': [],
+                'bcc': [],
+                'communication_type_id': null
+            };
         }
     },
     getters: {
