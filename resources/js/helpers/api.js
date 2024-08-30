@@ -88,7 +88,7 @@ class ApiHelper {
                 this.setResponse(_response.status, 'success', _response.data.message, [], _response.data);
             }
         } catch (error) {
-            this.setResponse(error.response.status,'error', error.response.statusText, [], []);
+            this.setResponse(error.response.status,'error', error.response.statusText, error.response.data.errors, []);
         } finally {
             this.loading = false;
         }
@@ -148,6 +148,30 @@ class ApiHelper {
         } finally {
             this.loading = false;
         }
+    }
+
+    async _post(url, item){
+        this.loading = true;
+        this.resetResponse();
+
+        try {
+            const _response = await axios.post(url, item, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    Authorization: `Bearer ` + this.user.token,
+                },
+            });
+
+            if (_response.status === 200 || _response.status === 201) {
+                this.setResponse(_response.status, 'success', _response.data.message, [], _response.data);
+            }
+        } catch (error) {
+            this.setResponse(error.response.status,'error', error.response.statusText, error.response.data.errors, []);
+        } finally {
+            this.loading = false;
+        }
+
+        return this.response;
     }
 
     resetResponse() {

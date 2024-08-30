@@ -12,6 +12,7 @@ const apiURL = computed(() => page.props.negotium_api_url);
 export const useProfileNoteStore = defineStore({
     id: 'profile-notes',
     state: () => ({
+        show_add_note: false,
         note: {
             'subject': '',
             'note': '',
@@ -59,6 +60,10 @@ export const useProfileNoteStore = defineStore({
                         this.loading = false;
                         location.reload();
                     }, 3000)
+                }
+
+                if (parseInt(response.code) === 422) {
+                    // ToDo: Handle errors
                 }
             });
         },
@@ -115,6 +120,14 @@ export const useProfileNoteStore = defineStore({
                     // Do nothing
                 }
             });
+        },
+        showAddNote(profile_id, note = null) {
+            this.show_add_note = true;
+            this.note.profile_id = profile_id;
+
+            if ( note !== null) {
+                this.note = note;
+            }
         },
         resetResponse() {
             this.response = {
