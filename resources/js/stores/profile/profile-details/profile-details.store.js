@@ -62,6 +62,7 @@ export const useProfileDetailStore = defineStore({
                 if (parseInt(response.code) === 200) {
                     toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.profile.success_profile_updated, removeProcessVariables), life: 3000 });
                     this.loading = false;
+                    this.profileDetailsFieldsErrors = null;
                 }
 
                 if (parseInt(response.code) === 422) {

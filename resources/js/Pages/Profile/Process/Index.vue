@@ -40,7 +40,7 @@ onMounted(() => {
 });
 
 function assignProcess() {
-  profileProcessStore.assignProcesses(toast, profileManagerStore.getProfileName(profileManagerStore.profile));
+  profileProcessStore.assignProcesses(toast, profileManagerStore.profile.profile_name);
 }
 </script>
 
@@ -124,16 +124,16 @@ function assignProcess() {
                       <small>Details</small>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <button :disabled="!(process.log.status.name === 'stopped')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'resume', 'resumed')">
+                    <button :disabled="!(process.log.status.name === 'stopped')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'resume', 'resumed')">
                       <small>Resume</small>
                     </button>
-                    <button :disabled="!(process.log.status.name === 'active')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', 'stop', 'stopped')">
+                    <button :disabled="!(process.log.status.name === 'active')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', 'stop', 'stopped')">
                       <small>Stop</small>
                     </button>
-                    <button :disabled="!(process.log.status.name === 'assigned')" class="dropdown-item" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', 'remove', 'removed')">
+                    <button :disabled="!(process.log.status.name === 'assigned')" class="dropdown-item" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', 'remove', 'removed')">
                       <small class="text-danger cursor-pointer" :class="{'opacity-50': !(process.log.status.name === 'completed')}">Remove</small>
                     </button>
-                    <button :disabled="!(process.log.status.name === 'completed')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', 'archive', 'archived')">
+                    <button :disabled="!(process.log.status.name === 'completed')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', 'archive', 'archived')">
                       <small class="text-danger" :class="{'opacity-50': !(process.log.status.name === 'completed')}">Archive</small>
                     </button>
                   </div>
