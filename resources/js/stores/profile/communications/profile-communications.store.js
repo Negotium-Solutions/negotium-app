@@ -13,15 +13,20 @@ const apiURL = computed(() => page.props.negotium_api_url);
 export const useProfileCommunicationStore = defineStore({
     id: 'profile-communications',
     state: () => ({
+        currentEmailInputCc: '',
+        currentEmailInputBcc: '',
+        show_send_sms: false,
         show_send_email: false,
+        show_cc: false,
+        show_bcc: false,
         communication: {
-            'subject': '',
-            'message': '',
-            '_to': '',
+            subject: '',
+            message: '',
             to: [],
-            'cc': [],
-            'bcc': [],
-            'communication_type_id': null
+            cc: [],
+            bcc: [],
+            phone_number: '',
+            communication_type_id: null
         },
         loading: false,
         status: {
@@ -33,19 +38,19 @@ export const useProfileCommunicationStore = defineStore({
         end_point: 'communication',
         selected_communication_type: [0],
         lookup: {
-            'communicationTypes': null
+            communicationTypes: null
         },
         response: {
-            'code': 0,
-            'status': '',
-            'message': '',
-            'errors': [],
-            'data': []
+            code: 0,
+            status: '',
+            message: '',
+            errors: [],
+            data: []
         },
         apiHelper: new ApiHelper('communication')
     }),
     actions: {
-        async create(toast, profile)
+        async sendEmail(toast, profile)
         {
             this.loading = true;
             if(this.communication.to === '' || this.communication.subject === '' || this.communication.message === '') {
@@ -55,7 +60,6 @@ export const useProfileCommunicationStore = defineStore({
             }
 
             let _url = this.apiUrl+'/'+this.user.tenant+'/communication/send-email/'+profile.id;
-            this.communication.to = [this.communication._to]; // Todo: fix this to use an input that can tab and create array, check primevue for this
 
             await this.apiHelper._post(_url, this.communication);
             this.apiHelper.isDoneLoading(null, () => {
@@ -65,6 +69,37 @@ export const useProfileCommunicationStore = defineStore({
                         'profileName': profile.profile_name
                     };
                     toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.communication.success_sending_email, removeProcessVariables), life: 3000 });
+                    setTimeout(() => {
+                        this.loading = false;
+                        location.reload();
+                    }, 3000)
+                }
+
+                if (parseInt(response.code) === 422) {
+                    // ToDo: Handle errors
+                    console.log('response', response);
+                }
+            });
+        },
+        async sendSMS(toast, profile)
+        {
+            this.loading = true;
+            if(this.communication.message === '') {
+                toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                this.loading = false;
+                return false;
+            }
+
+            let _url = this.apiUrl+'/'+this.user.tenant+'/communication/send-sms/'+profile.id;
+
+            await this.apiHelper._post(_url, this.communication);
+            this.apiHelper.isDoneLoading(null, () => {
+                const response = this.apiHelper.response;
+                if (parseInt(response.code) === 200) {
+                    let removeProcessVariables = {
+                        'profileName': profile.profile_name
+                    };
+                    toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.communication.success_sending_sms, removeProcessVariables), life: 3000 });
                     setTimeout(() => {
                         this.loading = false;
                         location.reload();
@@ -105,38 +140,78 @@ export const useProfileCommunicationStore = defineStore({
 
             return communications.filter((item) => this.selected_communication_type.includes(item.communication_type_id));
         },
-        showSendEmail(profile_id) {
+        showSendEmail(profile) {
           this.show_send_email = true;
           this.communication.communication_type_id = CommunicationConstants.COMMUNICATION_TYPE_EMAIL;
+          this.communication.to.push(profile.email);
+        },
+        showSendSMS(profile) {
+          this.show_send_sms = true;
+          this.communication.communication_type_id = CommunicationConstants.COMMUNICATION_TYPE_SMS;
+          this.communication.phone_number = profile.phone_number;
+        },
+        toogleCc() {
+            if (this.show_cc) {
+                this.show_cc = false;
+                this.communication.cc = '';
+            } else {
+                this.show_cc = true;
+            }
+        },
+        toogleBcc() {
+            if (this.show_bcc) {
+                this.show_bcc = false;
+                this.communication.bcc = '';
+            } else {
+                this.show_bcc = true;
+            }
+        },
+        addEmail(type, emails, toast) {
+            const trimmedInput = type === 'cc' ? this.currentEmailInputCc.trim() : this.currentEmailInputBcc.trim();
+            if (this.validateEmail(trimmedInput)) {
+                emails.push(trimmedInput);
+                this.currentEmailInputCc = '';
+                this.currentEmailInputBcc = '';
+            } else if (trimmedInput) {
+                toast.add({ severity: 'error', detail: messages.value.error.email_validation_error, life: 3000 });
+            }
+        },
+        removeEmail(emails, index) {
+            emails.splice(index, 1);
+        },
+        validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
         },
         resetResponse() {
             this.response = {
-                'status': '',
-                'message': '',
-                'errors': [],
-                'data': []
+                status: '',
+                message: '',
+                errors: [],
+                data: []
             }
         },
         setResponse(code, status, message, errors, data) {
             this.response = {
-                'code': code,
-                'status': status,
-                'message': message,
-                'errors': errors,
-                'data': data
+                code: code,
+                status: status,
+                message: message,
+                errors: errors,
+                data: data
             }
         },
         resetCommunication() {
             this.loading = false;
             this.communication = {
-                'subject': '',
-                'message': '',
-                '_to': '',
+                subject: '',
+                message: '',
                 to: [],
-                'cc': [],
-                'bcc': [],
-                'communication_type_id': null
+                cc: [],
+                bcc: [],
+                communication_type_id: null
             };
+            this.show_cc = false;
+            this.show_bcc = false;
         }
     },
     getters: {

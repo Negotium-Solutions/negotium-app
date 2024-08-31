@@ -14,6 +14,7 @@ communication:
                                 Easily send messages or email to this profile by clicking on <br/>
                                 'Send Email' or 'Send Message' in the top right corner.'
   success_sending_email: Email for profile {profileName} sent successfully.
+  success_sending_sms: SMS for profile {profileName} sent successfully.
 
 profile:
   no_process_assigned: You haven't selected any process to be assigned to this profile
