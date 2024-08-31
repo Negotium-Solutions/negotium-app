@@ -255,6 +255,14 @@
     border-radius: 16px !important;
 }
 
+.rounded-custom-10{
+    border-radius: 10px;
+}
+
+.rounded-custom-15{
+    border-radius: 15px;
+}
+
 .rounded-custom-25{
     border-radius: 25px;
 }
