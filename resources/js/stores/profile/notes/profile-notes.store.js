@@ -126,7 +126,13 @@ export const useProfileNoteStore = defineStore({
             this.note.profile_id = profile_id;
 
             if ( note !== null) {
-                this.note = note;
+                this.note.subject = note.subject;
+                this.note.note = note.note;
+                if(note.reminder_datetime != null) {
+                    const [date, time] = note.reminder_datetime.split(' ');
+                    this.note.reminder_date = date;
+                    this.note.reminder_time = time;
+                }
             }
         },
         removeReminderDateTime() {

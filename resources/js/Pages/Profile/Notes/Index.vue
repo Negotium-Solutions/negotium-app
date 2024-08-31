@@ -47,7 +47,7 @@ onMounted(() => {
       <div v-if="profileManagerStore"></div>
       <div v-if="profileManagerStore.profile.notes.length > 0">
 
-        <div v-for="(note, index) in profileManagerStore.profile.notes" :key="index" class="flex items-start border-b border-gray-300 pb-4 bg-white mb-4" @click="profileNoteStore.showAddNote(profileManagerStore.profile.id, note)">
+        <div v-for="(note, index) in profileManagerStore.profile.notes" :key="index" class="flex items-start border-b border-gray-300 bg-white mb-4 cursor-pointer hover:shadow-lg p-4" @click="profileNoteStore.showAddNote(profileManagerStore.profile.id, note)">
           <div class="flex-1 flex flex-col">
             <div class="flex items-center justify-between mb-1">
               <div class="text-neutral-700 text-base font-medium font-['Roboto'] leading-normal">
@@ -63,7 +63,7 @@ onMounted(() => {
                     <span class="input-group-text h-7 text-[.75rem] reminder-date-icon"><i class="fa fa-calendar-day"></i></span>
                   </div>
                 </div>
-                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2" @click="profileNoteStore.showNoteConfirmation(toast, confirm, note)">
+                <button class="h-7 w-7 p-1 bg-[#f57a7a] rounded flex-col justify-center items-center gap-2 inline-flex text-white ml-2" @click.stop="profileNoteStore.showNoteConfirmation(toast, confirm, note)">
                   <i class="fas fa-times"></i>
                 </button>
               </div>
