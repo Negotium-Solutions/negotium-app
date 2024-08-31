@@ -157,7 +157,8 @@ onMounted(() => {
       <Editor v-model="profileNoteStore.note.note" editorStyle="height: 120px" />
     </div>
     <div class="mt-2">
-      <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 mb-4">Set Reminder <button @click="profileNoteStore.removeReminderDateTime()"><i class="pi pi-times cursor-pointer" title="Remove reminder date and time"></i></button></span>
+      <span v-if="!profileNoteStore.isSetReminderDateTime()" class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 mb-4">Set Reminder</span>
+      <button v-if="profileNoteStore.isSetReminderDateTime()" class="mb-2 inline-flex items-center px-2 py-0.5 rounded-custom-10 text-xs font-medium bg-red-400 text-grey-700" @click="profileNoteStore.removeReminderDateTime()">Remove reminder<i class="pi text-sm pi-times cursor-pointer" title="Remove reminder date and time"></i></button>
       <div class="d-flex gap-2 w-100">
         <input v-model="profileNoteStore.note.reminder_date" type="date" class="form-control">
         <input v-model="profileNoteStore.note.reminder_time" type="time" class="form-control">
