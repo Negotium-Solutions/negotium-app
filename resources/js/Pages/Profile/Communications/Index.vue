@@ -37,8 +37,8 @@ onMounted(() => {
         <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Communication</h1>
       </div>
       <div class="col-sm-6 text-right">
-        <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
-        <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white ml-2">Send message</button>
+        <button @click="profileCommunicationStore.showSendEmail(profileManagerStore.profile)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Send email</button>
+        <button @click="profileCommunicationStore.showSendSMS(profileManagerStore.profile)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white ml-2">Send message</button>
       </div>
     </div>
 
