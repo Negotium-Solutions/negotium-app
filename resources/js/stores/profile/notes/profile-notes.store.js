@@ -129,6 +129,10 @@ export const useProfileNoteStore = defineStore({
                 this.note = note;
             }
         },
+        removeReminderDateTime() {
+            this.note.reminder_date = '';
+            this.note.reminder_time = '';
+        },
         resetResponse() {
             this.response = {
                 'status': '',
