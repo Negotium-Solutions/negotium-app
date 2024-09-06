@@ -110,7 +110,7 @@ class ApiHelper {
                 },
             });
 
-            if (_response.status === 200) {
+            if (_response.status === 200 || _response.status === 204) {
                 this.setResponse(_response.status, 'success', _response.data.message, [], _response.data);
             }
         } catch (error) {

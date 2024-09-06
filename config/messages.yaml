@@ -4,6 +4,7 @@ success:
   updated: "Item updated successfully!"
   deleted: "Item deleted successfully!"
 error:
+  internal_server_error: "Internal server error"
   not_found: "Item not found."
   unauthorized: "You are not authorized to perform this action."
   input_validation_error: "Input validation error."

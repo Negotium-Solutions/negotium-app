@@ -34,3 +34,4 @@ document:
   no_documents_for_profile: <b>You haven't uploaded any documents to this profile.</b> <br/>
                           Easily upload one or multiple documents to this profile by <br/>
                           clicking on 'Upload Document' in the top right corner.
+  success_uploading_document: Document successfully uploaded for profile {profileName}
