@@ -77,7 +77,6 @@ export const useProfileCommunicationStore = defineStore({
 
                 if (parseInt(response.code) === 422) {
                     // ToDo: Handle errors
-                    console.log('response', response);
                 }
             });
         },
@@ -104,11 +103,12 @@ export const useProfileCommunicationStore = defineStore({
                         this.loading = false;
                         location.reload();
                     }, 3000)
-                }
-
-                if (parseInt(response.code) === 422) {
-                    // ToDo: Handle errors
-                    console.log('response', response);
+                } else if (parseInt(response.code) === 422) {
+                    toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                    this.loading = false;
+                } else {
+                    toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                    this.loading = false;
                 }
             });
         },

@@ -12,14 +12,14 @@ const apiURL = computed(() => page.props.negotium_api_url);
 export const useProfileDocumentStore = defineStore({
     id: 'profile-documents',
     state: () => ({
+        show_document_upload: false,
         document: {
-            'name': '',
-            'type': '',
-            'path': '',
-            'size': '',
-            'user_email': user.value.email,
-            'profile_id': ''
+            name: '',
+            type: null,
+            profile_id: null,
+            files: null
         },
+        documentErrors: null,
         loading: false,
         status: {
             loading: false
@@ -40,6 +40,40 @@ export const useProfileDocumentStore = defineStore({
         apiHelper: new ApiHelper('document')
     }),
     actions: {
+        async create(toast, profile)
+        {
+            this.loading = true;
+
+            this.document.profile_id = profile.id;
+            const formData = new FormData();
+            formData.append('name', this.document.name);
+            formData.append('profile_id', this.document.profile_id);
+            for (let file of this.document.files) {
+                formData.append('files[]', file);
+            }
+
+            await this.apiHelper.create(formData);
+            this.apiHelper.isDoneLoading(null, () => {
+                let removeProcessVariables = {
+                    'profileName': profile.profile_name
+                };
+                const response = this.apiHelper.response;
+
+                if (parseInt(response.code) === 201) {
+                    toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.document.success_uploading_document, removeProcessVariables), life: 3000 });
+                    setTimeout(() => {
+                        this.loading = false;
+                        location.reload();
+                    }, 3000)
+                } else if (parseInt(response.code) === 422) {
+                    this.documentErrors = response.errors;
+                    this.loading = false;
+                } else {
+                    toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                    this.loading = false;
+                }
+            });
+        },
         setLookUp(key, value) {
             this.$state['lookup'][key] = value;
         },
@@ -77,6 +111,17 @@ export const useProfileDocumentStore = defineStore({
                     return 'pi pi-file'; // Default icon
             }
         },
+        onFileSelect(event) {
+            this.document.files = event.files;
+        },
+        resetDocument() {
+            this.document = {
+                name: '',
+                type: null,
+                profile_id: null,
+                file: null
+            };
+        },
         resetResponse() {
             this.response = {
                 'status': '',
@@ -96,6 +141,8 @@ export const useProfileDocumentStore = defineStore({
         }
     },
     getters: {
-
+        isValidForm() {
+            return this.document.name !== '' && this.document.files !== null;
+        }
     }
 });
