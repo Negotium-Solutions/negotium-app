@@ -19,7 +19,7 @@ const props = defineProps({
 onMounted(() => {
   profileManagerStore.setProfileData(props);
   profileDetailStore.set('profile', props.profile);
-  profileDetailStore.set('profileDetailsFields', props.profile.dynamicModelFields);
+  profileDetailStore.set('profileDetailsFields', props.profile.dynamicModel);
 });
 </script>
 
@@ -39,14 +39,14 @@ onMounted(() => {
       <div v-for="(profileDetail, index) in profileDetailStore.profileDetailsFields" :key="index" class="flex flex-col w-100 px-2 py-2 rounded-lg border border-solid border-neutral-700 mb-2">
 
         <div class="d-flex w-100 pt-2 pl-2 pr-2 pb-1">
-          <h6 class="text-neutral-700 text-md mb-2 font-bold font-['Roboto']">{{ index }}</h6>
+          <h6 class="text-neutral-700 text-md mb-2 font-bold font-['Roboto']">{{ profileDetail.name }}</h6>
         </div>
 
         <div class="row">
-          <div v-for="(field, _index) in profileDetail" :key="_index" class="col-md-6 pl-3" :class="{ 'border-top-0 border-bottom-0 border-left-0 border-right-2 border border-solid border-neutral-700 border-opacity-20': _index % 2 === 0 }">
+          <div v-for="(field, _index) in profileDetail.dynamic_model_fields" :key="_index" class="col-md-6 pl-3" :class="{ 'border-top-0 border-bottom-0 border-left-0 border-right-2 border border-solid border-neutral-700 border-opacity-20': _index % 2 === 0 }">
             <div class="d-flex flex-row flex-1 align-items-center gap-28 mb-1">
               <span class="mb-1 d-flex flex-1 text-neutral-400 text-sm font-normal font-['Nunito'] leading-tight">{{ field.label }}</span>
-              <span class="float-right text-right text-sm pr-2">{{ ['first_name', 'last_name', 'company_name', 'email'].includes(field.field) ? profileDetailStore.profile[field.field] : profileDetailStore.profile.dynamicModel[field.field] }}</span>
+              <span class="float-right text-right text-sm pr-2">{{ field.value }}</span>
             </div>
           </div>
         </div>
