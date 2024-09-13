@@ -43,7 +43,7 @@ onMounted(() => {
         </div>
 
         <div class="row">
-          <div v-for="(field, _index) in profileDetail.dynamic_model_fields" :key="_index" class="col-md-6 pl-3" :class="{ 'border-top-0 border-bottom-0 border-left-0 border-right-2 border border-solid border-neutral-700 border-opacity-20': _index % 2 === 0 }">
+          <div v-for="(field, _index) in profileDetail.fields" :key="_index" class="col-md-6 pl-3" :class="{ 'border-top-0 border-bottom-0 border-left-0 border-right-2 border border-solid border-neutral-700 border-opacity-20': _index % 2 === 0 }">
             <div class="d-flex flex-row flex-1 align-items-center gap-28 mb-1">
               <span class="mb-1 d-flex flex-1 text-neutral-400 text-sm font-normal font-['Nunito'] leading-tight">{{ field.label }}</span>
               <span class="float-right text-right text-sm pr-2">{{ field.value }}</span>
