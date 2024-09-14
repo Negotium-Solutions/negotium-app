@@ -59,11 +59,16 @@ export const useProfileDetailStore = defineStore({
                     'profileName': parseInt(this.profile.profile_type_id) === 1 ? this.profile.first_name + ' ' + this.profile.last_name : this.profile.company_name
                 };
                 const response = this.apiHelper.response;
-                console.log('response', response);
                 if (parseInt(response.code) === 200) {
                     toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.profile.success_profile_updated, removeProcessVariables), life: 3000 });
-                    this.loading = false;
                     this.profileDetailsFieldsErrors = null;
+
+                    setTimeout(() => {
+                        const currentUrl = window.location.href;
+                        const partToRemove = '/edit';
+                        const index = currentUrl.indexOf(partToRemove);
+                        window.location.href = currentUrl.slice(0, index) + currentUrl.slice(index + partToRemove.length);
+                    }, 3000)
                 }
 
                 if (parseInt(response.code) === 422) {

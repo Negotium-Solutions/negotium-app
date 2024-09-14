@@ -3,6 +3,7 @@ import { useProfilesManagerStore, useProfileDetailStore } from "@/stores/index.j
 import { onMounted } from "vue";
 import ExtendProfileLayout from "@/Pages/Profile/ProfileLayout.vue";
 import { useToast } from "primevue/usetoast";
+import Button from "primevue/button";
 
 const profileManagerStore = useProfilesManagerStore();
 const profileDetailStore = useProfileDetailStore();
@@ -34,7 +35,8 @@ onMounted(() => {
       </div>
       <div class="col-sm-6 text-right">
         <a :href="route('profile.profile-details', {id: profileManagerStore.profile.id})+'?pt='+profileManagerStore.profile.profile_type_id" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2">Cancel</a>
-        <button @click="profileDetailStore.storeDynamicModel(profileManagerStore.profile.id, toast)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Save</button>
+        <button v-if="!profileDetailStore.loading" @click="profileDetailStore.storeDynamicModel(profileManagerStore.profile.id, toast)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Save</button>
+        <button v-if="profileDetailStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
       </div>
     </div>
     <div class="d-flex flex-column w-100 pl-3 pr-3">
