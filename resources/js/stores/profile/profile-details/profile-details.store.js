@@ -61,8 +61,14 @@ export const useProfileDetailStore = defineStore({
                 const response = this.apiHelper.response;
                 if (parseInt(response.code) === 200) {
                     toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.profile.success_profile_updated, removeProcessVariables), life: 3000 });
-                    this.loading = false;
                     this.profileDetailsFieldsErrors = null;
+
+                    setTimeout(() => {
+                        const currentUrl = window.location.href;
+                        const partToRemove = '/edit';
+                        const index = currentUrl.indexOf(partToRemove);
+                        window.location.href = currentUrl.slice(0, index) + currentUrl.slice(index + partToRemove.length);
+                    }, 3000)
                 }
 
                 if (parseInt(response.code) === 422) {
