@@ -122,12 +122,22 @@ function handleProfileSidebarPosition(){
           <li class="nav-item mt-1 mr-3 mb-1 ml-3">
             <hr class="h-0.5 opacity-10 bg-neutral-700 rounded-sm" />
           </li>
+
           <li class="nav-item">
-            <a href="#" class="nav-link d-flex">          
+            <a href="#" class="nav-link d-flex">
               <i class="nav-icon sidemenu-admin"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Admin</span>
             </a>
+            <ul class="nav nav-treeview" style="display: none;">
+              <li class="nav-item">
+                <a :href="route('process-manager')" :class="{ active: route().current('process-manager') }" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Process Manager</span>
+                </a>
+              </li>
+            </ul>
           </li>
+
           <li class="nav-item">
             <a href="#" class="nav-link d-flex">          
               <i class="nav-icon sidemenu-help"></i>

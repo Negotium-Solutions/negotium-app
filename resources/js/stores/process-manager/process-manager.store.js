@@ -1,0 +1,200 @@
+import { defineStore } from 'pinia';
+import { ApiHelper } from "@/helpers";
+import { usePage } from "@inertiajs/vue3";
+import { computed } from "vue";
+
+const page = usePage();
+const messages = computed(() => page.props.messages);
+
+export const useProcessManagerStore = defineStore({
+    id: 'process_manager',
+    state: () => ({
+        loading: false,
+        selectedOption: "d",
+        sortByOptions: [
+            { name: 'Latest First', code: 'd' },
+            { name: 'Oldest First', code: 'a' },
+            { name: 'Process', code: 'p' },
+            { name: 'Steps', code: 's' },
+            { name: 'Activities', code: 'l' }
+        ],
+        selectedCategory: 0,
+        selected_categories: [0],
+        process: {
+            id: null,
+            name: null,
+            process_category_id: null
+        },
+        processErrors: null,
+        processes: null,
+        step: {
+            id: null,
+            name: null,
+            process_id: null
+        },
+        stepErrors: null,
+        category: {
+            id: null,
+            name: null
+        },
+        categoryErrors: null,
+        lookup: {
+            categories: null
+        },
+        apiHelper: null
+    }),
+    actions: {
+        async createCategory(toast) {
+            this.apiHelper = new ApiHelper('process-category');
+            this.loading = true;
+            this.categoryErrors = null;
+            await this.apiHelper.create(this.category);
+            this.apiHelper.isDoneLoading(null, () => {
+                const response = this.apiHelper.response;
+                if (parseInt(response.code) === 201) {
+                    this.category.id = response.data.data.id;
+                    this.category.color = response.data.data.color;
+                    this.lookup.categories.push(this.category);
+                    this.selectedCategory = this.category;
+                    this.loading = false;
+                    toast.add({ severity: 'success', detail: response.message, life: 3000 });
+                    return true;
+                }
+
+                if (parseInt(response.code) === 422) {
+                    this.categoryErrors = response.errors;
+                    toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                    this.loading = false;
+                } else {
+                    toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                    this.loading = false;
+                }
+            });
+        },
+        async createProcess(toast) {
+            this.apiHelper = new ApiHelper('process');
+            this.loading = true;
+            this.processErrors = null;
+            this.process.process_category_id = this.selectedCategory !== null ? this.selectedCategory.id : null;
+            await this.apiHelper.create(this.process);
+            this.apiHelper.isDoneLoading(null, () => {
+                const response = this.apiHelper.response;
+                if (parseInt(response.code) === 201) {
+                    toast.add({ severity: 'success', detail: response.message, life: 3000 });
+                    setTimeout(() => {
+                        this.loading = false;
+                        window.location.href = '/process-manager/edit/'+response.data.data.id;
+                    }, 3000)
+                    return true;
+                }
+
+                if (parseInt(response.code) === 422) {
+                    this.processErrors = response.errors;
+                    toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                    this.loading = false;
+                } else {
+                    toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                    this.loading = false;
+                }
+            });
+        },
+        async createStep(toast) {
+            this.apiHelper = new ApiHelper('step');
+            this.loading = true;
+            this.stepErrors = null;
+            await this.apiHelper.create(this.step);
+            this.apiHelper.isDoneLoading(null, () => {
+                const response = this.apiHelper.response;
+                if (parseInt(response.code) === 201) {
+                    toast.add({ severity: 'success', detail: response.message, life: 3000 });
+                    setTimeout(() => {
+                        this.loading = false;
+                        window.location.href = '/process-manager/edit/'+response.data.data.id;
+                    }, 3000)
+                    return true;
+                }
+
+                if (parseInt(response.code) === 422) {
+                    this.processErrors = response.errors;
+                    toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                    this.loading = false;
+                } else {
+                    toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                    this.loading = false;
+                }
+            });
+        },
+        async deleteProcess(process, confirm, toast) {
+            confirm.require({
+                message: 'Are you sure you want to delete this process?',
+                header: 'Warning',
+                icon: 'pi pi-info-circle',
+                rejectLabel: 'Cancel',
+                acceptLabel: 'Delete',
+                rejectClass: 'btn-sm btn-outline-light border',
+                acceptClass: 'btn-sm btn-danger',
+                accept: () => {
+                    this.apiHelper = new ApiHelper('process');
+
+                    this.apiHelper.delete(process);
+                    this.apiHelper.isDoneLoading(null, () => {
+                        const response = this.apiHelper.response;
+                        if (parseInt(response.code) === 204) {
+                            console.log('response', response);
+                            toast.add({ severity: 'success', detail: messages.value.error.deleted, life: 3000 });
+                            setTimeout(() => {
+                                this.loading = false;
+                                location.reload();
+                            }, 2000)
+                        } else {
+                            toast.add({severity: 'error', detail: response.data.message, life: 3000});
+                            this.loading = false;
+                        }
+                    });
+                },
+                reject: () => {
+                    toast.add({ severity: 'error', summary: 'Rejected', detail: 'Operation cancelled', life: 3000 });
+                }
+            });
+        },
+        onFilter(event) {
+            this.category.name = event.value;
+        },
+        set(key, value) {
+            this.$state[key] = value;
+        },
+        get(key) {
+            return this.$state[key];
+        },
+        setLookUp(key, value) {
+            this.$state['lookup'][key] = value;
+        },
+        reset(key) {
+            this.$state[key] = null;
+        },
+        isSelectedCategory(category_id) {
+            return this.selected_categories.some((item) => item === category_id)
+        },
+        toogleCategory(category_id) {
+            if(category_id === 0 || (this.selected_categories.length === 1 && this.selected_categories[0] === 0)) {
+                this.selected_categories = [];
+                this.selected_categories.push(category_id);
+            } else {
+                if( this.selected_categories.some((item) => item === category_id) ) {
+                    this.selected_categories = this.selected_categories.filter((i) => i !== category_id);
+                } else {
+                    this.selected_categories.push(category_id);
+                }
+            }
+        },
+    },
+    getters: {
+        filterByCategory(state) {
+            if(state.selected_categories.some((item) => item === 0)) {
+                return this.processes;
+            }
+
+            return this.processes.filter((item) => state.selected_categories.indexOf(item.process_category_id) >= 0);
+        }
+    }
+});
