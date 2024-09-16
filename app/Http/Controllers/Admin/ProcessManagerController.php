@@ -63,6 +63,7 @@ class ProcessManagerController extends Controller
 
     public function edit($process_id)
     {
+        $dynamicModelFieldTypeGroup = json_decode($this->http->get("{$this->url}/dynamic-model-field-type-group?with=field_types")->getBody(), true)['data'] ?? [];
         $process = json_decode($this->http->get("{$this->url}/process/{$process_id}?with=steps")->getBody(), true)['data'] ?? [];
         $categories = json_decode($this->http->get("{$this->url}/lookup", ["model" => "ProcessCategory", "object" => 1])->getBody(), true)['data'] ?? [];
 
@@ -72,7 +73,8 @@ class ProcessManagerController extends Controller
 
         $parameters = [
             'process' => $process,
-            'lookup' => $lookup
+            'lookup' => $lookup,
+            'dynamicModelFieldTypeGroup' => $dynamicModelFieldTypeGroup
         ];
 
         //dd($parameters);

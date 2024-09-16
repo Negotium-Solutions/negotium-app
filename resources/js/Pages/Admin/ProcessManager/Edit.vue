@@ -6,7 +6,7 @@ import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import { useProcessManagerStore } from "@/stores";
+import { useProcessManagerStore, useActivityGroupsStore } from "@/stores";
 import { usePage } from "@inertiajs/vue3";
 import Button from "primevue/button";
 import NegotiumButton from "@/Components/negotium/Button.vue";
@@ -17,15 +17,20 @@ const breadCrumbs = [{label: 'Home'}, {label: 'Create Process', class: 'active'}
 
 const toast = useToast();
 const processManagerStore = useProcessManagerStore();
+const activityGroupsStore = useActivityGroupsStore();
 
 const props = defineProps({
   lookup: null,
-  process: null
+  process: null,
+  dynamicModelFieldTypeGroup: null
 });
 
 onMounted(() => {
   processManagerStore.setLookUp('categories', props.lookup.categories);
   processManagerStore.set('process', props.process);
+  processManagerStore.set('dynamicModelFieldTypeGroup', props.dynamicModelFieldTypeGroup);
+  activityGroupsStore.set('activity_groups', props.dynamicModelFieldTypeGroup);
+  console.log('dynamicModelFieldTypeGroup', processManagerStore.dynamicModelFieldTypeGroup);
   processManagerStore.lookup.categories.forEach((category, index) => {
     if(category.id === processManagerStore.process.process_category_id) {
       processManagerStore.selectedCategory = props.lookup.categories[index];
@@ -166,6 +171,20 @@ onMounted(() => {
             <span v-for="(error, index) in processManagerStore.activityErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
           </div>
         </div>
+
+        <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Select activity type<i class="information ml-2 bg-sky-700"></i></p>
+        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+          <label class="btn btn-sm btn-default" :class="{ 'active': activityGroupsStore.getActivityGroup === activity_group.id }" @click="activityGroupsStore.setActivityGroup(activity_group.id)" v-for="(activity_group, index) in activityGroupsStore.getActivityGroups" :key="index">
+            <input type="radio" name="options" :id="'option_'+activity_group.id" autocomplete="off"> {{ activity_group.name }}
+          </label>
+        </div>
+        <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select <span class="font-weight-bold">user input</span></p>
+        <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+          <label class="btn btn-sm btn-default" :class="{ 'active': activityGroupsStore.getActivityType === activity_type.id }" @click="activityGroupsStore.setActivityType(activity_type.id)" v-for="(activity_type, at_index) in activityGroupsStore.getActivityTypesByActivityGroup" :key="at_index">
+            <input type="radio" name="options" :id="'option_'+activity_type.id" autocomplete="off"> {{ activity_type.name }}
+          </label>
+        </div>
+
         <template #footer>
           <div class="row">
             <div class="col-12 p-4 pr-0">
@@ -180,3 +199,9 @@ onMounted(() => {
   </AuthenticatedLayout>
   <Toast/>
 </template>
+<style scoped>
+  .active {
+    background-color: grey;
+    color: white;
+  }
+</style>

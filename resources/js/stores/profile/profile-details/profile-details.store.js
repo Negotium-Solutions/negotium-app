@@ -13,6 +13,7 @@ export const useProfileDetailStore = defineStore({
     id: 'profile-profile-details',
     state: () => ({
         profile: null,
+        dynamicModelFieldTypeGroup: null,
         profileDetailsFields: null,
         profileDetailsFieldsErrors: null,
         loading: false,
