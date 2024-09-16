@@ -63,7 +63,7 @@ class ProcessManagerController extends Controller
 
     public function edit($process_id)
     {
-        $process = json_decode($this->http->get("{$this->url}/process/{$process_id}")->getBody(), true)['data'] ?? [];
+        $process = json_decode($this->http->get("{$this->url}/process/{$process_id}?with=steps")->getBody(), true)['data'] ?? [];
         $categories = json_decode($this->http->get("{$this->url}/lookup", ["model" => "ProcessCategory", "object" => 1])->getBody(), true)['data'] ?? [];
 
         $lookup = [
@@ -74,6 +74,8 @@ class ProcessManagerController extends Controller
             'process' => $process,
             'lookup' => $lookup
         ];
+
+        //dd($parameters);
 
         return Inertia::render('Admin/ProcessManager/Edit', $parameters);
     }

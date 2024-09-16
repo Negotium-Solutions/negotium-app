@@ -9,8 +9,14 @@ const messages = computed(() => page.props.messages);
 export const useProcessManagerStore = defineStore({
     id: 'process_manager',
     state: () => ({
+        showAddActivity: false,
         loading: false,
         selectedOption: "d",
+        activity: {
+            name: null,
+            type_id: null,
+            validations: []
+        },
         sortByOptions: [
             { name: 'Latest First', code: 'd' },
             { name: 'Oldest First', code: 'a' },
@@ -30,7 +36,8 @@ export const useProcessManagerStore = defineStore({
         step: {
             id: null,
             name: null,
-            process_id: null
+            parent_id: null,
+            order: null
         },
         stepErrors: null,
         category: {
@@ -102,27 +109,70 @@ export const useProcessManagerStore = defineStore({
             this.apiHelper = new ApiHelper('step');
             this.loading = true;
             this.stepErrors = null;
+            this.step.parent_id = this.process.id;
             await this.apiHelper.create(this.step);
             this.apiHelper.isDoneLoading(null, () => {
                 const response = this.apiHelper.response;
-                if (parseInt(response.code) === 201) {
-                    toast.add({ severity: 'success', detail: response.message, life: 3000 });
-                    setTimeout(() => {
-                        this.loading = false;
-                        window.location.href = '/process-manager/edit/'+response.data.data.id;
-                    }, 3000)
-                    return true;
-                }
 
-                if (parseInt(response.code) === 422) {
-                    this.processErrors = response.errors;
-                    toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
-                    this.loading = false;
-                } else {
-                    toast.add({ severity: 'error', detail: response.message, life: 3000 });
-                    this.loading = false;
+                switch (parseInt(response.code)) {
+                    case 201:
+                        toast.add({ severity: 'success', detail: response.message, life: 3000 });
+                        setTimeout(() => {
+                            this.step.id = response.data.id;
+                            this.step.order = response.data.order;
+                            this.process.steps.push(this.step);
+                            this.loading = false;
+                            this.showAddActivity = true;
+                            // location.reload();
+                        }, 2000);
+                        break;
+                    case 422:
+                        this.stepErrors = response.errors;
+                        toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                        this.loading = false;
+                        break;
+                    default:
+                        toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                        this.loading = false;
+                        break;
                 }
             });
+        },
+        async createActivity(toast) {
+            this.apiHelper = new ApiHelper('step');
+            this.loading = true;
+            this.stepErrors = null;
+            this.showAddActivity = false;
+            this.step.parent_id = this.process.id;
+            await this.apiHelper.create(this.step);
+            this.apiHelper.isDoneLoading(null, () => {
+                const response = this.apiHelper.response;
+
+                switch (parseInt(response.code)) {
+                    case 201:
+                        toast.add({ severity: 'success', detail: response.message, life: 3000 });
+                        setTimeout(() => {
+                            this.loading = false;
+                            location.reload();
+                        }, 3000);
+                        break;
+                    case 422:
+                        this.stepErrors = response.errors;
+                        toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                        break;
+                    default:
+                        toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                        break;
+                }
+                this.loading = false;
+            });
+        },
+        async showAddActivityModal(toast){
+            if(this.step.id === null) {
+                await this.createStep(toast);
+            } else {
+                this.showAddActivity = true;
+            }
         },
         async deleteProcess(process, confirm, toast) {
             confirm.require({
@@ -171,6 +221,14 @@ export const useProcessManagerStore = defineStore({
         },
         reset(key) {
             this.$state[key] = null;
+        },
+        resetStep() {
+            this.step = {
+                id: null,
+                name: null,
+                parent_id: null,
+                order: null
+            };
         },
         isSelectedCategory(category_id) {
             return this.selected_categories.some((item) => item === category_id)

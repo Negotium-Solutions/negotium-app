@@ -1,13 +1,16 @@
 <script setup>
 
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import { onMounted, reactive, ref, computed } from "vue";
+import { onMounted } from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import { useProcessManagerStore } from "@/stores";
 import { usePage } from "@inertiajs/vue3";
+import Button from "primevue/button";
+import NegotiumButton from "@/Components/negotium/Button.vue";
+import Dialog from "primevue/dialog";
 
 const page = usePage();
 const breadCrumbs = [{label: 'Home'}, {label: 'Create Process', class: 'active'}];
@@ -101,8 +104,10 @@ onMounted(() => {
                 <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
               </div>
               <div class="mt-4">
-                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Steps</div>
-
+                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Steps</div>
+                <button type="button" @click="processManagerStore.set('step', step)" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                  <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ step.name }}</div>
+                </button>
               </div>
             </div>
             <!-- /.card-body -->
@@ -113,7 +118,7 @@ onMounted(() => {
           <hr class="mt-7" style="border-color: #43AA8B;"/>
         </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-12 pl-0">
+        <div class="col-lg-3 col-md-3 col-sm-12 pl-0 pr-o mr-0" style="padding-right: 0px;">
           <div class="card card-default">
             <div class="card-header border-bottom-0 pb-0">
               <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Step</div>
@@ -123,26 +128,52 @@ onMounted(() => {
               <div class="mb-2">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step name</div>
                 <input v-model="processManagerStore.step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?">
-                <div class="input-validation-error" v-if="typeof processManagerStore.processErrors?.name !== 'undefined'">
-                  <span v-for="(error, index) in processManagerStore.processErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
+                <div class="input-validation-error" v-if="typeof processManagerStore.stepErrors?.name !== 'undefined'">
+                  <span v-for="(error, index) in processManagerStore.stepErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
                 </div>
               </div>
               <div class="mt-3">
                 <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
               </div>
               <div class="mt-4">
-                <button class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus"></i> Add activity</button>
+                <button v-if="!processManagerStore.loading" @click="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus"></i> Add activity</button>
+                <button v-if="processManagerStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white w-full" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
               </div>
             </div>
             <!-- /.card-body -->
           </div>
         </div>
-      </div>
 
+        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
+          <hr class="mt-7" style="border-color: #43AA8B;"/>
+        </div>
+
+        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
+          <button @click="processManagerStore.resetStep()" class="mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus"></i> Add Step</button>
+        </div>
+
+      </div>
+      <Dialog v-model:visible="processManagerStore.showAddActivity" :draggable="false" modal header="Add note or reminder" :style="{ width: '40vw' }" :class="'notes-dialog'" :breakpoints="{ '1199px': '75vw', '575px': '90vw' } ">
+        <template #header>
+          <div class="row m-0 p-0 pb-2">
+            <div class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto'] leading-loose w-100">Add new activity</div>
+          </div>
+        </template>
+        <div class="mt-2">
+          <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 pb-2">Activity name</span>
+          <input v-model="processManagerStore.activity.name" type="text" class="form-control">
+        </div>
+        <template #footer>
+          <div class="row">
+            <div class="col-12 p-4 pr-0">
+              <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="processManagerStore.showAddActivity = false">Cancel</button>
+              <negotium-button v-if="!processManagerStore.loading"  @click="processManagerStore.createActivity(toast)" :value="'Add Activity'"></negotium-button>
+              <button v-if="processManagerStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+            </div>
+          </div>
+        </template>
+      </Dialog>
     </div>
   </AuthenticatedLayout>
   <Toast/>
 </template>
-
-<style scoped>
-</style>
