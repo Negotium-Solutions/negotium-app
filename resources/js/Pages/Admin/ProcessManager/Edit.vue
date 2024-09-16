@@ -13,7 +13,7 @@ import NegotiumButton from "@/Components/negotium/Button.vue";
 import Dialog from "primevue/dialog";
 
 const page = usePage();
-const breadCrumbs = [{label: 'Home'}, {label: 'Create Process', class: 'active'}];
+const breadCrumbs = [{label: 'Process Information'}, {label: 'Steps & Activities', class: 'active'}, {label: 'Team Access'}];
 
 const toast = useToast();
 const processManagerStore = useProcessManagerStore();
@@ -26,6 +26,8 @@ const props = defineProps({
 });
 
 onMounted(() => {
+  processManagerStore.handleProcessDivHeight()
+  window.addEventListener('resize', processManagerStore.handleProcessDivHeight);
   processManagerStore.setLookUp('categories', props.lookup.categories);
   processManagerStore.set('process', props.process);
   processManagerStore.set('dynamicModelFieldTypeGroup', props.dynamicModelFieldTypeGroup);
@@ -44,7 +46,7 @@ onMounted(() => {
     <template #header>
       <div class="d-flex w-100">
       <div class="col-sm-6">
-        <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto']">Process Creator</h1>
+        <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto'] mb-2">Process Creator</h1>
         <Breadcrumb :model="breadCrumbs" :class="'p-0 text-sm'">
           <template #separator> <i class="pi pi-arrow-right text-sm"></i></template>
         </Breadcrumb>
@@ -54,9 +56,9 @@ onMounted(() => {
 
     <div class="content-container pl-4 pr-4">
 
-      <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-12 pr-0">
-          <div class="card card-default">
+      <div class="row" id="process-creator-content">
+        <div class="col-lg-3 col-md-3 col-sm-12 pr-0 h-100">
+          <div class="card card-default h-100">
             <div class="card-header border-bottom-0 pb-0">
               <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Process Info</div>
             </div>
