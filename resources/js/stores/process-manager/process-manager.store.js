@@ -17,6 +17,7 @@ export const useProcessManagerStore = defineStore({
             type_id: null,
             validations: []
         },
+        activityErrors: null,
         sortByOptions: [
             { name: 'Latest First', code: 'd' },
             { name: 'Oldest First', code: 'a' },
@@ -139,25 +140,25 @@ export const useProcessManagerStore = defineStore({
             });
         },
         async createActivity(toast) {
-            this.apiHelper = new ApiHelper('step');
+            this.apiHelper = new ApiHelper('dynamic-model-field');
             this.loading = true;
-            this.stepErrors = null;
-            this.showAddActivity = false;
-            this.step.parent_id = this.process.id;
-            await this.apiHelper.create(this.step);
+            this.activityErrors = null;
+            this.activity.step_id = this.step.id;
+            this.activity.dynamic_model_field_type_id = 1;
+            await this.apiHelper.create(this.activity);
             this.apiHelper.isDoneLoading(null, () => {
                 const response = this.apiHelper.response;
-
+                console.log('response: ', response);
                 switch (parseInt(response.code)) {
                     case 201:
                         toast.add({ severity: 'success', detail: response.message, life: 3000 });
                         setTimeout(() => {
                             this.loading = false;
-                            location.reload();
+                            // location.reload();
                         }, 3000);
                         break;
                     case 422:
-                        this.stepErrors = response.errors;
+                        this.activityErrors = response.errors;
                         toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
                         break;
                     default:
@@ -229,6 +230,11 @@ export const useProcessManagerStore = defineStore({
                 parent_id: null,
                 order: null
             };
+        },
+        clearError() {
+          this.processErrors = null;
+          this.stepErrors = null;
+          this.activityErrors = null;
         },
         isSelectedCategory(category_id) {
             return this.selected_categories.some((item) => item === category_id)

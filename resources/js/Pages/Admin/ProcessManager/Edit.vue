@@ -66,7 +66,7 @@ onMounted(() => {
               </div>
               <div class="mb-2">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Category</div>
-                <Dropdown v-model="processManagerStore.selectedCategory" :options="processManagerStore.lookup.categories" filter @filter="processManagerStore.onFilter" optionLabel="name" placeholder="Select a category" class="mt-2 w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': false}">
+                <Dropdown disabled v-model="processManagerStore.selectedCategory" :options="processManagerStore.lookup.categories" filter @filter="processManagerStore.onFilter" optionLabel="name" placeholder="Select a category" class="mt-2 w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': false}">
                   <template #value="slotProps">
                     <div v-if="slotProps.value" class="w-100">
                       <span>{{ slotProps.value.name }}</span>
@@ -105,7 +105,7 @@ onMounted(() => {
               </div>
               <div class="mt-4">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Steps</div>
-                <button type="button" @click="processManagerStore.set('step', step)" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                <button type="button" @click="processManagerStore.set('step', step); processManagerStore.clearError()" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
                   <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ step.name }}</div>
                 </button>
               </div>
@@ -162,12 +162,15 @@ onMounted(() => {
         <div class="mt-2">
           <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 pb-2">Activity name</span>
           <input v-model="processManagerStore.activity.name" type="text" class="form-control">
+          <div class="input-validation-error" v-if="typeof processManagerStore.activityErrors?.name !== 'undefined'">
+            <span v-for="(error, index) in processManagerStore.activityErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
+          </div>
         </div>
         <template #footer>
           <div class="row">
             <div class="col-12 p-4 pr-0">
               <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="processManagerStore.showAddActivity = false">Cancel</button>
-              <negotium-button v-if="!processManagerStore.loading"  @click="processManagerStore.createActivity(toast)" :value="'Add Activity'"></negotium-button>
+              <negotium-button v-if="!processManagerStore.loading"  @click="processManagerStore.createActivity(toast)" :value="'Save'"></negotium-button>
               <button v-if="processManagerStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
             </div>
           </div>
