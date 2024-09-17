@@ -6,7 +6,7 @@ import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
-import { useProcessManagerStore, useActivityGroupsStore } from "@/stores";
+import { useProcessManagerStore } from "@/stores";
 import { usePage } from "@inertiajs/vue3";
 import Button from "primevue/button";
 import NegotiumButton from "@/Components/negotium/Button.vue";
@@ -17,7 +17,6 @@ const breadCrumbs = [{label: 'Process Information'}, {label: 'Steps & Activities
 
 const toast = useToast();
 const processManagerStore = useProcessManagerStore();
-const activityGroupsStore = useActivityGroupsStore();
 
 const props = defineProps({
   lookup: null,
@@ -30,9 +29,8 @@ onMounted(() => {
   window.addEventListener('resize', processManagerStore.handleProcessDivHeight);
   processManagerStore.setLookUp('categories', props.lookup.categories);
   processManagerStore.set('process', props.process);
-  processManagerStore.set('dynamicModelFieldTypeGroup', props.dynamicModelFieldTypeGroup);
-  activityGroupsStore.set('activity_groups', props.dynamicModelFieldTypeGroup);
-  console.log('dynamicModelFieldTypeGroup', processManagerStore.dynamicModelFieldTypeGroup);
+  processManagerStore.set('dynamicModelFieldTypeGroups', props.dynamicModelFieldTypeGroup);
+
   processManagerStore.lookup.categories.forEach((category, index) => {
     if(category.id === processManagerStore.process.process_category_id) {
       processManagerStore.selectedCategory = props.lookup.categories[index];
@@ -176,14 +174,14 @@ onMounted(() => {
 
         <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Select activity type<i class="information ml-2 bg-sky-700"></i></p>
         <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-          <label class="btn btn-sm btn-default" :class="{ 'active': activityGroupsStore.getActivityGroup === activity_group.id }" @click="activityGroupsStore.setActivityGroup(activity_group.id)" v-for="(activity_group, index) in activityGroupsStore.getActivityGroups" :key="index">
-            <input type="radio" name="options" :id="'option_'+activity_group.id" autocomplete="off"> {{ activity_group.name }}
+          <label class="btn btn-sm btn-default" :class="{ 'active': processManagerStore.getDynamicModelFieldTypeGroup === dynamicModelFieldTypeGroup.id }" @click="processManagerStore.setDynamicModelFieldTypeGroup(dynamicModelFieldTypeGroup.id)" v-for="(dynamicModelFieldTypeGroup, index) in processManagerStore.dynamicModelFieldTypeGroups" :key="index">
+            <input type="radio" name="options" :id="'option_'+dynamicModelFieldTypeGroup.id" autocomplete="off"> {{ dynamicModelFieldTypeGroup.name }}
           </label>
         </div>
         <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select <span class="font-weight-bold">user input</span></p>
         <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-          <label class="btn btn-sm btn-default" :class="{ 'active': activityGroupsStore.getActivityType === activity_type.id }" @click="activityGroupsStore.setActivityType(activity_type.id)" v-for="(activity_type, at_index) in activityGroupsStore.getActivityTypesByActivityGroup" :key="at_index">
-            <input type="radio" name="options" :id="'option_'+activity_type.id" autocomplete="off"> {{ activity_type.name }}
+          <label class="btn btn-sm btn-default" :class="{ 'active': processManagerStore.getDynamicModelFieldType === dynamicModelFieldType.id }" @click="processManagerStore.setDynamicModelFieldType(dynamicModelFieldType.id)" v-for="(dynamicModelFieldType, at_index) in processManagerStore.getDynamicModelFieldTypeByDynamicModelFieldTypeGroup" :key="at_index">
+            <input type="radio" name="options" :id="'option_'+dynamicModelFieldType.id" autocomplete="off"> {{ dynamicModelFieldType.name }}
           </label>
         </div>
 
