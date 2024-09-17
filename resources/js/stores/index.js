@@ -13,3 +13,4 @@ export * from './profile/communications/profile-communications.store.js';
 export * from './profile/documents/profile-documents.store.js';
 export * from './messages.store';
 export * from './user/user.store';
+export * from './process-manager/process-manager.store.js';

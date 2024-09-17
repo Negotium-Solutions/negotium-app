@@ -17,6 +17,9 @@ export const useActivityGroupsStore = defineStore({
         },
         setActivityType(id) {
             this.activity_type = id;
+        },
+        set(key, value) {
+            this.$state[key] = value;
         }
     },
     getters: {
@@ -24,7 +27,7 @@ export const useActivityGroupsStore = defineStore({
             return this.activity_groups;
         },
         getActivityTypesByActivityGroup() {
-            return this.activity_groups.filter((item) => item.id === this.activity_group)[0].activity_types;
+            return this.activity_groups.filter((item) => item.id === this.activity_group)[0].field_types;
         },
         getActivityGroup() {
             return this.activity_group;

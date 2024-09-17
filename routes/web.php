@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
 use App\Http\Controllers\Admin\ProfileManagerController;
+use App\Http\Controllers\Admin\ProcessManagerController;
 use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\StepController;
 
@@ -37,6 +38,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/process/create', [ProcessController::class, 'create'])->name('process.create');
     Route::get('/process/edit/{process_id}', [ProcessController::class, 'edit'])->name('process.edit');
     Route::get('/process/edit/{process_id}/{step_id?}', [ProcessController::class, 'edit'])->name('process.edit');
+
+    Route::get('/process-manager', [ProcessManagerController::class, 'index'])->name('process-manager');
+    Route::get('/process-manager/create', [ProcessManagerController::class, 'create'])->name('process-manager.create');
+    Route::get('/process-manager/edit/{process_id}', [ProcessManagerController::class, 'edit'])->name('process-manager.edit');
 
     Route::get('/step/create/{process_id}', [StepController::class, 'create'])->name('step.create');
 });

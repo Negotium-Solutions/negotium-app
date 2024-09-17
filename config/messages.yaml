@@ -6,6 +6,7 @@ success:
 error:
   internal_server_error: "Internal server error"
   not_found: "Item not found."
+  deleted: "Item deleted success fully."
   unauthorized: "You are not authorized to perform this action."
   input_validation_error: "Input validation error."
   email_validation_error: "Please enter a valid email address."
