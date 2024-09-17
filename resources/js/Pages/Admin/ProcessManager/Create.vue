@@ -11,7 +11,7 @@ import { usePage } from "@inertiajs/vue3";
 import Button from "primevue/button";
 
 const page = usePage();
-const breadCrumbs = [{label: 'Home'}, {label: 'Create Process', class: 'active'}];
+const breadCrumbs = [{label: 'Process Information', class: 'active'}, {label: 'Steps & Activities'}, {label: 'Team Access'}];
 
 const toast = useToast();
 const processManagerStore = useProcessManagerStore();
@@ -21,6 +21,8 @@ const props = defineProps({
 });
 
 onMounted(() => {
+  processManagerStore.handleProcessDivHeight()
+  window.addEventListener('resize', processManagerStore.handleProcessDivHeight);
   processManagerStore.setLookUp('categories', props.lookup.categories);
 })
 </script>
@@ -30,7 +32,7 @@ onMounted(() => {
     <template #header>
       <div class="d-flex w-100">
       <div class="col-sm-6">
-        <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto']">Process Creator</h1>
+        <h1 class="text-neutral-700 text-4xl font-bold font-['Roboto'] mb-2">Process Creator</h1>
         <Breadcrumb :model="breadCrumbs" :class="'p-0 text-sm'">
           <template #separator> <i class="pi pi-arrow-right text-sm"></i></template>
         </Breadcrumb>
@@ -40,9 +42,9 @@ onMounted(() => {
 
     <div class="content-container pl-4 pr-4">
 
-      <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-12 pr-0">
-          <div class="card card-default">
+      <div class="row" id="process-creator-content">
+        <div class="col-lg-3 col-md-3 col-sm-12 pr-0 h-100">
+          <div class="card card-default h-100">
             <div class="card-header border-bottom-0 pb-0">
               <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Process Info</div>
             </div>
@@ -95,8 +97,8 @@ onMounted(() => {
                 <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
               </div>
               <div class="mt-4">
-                <button v-if="!processManagerStore.loading" @click="processManagerStore.createProcess(toast)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full">Create process</button>
-                <button v-if="processManagerStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white w-full" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+                <button v-if="!processManagerStore.loading" @click="processManagerStore.createProcess(toast)"  class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add first step</button>
+                <button v-if="processManagerStore.loading"  class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
               </div>
             </div>
             <!-- /.card-body -->
@@ -106,7 +108,13 @@ onMounted(() => {
 
     </div>
   </AuthenticatedLayout>
-  <Toast/>
+  <Toast position="top-center">
+    <template #message="slotProps">
+        <div class="flex flex-column align-items-start" style="flex: 1">
+            <div class="font-medium text-sm my-1 text-900">{{ slotProps.message.detail }}</div>
+        </div>
+    </template>
+  </Toast>
 </template>
 
 <style scoped>

@@ -251,6 +251,27 @@ export const useProcessManagerStore = defineStore({
                 }
             }
         },
+        handleProcessDivHeight(){
+            let windowHeight = window.innerHeight,
+                processHeader = document.getElementById('content-header'),
+                processContent = document.getElementById('content-body'),
+                height = processHeader.offsetHeight,
+                newHeight = windowHeight -  height;
+                processContent.style.minHeight = newHeight+'px'
+                processContent.style.height = newHeight+'px'
+                processContent.classList.add('bg-content-body')
+            if(processContent){
+                processContent.style.minHeight = newHeight+'px'
+                processContent.style.height = newHeight+'px'
+                processContent.classList.add('bg-content-body')
+            }
+            const wrapper = document.querySelector('#content-body')
+            const wrapperComputedStyle = window.getComputedStyle(wrapper, null)
+            let wrapperHeight = wrapper.clientHeight
+            wrapperHeight -= parseFloat(wrapperComputedStyle.paddingTop) + parseFloat(wrapperComputedStyle.paddingBottom)
+            let processCreatorContent = document.getElementById('process-creator-content')
+            processCreatorContent.style.height = wrapperHeight+'px'
+        }
     },
     getters: {
         filterByCategory(state) {

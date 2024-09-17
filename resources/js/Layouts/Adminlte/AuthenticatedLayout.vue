@@ -10,7 +10,7 @@
                 <!-- Content Wrapper. Contains page content -->
                 <div id="main-container" class="content-wrapper bg-white">
                     <!-- Content Header (Page header) -->
-                    <div class="content-header" v-if="$slots.header">
+                    <div class="content-header" id="content-header" v-if="$slots.header">
                         <div class="container-fluid">
                             <div class="row px-3 pt-3">
                                 <slot name="header" />
@@ -34,8 +34,8 @@
                         </div>
                         <!-- /.container-fluid -->
                     </div>
-                    <div class="content" v-else>
-                        <div class="container-fluid mt-7">
+                    <div class="content pt-3 pb-3" id="content-body" v-else>
+                        <div class="container-fluid">
                             <main>
                                 <slot />
                             </main>

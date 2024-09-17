@@ -132,6 +132,10 @@
     border-color: var(--neg-grey) !important;
 }
 
+.bg-content-body{
+    background: var(--neg-bg-light);
+}
+
 .bg-slate-500{
     background-color: var(--neg-light-1);
 }
