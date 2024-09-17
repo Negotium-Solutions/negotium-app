@@ -143,8 +143,8 @@ onMounted(() => {
                 <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
               </div>
               <div class="mt-4">
-                <button v-if="!processManagerStore.loading" @click="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus"></i> Add activity</button>
-                <button v-if="processManagerStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white w-full" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+                <button v-if="!processManagerStore.loading" @click="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity</button>
+                <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
               </div>
             </div>
             <!-- /.card-body -->
@@ -156,7 +156,7 @@ onMounted(() => {
         </div>
 
         <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
-          <button @click="processManagerStore.resetStep()" class="mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus"></i> Add Step</button>
+          <button @click="processManagerStore.resetStep()" class="mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add Step</button>
         </div>
 
       </div>
@@ -199,7 +199,13 @@ onMounted(() => {
       </Dialog>
     </div>
   </AuthenticatedLayout>
-  <Toast/>
+  <Toast position="top-center">
+    <template #message="slotProps">
+        <div class="flex flex-column align-items-start" style="flex: 1">
+            <div class="font-medium text-sm my-1 text-900">{{ slotProps.message.detail }}</div>
+        </div>
+    </template>
+  </Toast>
 </template>
 <style scoped>
   .active {

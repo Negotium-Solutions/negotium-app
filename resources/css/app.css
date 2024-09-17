@@ -104,3 +104,8 @@ li.active > a > span.p-menuitem-text {
 .step-form-min-width{
     min-width: 388px;
 }
+
+.custom-icon-sm{
+    font-size: .65rem !important; 
+    line-height: 1.25;
+}
