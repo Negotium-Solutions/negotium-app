@@ -32,6 +32,9 @@ export const useProcessManagerStore = defineStore({
             name: null,
             process_category_id: null
         },
+        dynamicModelFieldTypeGroups: null,
+        dynamicModelFieldTypeGroup: 1,
+        dynamicModelFieldType: 1,
         processErrors: null,
         processes: null,
         step: {
@@ -144,17 +147,16 @@ export const useProcessManagerStore = defineStore({
             this.loading = true;
             this.activityErrors = null;
             this.activity.step_id = this.step.id;
-            this.activity.dynamic_model_field_type_id = 1;
+            this.activity.dynamic_model_field_type_id = this.dynamicModelFieldType;
             await this.apiHelper.create(this.activity);
             this.apiHelper.isDoneLoading(null, () => {
                 const response = this.apiHelper.response;
-                console.log('response: ', response);
                 switch (parseInt(response.code)) {
                     case 201:
                         toast.add({ severity: 'success', detail: response.message, life: 3000 });
                         setTimeout(() => {
                             this.loading = false;
-                            // location.reload();
+                            location.reload();
                         }, 3000);
                         break;
                     case 422:
@@ -191,7 +193,6 @@ export const useProcessManagerStore = defineStore({
                     this.apiHelper.isDoneLoading(null, () => {
                         const response = this.apiHelper.response;
                         if (parseInt(response.code) === 204) {
-                            console.log('response', response);
                             toast.add({ severity: 'success', detail: messages.value.error.deleted, life: 3000 });
                             setTimeout(() => {
                                 this.loading = false;
@@ -271,6 +272,13 @@ export const useProcessManagerStore = defineStore({
             wrapperHeight -= parseFloat(wrapperComputedStyle.paddingTop) + parseFloat(wrapperComputedStyle.paddingBottom)
             let processCreatorContent = document.getElementById('process-creator-content')
             processCreatorContent.style.height = wrapperHeight+'px'
+        },
+        setDynamicModelFieldTypeGroup(id) {
+            this.dynamicModelFieldTypeGroup = id;
+            this.dynamicModelFieldType = this.getDynamicModelFieldTypeByDynamicModelFieldTypeGroup[0].id;
+        },
+        setDynamicModelFieldType(id) {
+            this.dynamicModelFieldType = id;
         }
     },
     getters: {
@@ -280,6 +288,18 @@ export const useProcessManagerStore = defineStore({
             }
 
             return this.processes.filter((item) => state.selected_categories.indexOf(item.process_category_id) >= 0);
+        },
+        getDynamicModelFieldTypeGroups() {
+            return this.dynamicModelFieldTypeGroups;
+        },
+        getDynamicModelFieldTypeByDynamicModelFieldTypeGroup() {
+            return this.dynamicModelFieldTypeGroups.filter((item) => item.id === this.dynamicModelFieldTypeGroup)[0].field_types;
+        },
+        getDynamicModelFieldTypeGroup() {
+            return this.dynamicModelFieldTypeGroup;
+        },
+        getDynamicModelFieldType() {
+            return this.dynamicModelFieldType;
         }
     }
 });
