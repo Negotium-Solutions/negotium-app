@@ -19,6 +19,7 @@ const toast = useToast();
 const processManagerStore = useProcessManagerStore();
 
 const props = defineProps({
+  step_id: null,
   lookup: null,
   process: null,
   dynamicModelFieldTypeGroup: null
@@ -30,12 +31,21 @@ onMounted(() => {
   processManagerStore.setLookUp('categories', props.lookup.categories);
   processManagerStore.set('process', props.process);
   processManagerStore.set('dynamicModelFieldTypeGroups', props.dynamicModelFieldTypeGroup);
-  console.log("Props: ", props)
+  processManagerStore.setStep(parseInt(props.step_id));
   processManagerStore.lookup.categories.forEach((category, index) => {
     if(category.id === processManagerStore.process.process_category_id) {
       processManagerStore.selectedCategory = props.lookup.categories[index];
     }
   });
+
+  // Get the current URL
+  const urlParams = new URLSearchParams(window.location.search);
+  // Check if 'addActivity' is set
+  if (urlParams.has('addActivity')) {
+    if(urlParams.get('addActivity')) {
+      processManagerStore.showAddActivity = true;
+    }
+  }
 })
 </script>
 
@@ -110,9 +120,9 @@ onMounted(() => {
               </div>
               <div class="mt-4">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Steps</div>
-                <button type="button" @click="processManagerStore.set('step', step); processManagerStore.clearError()" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                <a :href="route('process-manager.edit', [process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
                   <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ step.name }}</div>
-                </button>
+                </a>
               </div>
             </div>
             <!-- /.card-body -->
@@ -132,7 +142,7 @@ onMounted(() => {
             <div class="card-body">
               <div class="mb-2">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step name</div>
-                <input v-model="processManagerStore.step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?">
+                <input v-model="processManagerStore.step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?" :disabled="processManagerStore.step.id > 0">
                 <div class="input-validation-error" v-if="typeof processManagerStore.stepErrors?.name !== 'undefined'">
                   <span v-for="(error, index) in processManagerStore.stepErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
                 </div>
@@ -145,14 +155,12 @@ onMounted(() => {
                 <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
               </div>
 
-
               <div class="mt-4">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Activities</div>
-                <button type="button" @click="processManagerStore.set('step', step); processManagerStore.clearError()" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
-                  <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ step.name }}</div>
+                <button type="button" @click="processManagerStore.set('activity', activity); processManagerStore.clearError()" v-for="(activity, index) in processManagerStore.step.activities" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
+                  <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ activity.label }}</div>
                 </button>
               </div>
-
 
             </div>
             <!-- /.card-body -->
@@ -164,7 +172,7 @@ onMounted(() => {
         </div>
 
         <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
-          <button @click="processManagerStore.resetStep()" class="mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add Step</button>
+          <a :href="route('process-manager.edit', [process.id])" class="mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add Step</a>
         </div>
 
       </div>
@@ -182,17 +190,39 @@ onMounted(() => {
           </div>
         </div>
 
-        <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Select activity type<i class="information ml-2 bg-sky-700"></i></p>
+        <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Select activity type <i class="information ml-2 bg-sky-700"></i></p>
         <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-          <label class="btn btn-sm btn-default" :class="{ 'active': processManagerStore.getDynamicModelFieldTypeGroup === dynamicModelFieldTypeGroup.id }" @click="processManagerStore.setDynamicModelFieldTypeGroup(dynamicModelFieldTypeGroup.id)" v-for="(dynamicModelFieldTypeGroup, index) in processManagerStore.dynamicModelFieldTypeGroups" :key="index">
+          <label class="btn btn-sm btn-default" :class="{ 'bg-gray-300': processManagerStore.getDynamicModelFieldTypeGroup === dynamicModelFieldTypeGroup.id }" @click="processManagerStore.setDynamicModelFieldTypeGroup(dynamicModelFieldTypeGroup.id)" v-for="(dynamicModelFieldTypeGroup, index) in processManagerStore.dynamicModelFieldTypeGroups" :key="index">
             <input type="radio" name="options" :id="'option_'+dynamicModelFieldTypeGroup.id" autocomplete="off"> {{ dynamicModelFieldTypeGroup.name }}
           </label>
         </div>
         <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select <span class="font-weight-bold">user input</span></p>
         <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-          <label class="btn btn-sm btn-default" :class="{ 'active': processManagerStore.getDynamicModelFieldType === dynamicModelFieldType.id }" @click="processManagerStore.setDynamicModelFieldType(dynamicModelFieldType.id)" v-for="(dynamicModelFieldType, at_index) in processManagerStore.getDynamicModelFieldTypeByDynamicModelFieldTypeGroup" :key="at_index">
+          <label class="btn btn-sm btn-default" :class="{ 'bg-gray-300': processManagerStore.getDynamicModelFieldType === dynamicModelFieldType.id }" @click="processManagerStore.setDynamicModelFieldType(dynamicModelFieldType.id)" v-for="(dynamicModelFieldType, at_index) in processManagerStore.getDynamicModelFieldTypeByDynamicModelFieldTypeGroup" :key="at_index">
             <input type="radio" name="options" :id="'option_'+dynamicModelFieldType.id" autocomplete="off"> {{ dynamicModelFieldType.name }}
           </label>
+        </div>
+
+        <div class="mt-3 mb-1">
+          <p class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Add <span class="font-weight-bold"> input options</span></p>
+          <div v-if="processManagerStore.getDynamicModelFieldTypeGroup === 2" class="w-100 mt-2 options-container">
+            <div v-for="(option, index) in processManagerStore.activity.options" :key="index" class="option-tag">
+              <span>{{ option }}</span>
+              <i class="pi pi-times-circle" @click="processManagerStore.removeOption(processManagerStore.activity.options, index)"></i>
+            </div>
+            <div class="flex-1">
+              <input
+                  type="text"
+                  class="options-input m-0 w-full border-0 rounded-custom-10 h-9"
+                  v-model="processManagerStore.activityOptionInput"
+                  @keyup.enter="processManagerStore.addOption(processManagerStore.activity.options)"
+                  placeholder="Type an option and press Enter"
+              />
+            </div>
+          </div>
+          <div class="input-validation-error" v-if="typeof processManagerStore.activityErrors?.options !== 'undefined'">
+            <span v-for="(error, index) in processManagerStore.activityErrors?.options" :key="index" class="error invalid-feedback">{{ error }}</span>
+          </div>
         </div>
 
         <template #footer>
@@ -215,9 +245,50 @@ onMounted(() => {
     </template>
   </Toast>
 </template>
+
 <style scoped>
-  .active {
-    background-color: grey;
-    color: white;
-  }
+.options-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  border: 1px solid #ccc;
+  padding: 0px;
+  border-radius: 4px;
+}
+
+.option-tag {
+  display: inline-flex;
+  align-items: center;
+  margin-right: 8px;
+  background-color: #e0f7fa;
+  padding: 4px 8px;
+  border-radius: 9px;
+  height: 25px;
+}
+
+.option-tag .pi {
+  margin-left: 4px;
+  cursor: pointer;
+}
+
+.option-tag:hover {
+  background-color: #b2ebf2;
+}
+
+.options-input {
+  border: none;
+  outline: none;
+  flex-grow: 1;
+  padding: 4px;
+}
+
+.options-input::placeholder {
+  color: #ccc;
+}
+
+.options-input:focus {
+  outline: none;
+  border-color: transparent;
+  border: none;
+}
 </style>

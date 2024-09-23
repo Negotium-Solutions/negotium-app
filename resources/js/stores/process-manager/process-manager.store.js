@@ -12,10 +12,12 @@ export const useProcessManagerStore = defineStore({
         showAddActivity: false,
         loading: false,
         selectedOption: "d",
+        activityOptionInput: null,
         activity: {
             name: null,
             type_id: null,
-            validations: []
+            validations: [],
+            options: []
         },
         activityErrors: null,
         sortByOptions: [
@@ -122,12 +124,7 @@ export const useProcessManagerStore = defineStore({
                     case 201:
                         toast.add({ severity: 'success', detail: response.message, life: 3000 });
                         setTimeout(() => {
-                            this.step.id = response.data.id;
-                            this.step.order = response.data.order;
-                            this.process.steps.push(this.step);
-                            this.loading = false;
-                            this.showAddActivity = true;
-                            // location.reload();
+                            window.location.href = '/process-manager/edit/'+this.process.id+'/'+response.data.data.id+'?addActivity=true';
                         }, 2000);
                         break;
                     case 422:
@@ -215,6 +212,15 @@ export const useProcessManagerStore = defineStore({
         set(key, value) {
             this.$state[key] = value;
         },
+        setStep(step_id){
+            if(step_id > 0) {
+                this.process.steps.forEach((step) => {
+                    if(step.id === step_id) {
+                        this.step = step;
+                    }
+                });
+            }
+        },
         get(key) {
             return this.$state[key];
         },
@@ -279,6 +285,14 @@ export const useProcessManagerStore = defineStore({
         },
         setDynamicModelFieldType(id) {
             this.dynamicModelFieldType = id;
+        },
+        addOption(options) {
+            const trimmedInput = this.activityOptionInput.trim();
+            options.push(trimmedInput);
+            this.activityOptionInput = '';
+        },
+        removeOption(options, index) {
+            options.splice(index, 1);
         }
     },
     getters: {

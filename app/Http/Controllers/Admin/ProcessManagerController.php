@@ -61,10 +61,10 @@ class ProcessManagerController extends Controller
         return Inertia::render('Admin/ProcessManager/Create', $parameters);
     }
 
-    public function edit($process_id)
+    public function edit($process_id, $step_id = null)
     {
         $dynamicModelFieldTypeGroup = json_decode($this->http->get("{$this->url}/dynamic-model-field-type-group?with=field_types")->getBody(), true)['data'] ?? [];
-        $process = json_decode($this->http->get("{$this->url}/process/{$process_id}?with=steps")->getBody(), true)['data'] ?? [];
+        $process = json_decode($this->http->get("{$this->url}/process/{$process_id}?with=steps.activities")->getBody(), true)['data'] ?? [];
         $categories = json_decode($this->http->get("{$this->url}/lookup", ["model" => "ProcessCategory", "object" => 1])->getBody(), true)['data'] ?? [];
 
         $lookup = [
@@ -74,10 +74,9 @@ class ProcessManagerController extends Controller
         $parameters = [
             'process' => $process,
             'lookup' => $lookup,
-            'dynamicModelFieldTypeGroup' => $dynamicModelFieldTypeGroup
+            'dynamicModelFieldTypeGroup' => $dynamicModelFieldTypeGroup,
+            'step_id' => $step_id
         ];
-
-        //dd($parameters);
 
         return Inertia::render('Admin/ProcessManager/Edit', $parameters);
     }
