@@ -30,7 +30,7 @@ onMounted(() => {
   processManagerStore.setLookUp('categories', props.lookup.categories);
   processManagerStore.set('process', props.process);
   processManagerStore.set('dynamicModelFieldTypeGroups', props.dynamicModelFieldTypeGroup);
-
+  console.log("Props: ", props)
   processManagerStore.lookup.categories.forEach((category, index) => {
     if(category.id === processManagerStore.process.process_category_id) {
       processManagerStore.selectedCategory = props.lookup.categories[index];
@@ -144,6 +144,16 @@ onMounted(() => {
                 <button v-if="!processManagerStore.loading" @click="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity</button>
                 <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
               </div>
+
+
+              <div class="mt-4">
+                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Activities</div>
+                <button type="button" @click="processManagerStore.set('step', step); processManagerStore.clearError()" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                  <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ step.name }}</div>
+                </button>
+              </div>
+
+
             </div>
             <!-- /.card-body -->
           </div>
