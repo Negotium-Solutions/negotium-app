@@ -152,19 +152,19 @@ export const useProcessManagerStore = defineStore({
                     case 201:
                         toast.add({ severity: 'success', detail: response.message, life: 3000 });
                         setTimeout(() => {
-                            this.loading = false;
                             location.reload();
                         }, 3000);
                         break;
                     case 422:
                         this.activityErrors = response.errors;
                         toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                        this.loading = false;
                         break;
                     default:
                         toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                        this.loading = false;
                         break;
                 }
-                this.loading = false;
             });
         },
         async showAddActivityModal(toast){
