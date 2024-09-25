@@ -1,7 +1,7 @@
 <script setup>
 
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
 import Toast from "primevue/toast";
@@ -11,8 +11,7 @@ import { usePage } from "@inertiajs/vue3";
 import Button from "primevue/button";
 import NegotiumButton from "@/Components/negotium/Button.vue";
 import Dialog from "primevue/dialog";
-import Carousel from "@/Components/negotium/Carousel.vue"
-// import Carousel from 'primevue/carousel';
+import ProcessSteps from '@/Pages/Admin/ProcessManager/Partials/ProcessSteps.vue'
 
 const page = usePage();
 const breadCrumbs = [{label: 'Process Information'}, {label: 'Steps & Activities', class: 'active'}, {label: 'Team Access'}];
@@ -32,7 +31,6 @@ onMounted(() => {
   window.addEventListener('resize', processManagerStore.handleProcessDivHeight);
   processManagerStore.setLookUp('categories', props.lookup.categories);
   processManagerStore.set('process', props.process);
-  console.log('props.process.steps', props.process.steps);
   processManagerStore.set('dynamicModelFieldTypeGroups', props.dynamicModelFieldTypeGroup);
   processManagerStore.setStep(parseInt(props.step_id));
   processManagerStore.lookup.categories.forEach((category, index) => {
@@ -49,59 +47,7 @@ onMounted(() => {
       processManagerStore.showAddActivity = true;
     }
   }
-})
-
-/*
-const products = [
-  {'name': 'Name', 'price': 'R250'},
-  {'name': 'Name', 'price': 'R250'},
-  {'name': 'Name', 'price': 'R250'},
-  {'name': 'Name', 'price': 'R250'},
-  {'name': 'Name', 'price': 'R250'},
-  {'name': 'Name', 'price': 'R250'},
-  {'name': 'Name', 'price': 'R250'},
-];
-
-// const products = ref();
-const responsiveOptions = ref([
-  {
-    breakpoint: '1400px',
-    numVisible: 2,
-    numScroll: 1
-  },
-  {
-    breakpoint: '1199px',
-    numVisible: 3,
-    numScroll: 1
-  },
-  {
-    breakpoint: '767px',
-    numVisible: 2,
-    numScroll: 1
-  },
-  {
-    breakpoint: '575px',
-    numVisible: 1,
-    numScroll: 1
-  }
-]);
-
-const getSeverity = (status) => {
-  switch (status) {
-    case 'INSTOCK':
-      return 'success';
-
-    case 'LOWSTOCK':
-      return 'warn';
-
-    case 'OUTOFSTOCK':
-      return 'danger';
-
-    default:
-      return null;
-  }
-};
-*/
+});
 </script>
 
 <template>
@@ -119,69 +65,10 @@ const getSeverity = (status) => {
 
     <div class="content-container pl-4 pr-4">
 
-          <!--
 
-          <Carousel :value="processManagerStore.process.steps" :numVisible="3" :numScroll="3" :responsiveOptions="responsiveOptions">
-            <template #item="slotProps">
-
-              <div class="col-lg-12 col-md-12 col-sm-12">
-                <div class="card card-default">
-                  <div class="card-header border-bottom-0 pb-0">
-                    <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">{{ slotProps.data.name }}</div>
-                  </div>
-
-                  <div class="card-body">
-                    <div v-if="!(processManagerStore.step.id > 0)" class="mb-3">
-                      <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step name</div>
-                      <input v-model="processManagerStore.step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?">
-                      <div class="input-validation-error" v-if="typeof processManagerStore.stepErrors?.name !== 'undefined'">
-                        <span v-for="(error, index) in processManagerStore.stepErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
-                      </div>
-                    </div>
-                    <div>
-                      <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
-                    </div>
-                    <div class="mt-4">
-                      <button v-if="!processManagerStore.loading" @click="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity</button>
-                      <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
-                    </div>
-
-                    <div class="mt-4">
-                      <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Step Activities</div>
-                      <div @click="processManagerStore.set('activity', activity); processManagerStore.clearError()" v-for="(activity, index) in slotProps.data.activities" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
-                        <span>Activity Type - {{ activity.field_type.name }}</span>
-                        <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ activity.label }}</div>
-
-                        <div class="items-center">
-                          <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0">
-                            <i class="pi pi-ellipsis-v"></i>
-                          </button>
-                          <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                            <a href="#" class="dropdown-item">
-                              <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
-                            </a>
-                            <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item">
-                              <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-
-                    </div>
-
-                  </div>
-
-                </div>
-              </div>
-
-            </template>
-          </Carousel>
-
-          -->
 
       <div class="row" id="process-creator-content">
-        <div class="col-lg-3 col-md-3 col-sm-12 pr-0 h-100">
+        <div style="z-index: 1;" class="col-lg-3 col-md-3 col-sm-12 pr-0 h-100">
           <div class="card card-default h-100">
             <div class="card-header border-bottom-0 pb-0">
               <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Process Info</div>
@@ -236,7 +123,7 @@ const getSeverity = (status) => {
               </div>
               <div class="mt-4">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Steps</div>
-                <a :href="route('process-manager.edit', [process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                <a :href="route('process-manager.edit-activity', [process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
                   <div class="flex font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
                     <span>{{ step.name }}</span>
 
@@ -264,70 +151,11 @@ const getSeverity = (status) => {
             <!-- /.card-body -->
           </div>
         </div>
+        <div class="col-lg-9 col-md-9 col-sm-12 pr-0 h-100" style="margin-left: -200px;">
 
-        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
-          <hr class="mt-7" style="border-color: #43AA8B;"/>
+          <process-steps v-if="processManagerStore.step.id !== null" :process="props.process" :steps="props.process.steps" :step="processManagerStore.step"></process-steps>
+
         </div>
-
-        <div class="col-lg-3 col-md-3 col-sm-12 pl-0 pr-o mr-0" style="padding-right: 0px;">
-          <div class="card card-default">
-            <div class="card-header border-bottom-0 pb-0">
-              <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">{{ processManagerStore.step.name }}</div>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <div v-if="!(processManagerStore.step.id > 0)" class="mb-3">
-                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step name</div>
-                <input v-model="processManagerStore.step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?">
-                <div class="input-validation-error" v-if="typeof processManagerStore.stepErrors?.name !== 'undefined'">
-                  <span v-for="(error, index) in processManagerStore.stepErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
-                </div>
-              </div>
-              <div>
-                <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
-              </div>
-              <div class="mt-4">
-                <button v-if="!processManagerStore.loading" @click="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity</button>
-                <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
-              </div>
-
-              <div class="mt-4">
-                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Step Activities</div>
-                <div @click="processManagerStore.set('activity', activity); processManagerStore.clearError()" v-for="(activity, index) in processManagerStore.step.activities" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
-                  <span>Activity Type - {{ activity.field_type.name }}</span>
-                  <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ activity.label }}</div>
-
-                  <div class="items-center">
-                    <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0">
-                      <i class="pi pi-ellipsis-v"></i>
-                    </button>
-                    <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                      <a href="#" class="dropdown-item">
-                        <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
-                      </a>
-                      <div class="dropdown-divider"></div>
-                      <a href="#" class="dropdown-item">
-                        <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
-                      </a>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
-
-            </div>
-            <!-- /.card-body -->
-          </div>
-        </div>
-
-        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
-          <hr class="mt-7" style="border-color: #43AA8B;"/>
-        </div>
-
-        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
-          <a :href="route('process-manager.edit', [process.id])" class="mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add Step</a>
-        </div>
-
       </div>
       <Dialog v-model:visible="processManagerStore.showAddActivity" :draggable="false" modal header="Add note or reminder" :style="{ width: '40vw' }" :class="'notes-dialog'" :breakpoints="{ '1199px': '75vw', '575px': '90vw' } ">
         <template #header>
@@ -443,5 +271,12 @@ const getSeverity = (status) => {
   outline: none;
   border-color: transparent;
   border: none;
+}
+
+.custom-content {
+  padding: 20px;
+  background-color: lightgray;
+  text-align: center;
+  border-radius: 5px;
 }
 </style>

@@ -124,7 +124,7 @@ export const useProcessManagerStore = defineStore({
                     case 201:
                         toast.add({ severity: 'success', detail: response.message, life: 3000 });
                         setTimeout(() => {
-                            window.location.href = '/process-manager/edit/'+this.process.id+'/'+response.data.data.id+'?addActivity=true';
+                            window.location.href = '/process-manager/edit-activity/'+this.process.id+'/'+response.data.data.id+'?addActivity=true';
                         }, 2000);
                         break;
                     case 422:
