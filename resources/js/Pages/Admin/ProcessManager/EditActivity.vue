@@ -151,7 +151,7 @@ onMounted(() => {
             <!-- /.card-body -->
           </div>
         </div>
-        <div class="col-lg-9 col-md-9 col-sm-12 pr-0 h-100" style="margin-left: -200px;">
+        <div class="col-lg-9 col-md-9 col-sm-12 pr-0 h-100" style="/*margin-left: -200px;*/">
 
           <process-steps v-if="processManagerStore.step.id !== null" :process="props.process" :steps="props.process.steps" :step="processManagerStore.step"></process-steps>
 
@@ -271,12 +271,5 @@ onMounted(() => {
   outline: none;
   border-color: transparent;
   border: none;
-}
-
-.custom-content {
-  padding: 20px;
-  background-color: lightgray;
-  text-align: center;
-  border-radius: 5px;
 }
 </style>

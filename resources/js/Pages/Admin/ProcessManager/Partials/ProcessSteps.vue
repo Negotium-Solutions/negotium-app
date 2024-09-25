@@ -29,12 +29,19 @@ function setActiveStep()
     if (step.id === props.step.id) {
       let stepsLength = props.process.steps.length;
       pageProps.visibleSteps.push(step.id);
+
+      if ((index === 0) && (index + 2 <= (stepsLength - 1))) {
+        pageProps.visibleSteps.push(props.steps[index + 2].id);
+      }
+
       if (index > 0) {
         pageProps.visibleSteps.push(props.steps[index - 1].id);
       }
+
       if (index < (stepsLength - 1)) {
         pageProps.visibleSteps.push(props.steps[index + 1].id);
       }
+
       if (index === (stepsLength - 1)) {
         pageProps.shoAddStep = true;
       }
