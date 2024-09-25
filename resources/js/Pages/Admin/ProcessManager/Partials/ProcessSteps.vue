@@ -18,7 +18,6 @@ const pageProps = reactive({
 });
 
 onMounted(() => {
-  // processManagerStore.set('process', props.process);
   setActiveStep();
 });
 
@@ -91,7 +90,6 @@ function hasPreviousIndex(array, index) {
                   <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
                 </div>
 
-
                 <div class="mt-4">
                   <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Step Activities</div>
                   <div @click="processManagerStore.set('activity', activity); processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
@@ -115,7 +113,6 @@ function hasPreviousIndex(array, index) {
                   </div>
 
                 </div>
-
 
               </div>
               <!-- /.card-body -->
