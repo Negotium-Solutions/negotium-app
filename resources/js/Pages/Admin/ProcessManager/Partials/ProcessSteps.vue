@@ -52,16 +52,16 @@ function navigate(process_id, step_id) {
   window.location.href = route('process-manager.edit-activity', [process_id, step_id]);
 }
 
-function hasPreviousIndex(array, index) {
-  return index > 0 && index < array.length;
+function isActiveStep(step) {
+  return step.id === props.step.id;
 }
 </script>
 
 <template>
   <div class="row">
 
-    <template v-for="(step, index) in props.steps">
-      <div @click="navigate(props.process.id, step.id)" class="col-md-4" v-if="pageProps.visibleSteps.includes(step.id)">
+    <template v-for="(step, index) in props.steps" :key="index">
+      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" class="col-md-4 cursor-pointer" v-if="pageProps.visibleSteps.includes(step.id)">
         <div class="row">
 
           <div class="col-md-2 pl-0 pr-0">
@@ -69,7 +69,7 @@ function hasPreviousIndex(array, index) {
           </div>
 
           <div class="col-md-10 pl-0 pr-0">
-            <div class="card card-default bg-gray-200" :class="{'bg-white' : props.step.id === step.id}">
+            <div class="card card-default bg-gray-200" :class="{'bg-white' : isActiveStep(step)}">
               <div class="card-header border-bottom-0 pb-0">
                 <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">{{ step.name }}</div>
               </div>
@@ -86,13 +86,18 @@ function hasPreviousIndex(array, index) {
                   <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
                 </div>
                 <div class="mt-4">
-                  <button :disabled="props.step.id !== step.id" v-if="!processManagerStore.loading" @click.stop="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity</button>
+                  <button v-if="isActiveStep(step) && !processManagerStore.loading" @click.stop="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 w-full hover:bg-neutral-700 hover:text-white">
+                    <i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity
+                  </button>
+                  <button v-else class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 w-full">
+                    <i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity
+                  </button>
                   <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
                 </div>
 
                 <div class="mt-4">
                   <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Step Activities</div>
-                  <div @click="processManagerStore.set('activity', activity); processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
+                  <div @click.stop="isActiveStep(step) ? processManagerStore.set('activity', activity) : ''; processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
                     <span>Activity Type - {{ activity.field_type.name }}</span>
                     <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ activity.label }}</div>
 
