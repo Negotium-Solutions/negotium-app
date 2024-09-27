@@ -12,11 +12,14 @@ import Button from "primevue/button";
 import NegotiumButton from "@/Components/negotium/Button.vue";
 import Dialog from "primevue/dialog";
 import Carousel from "@/Components/negotium/Carousel.vue"
+import {useConfirm} from "primevue/useconfirm";
+import ConfirmDialog from "primevue/confirmdialog";
 // import Carousel from 'primevue/carousel';
 
 const page = usePage();
 const breadCrumbs = [{label: 'Process Information'}, {label: 'Steps & Activities', class: 'active'}, {label: 'Team Access'}];
 
+const confirm = useConfirm();
 const toast = useToast();
 const processManagerStore = useProcessManagerStore();
 
@@ -32,7 +35,6 @@ onMounted(() => {
   window.addEventListener('resize', processManagerStore.handleProcessDivHeight);
   processManagerStore.setLookUp('categories', props.lookup.categories);
   processManagerStore.set('process', props.process);
-  console.log('props.process.steps', props.process.steps);
   processManagerStore.set('dynamicModelFieldTypeGroups', props.dynamicModelFieldTypeGroup);
   processManagerStore.setStep(parseInt(props.step_id));
   processManagerStore.lookup.categories.forEach((category, index) => {
@@ -249,7 +251,7 @@ const getSeverity = (status) => {
                           <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
+                        <a href="#" @click="processManagerStore.deleteItem(step, 'step', confirm, toast)" class="dropdown-item">
                           <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
                         </a>
                       </div>
@@ -306,7 +308,7 @@ const getSeverity = (status) => {
                         <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
                       </a>
                       <div class="dropdown-divider"></div>
-                      <a href="#" class="dropdown-item">
+                      <a href="#" @click="processManagerStore.deleteItem(activity, 'activity', confirm, toast)" class="dropdown-item">
                         <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
                       </a>
                     </div>
@@ -397,6 +399,7 @@ const getSeverity = (status) => {
         </div>
     </template>
   </Toast>
+  <ConfirmDialog></ConfirmDialog>
 </template>
 
 <style scoped>

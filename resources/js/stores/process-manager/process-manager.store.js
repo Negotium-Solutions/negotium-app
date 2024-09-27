@@ -174,9 +174,9 @@ export const useProcessManagerStore = defineStore({
                 this.showAddActivity = true;
             }
         },
-        async deleteProcess(process, confirm, toast) {
+        async deleteItem(item, tableName, confirm, toast) {
             confirm.require({
-                message: 'Are you sure you want to delete this process?',
+                message: 'Are you sure you want to delete this ' + tableName +'?',
                 header: 'Warning',
                 icon: 'pi pi-info-circle',
                 rejectLabel: 'Cancel',
@@ -184,9 +184,12 @@ export const useProcessManagerStore = defineStore({
                 rejectClass: 'btn-sm btn-outline-light border',
                 acceptClass: 'btn-sm btn-danger',
                 accept: () => {
-                    this.apiHelper = new ApiHelper('process');
+                    if (tableName === 'activity')
+                        tableName = 'dynamic-model-field';
 
-                    this.apiHelper.delete(process);
+                    this.apiHelper = new ApiHelper(tableName);
+
+                    this.apiHelper.delete(item);
                     this.apiHelper.isDoneLoading(null, () => {
                         const response = this.apiHelper.response;
                         if (parseInt(response.code) === 204) {

@@ -81,7 +81,7 @@ onMounted(() => {
                     <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a href="#" @click="processManagerStore.deleteProcess(process, confirm, toast)" class="dropdown-item">
+                  <a href="#" @click="processManagerStore.deleteItem(process, 'process', confirm, toast)" class="dropdown-item">
                     <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
                   </a>
                 </div>
