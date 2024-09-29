@@ -61,7 +61,7 @@ function isActiveStep(step) {
   <div class="row">
 
     <template v-for="(step, index) in props.steps" :key="index">
-      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" class="col-md-4 cursor-pointer" v-if="pageProps.visibleSteps.includes(step.id)">
+      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" class="col-md-5 cursor-pointer" v-if="pageProps.visibleSteps.includes(step.id)">
         <div class="row">
 
           <div class="col-md-2 pl-0 pr-0">

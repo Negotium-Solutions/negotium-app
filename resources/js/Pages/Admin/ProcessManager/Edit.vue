@@ -183,7 +183,7 @@ const getSeverity = (status) => {
           -->
 
       <div class="row" id="process-creator-content">
-        <div class="col-lg-3 col-md-3 col-sm-12 pr-0 h-100">
+        <div class="col-lg-3 col-md-4 col-sm-12 pr-0 h-100">
           <div class="card card-default h-100">
             <div class="card-header border-bottom-0 pb-0">
               <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Process Info</div>
@@ -192,7 +192,7 @@ const getSeverity = (status) => {
             <div class="card-body">
               <div class="mb-2">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Process name</div>
-                <input v-model="processManagerStore.process.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?">
+                <input v-model="processManagerStore.process.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?" disabled>
                 <div class="input-validation-error" v-if="typeof processManagerStore.processErrors?.name !== 'undefined'">
                   <span v-for="(error, index) in processManagerStore.processErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
                 </div>
@@ -203,7 +203,7 @@ const getSeverity = (status) => {
                   <template #value="slotProps">
                     <div v-if="slotProps.value" class="w-100">
                       <span>{{ slotProps.value.name }}</span>
-                      <i class="fa fa-square float-right" :style="'color: '+slotProps.value.color"></i>
+                      <i class="fa fa-square float-right mt-1" :style="'color: '+slotProps.value.color"></i>
                     </div>
                     <span v-else>
                           {{ slotProps.placeholder }}
@@ -238,17 +238,17 @@ const getSeverity = (status) => {
               </div>
               <div class="mt-4">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Steps</div>
-                <a :href="route('process-manager.edit', [process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
-                  <div class="flex font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
+                <a :href="route('process-manager.edit', [process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-52 place-items-center"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                  <div class="w-100 d-block font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
                     <span>{{ step.name }}</span>
 
-                    <div class="items-center">
-                      <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0">
+                    <div class="items-center float-right">
+                      <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0 pt-0">
                         <i class="pi pi-ellipsis-v"></i>
                       </button>
                       <div class="dropdown-menu dropdown-menu dropdown-menu-right">
                         <a href="#" class="dropdown-item">
-                          <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
+                          <small>Edit</small> <i class="pi pi-file-edit float-right mt-0"></i>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="#" @click="processManagerStore.deleteItem(step, 'step', confirm, toast)" class="dropdown-item">
@@ -267,14 +267,14 @@ const getSeverity = (status) => {
           </div>
         </div>
 
-        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
-          <hr class="mt-7" style="border-color: #43AA8B;"/>
+        <div class="col-md-1 col-sm-12 pl-0 pr-0 place-items-center md:mt-7 md:pt-0 pr-0">
+          <hr class="border-bottom bg-olive ml-0 mr-0 md:mt-9" />
         </div>
 
-        <div class="col-lg-3 col-md-3 col-sm-12 pl-0 pr-o mr-0" style="padding-right: 0px;">
+        <div class="col-lg-4 col-md-5 col-sm-12 pl-0 pr-0 mr-0 ml-0">
           <div class="card card-default">
             <div class="card-header border-bottom-0 pb-0">
-              <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">{{ processManagerStore.step.name }}</div>
+              <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Step {{processManagerStore.process.steps && processManagerStore.process.steps.length ? processManagerStore.process.steps.length + 1 : 1}}</div>
             </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -289,11 +289,11 @@ const getSeverity = (status) => {
                 <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
               </div>
               <div class="mt-4">
-                <button v-if="!processManagerStore.loading" @click="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity</button>
-                <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
+                <button v-if="!processManagerStore.loading" @click="processManagerStore.showAddActivityModal(toast)" class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity/-20 text-neutral-700 hover:bg-neutral-700 hover:text-white"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity</button>
+                <button v-if="processManagerStore.loading" class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
               </div>
 
-              <div class="mt-4">
+              <div class="mt-4" v-if="processManagerStore.step.activities && processManagerStore.step.activities.length > 0">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Step Activities</div>
                 <div @click="processManagerStore.set('activity', activity); processManagerStore.clearError()" v-for="(activity, index) in processManagerStore.step.activities" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
                   <span>Activity Type - {{ activity.field_type.name }}</span>
@@ -322,11 +322,11 @@ const getSeverity = (status) => {
           </div>
         </div>
 
-        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
-          <hr class="mt-7" style="border-color: #43AA8B;"/>
+        <div class="col-md-1 col-sm-12 pl-0 pr-0 place-items-center md:mt-7 md:pt-0 pr-0">
+          <hr class="border-bottom bg-olive ml-0 mr-0 md:mt-9" />
         </div>
 
-        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4">
+        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 pl-0 pt-4 mt-3" style="min-width: fit-content;">
           <a :href="route('process-manager.edit', [process.id])" class="mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add Step</a>
         </div>
 

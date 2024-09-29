@@ -123,21 +123,21 @@ onMounted(() => {
               </div>
               <div class="mt-4">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Steps</div>
-                <a :href="route('process-manager.edit-activity', [process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
-                  <div class="flex font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
-                    <span>{{ step.name }}</span>
+                <a :href="route('process-manager.edit', [process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-52 place-items-center" :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                  <div class="w-100 d-block font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
+                    <span :class="{ 'text-white' : processManagerStore.step.id === step.id }">{{ step.name }}</span>
 
-                    <div class="items-center">
-                      <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0">
+                    <div class="items-center float-right">
+                      <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0 pt-0">
                         <i class="pi pi-ellipsis-v"></i>
                       </button>
                       <div class="dropdown-menu dropdown-menu dropdown-menu-right">
                         <a href="#" class="dropdown-item">
-                          <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
+                          <small>Edit</small> <i class="pi pi-file-edit float-right mt-0"></i>
                         </a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">
-                          <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
+                          <small>Delete</small> <i class="pi pi-times float-right mt-0"></i>
                         </a>
                       </div>
                     </div>
