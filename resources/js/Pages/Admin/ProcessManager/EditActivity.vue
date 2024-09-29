@@ -88,7 +88,7 @@ onMounted(() => {
                   <template #value="slotProps">
                     <div v-if="slotProps.value" class="w-100">
                       <span>{{ slotProps.value.name }}</span>
-                      <i class="fa fa-square float-right" :style="'color: '+slotProps.value.color"></i>
+                      <i class="fa fa-square float-right mt-1" :style="'color: '+slotProps.value.color"></i>
                     </div>
                     <span v-else>
                           {{ slotProps.placeholder }}
@@ -123,7 +123,7 @@ onMounted(() => {
               </div>
               <div class="mt-4">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Steps</div>
-                <a :href="route('process-manager.edit', [process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-52 place-items-center" :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                <a :href="route('process-manager.edit', [process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-2 place-items-center" :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
                   <div class="w-100 d-block font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
                     <span :class="{ 'text-white' : processManagerStore.step.id === step.id }">{{ step.name }}</span>
 
