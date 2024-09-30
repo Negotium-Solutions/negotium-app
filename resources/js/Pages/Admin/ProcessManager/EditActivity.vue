@@ -165,10 +165,16 @@ onMounted(() => {
         </template>
         <div class="mt-2">
           <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 pb-2">Activity name</span>
+          <a class="text-neutral-700 text-sm float-right text-green-3 font-normal font-['Nunito'] leading-3 pb-2" :class="{ 'text-red': processManagerStore.showInput}" @click.prevent="processManagerStore.toggleGuidanceNote()">{{ processManagerStore.guidanceNoteAction }}</a>
           <input v-model="processManagerStore.activity.name" type="text" class="form-control">
           <div class="input-validation-error" v-if="typeof processManagerStore.activityErrors?.name !== 'undefined'">
             <span v-for="(error, index) in processManagerStore.activityErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
           </div>
+        </div>
+
+        <div v-if="processManagerStore.showInput" class="mb-2">
+          <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-3 pb-2">Guidance note</span>
+          <input v-model="processManagerStore.guidanceNote" type="text" class="form-control" placeholder="Enter your guidance note...">
         </div>
 
         <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Select activity type <i class="information ml-2 bg-sky-700"></i></p>
