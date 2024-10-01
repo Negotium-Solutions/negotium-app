@@ -132,7 +132,7 @@ function isActiveStep(step) {
     <div class="col-md-4" v-if="pageProps.shoAddStep">
       <div class="row">
         <div class="col-md-2 pl-0 pr-0">
-          <hr class="mt-7" style="border-color: rgb(67, 170, 139);">
+          <hr class="mt-7" style="border-color: rgb(67, 170, 139);"> <!-- TODO: Move to css file -->
         </div>
         <div class="col-md-10 pl-0 pr-0">
           <div class="col-lg-4 col-md-4 col-sm-12 pr-0 pl-0 pt-1">
