@@ -76,30 +76,6 @@ onMounted(() => {
               <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
             </div>
 
-            <div class="mt-4">
-              <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Step Activities</div>
-              <div @click="processManagerStore.set('activity', activity); processManagerStore.clearError()" v-for="(activity, index) in processManagerStore.step.activities" :key="index" class="w-100 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
-                <span>Activity Type - {{ activity.field_type.name }}</span>
-                <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >{{ activity.label }}</div>
-
-                <div class="items-center">
-                  <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0">
-                    <i class="pi pi-ellipsis-v"></i>
-                  </button>
-                  <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                    <a href="#" class="dropdown-item">
-                      <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a href="#" @click="processManagerStore.deleteItem(activity, 'activity', confirm, toast)" class="dropdown-item">
-                      <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-
           </div>
           <!-- /.card-body -->
         </div>
