@@ -54,7 +54,10 @@ export const useProcessManagerStore = defineStore({
         lookup: {
             categories: null
         },
-        apiHelper: null
+        apiHelper: null,
+        guidanceNoteAction: '+Add guidance note',
+        guidanceNote: '',
+        showInput: false,
     }),
     actions: {
         async createCategory(toast) {
@@ -296,7 +299,11 @@ export const useProcessManagerStore = defineStore({
         },
         removeOption(options, index) {
             options.splice(index, 1);
-        }
+        },
+        toggleGuidanceNote() {
+            this.showInput = !this.showInput;
+            this.guidanceNoteAction = this.showInput ? 'Remove guidance note' : '+Add guidance note'; // Change anchor text
+        },
     },
     getters: {
         filterByCategory(state) {

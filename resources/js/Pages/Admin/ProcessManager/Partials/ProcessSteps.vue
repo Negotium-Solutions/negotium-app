@@ -7,7 +7,7 @@ const processManagerStore = useProcessManagerStore();
 
 const props = defineProps({
   process: null,
-  steps: [],
+  steps: null,
   step: null
 });
 
@@ -24,7 +24,6 @@ onMounted(() => {
 function setActiveStep()
 {
   props.steps.forEach((step, index) => {
-    console.log('test', props.steps);
     if (step.id === props.step.id) {
       let stepsLength = props.process.steps.length;
       pageProps.visibleSteps.push(step.id);
@@ -61,7 +60,7 @@ function isActiveStep(step) {
   <div class="row">
 
     <template v-for="(step, index) in props.steps" :key="index">
-      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" class="col-md-5 cursor-pointer" v-if="pageProps.visibleSteps.includes(step.id)">
+      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" class="col-md-4 cursor-pointer" v-if="pageProps.visibleSteps.includes(step.id)" style="/*margin-left: -200px;*/">
         <div class="row">
 
           <div class="col-md-2 pl-0 pr-0">
@@ -92,7 +91,6 @@ function isActiveStep(step) {
                   <button v-else class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700">
                     <i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity
                   </button>
-                  <button v-if="processManagerStore.loading" class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
                 </div>
 
                 <div class="mt-4" v-if="step.activities && step.activities.length > 0">
@@ -132,7 +130,7 @@ function isActiveStep(step) {
     <div class="col-md-4" v-if="pageProps.shoAddStep">
       <div class="row">
         <div class="col-md-2 pl-0 pr-0">
-          <hr class="mt-7" style="border-color: rgb(67, 170, 139);">
+          <hr class="mt-7" style="border-color: rgb(67, 170, 139);"> <!-- TODO: Move to css file -->
         </div>
         <div class="col-md-10 pl-0 pr-0">
           <div class="col-lg-4 col-md-4 col-sm-12 pr-0 pl-0 pt-1">
