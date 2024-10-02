@@ -7,7 +7,7 @@ const processManagerStore = useProcessManagerStore();
 
 const props = defineProps({
   process: null,
-  steps: [],
+  steps: null,
   step: null
 });
 
@@ -24,7 +24,6 @@ onMounted(() => {
 function setActiveStep()
 {
   props.steps.forEach((step, index) => {
-    console.log('test', props.steps);
     if (step.id === props.step.id) {
       let stepsLength = props.process.steps.length;
       pageProps.visibleSteps.push(step.id);
@@ -61,7 +60,7 @@ function isActiveStep(step) {
   <div class="row">
 
     <template v-for="(step, index) in props.steps" :key="index">
-      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" class="col-md-4 cursor-pointer" v-if="pageProps.visibleSteps.includes(step.id)">
+      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" class="col-md-4 cursor-pointer" v-if="pageProps.visibleSteps.includes(step.id)" style="/*margin-left: -200px;*/">
         <div class="row">
 
           <div class="col-md-2 pl-0 pr-0">
@@ -92,7 +91,6 @@ function isActiveStep(step) {
                   <button v-else class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 w-full">
                     <i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity
                   </button>
-                  <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
                 </div>
 
                 <div class="mt-4">
