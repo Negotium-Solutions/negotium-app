@@ -1,7 +1,7 @@
 <script setup>
 
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import { onMounted, reactive, ref, computed } from "vue";
+import { onMounted, ref } from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
 import Toast from "primevue/toast";
@@ -11,20 +11,27 @@ import { usePage } from "@inertiajs/vue3";
 import Button from "primevue/button";
 
 const page = usePage();
-const breadCrumbs = [{label: 'Process Information', class: 'active'}, {label: 'Steps & Activities'}, {label: 'Team Access'}];
+const breadCrumbs = [{label: 'Process Information'}, {label: 'Steps & Activities', class: 'active'}, {label: 'Team Access'}];
+import {useConfirm} from "primevue/useconfirm";
+import ConfirmDialog from "primevue/confirmdialog";
 
+const confirm = useConfirm();
 const toast = useToast();
 const processManagerStore = useProcessManagerStore();
-
-const props = defineProps({
-  lookup: null
-});
 
 onMounted(() => {
   processManagerStore.handleProcessDivHeight()
   window.addEventListener('resize', processManagerStore.handleProcessDivHeight);
-  processManagerStore.setLookUp('categories', props.lookup.categories);
-})
+
+  // Get the current URL
+  const urlParams = new URLSearchParams(window.location.search);
+  // Check if 'addActivity' is set
+  if (urlParams.has('addActivity')) {
+    if(urlParams.get('addActivity')) {
+      processManagerStore.showAddActivity = true;
+    }
+  }
+});
 </script>
 
 <template>
@@ -41,7 +48,6 @@ onMounted(() => {
     </template>
 
     <div class="content-container pl-4 pr-4">
-
       <div class="row" id="process-creator-content">
         <div class="col-lg-3 col-md-3 col-sm-12 pr-0 h-100">
           <div class="card card-default h-100">
@@ -59,7 +65,7 @@ onMounted(() => {
               </div>
               <div class="mb-2">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Category</div>
-                <Dropdown v-model="processManagerStore.selectedCategory" :options="processManagerStore.lookup.categories" filter @filter="processManagerStore.onFilter" optionLabel="name" placeholder="Select a category" class="mt-2 w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': false}">
+                <Dropdown disabled v-model="processManagerStore.selectedCategory" :options="processManagerStore.lookup.categories" filter @filter="processManagerStore.onFilter" optionLabel="name" placeholder="Select a category" class="mt-2 w-full md:w-14rem form-control-custom" :class="{'is-invalid-custom': false}">
                   <template #value="slotProps">
                     <div v-if="slotProps.value" class="w-100">
                       <span>{{ slotProps.value.name }}</span>
@@ -97,15 +103,40 @@ onMounted(() => {
                 <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
               </div>
               <div class="mt-4">
-                <button v-if="!processManagerStore.loading" @click="processManagerStore.createProcess(toast)"  class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Create process</button>
-                <button v-if="processManagerStore.loading"  class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
+                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Steps</div>
+                <a :href="route('process-manager.edit-activity', [processManagerStore.process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                  <div class="flex font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
+                    <span>{{ step.name }}</span>
+
+                    <div class="items-center">
+                      <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0">
+                        <i class="pi pi-ellipsis-v"></i>
+                      </button>
+                      <div class="dropdown-menu dropdown-menu dropdown-menu-right">
+                        <a href="#" class="dropdown-item">
+                          <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" class="dropdown-item">
+                          <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+
+                </a>
+
               </div>
             </div>
             <!-- /.card-body -->
           </div>
         </div>
-      </div>
 
+        <div class="col-lg-9 col-md-9 col-sm-12 pr-0 h-100">
+          <slot></slot>
+        </div>
+
+      </div>
     </div>
   </AuthenticatedLayout>
   <Toast position="top-center">
@@ -115,7 +146,5 @@ onMounted(() => {
         </div>
     </template>
   </Toast>
+  <ConfirmDialog></ConfirmDialog>
 </template>
-
-<style scoped>
-</style>

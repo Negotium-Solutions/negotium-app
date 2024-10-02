@@ -42,6 +42,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/process-manager', [ProcessManagerController::class, 'index'])->name('process-manager');
     Route::get('/process-manager/create', [ProcessManagerController::class, 'create'])->name('process-manager.create');
     Route::get('/process-manager/edit/{process_id}', [ProcessManagerController::class, 'edit'])->name('process-manager.edit');
+    Route::get('/process-manager/edit/{process_id}/{step_id?}', [ProcessManagerController::class, 'edit'])->name('process-manager.edit');
+    Route::get('/process-manager/edit-activity/{process_id}/{step_id?}', [ProcessManagerController::class, 'editActivity'])->name('process-manager.edit-activity');
 
     Route::get('/step/create/{process_id}', [StepController::class, 'create'])->name('step.create');
 });

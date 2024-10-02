@@ -29,7 +29,6 @@ onMounted(() => {
   window.addEventListener('resize', profileManagerStore.handleProfileDivHeight);
   window.addEventListener('resize', profileManagerStore.handleProfileMenuDivHeight);
 });
-
 </script>
 
 <template>

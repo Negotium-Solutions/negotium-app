@@ -12,10 +12,12 @@ export const useProcessManagerStore = defineStore({
         showAddActivity: false,
         loading: false,
         selectedOption: "d",
+        activityOptionInput: null,
         activity: {
             name: null,
             type_id: null,
-            validations: []
+            validations: [],
+            options: []
         },
         activityErrors: null,
         sortByOptions: [
@@ -52,7 +54,10 @@ export const useProcessManagerStore = defineStore({
         lookup: {
             categories: null
         },
-        apiHelper: null
+        apiHelper: null,
+        guidanceNoteAction: '+Add guidance note',
+        guidanceNote: '',
+        showInput: false,
     }),
     actions: {
         async createCategory(toast) {
@@ -122,12 +127,7 @@ export const useProcessManagerStore = defineStore({
                     case 201:
                         toast.add({ severity: 'success', detail: response.message, life: 3000 });
                         setTimeout(() => {
-                            this.step.id = response.data.id;
-                            this.step.order = response.data.order;
-                            this.process.steps.push(this.step);
-                            this.loading = false;
-                            this.showAddActivity = true;
-                            // location.reload();
+                            window.location.href = '/process-manager/edit-activity/'+this.process.id+'/'+response.data.data.id+'?addActivity=true';
                         }, 2000);
                         break;
                     case 422:
@@ -155,19 +155,19 @@ export const useProcessManagerStore = defineStore({
                     case 201:
                         toast.add({ severity: 'success', detail: response.message, life: 3000 });
                         setTimeout(() => {
-                            this.loading = false;
                             location.reload();
                         }, 3000);
                         break;
                     case 422:
                         this.activityErrors = response.errors;
                         toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                        this.loading = false;
                         break;
                     default:
                         toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                        this.loading = false;
                         break;
                 }
-                this.loading = false;
             });
         },
         async showAddActivityModal(toast){
@@ -177,9 +177,9 @@ export const useProcessManagerStore = defineStore({
                 this.showAddActivity = true;
             }
         },
-        async deleteProcess(process, confirm, toast) {
+        async deleteItem(item, tableName, confirm, toast) {
             confirm.require({
-                message: 'Are you sure you want to delete this process?',
+                message: 'Are you sure you want to delete this ' + tableName +'?',
                 header: 'Warning',
                 icon: 'pi pi-info-circle',
                 rejectLabel: 'Cancel',
@@ -187,9 +187,12 @@ export const useProcessManagerStore = defineStore({
                 rejectClass: 'btn-sm btn-outline-light border',
                 acceptClass: 'btn-sm btn-danger',
                 accept: () => {
-                    this.apiHelper = new ApiHelper('process');
+                    if (tableName === 'activity')
+                        tableName = 'dynamic-model-field';
 
-                    this.apiHelper.delete(process);
+                    this.apiHelper = new ApiHelper(tableName);
+
+                    this.apiHelper.delete(item);
                     this.apiHelper.isDoneLoading(null, () => {
                         const response = this.apiHelper.response;
                         if (parseInt(response.code) === 204) {
@@ -214,6 +217,15 @@ export const useProcessManagerStore = defineStore({
         },
         set(key, value) {
             this.$state[key] = value;
+        },
+        setStep(step_id){
+            if(step_id > 0) {
+                this.process.steps.forEach((step) => {
+                    if(step.id === step_id) {
+                        this.step = step;
+                    }
+                });
+            }
         },
         get(key) {
             return this.$state[key];
@@ -279,7 +291,19 @@ export const useProcessManagerStore = defineStore({
         },
         setDynamicModelFieldType(id) {
             this.dynamicModelFieldType = id;
-        }
+        },
+        addOption(options) {
+            const trimmedInput = this.activityOptionInput.trim();
+            options.push(trimmedInput);
+            this.activityOptionInput = '';
+        },
+        removeOption(options, index) {
+            options.splice(index, 1);
+        },
+        toggleGuidanceNote() {
+            this.showInput = !this.showInput;
+            this.guidanceNoteAction = this.showInput ? 'Remove guidance note' : '+Add guidance note'; // Change anchor text
+        },
     },
     getters: {
         filterByCategory(state) {
