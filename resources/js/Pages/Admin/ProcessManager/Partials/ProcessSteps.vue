@@ -81,8 +81,7 @@ function isActiveStep(step) {
 }
 
 function isHrVisible(step){
-  if(props.steps &&  props.steps.length > 0){
-    console.log(counter)
+  if(props.steps &&  props.steps.length > 1){
     if(counter == 0){
     counter++
     return true
