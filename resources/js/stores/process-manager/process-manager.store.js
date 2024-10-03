@@ -289,6 +289,8 @@ export const useProcessManagerStore = defineStore({
             let pIo = document.getElementById('project-info-owidth')
             let pI = document.getElementById('project-info-width')
             if(pI && pIo){
+                pI.style.minHeight = wrapperHeight+'px'
+                pI.style.height = wrapperHeight+'px'
             pI.style.width = pIo.offsetWidth+'px'
             }
         },
