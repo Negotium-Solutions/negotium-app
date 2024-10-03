@@ -97,7 +97,7 @@ function isHrVisible(step){
           </div>
 
           <div class="col-md-10 pl-0 pr-0" >
-            <div class="card card-default bg-gray-200" :class="{'bg-white' : isActiveStep(step)}">
+            <div class="card card-default" :class="isActiveStep(step) ? 'bg-white' : 'opacity-75'">
               <div class="card-header border-bottom-0 pb-0">
                 <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">{{ step.name }}</div>
               </div>
@@ -142,15 +142,15 @@ function isHrVisible(step){
 
               </div>
               <!-- /.card-body -->
-              <div class="card-footer border-top-0 bg-gray-200" :class="{'bg-white' : isActiveStep(step)}">
+              <div class="card-footer border-top-0" :class="isActiveStep(step) ? 'bg-white' : 'bg-white opacity-75'">
                 <div class="mb-2">
                   <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
                 </div>
                   <button v-if="isActiveStep(step) && !processManagerStore.loading" @click.stop="processManagerStore.showAddActivityModal(toast)" class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white">
-                    <i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity
+                    <i class="pi pi-plus text-sm custom-icon-sm"></i> Add Activity
                   </button>
-                  <button v-else class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700">
-                    <i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity
+                  <button v-else class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white">
+                    <i class="pi pi-plus text-sm custom-icon-sm"></i> Add Activity
                   </button>
               </div>
             </div>

@@ -108,13 +108,20 @@ onMounted(() => {
       </div>
 
       <template #footer>
-        <div class="row">
-          <div class="col-12 p-4 pr-0">
-            <button class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2" @click="processManagerStore.showAddActivity = false">Cancel</button>
-            <negotium-button v-if="!processManagerStore.loading"  @click="processManagerStore.createActivity(toast)" :value="'Save'"></negotium-button>
-            <button v-if="processManagerStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+        <div class="row w-100 m-0">
+          <div class="col-12 pt-3 pb-3 flex justify-between">
+            <button class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700" @click="processManagerStore.showAddActivity = false">
+              Cancel
+            </button>
+            <div class="flex items-center">
+              <button class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white" v-if="!processManagerStore.loading" @click="processManagerStore.createActivity(toast)">Save Activity</button>
+              <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white" disabled>
+                <i class="pi pi-spin pi-spinner"></i> Loading ...
+              </button>
+            </div>
           </div>
         </div>
+
       </template>
     </Dialog>
 
