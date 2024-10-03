@@ -52,7 +52,7 @@ onMounted(() => {
 
     <process-steps v-if="processManagerStore.step.id !== null" :process="processManagerStore.process" :steps="processManagerStore.process.steps" :step="processManagerStore.step"></process-steps>
 
-    <Dialog v-model:visible="processManagerStore.showAddActivity" :draggable="false" modal header="Add note or reminder" :style="{ width: '40vw' }" :class="'notes-dialog'" :breakpoints="{ '1199px': '75vw', '575px': '90vw' } ">
+    <Dialog v-model:visible="processManagerStore.showAddActivity" :draggable="false" modal header="Add note or reminder" :style="{ width: '30vw' }" :class="'notes-dialog'" :breakpoints="{ '900px': '65vw', '575px': '90vw' } ">
       <template #header>
         <div class="row m-0 p-0 pb-2">
           <div class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto'] leading-loose w-100">Add new activity</div>
@@ -74,18 +74,18 @@ onMounted(() => {
 
       <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 d-flex">Select activity type <i class="information ml-2 bg-sky-700"></i></p>
       <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-        <label class="btn btn-sm btn-default" :class="{ 'bg-gray-300': processManagerStore.getDynamicModelFieldTypeGroup === dynamicModelFieldTypeGroup.id }" @click="processManagerStore.setDynamicModelFieldTypeGroup(dynamicModelFieldTypeGroup.id)" v-for="(dynamicModelFieldTypeGroup, index) in processManagerStore.dynamicModelFieldTypeGroups" :key="index">
-          <input type="radio" name="options" :id="'option_'+dynamicModelFieldTypeGroup.id" autocomplete="off"> {{ dynamicModelFieldTypeGroup.name }}
+        <label class="btn btn-sm btn-outline-secondary border-neutral-700 border-opacity-20" :class="{ 'bg-zinc-100': processManagerStore.getDynamicModelFieldTypeGroup === dynamicModelFieldTypeGroup.id }" @click="processManagerStore.setDynamicModelFieldTypeGroup(dynamicModelFieldTypeGroup.id)" v-for="(dynamicModelFieldTypeGroup, index) in processManagerStore.dynamicModelFieldTypeGroups" :key="index">
+          <input type="radio" name="options" :id="'option_'+dynamicModelFieldTypeGroup.id" autocomplete="off"> <span class="text-neutral-700 font-normal" :class="{ 'text-white': processManagerStore.getDynamicModelFieldTypeGroup === dynamicModelFieldTypeGroup.id }">{{ dynamicModelFieldTypeGroup.name }}</span>
         </label>
       </div>
       <p class="mt-3 mb-1 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Select <span class="font-weight-bold">user input</span></p>
       <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
-        <label class="btn btn-sm btn-default" :class="{ 'bg-gray-300': processManagerStore.getDynamicModelFieldType === dynamicModelFieldType.id }" @click="processManagerStore.setDynamicModelFieldType(dynamicModelFieldType.id)" v-for="(dynamicModelFieldType, at_index) in processManagerStore.getDynamicModelFieldTypeByDynamicModelFieldTypeGroup" :key="at_index">
-          <input type="radio" name="options" :id="'option_'+dynamicModelFieldType.id" autocomplete="off"> {{ dynamicModelFieldType.name }}
+        <label class="btn btn-sm btn-outline-secondary border-neutral-700 border-opacity-20" :class="{ 'bg-zinc-100': processManagerStore.getDynamicModelFieldType === dynamicModelFieldType.id }" @click="processManagerStore.setDynamicModelFieldType(dynamicModelFieldType.id)" v-for="(dynamicModelFieldType, at_index) in processManagerStore.getDynamicModelFieldTypeByDynamicModelFieldTypeGroup" :key="at_index">
+          <input type="radio" name="options" :id="'option_'+dynamicModelFieldType.id" autocomplete="off"> <span class="text-neutral-700 font-normal" :class="{ 'text-white': processManagerStore.getDynamicModelFieldType === dynamicModelFieldType.id }">{{ dynamicModelFieldType.name }}</span>
         </label>
       </div>
 
-      <div class="mt-3 mb-1">
+      <div class="mt-3 mb-1" v-if="processManagerStore.getDynamicModelFieldTypeGroup === 2">
         <p class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Add <span class="font-weight-bold"> input options</span></p>
         <div v-if="processManagerStore.getDynamicModelFieldTypeGroup === 2" class="w-100 mt-2 options-container">
           <div v-for="(option, index) in processManagerStore.activity.options" :key="index" class="option-tag">

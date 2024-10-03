@@ -54,7 +54,7 @@ onMounted(() => {
         <hr class="mt-7" style="border-color: #43AA8B;"/>
       </div>
 
-      <div class="col-lg-3 col-md-3 col-sm-12 pl-0 pr-o mr-0" style="padding-right: 0px;">
+      <div class="col-lg-4 col-md-4 col-sm-12 pl-0 pr-o mr-0" style="padding-right: 0px;">
         <div class="card card-default">
           <div class="card-header border-bottom-0 pb-0">
             <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">{{ processManagerStore.step.name }}</div>
@@ -71,13 +71,20 @@ onMounted(() => {
             <div>
               <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
             </div>
-            <div class="mt-4">
-              <button v-if="!processManagerStore.loading" @click="processManagerStore.showAddActivityModal(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity</button>
-              <button v-if="processManagerStore.loading" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
-            </div>
 
           </div>
           <!-- /.card-body -->
+          <div class="card-footer border-top-0 bg-white">
+              <div class="mb-2">
+                <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
+              </div>
+                <button v-if="!processManagerStore.loading" @click.stop="processManagerStore.showAddActivityModal(toast)" class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white">
+                  <i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity
+                </button>
+                <button v-else class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700">
+                  <i class="pi pi-plus text-sm custom-icon-sm"></i> Add activity
+                </button>
+            </div>
         </div>
       </div>
 
