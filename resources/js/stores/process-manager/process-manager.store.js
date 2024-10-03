@@ -273,6 +273,7 @@ export const useProcessManagerStore = defineStore({
                 processContent.style.minHeight = newHeight+'px'
                 processContent.style.height = newHeight+'px'
                 processContent.classList.add('bg-content-body')
+
             if(processContent){
                 processContent.style.minHeight = newHeight+'px'
                 processContent.style.height = newHeight+'px'
@@ -284,6 +285,12 @@ export const useProcessManagerStore = defineStore({
             wrapperHeight -= parseFloat(wrapperComputedStyle.paddingTop) + parseFloat(wrapperComputedStyle.paddingBottom)
             let processCreatorContent = document.getElementById('process-creator-content')
             processCreatorContent.style.height = wrapperHeight+'px'
+            
+            let pIo = document.getElementById('project-info-owidth')
+            let pI = document.getElementById('project-info-width')
+            if(pI && pIo){
+            pI.style.width = pIo.offsetWidth+'px'
+            }
         },
         setDynamicModelFieldTypeGroup(id) {
             this.dynamicModelFieldTypeGroup = id;
