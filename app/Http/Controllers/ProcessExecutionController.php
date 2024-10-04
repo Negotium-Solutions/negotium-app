@@ -40,6 +40,10 @@ class ProcessExecutionController extends Controller
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
         $process = json_decode($this->http->get("{$this->url}/process-execution?with=&profile_id={$id}&process_id={$process_id}")->getBody(), true)['data'] ?? [];
 
+        if ($step_id !== null && $step_id > 0) {
+            $process['step_id'] = (int)$step_id;
+        }
+
         $parameters = [
             'profile' => $profile,
             'process' => $process,
