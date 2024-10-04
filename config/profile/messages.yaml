@@ -8,6 +8,7 @@ processes:
                         This will {action} the process from this profile only.
   process_error: We weren't able to {action} {processName}, please try again.
   process_success: Process {action} successfully.
+  success_profile_process_updated: Process {processName} for profile {profileName} successfully updated.
 
 communication:
   no_communications_for_profile: <b>You haven't send any communications to this profile.</b> <br/>

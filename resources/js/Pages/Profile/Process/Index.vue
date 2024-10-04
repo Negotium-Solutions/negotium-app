@@ -110,7 +110,7 @@ function assignProcess() {
             <td>{{ FunctionsHelper.DateTime(process.log.created_at) }}</td>
             <td class="last pl-2">
               <div class="d-flex">
-                <a :href="route('profile.process-execution.edit', { id: profileManagerStore.profile.id, process_id: process.id, step_id: 1 })" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Start</a>
+                <a :href="route('process-execution.edit', { profile_id: profileManagerStore.profile.id, process_id: process.id, step_id: 0})" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Start</a>
                 <div class="flex flex-col items-center pl-2">
                   <button @click="profileManagerStore.set('process', process)" type="button" data-toggle="dropdown" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 inline-flex">
                     <i class="pi pi-ellipsis-v"></i>

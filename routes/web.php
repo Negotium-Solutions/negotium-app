@@ -34,7 +34,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{id?}/documents', [ProfileController::class, 'documents'])->name('profile.documents');
     Route::get('/profile/{id?}/notes', [ProfileController::class, 'notes'])->name('profile.notes');
     Route::get('/profile/{id?}/communications', [ProfileController::class, 'communications'])->name('profile.communications');
-    Route::get('/profile/{id}/process-execution/edit/{process_id}/{step_id}', [ProcessExecutionController::class, 'edit'])->name('profile.process-execution.edit');
+
+    // Process Execution
+    Route::get('/process-execution/{profile_id}/edit/{process_id}/{step_id}', [ProcessExecutionController::class, 'edit'])->name('process-execution.edit');
 
     Route::get('/process', [ProcessController::class, 'index'])->name('process');
     Route::get('/process/create', [ProcessController::class, 'create'])->name('process.create');

@@ -120,6 +120,30 @@ class ApiHelper {
         }
     }
 
+    async updateFields(item) {
+        this.loading = true;
+        this.resetResponse();
+
+        let _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point+'/update';
+
+        try {
+            const _response = await axios.post(_url, item, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ` + this.user.token,
+                },
+            });
+
+            if (_response.status === 200 || _response.status === 204) {
+                this.setResponse(_response.status, 'success', _response.data.message, [], _response.data);
+            }
+        } catch (error) {
+            this.setResponse(error.response.status,'error', error.response.statusText, error.response.data.errors, []);
+        } finally {
+            this.loading = false;
+        }
+    }
+
     /**
      * Deletes an item
      *
