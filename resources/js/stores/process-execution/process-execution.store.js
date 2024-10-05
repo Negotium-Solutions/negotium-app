@@ -17,6 +17,7 @@ export const useProcessExecution = defineStore({
         profile: null,
         profileProcessFieldsErrors: null,
         loading: false,
+        saveStepLoading: false,
         status: {
             loading: false
         },
@@ -68,11 +69,28 @@ export const useProcessExecution = defineStore({
             }
             return false;
         },
-        async storeDynamicModel(toast) {
+        handleInnerContentDivHeight(){
+            let windowHeight = window.innerHeight,
+                innerContent = document.getElementById('inner-content'),
+                processExecutionContent = document.getElementById('process-execution-content');
+
+            if (innerContent) {
+                innerContent.style.minHeight = windowHeight + 'px';
+            }
+
+            if (processExecutionContent) {
+                processExecutionContent.style.minHeight = windowHeight+'px';
+            }
+        },
+        async storeDynamicModel(toast, step = null, profile_type_id = null) {
             this.apiHelper = new ApiHelper('dynamic-field')
             console.log('DynamicModel', this.process);
 
-            this.loading = true;
+            if (step !== null) {
+                this.saveStepLoading = true;
+            } else {
+                this.loading = true;
+            }
 
             await this.apiHelper.updateFields(this.process, this.process.id);
             this.apiHelper.isDoneLoading(null, () => {
@@ -87,26 +105,52 @@ export const useProcessExecution = defineStore({
                         toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.success_profile_process_updated, removeProcessVariables), life: 3000 });
                         this.profileProcessFieldsErrors = null;
 
-                        setTimeout(() => {
-                            const currentUrl = window.location.href;
-                            const partToRemove = '/edit';
-                            const index = currentUrl.indexOf(partToRemove);
-                            window.location.href = '/profile/0/processes';
-                        }, 3000)
+                        if (step !== null && step.id > 0) {
+                            setTimeout(() => {
+                                let _step = this.getNextStep(step);
+                                window.location.href = '/process-execution/'+this.profile.id+'/edit/'+this.process.id+'/'+_step.id+'?pt='+profile_type_id;
+                            }, 3000);
+                        } else {
+                            setTimeout(() => {
+                                const currentUrl = window.location.href;
+                                const partToRemove = '/edit';
+                                const index = currentUrl.indexOf(partToRemove);
+                                window.location.href = '/profile/'+this.profile.id+'/processes?pt='+profile_type_id;
+                            }, 3000);
+                        }
                         break;
                     case 422:
                         this.profileProcessFieldsErrors = response.errors;
                         toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
-                        this.loading = false;
+                        if (step !== null) {
+                            this.saveStepLoading = false;
+                        } else {
+                            this.loading = false;
+                        }
                         console.log('response.errors', response.errors);
                         break;
                     default:
                         this.profileProcessFieldsErrors = null;
                         toast.add({ severity: 'error', detail: response.message, life: 3000 });
-                        this.loading = false;
+                        if (step !== null) {
+                            this.saveStepLoading = false;
+                        } else {
+                            this.loading = false;
+                        }
                         break;
                 }
             });
+        },
+        getNextStep(step) {
+            let nextStep = step;
+            this.process.steps.forEach((_step, index) => {
+                if (step.id === _step.id) {
+                    if ((index+1) <= (this.process.steps.length - 1)) {
+                        nextStep = this.process.steps[index + 1];
+                    }
+                }
+            });
+            return nextStep;
         },
         resetResponse() {
             this.response = {
@@ -127,6 +171,9 @@ export const useProcessExecution = defineStore({
         }
     },
     getters: {
-
+        getNextStepId() {
+            let nextStep = this.getNextStep(this.step);
+            return nextStep.id;
+        }
     }
 });

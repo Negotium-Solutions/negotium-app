@@ -18,7 +18,9 @@ const profileManagerStore = useProfilesManagerStore();
 const processExecution = useProcessExecution();
 
 onMounted(() => {
-  // Todo: Add window resizing code
+  setTimeout(() => {
+    processExecution.handleInnerContentDivHeight();
+  }, 100);
 });
 </script>
 
@@ -29,7 +31,7 @@ onMounted(() => {
 
       <div class="row" id="profiles-sidebar">
         <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0">
-          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route(route().current(), {'profile_id': profile.id, 'process_id': processExecution.process.id, 'step_id': 0}))" :class="{ 'bg-slate-500': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
+          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route(route().current(), {'profile_id': profile.id, 'process_id': processExecution.process.id, 'step_id': 0}), '?pt='+profileManagerStore.profile.profile_type_id)" :class="{ 'bg-slate-500': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
             <div class="w-100 pl-6 pr-2 d-flex">
             <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="profileManagerStore.apiImagesUrl+profile.avatar"  />
             <span :class="profileManagerStore.profile.id === profile.id ? 'text-white' : 'text-neutral-700'" class="flex items-center justify-center text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.profile_name }} </span>
@@ -44,14 +46,14 @@ onMounted(() => {
                 <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">{{ processExecution.process.name }}</h1>
               </div>
               <div class="col-sm-6 text-right">
-                <a :href="route('profile.profile-details', {id: profileManagerStore.profile.id})" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2">Back</a>
-                <button v-if="!processExecution.loading" @click="processExecution.storeDynamicModel(profileManagerStore.profile.id, toast)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2">Complete Process</button>
-                <button v-if="!processExecution.loading" @click="processExecution.storeDynamicModel(toast)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Save & Close</button>
+                <button @click="FunctionsHelper.loadPreviousPage()" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2">Back</button>
+                <button v-if="!processExecution.loading" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2">Complete Process</button>
+                <button v-if="!processExecution.loading" @click="processExecution.storeDynamicModel(toast, null, profileManagerStore.profile.profile_type_id)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Save & Close</button>
                 <button v-if="processExecution.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
               </div>
             </div>
           </div>
-          <div class="row" v-if="processExecution.isSet('process', processExecution.process)">
+          <div id="inner-content" class="row" v-if="processExecution.isSet('process', processExecution.process)">
             <div class="col-lg-4 col-md-4 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail" style="position:relative">
               <div class="pt-3 border-right pr-3 pl-3 col-md-12" id="process-execution-content">
 

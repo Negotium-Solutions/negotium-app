@@ -3,6 +3,7 @@ import { useProfilesManagerStore, useProcessExecution } from "@/stores/index.js"
 import { onMounted } from "vue";
 import ExtendProfileExecutionLayout from "@/Pages/Profile/ProcessExecutionLayout.vue";
 import { useToast } from "primevue/usetoast";
+import Button from "primevue/button";
 
 const profileManagerStore = useProfilesManagerStore();
 const processExecution = useProcessExecution();
@@ -50,6 +51,15 @@ onMounted(() => {
                 <span v-for="(error, index) in processExecution.profileProcessFieldsErrors?.[field.field]" :key="index" class="error invalid-feedback">{{ error }}</span>
               </div>
             </div>
+          </div>
+        </div>
+
+        <div class="row mt-4 border-t">
+          <div class="col-md-12 text-right pt-4">
+            <button v-if="!processExecution.saveStepLoading" @click="processExecution.storeDynamicModel(toast, processExecution.step, profileManagerStore.profile.profile_type_id)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">
+              {{ processExecution.step.id !== processExecution.getNextStepId ? 'Next Step' : 'Save' }}
+            </button>
+            <button v-if="processExecution.saveStepLoading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
           </div>
         </div>
 
