@@ -31,8 +31,9 @@ class FunctionsHelper {
      *
      * @param {string} location - The url for the intended location.
      */
-    static navigateTo(location) {
-        window.location = location;
+    static navigateTo(location, parameters = null) {
+
+        window.location = location + (parameters !== null ? parameters : '');
     }
 
     /**
@@ -68,4 +69,7 @@ class FunctionsHelper {
         return `${year}-${month}-${day} ${hours}:${minutes}`;
     }
 
+    static loadPreviousPage() {
+        window.history.back();
+    }
 }
