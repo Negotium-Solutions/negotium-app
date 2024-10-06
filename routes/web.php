@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DocumentController;
-use App\Http\Controllers\Admin\ProfileManagerController;
+use App\Http\Controllers\Admin\ProfileCreationController;
 use App\Http\Controllers\Admin\ProcessManagerController;
 use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\StepController;
@@ -23,11 +23,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/document/edit/{id}', [DocumentController::class, 'edit'])->name('document.edit');
 
     // Profile Manager
-    Route::get('/profile-manager', [ProfileManagerController::class, 'index'])->name('profile-manager');
+    Route::get('/profile-creation', [ProfileCreationController::class, 'index'])->name('profile-creation');
 
     // Profiles
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    // Route::get('/profile/{id?}/{navigation?}', [ProfileController::class, 'index'])->name('profile.navigation');
     Route::get('/profile/{id?}/processes', [ProfileController::class, 'processes'])->name('profile.processes');
     Route::get('/profile/{id?}/profile-details', [ProfileController::class, 'details'])->name('profile.profile-details');
     Route::get('/profile/{id?}/profile-details/edit', [ProfileController::class, 'editDetails'])->name('profile.profile-details.edit');

@@ -124,22 +124,21 @@ function handleProfileSidebarPosition(){
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link d-flex">
-              <i class="nav-icon sidemenu-admin"></i>
-              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Admin</span>
+            <a :href="route('process-manager')" :class="{ active: route().current('process-manager') }" class="nav-link d-flex">
+              <i class="nav-icon sidemenu-help"></i>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Process Creator</span>
             </a>
-            <ul class="nav nav-treeview" style="display: none;">
-              <li class="nav-item">
-                <a :href="route('process-manager')" :class="{ active: route().current('process-manager') }" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Process Creator</span>
-                </a>
-              </li>
-            </ul>
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link d-flex">          
+            <a  :href="route('profile-creation')" :class="{ active: route().current('profile-creation') }" class="nav-link d-flex">
+              <i class="nav-icon sidemenu-help"></i>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Profile Creator</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link d-flex">
               <i class="nav-icon sidemenu-help"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Help & Support</span>
             </a>
