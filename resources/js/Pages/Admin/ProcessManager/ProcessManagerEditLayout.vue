@@ -1,7 +1,7 @@
 <script setup>
 
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, onUpdated } from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Dropdown from 'primevue/dropdown';
 import Toast from "primevue/toast";
@@ -32,6 +32,9 @@ onMounted(() => {
     }
   }
 });
+
+onUpdated(() => {
+})
 </script>
 
 <template>
@@ -48,8 +51,13 @@ onMounted(() => {
     </template>
 
     <div class="content-container pl-4 pr-4">
+      <div class="h-[1px] row">
+        <div class="col-lg-3 col-md-3 col-sm-12" id="project-info-owidth">
+
+        </div></div>
       <div class="row" id="process-creator-content">
-        <div class="col-lg-3 col-md-3 col-sm-12 pr-0 h-100">
+        <div style="width:100px;height:100px;background: var(--neg-bg-light);position:absolute;z-index:1;"></div>
+        <div class="col-lg-3 col-md-3 col-sm-12 pr-0" id="project-info-width" style="position: absolute;z-index: 1;">
           <div class="card card-default h-100">
             <div class="card-header border-bottom-0 pb-0">
               <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Process Info</div>
@@ -69,7 +77,7 @@ onMounted(() => {
                   <template #value="slotProps">
                     <div v-if="slotProps.value" class="w-100">
                       <span>{{ slotProps.value.name }}</span>
-                      <i class="fa fa-square float-right" :style="'color: '+slotProps.value.color"></i>
+                      <i class="fa fa-square float-right mt-1" :style="'color: '+slotProps.value.color"></i>
                     </div>
                     <span v-else>
                           {{ slotProps.placeholder }}
@@ -81,7 +89,7 @@ onMounted(() => {
                     </div>
                     <div class="w-100" v-else>
                       <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-tight">{{ slotProps.option.name }}</span>
-                      <i class="fa fa-square float-right" :style="'color: '+slotProps.option.color"></i>
+                      <i class="fa fa-square float-right mt-1" :style="'color: '+slotProps.option.color"></i>
                     </div>
                   </template>
                   <template #footer>
@@ -102,14 +110,14 @@ onMounted(() => {
               <div class="mt-3">
                 <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
               </div>
-              <div class="mt-4">
-                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Steps</div>
+              <div class="mt-3">
+                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Steps</div>
                 <a :href="route('process-manager.edit-activity', [processManagerStore.process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
-                  <div class="flex font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
-                    <span>{{ step.name }}</span>
+                  <div class="w-100 d-block font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
+                    <span :class="{ 'text-white' : processManagerStore.step.id === step.id }">{{ step.name }}</span>
 
-                    <div class="items-center">
-                      <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0">
+                    <div class="items-center float-right" style="line-height: 1rem;">
+                      <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0 pt-0">
                         <i class="pi pi-ellipsis-v"></i>
                       </button>
                       <div class="dropdown-menu dropdown-menu dropdown-menu-right">
@@ -131,8 +139,10 @@ onMounted(() => {
             <!-- /.card-body -->
           </div>
         </div>
-
-        <div class="col-lg-9 col-md-9 col-sm-12 pr-0 h-100">
+        <div class="col-sm-12 pr-0 h-100" :class="(route().current('process-manager.edit-activity') && (processManagerStore.process.steps && processManagerStore.process.steps.length == 1)) ? ' offset-lg-3 offset-md-3 col-lg-9 col-md-9' : ' col-lg-12 col-md-12'" id="process-1" v-if="!route().current('process-manager.edit')">
+          <slot></slot>
+        </div>
+        <div class="col-sm-12 pr-0 h-100" :class="(route().current('process-manager.edit')) ? ' offset-lg-3 offset-md-3 col-lg-9 col-md-9' : ' d-none col-lg-12 col-md-12'" id="process-2">
           <slot></slot>
         </div>
 

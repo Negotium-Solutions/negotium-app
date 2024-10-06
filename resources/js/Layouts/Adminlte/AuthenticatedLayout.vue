@@ -34,6 +34,14 @@
                         </div>
                         <!-- /.container-fluid -->
                     </div>
+                    <div class="content pl-0 pr-0" id="process-content" v-if="$slots.process">
+                        <div class="container-fluid pl-0">
+                            <main>
+                                <slot name="profile" />
+                            </main>
+                        </div>
+                        <!-- /.container-fluid -->
+                    </div>
                     <div class="content pt-3 pb-3" id="content-body" v-else>
                         <div class="container-fluid">
                             <main>

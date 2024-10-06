@@ -59,7 +59,7 @@
     background-color: var(--neg-dark-3);
   }
 
-  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link{
+  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link,.sidebar-light-dark .nav-sidebar>.nav-item>.nav>.nav-item>.nav-link{
     color: var(--neg-light-3) !important;
   }
   
@@ -68,7 +68,7 @@
     color: var(--neg-light-1);
   }
 
-  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link.active{
+  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link.active,.sidebar-light-dark .nav-sidebar>.nav-item>.nav>.nav-item>.nav-link.active{
     background-color: var(--neg-dark-1);
     color: var(--neg-light-6);
   }
@@ -127,6 +127,14 @@
 .recent-processes .half-width {
     flex: 1 1 50%; /* Ensures the third item takes exactly 50% of the width */
   }
+
+  .timeline::before {
+    top:4rem
+  }
+
+  .bg-neutral-500{
+    background-color: #d9d9d9 !important;
+}
 
 .border-neutral-700{
     border-color: var(--neg-grey) !important;
