@@ -132,7 +132,12 @@
     top:4rem
   }
 
-  .bg-neutral-500{
+  .bg-success-500{
+    background-color: var(--neg-green-2) !important;
+}
+
+
+.bg-neutral-500{
     background-color: #d9d9d9 !important;
 }
 
