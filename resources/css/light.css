@@ -132,7 +132,12 @@
     top:4rem
   }
 
-  .bg-neutral-500{
+  .bg-success-500{
+    background-color: var(--neg-green-2) !important;
+}
+
+
+.bg-neutral-500{
     background-color: #d9d9d9 !important;
 }
 
@@ -145,7 +150,7 @@
 }
 
 .bg-slate-500{
-    background-color: var(--neg-light-1);
+    background-color: var(--neg-light-1) !important;
 }
 
 .bg-zinc-100{
@@ -285,6 +290,7 @@
 
 .btn-group label.btn-outline-secondary{
     font-weight: 400;
+    line-height: 1.5rem;
     color: var(--neg-font-default);
     border-color: var(--neg-light-grey);
 }

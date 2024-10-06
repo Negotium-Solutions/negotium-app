@@ -1,6 +1,6 @@
 <script setup>
 import { AuthenticatedLayout } from "@/Layouts/Adminlte/index.js";
-import { onMounted, computed } from "vue";
+import { ref,onMounted, computed } from "vue";
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
 import Avatar from 'primevue/avatar';
@@ -12,7 +12,7 @@ import Button from "primevue/button";
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
-
+const activeStep = ref('')
 const toast = useToast();
 const profileManagerStore = useProfilesManagerStore();
 const processExecution = useProcessExecution();
@@ -20,6 +20,10 @@ const processExecution = useProcessExecution();
 onMounted(() => {
   setTimeout(() => {
     processExecution.handleInnerContentDivHeight();
+    const arr = processExecution.process.steps;
+
+    const index = arr.findIndex(obj => obj.id === processExecution.step.id);
+    activeStep.value = index
   }, 100);
 });
 </script>
@@ -63,7 +67,7 @@ onMounted(() => {
                     <span class="pb-3">Progress</span>
                   </div>
                   <div class="flex" v-for="(step, index) in processExecution.process.steps" :key="index" :class="(index+1) === processExecution.process.steps.length ? '' :'mb-4 pb-3'">
-                    <i class="fas" :class="processExecution.step.id === step.id ? 'bg-blue' : 'bg-neutral-500'" style="line-height: 1.5;"></i>
+                    <i :class="processExecution.step.id === step.id ? 'fas bg-blue' : index < activeStep ? 'fa fa-check bg-success-500 pt-1 text-white' : 'fas bg-neutral-500'" style="line-height: 1.5;"></i>
                     <div class="timeline-item flex flex-col pl-2"> <!-- Use flex column to align items vertically -->
                       <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step {{ index + 1 }}</span>
                       <div class="font-bold text-neutral-700 text-sm font-['Roboto'] leading-tight text-break">{{ step.name }}</div>
