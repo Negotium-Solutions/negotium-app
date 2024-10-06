@@ -131,7 +131,7 @@ function handleProfileSidebarPosition(){
             <ul class="nav nav-treeview" style="display: none;">
               <li class="nav-item">
                 <a :href="route('process-manager')" :class="{ active: route().current('process-manager') }" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
+                  <i class="far fa-circle nav-icon custom-icon-sm"></i>
                   <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Process Creator</span>
                 </a>
               </li>

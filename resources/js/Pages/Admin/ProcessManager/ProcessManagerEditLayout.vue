@@ -77,7 +77,7 @@ onUpdated(() => {
                   <template #value="slotProps">
                     <div v-if="slotProps.value" class="w-100">
                       <span>{{ slotProps.value.name }}</span>
-                      <i class="fa fa-square float-right" :style="'color: '+slotProps.value.color"></i>
+                      <i class="fa fa-square float-right mt-1" :style="'color: '+slotProps.value.color"></i>
                     </div>
                     <span v-else>
                           {{ slotProps.placeholder }}
@@ -89,7 +89,7 @@ onUpdated(() => {
                     </div>
                     <div class="w-100" v-else>
                       <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-tight">{{ slotProps.option.name }}</span>
-                      <i class="fa fa-square float-right" :style="'color: '+slotProps.option.color"></i>
+                      <i class="fa fa-square float-right mt-1" :style="'color: '+slotProps.option.color"></i>
                     </div>
                   </template>
                   <template #footer>

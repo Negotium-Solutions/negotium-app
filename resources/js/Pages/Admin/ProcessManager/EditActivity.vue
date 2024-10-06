@@ -86,16 +86,12 @@ onMounted(() => {
       </div>
 
       <div class="mt-3 mb-1" v-if="processManagerStore.getDynamicModelFieldTypeGroup === 2">
-        <p class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Add <span class="font-weight-bold"> input options</span></p>
-        <div v-if="processManagerStore.getDynamicModelFieldTypeGroup === 2" class="w-100 mt-2 options-container">
-          <div v-for="(option, index) in processManagerStore.activity.options" :key="index" class="option-tag">
-            <span>{{ option }}</span>
-            <i class="pi pi-times-circle" @click="processManagerStore.removeOption(processManagerStore.activity.options, index)"></i>
-          </div>
-          <div class="flex-1">
+        <p class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Answer options</p>
+        <div v-if="processManagerStore.getDynamicModelFieldTypeGroup === 2" class="w-100 mb-2 mt-2 options-container">
+          <div class="w-100">
             <input
                 type="text"
-                class="options-input m-0 w-full border-0 rounded-custom-10 h-9"
+                class="m-0 w-full border-0 h-9 rounded border border-neutral-700/opacity-25"
                 v-model="processManagerStore.activityOptionInput"
                 @keyup.enter="processManagerStore.addOption(processManagerStore.activity.options)"
                 placeholder="Type an option and press Enter"
@@ -104,6 +100,12 @@ onMounted(() => {
         </div>
         <div class="input-validation-error" v-if="typeof processManagerStore.activityErrors?.options !== 'undefined'">
           <span v-for="(error, index) in processManagerStore.activityErrors?.options" :key="index" class="error invalid-feedback">{{ error }}</span>
+        </div>
+        <div class="mb-2 max-h-[200px] d-block overflow-y-auto">
+          <div v-for="(option, index) in processManagerStore.activity.options" :key="index" class="w-100 d-block mb-2 text-neutral-700 font-normal bg-white font-['Nunito'] leading-tight p-2.5 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex">
+            <span>{{ option }}</span>
+            <i class="pi pi-times float-right cursor-pointer" @click="processManagerStore.removeOption(processManagerStore.activity.options, index)"></i>
+          </div>
         </div>
       </div>
 

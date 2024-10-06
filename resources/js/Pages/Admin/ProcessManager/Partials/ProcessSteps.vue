@@ -116,7 +116,7 @@ function isHrVisible(step){
 
                 <div class="mt-3" v-if="step.activities && step.activities.length > 0">
                   <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Step Activities</div>
-                  <div @click.stop="isActiveStep(step) ? processManagerStore.set('activity', activity) : ''; processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-100 p-2 pt-1 rounded border border-neutral-700/opacity-25 flex justify-between mb-2"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
+                  <div @click.stop="isActiveStep(step) ? processManagerStore.set('activity', activity) : ''; processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-100 pt-1 pb-2 pl-2 pr-2 rounded border border-neutral-700/opacity-25 flex justify-between mb-2"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
                     <div>
                       <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Activity Type - {{ activity.field_type.name }}</span>
                       <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight text-break" >{{ activity.label }}</div>
