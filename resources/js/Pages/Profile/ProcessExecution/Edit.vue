@@ -26,17 +26,20 @@ onMounted(() => {
   processExecution.set('process', props.process);
   processExecution.set('profile', props.profile);
   processExecution.setStep(props.step_id);
+
+  processExecution.handleInnerContentDivHeight()
+  window.addEventListener('resize', processExecution.handleInnerContentDivHeight);
 });
 </script>
 
 <template>
   <ExtendProfileExecutionLayout>
-  <div v-if="processExecution.isSet('process', processExecution.process)" class="col-lg-12 pl-0 pr-0">
+  <div v-if="processExecution.isSet('process', processExecution.process)" class="col-lg-12 pl-0 pr-0" id="process-execution-steps">
     <div class="d-flex flex-column w-100 pl-3 pr-3">
 
       <div class="flex flex-col px-2 py-2 mb-2">
         <div class="d-flex w-100 pt-2 pl-2 pr-2 pb-1">
-          <h6 class="text-neutral-700 text-md mb-1 font-bold font-['Roboto']">{{ processExecution.step.name }}</h6>
+          <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">{{ processExecution.step.name }}</div>
         </div>
 
         <div class="row">
@@ -53,18 +56,23 @@ onMounted(() => {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </div>
+  <div v-if="processExecution.isSet('process', processExecution.process)" class="col-lg-12 pl-2 pr-2 m-0 border-t" id="process-execution-buttons">
+    <div class="d-flex flex-column w-100 pl-3 pr-3">
 
-        <div class="row mt-4 border-t">
-          <div class="col-md-12 text-right pt-4">
+      <div class="flex flex-col px-2 py-2 mb-2">
+        <div class="row mt-3">
+          <div class="col-md-12 text-right">
             <button v-if="!processExecution.saveStepLoading" @click="processExecution.storeDynamicModel(toast, processExecution.step, profileManagerStore.profile.profile_type_id)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white">
               {{ processExecution.step.id !== processExecution.getNextStepId ? 'Next Step' : 'Save' }}
             </button>
-            <button v-if="processExecution.saveStepLoading"  class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+            <button v-if="processExecution.saveStepLoading"  class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
           </div>
         </div>
-
-      </div>
-    </div>
+        </div>
+        </div>
   </div>
   </ExtendProfileExecutionLayout>
 </template>

@@ -40,7 +40,7 @@ onMounted(() => {
           </div>
         </div>
         <div class="col-lg-10 col-md-10 col-sm-12">
-          <div class="row" v-if="processExecution.isSet('process', processExecution.process)">
+          <div class="row" v-if="processExecution.isSet('process', processExecution.process)" id="process-execution-header">
             <div class="d-flex w-100 pt-4  pl-3 pr-3 pb-6 border-bottom">
               <div class="col-sm-6 p-0">
                 <h1 class="text-neutral-700 text-3xl font-bold font-['Roboto']">{{ processExecution.process.name }}</h1>
@@ -55,7 +55,7 @@ onMounted(() => {
           </div>
           <div id="inner-content" class="row" v-if="processExecution.isSet('process', processExecution.process)">
             <div class="col-lg-3 col-md-3 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail" style="position:relative">
-              <div class="pt-3 border-right pr-3 pl-3 col-md-12" id="process-execution-content">
+              <div class="pt-3 border-right pr-3 pl-3 col-md-12 h-100" id="process-execution-content">
 
                 <div class="timeline">
 

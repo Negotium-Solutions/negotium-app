@@ -72,14 +72,26 @@ export const useProcessExecution = defineStore({
         handleInnerContentDivHeight(){
             let windowHeight = window.innerHeight,
                 innerContent = document.getElementById('inner-content'),
-                processExecutionContent = document.getElementById('process-execution-content');
+                processExecutionHeader = document.getElementById('process-execution-header'),
+                processExecutionContent = document.getElementById('process-execution-content'),
+                processExecutionSteps = document.getElementById('process-execution-steps'),
+                processExecutionButtons = document.getElementById('process-execution-buttons');
 
             if (innerContent) {
-                innerContent.style.minHeight = windowHeight + 'px';
+                innerContent.style.minHeight = (windowHeight - processExecutionHeader.offsetHeight) + 'px';
+                innerContent.style.height = (windowHeight - processExecutionHeader.offsetHeight) + 'px';
+                innerContent.style.maxHeight = (windowHeight - processExecutionHeader.offsetHeight) + 'px';
             }
 
             if (processExecutionContent) {
-                processExecutionContent.style.minHeight = windowHeight+'px';
+                processExecutionContent.style.minHeight = (windowHeight - processExecutionHeader.offsetHeight)+'px';
+            }
+
+            if(processExecutionSteps){
+                processExecutionSteps.style.minHeight = ((windowHeight - processExecutionHeader.offsetHeight) - processExecutionButtons.offsetHeight)+'px'
+                processExecutionSteps.style.height = ((windowHeight - processExecutionHeader.offsetHeight) - processExecutionButtons.offsetHeight)+'px'
+                processExecutionSteps.style.maxHeight = ((windowHeight - processExecutionHeader.offsetHeight) - processExecutionButtons.offsetHeight)+'px'
+                processExecutionSteps.style.overflow = 'auto'
             }
         },
         async storeDynamicModel(toast, step = null, profile_type_id = null) {
