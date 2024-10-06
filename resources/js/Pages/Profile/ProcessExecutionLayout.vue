@@ -41,32 +41,32 @@ onMounted(() => {
         </div>
         <div class="col-lg-10 col-md-10 col-sm-12">
           <div class="row" v-if="processExecution.isSet('process', processExecution.process)">
-            <div class="d-flex w-100 pt-3 pl-3 pr-3 pb-4 border-bottom">
+            <div class="d-flex w-100 pt-4  pl-3 pr-3 pb-6 border-bottom">
               <div class="col-sm-6 p-0">
-                <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">{{ processExecution.process.name }}</h1>
+                <h1 class="text-neutral-700 text-3xl font-bold font-['Roboto']">{{ processExecution.process.name }}</h1>
               </div>
               <div class="col-sm-6 text-right">
-                <button @click="FunctionsHelper.loadPreviousPage()" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2">Back</button>
-                <button v-if="!processExecution.loading" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2">Complete Process</button>
-                <button v-if="!processExecution.loading" @click="processExecution.storeDynamicModel(toast, null, profileManagerStore.profile.profile_type_id)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Save & Close</button>
-                <button v-if="processExecution.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+                <button @click="FunctionsHelper.loadPreviousPage()" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 mr-2">Back</button>
+                <button v-if="!processExecution.loading" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 mr-2">Complete Process</button>
+                <button v-if="!processExecution.loading" @click="processExecution.storeDynamicModel(toast, null, profileManagerStore.profile.profile_type_id)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white">Save & Close</button>
+                <button v-if="processExecution.loading"  class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
               </div>
             </div>
           </div>
           <div id="inner-content" class="row" v-if="processExecution.isSet('process', processExecution.process)">
-            <div class="col-lg-4 col-md-4 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail" style="position:relative">
+            <div class="col-lg-3 col-md-3 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail" style="position:relative">
               <div class="pt-3 border-right pr-3 pl-3 col-md-12" id="process-execution-content">
 
                 <div class="timeline">
 
-                  <div class="time-label">
-                    <span>Progress</span>
+                  <div class="time-label pb-0 mb-0">
+                    <span class="pb-3">Progress</span>
                   </div>
-                  <div class="mb-5" v-for="(step, index) in processExecution.process.steps" :key="index">
-                    <i class="fas" :class="processExecution.step.id === step.id ? 'bg-blue' : 'bg-lightgray'"></i>
-                    <div class="timeline-item">
-                      <span>Step {{ index + 1 }}</span>
-                      <div class="font-bold">{{ step.name }}</div>
+                  <div class="flex" v-for="(step, index) in processExecution.process.steps" :key="index" :class="(index+1) === processExecution.process.steps.length ? '' :'mb-4 pb-3'">
+                    <i class="fas" :class="processExecution.step.id === step.id ? 'bg-blue' : 'bg-neutral-500'" style="line-height: 1.5;"></i>
+                    <div class="timeline-item flex flex-col pl-2"> <!-- Use flex column to align items vertically -->
+                      <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step {{ index + 1 }}</span>
+                      <div class="font-bold text-neutral-700 text-sm font-['Roboto'] leading-tight text-break">{{ step.name }}</div>
                     </div>
                   </div>
                 </div>
@@ -74,7 +74,7 @@ onMounted(() => {
               </div>
             </div>
             <!-- Profile Page Start -->
-            <div class="col-lg-8 col-md-8 col-sm-12 pl-0 pr-0">
+            <div class="col-lg-9 col-md-9 col-sm-12 pl-0 pr-0">
               <slot/>
             </div>
           </div>
