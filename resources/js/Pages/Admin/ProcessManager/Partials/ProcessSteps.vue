@@ -116,7 +116,7 @@ function isHrVisible(step){
 
                 <div class="mt-3" v-if="step.activities && step.activities.length > 0">
                   <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Step Activities</div>
-                  <a href="javascript:void(0)" @click.stop="isActiveStep(step) ? processManagerStore.set('activity', activity) : ''; processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-full m-h-9 p-2 rounded border border-neutral-700/opacity-25 flex items-start justify-between mb-1" :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
+                  <a href="javascript:void(0)" @click="isActiveStep(step) ? processManagerStore.set('activity', activity) : ''; processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-full m-h-9 p-2 rounded border border-neutral-700/opacity-25 flex items-start justify-between mb-1" :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
                     <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight w-full overflow-hidden break-words">
                       <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3" :class="{ 'text-white' : processManagerStore.activity.id === activity.id }">Activity Type - {{ activity.field_type.name }}</span>
                       <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight text-break" :class="{ 'text-white' : processManagerStore.activity.id === activity.id }">{{ activity.label }}</div>
