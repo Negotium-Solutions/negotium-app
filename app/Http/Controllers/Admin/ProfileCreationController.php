@@ -69,10 +69,10 @@ class ProfileCreationController extends Controller
 
     public function editInput($id, $profile_category_id, $quick_capture)
     {
-        $profile = json_decode($this->http->get("{$this->url}/schema/{$id}?with=steps")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/schema/{$id}?with=steps.fields")->getBody(), true)['data'] ?? [];
         $categoryTypes = json_decode($this->http->get("{$this->url}/dynamic-model-category?dynamic_model_type_id=1")->getBody(), true)['data'] ?? [];
         $profileCategory = json_decode($this->http->get("{$this->url}/dynamic-model-category/{$profile_category_id}?with=templates&dynamic_model_type_id=1")->getBody(), true)['data'] ?? [];
-
+    // dd($profile);
         $parameters = [
             'profile' => $profile,
             'categoryTypes' => $categoryTypes,

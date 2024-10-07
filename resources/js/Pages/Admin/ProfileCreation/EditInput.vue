@@ -53,11 +53,31 @@ onMounted(() => {
         </div>
 
         <div class="mt-3" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length > 0">
-          <div class="p-3 mt-3 text-md font-normal font-['Nunito']" v-for="(template, index) in profileCreatorManager.getSections" :key="index">
-            <span class="font-bold">{{ template.name }}</span>
-            <button @click="profileCreatorManager.addSection(template)" class="justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white float-right">
-              <i class="pi pi-plus text-sm custom-icon-sm"></i> Add Input
-            </button>
+          <div class="row"  v-for="(template, index) in profileCreatorManager.profile.steps" :key="index">
+            <div class="p-3 mt-3 text-md font-normal font-['Nunito'] w-full">
+              <span class="font-bold">{{ template.name }}</span>
+              <button @click="profileCreatorManager.addSection(template)" class="justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white float-right">
+                <i class="pi pi-plus text-sm custom-icon-sm"></i> Add Input
+              </button>
+            </div>
+            <div class="mt-3 w-full">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Inputs</th>
+                    <th>Actions</th>
+                    <th>Quick Capture</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="(field, _index) in template.fields" :key="_index">
+                    <td>{{ field.label }}</td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
