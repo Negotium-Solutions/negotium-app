@@ -53,10 +53,10 @@ onMounted(() => {
                 <td>{{ FunctionsHelper.DateTime(profile.updated_at) }}</td>
                 <td>{{ FunctionsHelper.DateTime(profile.created_at) }}</td>
                 <td class="last pl-2">
-                    <a :href="route('profile-creation.edit', { id: profile.id })" class="justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">
+                    <a :href="route('profile-creation.edit', { id: profile.id, profile_category_id: 1, quick_capture: 1 })" class="justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">
                       View
                     </a>
-                    <a :href="route('profile-creation.edit', { id: profile.id })" class="justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white ml-2">
+                    <a :href="route('profile-creation.edit', { id: profile.id, profile_category_id: 1, quick_capture: 1 })" class="justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white ml-2">
                       Edit
                     </a>
                     <button @click="profileCreatorManagerStore.showRemoveProfileConfirmation(toast, confirm, profile)" type="button" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 ml-2">

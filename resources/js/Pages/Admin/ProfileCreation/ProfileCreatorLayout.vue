@@ -74,7 +74,7 @@ onMounted(() => {
               </div>
               <div class="mb-2">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Create quick capture for this profile?</div>
-                <div v-if="profileCreatorManager.isSet('profile', props.profile)" class="btn-group btn-group-toggle w-100 mt-2" data-toggle="buttons">
+                <div v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory)" class="btn-group btn-group-toggle w-100 mt-2" data-toggle="buttons">
                   <a :href="route('profile-creation.edit', { id: profileCreatorManager.profile.id, profile_category_id: profileCreatorManager.profile_category_id, quick_capture: profileCreatorManager.getQuickCaptureId('Yes') })" class="btn btn-sm btn-outline-secondary border-neutral-700 border-opacity-20"  :class="{ 'bg-zinc-100' : parseInt(profileCreatorManager.quick_capture) === 1 }">
                     <input type="radio" name="options" id="option_1" autocomplete="off">
                     <span class="text-neutral-700 font-normal" :class="{ 'text-white' : parseInt(profileCreatorManager.quick_capture) === 1 }">Yes</span>
@@ -108,58 +108,12 @@ onMounted(() => {
           </div>
         </div>
 
-        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 h-100">
-        </div>
+        <div class="col-lg-1 col-md-1 col-sm-12 pr-0 h-100"></div>
 
         <div class="col-lg-4 col-md-4 col-sm-12 pr-0 h-100">
-          <div class="card card-default h-100">
-            <div class="card-header border-bottom-0 pb-0">
-              <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Profile sections</div>
-              <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Add section templates or create your own</div>
-            </div>
-            <div class="card-body">
-              <div class="mt-3">
-                <hr class="opacity-10 bg-neutral-700"/>
-              </div>
-              <div class="mt-3">
-                <div class="btn-group btn-group-toggle w-50" data-toggle="buttons">
-                  <a :href="route('profile-creation.edit', { id: profileCreatorManager.profile.id, profile_category_id: categoryType.id, quick_capture: profileCreatorManager.quick_capture })" v-for="(categoryType, index) in profileCreatorManager.categoryTypes" :key="index" @click="profileCreatorManager.set('profileCategory', profileCategory)" class="btn btn-sm btn-outline-secondary border-neutral-700 border-opacity-20"  :class="{ 'bg-zinc-100' : profileCreatorManager.profileCategory.id === categoryType.id }">
-                    <input type="radio" name="options" :id="'option_'+categoryType.id" autocomplete="off">
-                    <span class="text-neutral-700 font-normal" :class="{ 'text-white' : profileCreatorManager.profileCategory.id === categoryType.id }">{{ categoryType.name }}</span>
-                  </a>
-                </div>
-              </div>
-              <div class="mt-3">
-                <hr class="opacity-10 bg-neutral-700"/>
-              </div>
-              <div class="mt-3">
-                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Profile sections</div>
-              </div>
 
-              <div class="mt-3" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length > 0">
-                <div class="p-3 mt-3 border rounded text-xs font-normal font-['Nunito'] leading-3" v-for="(template, index) in profileCreatorManager.getSections" :key="index">
-                  <span class="font-bold">{{ template.name }}</span>
-                  <button @click="profileCreatorManager.addSection(template)" class="justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white float-right">
-                    <i class="pi pi-plus text-sm custom-icon-sm"></i> Add
-                  </button>
-                  <span class="flex mt-1 text-neutral-700 opacity-50">{{ template.sample }}</span>
-                </div>
-              </div>
-              <div v-html="profile_creator_messages.profile_creator.all_templates_added" class="mt-3 p-4 text-center" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length === 0"></div>
+          <slot></slot>
 
-            </div>
-            <div class="card-footer bg-white pt-0">
-              <hr class="opacity-10 bg-neutral-700"/>
-              <div class="mt-3 mb-3">
-                <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">
-                  <i class="pi pi-plus text-sm custom-icon-sm"></i> Add custom section
-                </button>
-                <button @click="profileCreatorManager.createSections(toast)" class="justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white float-right">
-                  <i class="pi pi-plus text-sm custom-icon-sm"></i> Next - Manage inputs
-                </button>
-              </div>
-            </div>
-          </div>
         </div>
 
       </div>
@@ -175,10 +129,3 @@ onMounted(() => {
     </Toast>
   </AuthenticatedLayout>
 </template>
-
-<style scoped>
-.bg-olive:hover {
-  background-color: #2e7555 !important;
-  border-color: #2b6b4f;
-}
-</style>

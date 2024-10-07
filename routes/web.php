@@ -25,7 +25,8 @@ Route::middleware('auth')->group(function () {
     // Profile Manager
     Route::get('/profile-creation', [ProfileCreationController::class, 'index'])->name('profile-creation');
     Route::get('/profile-creation/create', [ProfileCreationController::class, 'create'])->name('profile-creation.create');
-    Route::get('/profile-creation/edit/{id}', [ProfileCreationController::class, 'edit'])->name('profile-creation.edit');
+    Route::get('/profile-creation/edit/{id}/{profile_category_id}/{quick_capture}', [ProfileCreationController::class, 'edit'])->name('profile-creation.edit');
+    Route::get('/profile-creation/edit-input/{id}/{profile_category_id}/{quick_capture}', [ProfileCreationController::class, 'editInput'])->name('profile-creation.edit-input');
 
     // Profiles
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
