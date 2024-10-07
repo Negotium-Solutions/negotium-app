@@ -125,14 +125,14 @@ function handleProfileSidebarPosition(){
 
           <li class="nav-item">
             <a :href="route('process-manager')" :class="{ active: route().current('process-manager') }" class="nav-link d-flex">
-              <i class="nav-icon sidemenu-help"></i>
+              <i class="nav-icon sidemenu-processes"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Process Creator</span>
             </a>
           </li>
 
           <li class="nav-item">
             <a  :href="route('profile-creation')" :class="{ active: route().current('profile-creation') }" class="nav-link d-flex">
-              <i class="nav-icon sidemenu-help"></i>
+              <i class="nav-icon sidemenu-profiles"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Profile Creator</span>
             </a>
           </li>

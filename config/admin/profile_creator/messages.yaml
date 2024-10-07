@@ -1,0 +1,6 @@
+# config/admin/profile_creator/messages.yaml
+profile_creator:
+  remove_profile_confirmation: Are you sure you want to remove profile {profileName}?
+  profile_success: Profile called {profileName} was removed successfully.
+  profile_error: We weren't able to remove the profile called {profileName}, please try again.
+  create_profile_success: Profile {profileName} created successfully.

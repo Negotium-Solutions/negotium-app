@@ -38,4 +38,28 @@ class ProfileCreationController extends Controller
 
         return Inertia::render('Admin/ProfileCreation/Index', $parameters);
     }
+
+    public function create()
+    {
+        $profiles = json_decode($this->http->get("{$this->url}/dynamic-model?type_id=1")->getBody(), true)['data'] ?? [];
+
+        $parameters = [
+            'profiles' => $profiles
+        ];
+
+        return Inertia::render('Admin/ProfileCreation/Create', $parameters);
+    }
+
+    public function edit($id)
+    {
+        $profile = json_decode($this->http->get("{$this->url}/schema/{$id}?with=steps")->getBody(), true)['data'] ?? [];
+        $profileCategories = json_decode($this->http->get("{$this->url}/dynamic-model-category?with=templates&dynamic_model_type_id=1")->getBody(), true)['data'] ?? [];
+
+        $parameters = [
+            'profile' => $profile,
+            'profileCategories' => $profileCategories
+        ];
+
+        return Inertia::render('Admin/ProfileCreation/Edit', $parameters);
+    }
 }

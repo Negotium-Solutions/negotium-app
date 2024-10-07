@@ -1,6 +1,26 @@
 <script setup>
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
 import Toast from "primevue/toast";
+import Button from "primevue/button";
+
+import { onMounted } from "vue";
+import { useToast } from "primevue/usetoast";
+import { useConfirm } from "primevue/useconfirm";
+import { FunctionsHelper } from "@/helpers";
+import { useProfileCreatorManager } from "@/stores/index.js";
+import ConfirmDialog from "primevue/confirmdialog";
+
+const profileCreatorManagerStore = useProfileCreatorManager();
+const toast = useToast();
+const confirm = useConfirm();
+
+const props = defineProps({
+  profiles: null
+});
+
+onMounted(() => {
+  profileCreatorManagerStore.set('profiles', props.profiles);
+});
 </script>
 
 <template>
@@ -13,14 +33,39 @@ import Toast from "primevue/toast";
           </h1>
         </div><!-- /.col -->
         <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3 p-2">
-          <a class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white cursor-pointer">Create Profile</a>
+          <a :href="route('profile-creation.create')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white cursor-pointer">Create Profile</a>
         </div><!-- /.col -->
       </div>
     </template>
     <template #profile>
       <div class="content-container">
-        <div class="row" id="profiles">
-
+        <div class="row m-4">
+          <div class="col-lg-12 col-md-12 col-sm-12">
+            <table v-if="profileCreatorManagerStore.profiles && profileCreatorManagerStore.profiles.length > 0" class="table-sm w-100 table-row-spacing table-bg">
+              <tr>
+                <th>Profile Name</th><th>Quick capture</th><th>Sections</th><th>Fields</th><th>Last edited</th><th>Date added</th><th>Actions</th>
+              </tr>
+              <tr v-for="(profile, index) in profileCreatorManagerStore.profiles" :key="index" :class="{ 'bg-gray-200': profileCreatorManagerStore.set('profile', profile)}">
+                <td>{{ profile.name }}</td>
+                <td>{{ profile.quick_capture }}</td>
+                <td>{{ profile.sections_count }}</td>
+                <td>{{ profile.fields_count }}</td>
+                <td>{{ FunctionsHelper.DateTime(profile.updated_at) }}</td>
+                <td>{{ FunctionsHelper.DateTime(profile.created_at) }}</td>
+                <td class="last pl-2">
+                    <a :href="route('profile-creation.edit', { id: profile.id })" class="justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">
+                      View
+                    </a>
+                    <a :href="route('profile-creation.edit', { id: profile.id })" class="justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white ml-2">
+                      Edit
+                    </a>
+                    <button @click="profileCreatorManagerStore.showRemoveProfileConfirmation(toast, confirm, profile)" type="button" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 ml-2">
+                      <i class="pi pi-trash text-red"></i>
+                    </button>
+                </td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
     </template>
@@ -32,4 +77,5 @@ import Toast from "primevue/toast";
       </div>
     </template>
   </Toast>
+  <ConfirmDialog></ConfirmDialog>
 </template>
