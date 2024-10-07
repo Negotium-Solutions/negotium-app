@@ -93,7 +93,7 @@ onMounted(() => {
       </div>
 
       <div class="col-lg-2 col-md-2 col-sm-12 pr-0 pl-0 pt-4">
-        <a :href="route('process-manager.edit', [process.id])" class="mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add Step</a>
+        <a :href="route('process-manager.edit', [process.id])" class="w-[126px] mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add Step</a>
       </div>
 
     </div>
