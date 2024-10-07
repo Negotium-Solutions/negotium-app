@@ -1,6 +1,6 @@
 <script setup>
 import { AuthenticatedLayout } from "@/Layouts/Adminlte";
-import { onMounted, reactive, computed } from "vue";
+import { onMounted, computed } from "vue";
 import Breadcrumb from 'primevue/breadcrumb';
 import Toast from "primevue/toast";
 import { useToast } from "primevue/usetoast";
@@ -11,8 +11,13 @@ import Button from "primevue/button";
 const toast = useToast();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
+const messages = computed(() => page.props.messages);
+const profile_creator_messages = messages.value;
+
 const negotium_api_url = computed(() => page.props.negotium_api_url);
 const breadCrumbs = [{label: 'Home'}, {label: 'Profiles'}, {label: 'Create Profile', class: 'active'}];
+
+
 
 const profileCreatorManager = useProfileCreatorManager();
 const props = defineProps({
@@ -21,6 +26,7 @@ const props = defineProps({
 });
 
 onMounted(() => {
+  console.log('profile_creator_messages.all_templates_added', profile_creator_messages.profile_creator.all_templates_added);
   profileCreatorManager.set('profile', props.profile);
   profileCreatorManager.set('profileCategories', props.profileCategories);
   profileCreatorManager.set('profileCategory', props.profileCategories[0]);
@@ -124,7 +130,7 @@ onMounted(() => {
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Profile sections</div>
               </div>
 
-              <div class="mt-3" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory)">
+              <div class="mt-3" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length > 0">
                 <div class="p-3 mt-3 border rounded text-xs font-normal font-['Nunito'] leading-3" v-for="(template, index) in profileCreatorManager.profileCategory.templates" :key="index">
                   <span class="font-bold">{{ template.name }}</span>
 
@@ -136,6 +142,8 @@ onMounted(() => {
 
                 </div>
               </div>
+
+              <div v-html="profile_creator_messages.profile_creator.all_templates_added" class="mt-3 p-4 text-center" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length === 0"></div>
 
             </div>
             <div class="card-footer bg-white pt-0">

@@ -4,3 +4,4 @@ profile_creator:
   profile_success: Profile called {profileName} was removed successfully.
   profile_error: We weren't able to remove the profile called {profileName}, please try again.
   create_profile_success: Profile {profileName} created successfully.
+  all_templates_added: You have added all the available individual section templates. Add custom templates for additional information.
