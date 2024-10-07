@@ -39,28 +39,28 @@ onMounted(() => {
 
 <template>
   <ExtendProfileCreatorLayout>
-      <div class="card card-default h-100">
-            <div class="card-header border-bottom-0 pb-0">
-              <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Profile inputs</div>
-              <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Manage inputs or add your own</div>
-            </div>
-            <div class="card-body">
-              <div class="mt-3">
-                <hr class="opacity-10 bg-neutral-700"/>
-              </div>
-              <div class="mt-3">
-                <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Profile sections</div>
-              </div>
+    <div class="card card-default h-100">
+      <div class="card-header border-bottom-0 pb-0">
+        <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Profile inputs</div>
+        <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Manage inputs or add your own</div>
+      </div>
+      <div class="card-body">
+        <div class="mt-3">
+          <hr class="opacity-10 bg-neutral-700"/>
+        </div>
+        <div class="mt-3">
+          <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Profile sections</div>
+        </div>
 
-              <div class="mt-3" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length > 0">
-                <div class="p-3 mt-3 text-md font-normal font-['Nunito']" v-for="(template, index) in profileCreatorManager.getSections" :key="index">
-                  <span class="font-bold">{{ template.name }}</span>
-                  <button @click="profileCreatorManager.addSection(template)" class="justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white float-right">
-                    <i class="pi pi-plus text-sm custom-icon-sm"></i> Add Input
-                  </button>
-                </div>
-              </div>
-            </div>
+        <div class="mt-3" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length > 0">
+          <div class="p-3 mt-3 text-md font-normal font-['Nunito']" v-for="(template, index) in profileCreatorManager.getSections" :key="index">
+            <span class="font-bold">{{ template.name }}</span>
+            <button @click="profileCreatorManager.addSection(template)" class="justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white float-right">
+              <i class="pi pi-plus text-sm custom-icon-sm"></i> Add Input
+            </button>
           </div>
+        </div>
+      </div>
+    </div>
   </ExtendProfileCreatorLayout>
 </template>
