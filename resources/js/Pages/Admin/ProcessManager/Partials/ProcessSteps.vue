@@ -89,7 +89,7 @@ function isHrVisible(step){
   <div class="row">
 
     <template v-for="(step, index) in props.steps" :key="index">
-      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" :class="pageProps.firstSteps.includes(step.id) && pageProps.visibleSteps.includes(step.id) || (props.steps && props.steps.length == 0) ? 'col-md-5 col-lg-5' : 'col-md-4 col-lg-4'" class="cursor-pointer step-nav" v-if="pageProps.visibleSteps.includes(step.id)">
+      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" :class="pageProps.firstSteps.includes(step.id) && pageProps.visibleSteps.includes(step.id) ? 'col-md-5 col-lg-5' : props.steps && props.steps.length == 1 ? 'col-md-6 col-lg-6' : 'col-md-4 col-lg-4'" class="cursor-pointer step-nav" v-if="pageProps.visibleSteps.includes(step.id)">
         <div class="row">
 
           <div class="col-md-2 pl-0 pr-0">
@@ -105,7 +105,7 @@ function isHrVisible(step){
               <div class="card-body">
                 <div v-if="!(step.id > 0)" class="mb-3">
                   <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step name</div>
-                  <input v-model="step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?">
+                  <input v-model="step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this step?">
                   <div class="input-validation-error" v-if="typeof processManagerStore.stepErrors?.name !== 'undefined'">
                     <span v-for="(error, index) in processManagerStore.stepErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
                   </div>
