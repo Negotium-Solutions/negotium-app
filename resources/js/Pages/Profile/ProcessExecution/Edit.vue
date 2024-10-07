@@ -32,7 +32,7 @@ onMounted(() => {
 });
 
 function setFieldValue(index, value) {
-      this.processExecution.step.fields[index].value = value;
+      processExecution.step.fields[index].value = value;
     }
 </script>
 
@@ -51,7 +51,7 @@ function setFieldValue(index, value) {
             <div class="gap-28 mb-2">
               <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700">{{ field.label }}</span>
               <input v-if="field.dynamic_model_field_type_id == 1" class="form-control" v-model="processExecution.step.fields[_index].value">
-              <select class="form-control" v-if="[9].includes(field.dynamic_model_field_type_id)" v-model="processExecution.step.fields[_index].value" placeholder="Select a Gender">
+              <select class="form-control" v-if="[9].includes(field.dynamic_model_field_type_id)" v-model="processExecution.step.fields[_index].value" placeholder="Please select">
                 <option v-for="(option, index) in field.options" :key="index">{{ option.name }}</option>
               </select>
               <div class="flex flex-col" v-if="[8].includes(field.dynamic_model_field_type_id)">

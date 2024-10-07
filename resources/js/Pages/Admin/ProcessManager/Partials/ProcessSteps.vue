@@ -89,7 +89,7 @@ function isHrVisible(step){
   <div class="row">
 
     <template v-for="(step, index) in props.steps" :key="index">
-      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" :class="pageProps.firstSteps.includes(step.id) && pageProps.visibleSteps.includes(step.id) ? 'col-md-5 col-lg-5' : 'col-md-4 col-lg-4'" class="cursor-pointer step-nav" v-if="pageProps.visibleSteps.includes(step.id)">
+      <div @click="!isActiveStep(step) ? navigate(props.process.id, step.id) : ''" :class="pageProps.firstSteps.includes(step.id) && pageProps.visibleSteps.includes(step.id) || (props.steps && props.steps.length == 0) ? 'col-md-5 col-lg-5' : 'col-md-4 col-lg-4'" class="cursor-pointer step-nav" v-if="pageProps.visibleSteps.includes(step.id)">
         <div class="row">
 
           <div class="col-md-2 pl-0 pr-0">
@@ -116,15 +116,14 @@ function isHrVisible(step){
 
                 <div class="mt-3" v-if="step.activities && step.activities.length > 0">
                   <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Step Activities</div>
-                  <div @click.stop="isActiveStep(step) ? processManagerStore.set('activity', activity) : ''; processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-100 pt-1 pb-2 pl-2 pr-2 rounded border border-neutral-700/opacity-25 flex justify-between mb-2"  :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
-                    <div>
-                      <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Activity Type - {{ activity.field_type.name }}</span>
-                      <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight text-break" >{{ activity.label }}</div>
-                      </div>
-
-                    <div class="items-center">
+                  <a href="javascript:void(0)" @click="isActiveStep(step) ? processManagerStore.set('activity', activity) : ''; processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-full m-h-9 p-2 rounded border border-neutral-700/opacity-25 flex items-start justify-between mb-1" :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
+                    <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight w-full overflow-hidden break-words">
+                      <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3" :class="{ 'text-white' : processManagerStore.activity.id === activity.id }">Activity Type - {{ activity.field_type.name }}</span>
+                      <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight text-break" :class="{ 'text-white' : processManagerStore.activity.id === activity.id }">{{ activity.label }}</div>
+                    </div>
+                    <div class="items-center flex-shrink-0 self-start">
                       <button type="button" data-toggle="dropdown" class="btn btn-tool mt-1">
-                        <i class="pi pi-ellipsis-v"></i>
+                        <i class="pi pi-ellipsis-v" :class="{ 'text-white' : processManagerStore.activity.id === activity.id }"></i>
                       </button>
                       <div class="dropdown-menu dropdown-menu dropdown-menu-right">
                         <a href="#" class="dropdown-item">
@@ -136,7 +135,7 @@ function isHrVisible(step){
                         </a>
                       </div>
                     </div>
-                  </div>
+                  </a>
 
                 </div>
 
@@ -166,10 +165,8 @@ function isHrVisible(step){
         <div class="col-md-2 pl-0 pr-0">
           <hr class="mt-7" style="border-color: rgb(67, 170, 139);"> <!-- TODO: Move to css file -->
         </div>
-        <div class="col-md-10 pl-0 pr-0">
-          <div class="col-lg-4 col-md-4 col-sm-12 pr-0 pl-0 pt-1">
-            <a :href="route('process-manager.edit', [props.process.id])" class="mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add Step</a>
-          </div>
+        <div class="col-md-4 pl-0 pr-0">
+            <a :href="route('process-manager.edit', [props.process.id])" class="w-[126px] mt-2 flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white"><i class="pi pi-plus text-sm custom-icon-sm"></i> Add Step</a>
         </div>
       </div>
     </div>
