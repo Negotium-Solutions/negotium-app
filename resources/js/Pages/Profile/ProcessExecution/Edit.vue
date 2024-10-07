@@ -32,7 +32,7 @@ onMounted(() => {
 });
 
 function setFieldValue(index, value) {
-      this.processExecution.step.fields[index].value = value;
+      processExecution.step.fields[index].value = value;
     }
 </script>
 
