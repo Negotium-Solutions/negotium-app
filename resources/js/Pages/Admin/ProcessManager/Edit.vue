@@ -54,7 +54,7 @@ onMounted(() => {
         <hr class="mt-7" style="border-color: #43AA8B;"/>
       </div>
 
-      <div class="col-lg-4 col-md-4 col-sm-12 pl-0 pr-o mr-0" style="padding-right: 0px;">
+      <div class="col-lg-5 col-md-5 col-sm-12 pl-0 pr-o mr-0" style="padding-right: 0px;">
         <div class="card card-default">
           <div class="card-header border-bottom-0 pb-0">
             <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">{{ processManagerStore.step.name }}</div>
@@ -63,7 +63,7 @@ onMounted(() => {
           <div class="card-body">
             <div v-if="!(processManagerStore.step.id > 0)" class="mb-3">
               <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step name</div>
-              <input v-model="processManagerStore.step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?">
+              <input v-model="processManagerStore.step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this step?">
               <div class="input-validation-error" v-if="typeof processManagerStore.stepErrors?.name !== 'undefined'">
                 <span v-for="(error, index) in processManagerStore.stepErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
               </div>
