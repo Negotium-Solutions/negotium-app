@@ -31,8 +31,8 @@ onMounted(() => {
         </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-3">
-        <a :href="route('profile-creation')" class="btn btn-sm btn-outline-secondary w-24 mr-2">Cancel</a>
-        <button @click="profileCreatorManager.create(toast)" class="btn btn-sm btn-dark w-24">Save Draft</button>
+        <a :href="route('profile-creation')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 w-24 text-neutral-700 hover:text-neutral-700 cursor-pointer mr-2">Cancel</a>
+        <a href="javascript:void(0)" @click="profileCreatorManager.create(toast)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white cursor-pointer">Save Draft</a>
       </div><!-- /.col -->
     </template>
 
@@ -70,10 +70,10 @@ onMounted(() => {
                 <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
               </div>
               <div class="mt-4">
-                <button v-if="!profileCreatorManager.loading" @click="profileCreatorManager.create(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-full">
-                  <i class="pi pi-plus text-sm custom-icon-sm"></i> Add sections
+                <button v-if="!profileCreatorManager.loading" @click="profileCreatorManager.create(toast)" class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white w-full">
+                  <i class="pi pi-plus custom-icon-sm"></i> Add sections
                 </button>
-                <button v-if="profileCreatorManager.loading"  class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white w-full" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
+                <button v-if="profileCreatorManager.loading"  class="flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white w-full" disabled><i class="pi pi-spin pi-spinner custom-icon-sm"></i> Loading ...</button>
               </div>
             </div>
           </div>

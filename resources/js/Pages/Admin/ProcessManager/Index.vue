@@ -41,7 +41,7 @@ onMounted(() => {
         </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
-        <a :href="route('process-manager.create')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Create Process</a>
+        <a :href="route('process-manager.create')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white">Create Process</a>
       </div><!-- /.col -->
       </div>
     </template>
