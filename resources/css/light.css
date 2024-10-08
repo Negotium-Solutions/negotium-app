@@ -59,7 +59,7 @@
     background-color: var(--neg-dark-3);
   }
 
-  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link{
+  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link,.sidebar-light-dark .nav-sidebar>.nav-item>.nav>.nav-item>.nav-link{
     color: var(--neg-light-3) !important;
   }
   
@@ -68,7 +68,7 @@
     color: var(--neg-light-1);
   }
 
-  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link.active{
+  .sidebar-light-dark .nav-sidebar>.nav-item>.nav-link.active,.sidebar-light-dark .nav-sidebar>.nav-item>.nav>.nav-item>.nav-link.active{
     background-color: var(--neg-dark-1);
     color: var(--neg-light-6);
   }
@@ -128,6 +128,19 @@
     flex: 1 1 50%; /* Ensures the third item takes exactly 50% of the width */
   }
 
+  .timeline::before {
+    top:4rem
+  }
+
+  .bg-success-500{
+    background-color: var(--neg-green-2) !important;
+}
+
+
+.bg-neutral-500{
+    background-color: #d9d9d9 !important;
+}
+
 .border-neutral-700{
     border-color: var(--neg-grey) !important;
 }
@@ -137,7 +150,7 @@
 }
 
 .bg-slate-500{
-    background-color: var(--neg-light-1);
+    background-color: var(--neg-light-1) !important;
 }
 
 .bg-zinc-100{
@@ -267,9 +280,25 @@
     border-radius: 15px;
 }
 
-.rounded-custom-25{
+.rounded-custom-25 {
     border-radius: 25px;
-}
+    overflow: hidden; /* Ensures the rounded corners are respected */
+  }
+  
+  .rounded-custom-25 .btn {
+    border-radius: 0; /* Ensure individual buttons don't override the group radius */
+  }
+  
+  /* Optional: if you want the buttons on the left and right to inherit a specific part of the rounded border */
+  .rounded-custom-25 .btn:first-child {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+  }
+  
+  .rounded-custom-25 .btn:last-child {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+  }
 
 .rounded-custom-50{
     border-radius: 50%;
@@ -277,6 +306,7 @@
 
 .btn-group label.btn-outline-secondary{
     font-weight: 400;
+    line-height: 1.5rem;
     color: var(--neg-font-default);
     border-color: var(--neg-light-grey);
 }
