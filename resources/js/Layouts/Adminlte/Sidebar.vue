@@ -66,7 +66,7 @@ function handleProfileSidebarPosition(){
 
       <!-- SidebarSearch Form -->
       <div class="mt-2 mb-3 text-center">
-        <a href="javascript:void(0)" class="create-btn px-4 py-2 border rounded-custom-25 justify-center items-center">Create</a>
+        <a href="javascript:void(0)" class="create-btn px-4 py-2 border rounded-custom-25 justify-center items-center">Start</a>
       </div>
 
       <!-- Sidebar Menu -->

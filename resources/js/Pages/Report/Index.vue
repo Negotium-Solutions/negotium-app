@@ -2,7 +2,7 @@
 import { AuthenticatedLayout } from '@/Layouts/Adminlte'
 import axios from 'axios';
 import {router, usePage} from '@inertiajs/vue3';
-import { computed } from "vue";
+import { ref,computed,onMounted } from "vue";
 import { useToastr } from "@/toastr.js";
 
 
@@ -10,6 +10,47 @@ const toastr = useToastr();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
+
+const visibleChildren = ref([])
+const processStatus = ref([
+{showChildren:true,id:1,name:'Nico',surname:'van der Meulen',assigned:'15',start_rate:'33',process_name:'-',date_started:'-',started_by:'-',status:'-',progress:'80',date_completed:'-',parent_id:0},
+        {id:2,name:'-',surname:'-',assigned:'-',start_rate:'0',process_name:'-',date_started:'00/00/0000',started_by:'Erin Dias',status:'-',progress:'40',date_completed:'-',parent_id:1},
+        {id:3,name:'-',surname:'-',assigned:'-',start_rate:'11',process_name:'-',date_started:'00/00/0000',started_by:'Randy Rosser',status:'-',progress:'25',date_completed:'-',parent_id:1},
+        {id:4,name:'-',surname:'-',assigned:'-',start_rate:'5',process_name:'-',date_started:'00/00/0000',started_by:'-',status:'-',progress:'10',date_completed:'-',parent_id:1}
+])
+
+
+
+onMounted(() => {
+})
+
+        function toggleChildren(parentId) {
+
+            const parent = document.getElementById(`parent_${parentId}`)
+            const childRows = document.querySelectorAll(`.child-of-${parentId}`);
+            if(parent.classList.contains('pi-chevron-down')){
+                parent.classList.remove('pi-chevron-down')
+                parent.classList.add('pi-chevron-up')
+            } else {
+                parent.classList.add('pi-chevron-down')
+                parent.classList.remove('pi-chevron-up')
+            }
+            childRows.forEach(row => {
+                row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+            });
+        }
+
+        function barColor(num){
+            if(num < 30){
+                return 'bg-danger-500'
+            }
+            if(num < 70){
+                return 'bg-warning-500'
+            }
+            if(num <= 100){
+                return 'bg-success-500'
+            }
+        }
 
 </script>
 
@@ -23,17 +64,241 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
           </div><!-- /.col -->
         </template>
 
-        <div class="row">
-          </div>
+        <div class="content-container pl-4 pr-4">
+            <div class="row">
+                <table class="table w-full border-0 border-spacing-0 border-collapse">
+                    <thead>
+                        <tr>
+                            <td colspan="2" class="border-t-0 border-l-0 border-b-0 border-r-4 bg-neutral-500 border-r-white text-['Roboto']">Profile information</td>
+                            <td colspan="9" class="bg-neutral-500 text-['Roboto']">Process information</td>
+                        </tr>
+                        <tr>
+                            <td class="bg-neutral-500 text-sm font-normal py-1">Name</td>
+                            <td class="border-t-0 border-l-0 border-b-0 border-r-4 bg-neutral-500 border-r-white text-sm font-normal py-1">Surame</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1">Assigned</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1">Start Rate</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1">Process Name</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1">Date Started</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1">Started by</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1">Status</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1">Progress (overall/process)</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1">Date Completed</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1 last2"></td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Parent Row -->
+                        <tr>
+                            <td>Nico</td>
+                            <td>van der Meulen</td>
+                            <td>15</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">33%</span>
+                                    <div :style="{ width: '33%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(33)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">80%</span>
+                                    <div :style="{ width: '80%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(80)">
+                                    </div>
+                                </div></td>
+                            <td>-</td>
+                            <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_1'" @click="toggleChildren(1)"></i></a></td>
+                        </tr>
+                        <!-- Child Rows -->
+                        <tr class="child-row child-of-1" style="display: none;">
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">0%</span>
+                                    <div :style="{ width: '1%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(1)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>00/00/0000</td>
+                            <td>Erin Dias</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">0%</span>
+                                    <div :style="{ width: '1%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(0)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td></td>
+                        </tr>
+                        <tr class="child-row child-of-1" style="display: none;">
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 55px;">100%</span>
+                                    <div :style="{ width: '100%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(100)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>00/00/0000</td>
+                            <td>Randy Rosser</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">100%</span>
+                                    <div :style="{ width: '100%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(100)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td></td>
+                        </tr>
+                        <tr class="child-row child-of-1" style="display: none;">
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">50%</span>
+                                    <div :style="{ width: '50%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(50)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>00/00/0000</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">70%</span>
+                                    <div :style="{ width: '70%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(70)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td></td>
+                        </tr>
+                        <!-- Parent Row -->
+                        <tr>
+                            <td>Brook</td>
+                            <td>Haley</td>
+                            <td>45</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">90%</span>
+                                    <div :style="{ width: '90%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(90)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">40%</span>
+                                    <div :style="{ width: '40%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(40)">
+                                    </div>
+                                </div></td>
+                            <td>-</td>
+                            <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_2'" @click="toggleChildren(2)"></i></a></td>
+                        </tr>
+                        <tr class="child-row child-of-2" style="display: none;">
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">75%</span>
+                                    <div :style="{ width: '75%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(75)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>00/00/0000</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">73%</span>
+                                    <div :style="{ width: '73%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(73)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td></td>
+                        </tr>
+                        <!-- Parent Row -->
+                        <tr>
+                            <td>Gilbert</td>
+                            <td>O'Conner</td>
+                            <td>12</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">20%</span>
+                                    <div :style="{ width: '20%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(20)">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="width: 40px;">20%</span>
+                                    <div :style="{ width: '20%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(20)">
+                                    </div>
+                                </div></td>
+                            <td>-</td>
+                            <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_3'" @click="toggleChildren(3)"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
         <!-- /.row -->
     </AuthenticatedLayout>
 </template>
-<style>
-  .btn-edit {
+<style scoped>
+table td, table th{
+    margin-top:0px !important;
+}
+
+.btn-edit {
     color: lawngreen;
   }
 
   .btn-delete {
     color: orangered;
   }
+
+  .progress-bar {
+  background-color: green;
+  transition: width 0.3s;
+}
 </style>

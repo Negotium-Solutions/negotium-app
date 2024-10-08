@@ -136,6 +136,14 @@
     background-color: var(--neg-green-2) !important;
 }
 
+.bg-warning-500{
+    background-color: var(--neg-orange-2) !important;
+}
+
+.bg-danger-500{
+    background-color: var(--neg-red-2) !important;
+}
+
 
 .bg-neutral-500{
     background-color: #d9d9d9 !important;
@@ -316,6 +324,11 @@
     width: 1%;
     white-space: nowrap;
     border-left: 2px solid var(--neg-bg-light);
+}
+.last2{
+    width: 1%;
+    white-space: nowrap;
+    /* border-left: 2px solid var(--neg-bg-light); */
 }
 
 .fit-hw{
