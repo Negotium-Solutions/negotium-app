@@ -33,6 +33,24 @@ class ProfileController extends Controller
     }
 
     /**
+     * Display the user's profile profile-details.
+     */
+    /**
+     * Display the user's profile form.
+     */
+    public function create(Request $request): Response
+    {
+        $profile = json_decode($this->http->get("{$this->url}/profile/schema/{$request->get('profile_type_id')}")->getBody(), true)['data'] ?? [];
+
+        $parameters = [
+            'profile' => $profile,
+            'profile_type_id' => $request->get('profile_type_id'),
+        ];
+
+        return Inertia::render('Profile/ProfileDetails/Create', $parameters);
+    }
+
+    /**
      * Display the user's profile form.
      */
     public function processes($id = null): Response
