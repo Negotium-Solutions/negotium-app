@@ -77,7 +77,7 @@ onUpdated(() => {
                   <template #value="slotProps">
                     <div v-if="slotProps.value" class="w-100">
                       <span>{{ slotProps.value.name }}</span>
-                      <i class="fa fa-square float-right" :style="'color: '+slotProps.value.color"></i>
+                      <i class="fa fa-square float-right mt-1" :style="'color: '+slotProps.value.color"></i>
                     </div>
                     <span v-else>
                           {{ slotProps.placeholder }}
@@ -89,7 +89,7 @@ onUpdated(() => {
                     </div>
                     <div class="w-100" v-else>
                       <span class="text-neutral-700 text-sm font-normal font-['Nunito'] leading-tight">{{ slotProps.option.name }}</span>
-                      <i class="fa fa-square float-right" :style="'color: '+slotProps.option.color"></i>
+                      <i class="fa fa-square float-right mt-1" :style="'color: '+slotProps.option.color"></i>
                     </div>
                   </template>
                   <template #footer>
@@ -112,28 +112,25 @@ onUpdated(() => {
               </div>
               <div class="mt-3">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Steps</div>
-                <a :href="route('process-manager.edit-activity', [processManagerStore.process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-100 h-9 p-2 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex mb-1"  :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
-                  <div class="w-100 d-block font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight" >
+                <a :href="route('process-manager.edit-activity', [processManagerStore.process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-full m-h-9 p-2 rounded border border-neutral-700/opacity-25 flex items-start justify-between mb-1" :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                  <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight w-full overflow-hidden break-words">
                     <span :class="{ 'text-white' : processManagerStore.step.id === step.id }">{{ step.name }}</span>
-
-                    <div class="items-center float-right" style="line-height: 1rem;">
-                      <button type="button" data-toggle="dropdown" class="btn btn-tool mt-0 pt-0">
-                        <i class="pi pi-ellipsis-v"></i>
-                      </button>
-                      <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                        <a href="#" class="dropdown-item">
-                          <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
-                          <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
-                        </a>
-                      </div>
+                  </div>
+                  <div class="items-center flex-shrink-0 self-start">
+                    <button type="button" data-toggle="dropdown" class="btn btn-tool">
+                      <i class="pi pi-ellipsis-v"></i>
+                    </button>
+                    <div class="dropdown-menu dropdown-menu-right">
+                      <a href="#" class="dropdown-item">
+                        <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
+                      </a>
+                      <div class="dropdown-divider"></div>
+                      <a href="#" class="dropdown-item">
+                        <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
+                      </a>
                     </div>
                   </div>
-
                 </a>
-
               </div>
             </div>
             <!-- /.card-body -->
