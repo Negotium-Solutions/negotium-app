@@ -80,7 +80,6 @@ export const useProcessCategoryStore = defineStore({
 
             let _url = this.url+'/'+this.user.tenant+'/process-category/create';
 
-            console.log('this.process_category', this.process_category);
             try {
                 const response = await axios.post(_url, this.process_category, {
                     headers: {

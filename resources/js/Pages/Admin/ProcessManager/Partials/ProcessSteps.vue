@@ -2,8 +2,14 @@
 import Button from "primevue/button";
 import { onMounted, reactive } from "vue";
 import { useProcessManagerStore } from "@/stores";
+import Toast from "primevue/toast";
+import ConfirmDialog from "primevue/confirmdialog";
+import { useToast } from "primevue/usetoast";
+import {useConfirm} from "primevue/useconfirm";
 
 const processManagerStore = useProcessManagerStore();
+const confirm = useConfirm();
+const toast = useToast();
 
 const props = defineProps({
   process: null,
@@ -57,7 +63,6 @@ function setActiveStep()
       pageProps.shoAddStep = true;  // Ensure showAddStep is correctly named
     }
   }
-  console.log(pageProps.visibleSteps)
 });
 
 let process1 = document.getElementById('process-1');
@@ -100,6 +105,9 @@ function isHrVisible(step){
             <div class="card card-default" :class="isActiveStep(step) ? 'bg-white' : 'opacity-75'">
               <div class="card-header border-bottom-0 pb-0">
                 <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">{{ step.name }}</div>
+                <div v-if="processManagerStore.editStep">
+                  <input v-model="step.name" type="text" class="mt-2 form-control form-control-md form-control-custom" id="process-name" placeholder="What do you want to call this process?">
+                </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -131,7 +139,7 @@ function isHrVisible(step){
                           <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
+                        <a href="#" @click="processManagerStore.deleteItem(activity, 'activity', confirm, toast)" class="dropdown-item">
                           <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
                         </a>
                       </div>
@@ -175,4 +183,13 @@ function isHrVisible(step){
     </div>
 
   </div>
+
+  <Toast position="top-center">
+    <template #message="slotProps">
+      <div class="flex flex-column align-items-start" style="flex: 1">
+        <div class="font-medium text-sm my-1 text-900">{{ slotProps.message.detail }}</div>
+      </div>
+    </template>
+  </Toast>
+  <ConfirmDialog></ConfirmDialog>
 </template>

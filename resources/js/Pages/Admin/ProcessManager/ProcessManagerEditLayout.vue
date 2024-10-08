@@ -125,7 +125,7 @@ onUpdated(() => {
                           <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
+                        <a href="#" @click="processManagerStore.deleteItem(step, 'step', confirm, toast)" class="dropdown-item">
                           <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
                         </a>
                       </div>
