@@ -46,12 +46,8 @@ onMounted(() => {
         </Breadcrumb>
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-3">
-        <button class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">
-          <i class="pi pi-plus text-sm custom-icon-sm"></i> Custom
-        </button>
-        <button @click="profileCreatorManager.create(toast)" class="float-right flex gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white ml-3">
-          <i class="pi pi-plus text-sm custom-icon-sm"></i> Save Draft
-        </button>
+        <a :href="route('profile-creation')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 w-24 text-neutral-700 hover:text-neutral-700 cursor-pointer mr-2">Cancel</a>
+        <a href="javascript:void(0)" @click="profileCreatorManager.create(toast)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white cursor-pointer">Save Draft</a>
       </div><!-- /.col -->
     </template>
 
