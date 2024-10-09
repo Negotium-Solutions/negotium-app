@@ -14,8 +14,10 @@ export const useProfileDetailStore = defineStore({
     state: () => ({
         profile: null,
         dynamicModelFieldTypeGroup: null,
+        createProfileErrors: null,
         profileDetailsFields: null,
         profileDetailsFieldsErrors: null,
+        ProfileSections: null,
         loading: false,
         status: {
             loading: false
@@ -78,6 +80,51 @@ export const useProfileDetailStore = defineStore({
                     this.loading = false;
                 }
             });
+        },
+        async createProfile(toast) {
+            this.apiHelper = new ApiHelper('dynamic-model/profile-capture');
+
+            this.loading = true;
+
+            console.log('before', this.profile);
+            await this.apiHelper.create(this.profile);
+            this.apiHelper.isDoneLoading(null, () => {
+                let placeholderVariables = {
+                    'profileName': this.profile.name
+                };
+                const response = this.apiHelper.response;
+                console.log('after', response);
+
+                switch (parseInt(response.code)) {
+                    case 201:
+                        toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.profile_creator.create_profile_success, placeholderVariables), life: 3000 });
+                        this.createProfileErrors = null;
+                        setTimeout(() => {
+                            window.location.href = '/profile/'+response.data.data.id+'/processes?'+this.profile_type_id;
+                        }, 3000);
+                        break;
+                    case 422:
+                        this.createProfileErrors = response.errors;
+                        toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
+                        this.loading = false;
+                        break;
+                    default:
+                        this.createProfileErrors = null;
+                        toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                        this.loading = false;
+                        break;
+                }
+            });
+        },
+        isSet(key, value) {
+            if ( this.$state[key] === null ) {
+                return false;
+            }
+
+            if (this.$state[key].hasOwnProperty('id')) {
+                return this.$state[key].id === value.id;
+            }
+            return false;
         },
         resetResponse() {
             this.response = {

@@ -2,7 +2,10 @@
 import { ref, onMounted } from 'vue';
 import { Link } from '@inertiajs/vue3';
 
-const csrfToken = ref('')
+const csrfToken = ref('');
+
+const PROFILE_TYPE_INDIVIDUAL = 100;
+
 onMounted(() => {
 
   csrfToken.value = document.querySelector('meta[name="csrf-token"]').content
@@ -66,7 +69,7 @@ function handleProfileSidebarPosition(){
 
       <!-- SidebarSearch Form -->
       <div class="mt-2 mb-3 text-center">
-        <a href="javascript:void(0)" class="create-btn px-4 py-2 border rounded-custom-25 justify-center items-center">Start</a>
+        <a href="javascript:void(0)" class="create-btn px-4 py-2 border rounded-custom-25 justify-center items-center">Start Process</a>
       </div>
 
       <!-- Sidebar Menu -->
@@ -75,9 +78,9 @@ function handleProfileSidebarPosition(){
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a href="#" class="nav-link d-flex">          
+            <a :href="route('profile.create', PROFILE_TYPE_INDIVIDUAL)+'?pt=1'"  :class="{ active: route().current('profile.create') }" class="nav-link d-flex">
               <i class="nav-icon sidemenu-admin"></i>
-              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Create</span>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Create Profile</span>
             </a>
           </li>
           <li class="nav-item">
@@ -114,7 +117,7 @@ function handleProfileSidebarPosition(){
             </a>
           </li>
           <li class="nav-item">
-            <a :href="route('reports')" :class="{ active: route().current('reports') }" class="nav-link d-flex align-self-center">          
+            <a :href="route('reports')" :class="{ active: route().current('reports') }" class="nav-link d-flex align-self-center">
               <i class="nav-icon sidemenu-reports"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Reports</span>
             </a>
