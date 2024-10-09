@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\ProcessManagerController;
 use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\ProcessExecutionController;
+use App\Http\Controllers\ReportController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -53,6 +54,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/process-manager/edit-activity/{process_id}/{step_id?}', [ProcessManagerController::class, 'editActivity'])->name('process-manager.edit-activity');
 
     Route::get('/step/create/{process_id}', [StepController::class, 'create'])->name('step.create');
+    
+    // Profiles
+    Route::get('/reports', [ReportController::class, 'index'])->name('reports');
 });
 
 require __DIR__.'/auth.php';

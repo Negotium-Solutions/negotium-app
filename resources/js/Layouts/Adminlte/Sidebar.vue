@@ -117,7 +117,7 @@ function handleProfileSidebarPosition(){
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link d-flex align-self-center">          
+            <a :href="route('reports')" :class="{ active: route().current('reports') }" class="nav-link d-flex align-self-center">          
               <i class="nav-icon sidemenu-reports"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Reports</span>
             </a>
