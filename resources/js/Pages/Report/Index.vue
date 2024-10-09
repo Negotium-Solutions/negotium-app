@@ -64,31 +64,31 @@ onMounted(() => {
           </div><!-- /.col -->
         </template>
 
-        <div class="content-container pl-4 pr-4">
+        <div class="content-container pl-4 pr-4" id="">
             <div class="row">
-                <table class="table w-full border-0 border-spacing-0 border-collapse">
+                <table class="table w-full border-0">
                     <thead>
-                        <tr>
+                        <!-- <tr>
                             <td colspan="2" class="border-t-0 border-l-0 border-b-0 border-r-4 bg-neutral-500 border-r-white text-['Roboto']">Profile information</td>
                             <td colspan="9" class="bg-neutral-500 text-['Roboto']">Process information</td>
-                        </tr>
+                        </tr> -->
                         <tr>
-                            <td class="bg-neutral-500 text-sm font-normal py-1">Name</td>
-                            <td class="border-t-0 border-l-0 border-b-0 border-r-4 bg-neutral-500 border-r-white text-sm font-normal py-1">Surame</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1 last2">Assigned</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1">Start Rate</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1">Process Name</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1 last2">Date Started</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1">Started by</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1">Status</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1">Progress (overall/process)</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1 last2">Date Completed</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1 last2"></td>
+                            <td class="text-sm font-normal py-1">Name<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td class="border-t-0 border-l-0 border-b-0 border-r-4 border-r-white text-sm font-normal py-1">Surame<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td class="text-sm font-normal py-1 last2">Assigned<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td class="text-sm font-normal py-1">Start Rate</td>
+                            <td class="text-sm font-normal py-1">Process Name<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td class="text-sm font-normal py-1 last2">Date Started<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td class="text-sm font-normal py-1">Started by<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td class="text-sm font-normal py-1">Status<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td class="text-sm font-normal py-1">Progress (overall/process)</td>
+                            <td class="text-sm font-normal py-1 last2">Date Completed<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td class="text-sm font-normal py-1 last2"></td>
                         </tr>
                     </thead>
                     <tbody>
                         <!-- Parent Row -->
-                        <tr>
+                        <tr class="bg-[#efefef] pb-1">
                             <td>Nico</td>
                             <td>van der Meulen</td>
                             <td>15</td>
@@ -178,7 +178,7 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>-</td>
+                            <td>00/00/0000</td>
                             <td></td>
                         </tr>
                         <tr class="child-row child-of-1" style="display: none;">
@@ -213,7 +213,7 @@ onMounted(() => {
                             <td></td>
                         </tr>
                         <!-- Parent Row -->
-                        <tr>
+                        <tr class="bg-[#efefef] pb-1">
                             <td>Brook</td>
                             <td>Haley</td>
                             <td>45</td>
@@ -276,7 +276,7 @@ onMounted(() => {
                             <td></td>
                         </tr>
                         <!-- Parent Row -->
-                        <tr>
+                        <tr class="bg-[#efefef] pb-1">
                             <td>Gilbert</td>
                             <td>O'Conner</td>
                             <td>12</td>
@@ -370,7 +370,7 @@ onMounted(() => {
                             <td></td>
                         </tr>
                         <!-- Parent Row -->
-                        <tr>
+                        <tr class="bg-[#efefef] pb-1">
                             <td>Yazmin</td>
                             <td>Carter</td>
                             <td>4</td>
@@ -473,7 +473,12 @@ onMounted(() => {
 <style scoped>
 .table td, .table th{
     border-top:0px !important;
-    font-size:0.95rem
+    font-size:0.95rem;
+    border-bottom:3px solid white;
+}
+
+.table .child-row td{
+    border-bottom: 2px solid #efefef !important;
 }
 
 .btn-edit {
