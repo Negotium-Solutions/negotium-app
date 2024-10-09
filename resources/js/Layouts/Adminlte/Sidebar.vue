@@ -126,6 +126,8 @@ function handleProfileSidebarPosition(){
             <hr class="h-0.5 opacity-10 bg-neutral-700 rounded-sm" />
           </li>
 
+          <li class="nav-item header nav-link mt-2" style="margin-bottom:10px;">ADMIN</li>
+
           <li class="nav-item">
             <a :href="route('process-manager')" :class="{ active: route().current('process-manager') }" class="nav-link d-flex">
               <i class="nav-icon sidemenu-processes"></i>
@@ -140,12 +142,12 @@ function handleProfileSidebarPosition(){
             </a>
           </li>
 
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link d-flex">
               <i class="nav-icon sidemenu-help"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Help & Support</span>
             </a>
-          </li>
+          </li> -->
 
         </ul>
 
@@ -158,7 +160,7 @@ function handleProfileSidebarPosition(){
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Notifications</span>
             </a>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <a href="#" class="nav-link d-flex">          
               <i class="nav-icon sidemenu-settings"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Settings</span>
@@ -169,7 +171,7 @@ function handleProfileSidebarPosition(){
               <i class="nav-icon sidemenu-profile"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Profile</span>
             </a>
-          </li>
+          </li> -->
           <li class="nav-item">
             <Link :href="route('logout')" method="post" as="button" class="nav-link d-flex">
               <i class="nav-icon sidemenu-exit"></i>
