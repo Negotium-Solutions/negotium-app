@@ -133,10 +133,10 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>-</td>
+                            <td>Client Onboarding</td>
                             <td>00/00/0000</td>
                             <td>Erin Dias</td>
-                            <td>-</td>
+                            <td>Assigned</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <span style="min-width: 37px;">0%</span>
@@ -164,10 +164,10 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>-</td>
+                            <td>Client Review</td>
                             <td>00/00/0000</td>
                             <td>Randy Rosser</td>
-                            <td>-</td>
+                            <td>Started</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <span style="min-width: 37px;">100%</span>
@@ -195,10 +195,10 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>-</td>
+                            <td>Withdrawal</td>
                             <td>00/00/0000</td>
                             <td>Tiana Donin</td>
-                            <td>-</td>
+                            <td>In-Progress</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <span style="min-width: 37px;max-width: 37px;">70%</span>
@@ -258,10 +258,10 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>-</td>
+                            <td>Withdrawal</td>
                             <td>00/00/0000</td>
                             <td>Randy Rosser</td>
-                            <td>-</td>
+                            <td>In-Progress</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <span style="min-width: 37px;max-width: 37px;">73%</span>
@@ -321,10 +321,10 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>-</td>
+                            <td>Client Onboarding</td>
                             <td>00/00/0000</td>
                             <td>Brandon Korsgaard</td>
-                            <td>-</td>
+                            <td>Started</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <span style="min-width: 37px;max-width: 37px;">50%</span>
@@ -352,10 +352,10 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>-</td>
+                            <td>Client Review</td>
                             <td>00/00/0000</td>
                             <td>Brandon Korsgaard</td>
-                            <td>-</td>
+                            <td>In-Progress</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <span style="min-width: 37px;max-width: 37px;">70%</span>
@@ -415,7 +415,7 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>-</td>
+                            <td>Client Onboarding</td>
                             <td>00/00/0000</td>
                             <td>Tiana Donin</td>
                             <td>In-Progress</td>
@@ -446,7 +446,7 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>-</td>
+                            <td>Withdrawal</td>
                             <td>00/00/0000</td>
                             <td>Tiana Donin</td>
                             <td>Assigned</td>
