@@ -75,14 +75,14 @@ onMounted(() => {
                         <tr>
                             <td class="bg-neutral-500 text-sm font-normal py-1">Name</td>
                             <td class="border-t-0 border-l-0 border-b-0 border-r-4 bg-neutral-500 border-r-white text-sm font-normal py-1">Surame</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1">Assigned</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1 last2">Assigned</td>
                             <td class="bg-neutral-500 text-sm font-normal py-1">Start Rate</td>
                             <td class="bg-neutral-500 text-sm font-normal py-1">Process Name</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1">Date Started</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1 last2">Date Started</td>
                             <td class="bg-neutral-500 text-sm font-normal py-1">Started by</td>
                             <td class="bg-neutral-500 text-sm font-normal py-1">Status</td>
                             <td class="bg-neutral-500 text-sm font-normal py-1">Progress (overall/process)</td>
-                            <td class="bg-neutral-500 text-sm font-normal py-1">Date Completed</td>
+                            <td class="bg-neutral-500 text-sm font-normal py-1 last2">Date Completed</td>
                             <td class="bg-neutral-500 text-sm font-normal py-1 last2"></td>
                         </tr>
                     </thead>
@@ -94,9 +94,11 @@ onMounted(() => {
                             <td>15</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">33%</span>
+                                    <span style="min-width: 37px;">33%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '33%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(33)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
@@ -106,9 +108,11 @@ onMounted(() => {
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">80%</span>
+                                    <span style="min-width: 37px;">80%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '80%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(80)">
+                                    </div>
                                     </div>
                                 </div></td>
                             <td>-</td>
@@ -121,9 +125,11 @@ onMounted(() => {
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">0%</span>
+                                    <span style="min-width: 37px;">0%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '1%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(1)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
@@ -133,9 +139,11 @@ onMounted(() => {
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">0%</span>
+                                    <span style="min-width: 37px;">0%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '1%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(0)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
@@ -148,9 +156,11 @@ onMounted(() => {
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 55px;">100%</span>
+                                    <span style="min-width: 37px;">100%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '100%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(100)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
@@ -160,9 +170,11 @@ onMounted(() => {
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">100%</span>
+                                    <span style="min-width: 37px;">100%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '100%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(100)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
@@ -175,21 +187,25 @@ onMounted(() => {
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">50%</span>
+                                    <span style="min-width: 37px;max-width: 37px;">50%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '50%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(50)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
                             <td>-</td>
                             <td>00/00/0000</td>
-                            <td>-</td>
+                            <td>Tiana Donin</td>
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">70%</span>
+                                    <span style="min-width: 37px;max-width: 37px;">70%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '70%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(70)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
@@ -203,9 +219,11 @@ onMounted(() => {
                             <td>45</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">90%</span>
+                                    <span style="min-width: 37px;max-width: 37px;">90%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '90%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(90)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
@@ -215,35 +233,42 @@ onMounted(() => {
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">40%</span>
+                                    <span style="min-width: 37px;max-width: 37px;">40%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '40%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(40)">
+                                    </div>
                                     </div>
                                 </div></td>
                             <td>-</td>
                             <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_2'" @click="toggleChildren(2)"></i></a></td>
                         </tr>
+                        <!-- Child Rows -->
                         <tr class="child-row child-of-2" style="display: none;">
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">75%</span>
+                                    <span style="min-width: 37px;max-width: 37px;">75%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '75%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(75)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
                             <td>-</td>
                             <td>00/00/0000</td>
-                            <td>-</td>
+                            <td>Randy Rosser</td>
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">73%</span>
+                                    <span style="min-width: 37px;max-width: 37px;">73%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '73%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(73)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
@@ -257,9 +282,11 @@ onMounted(() => {
                             <td>12</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">20%</span>
+                                    <span style="min-width: 37px;max-width: 37px;">20%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '20%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(20)">
+                                    </div>
                                     </div>
                                 </div>
                             </td>
@@ -269,13 +296,172 @@ onMounted(() => {
                             <td>-</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="width: 40px;">20%</span>
+                                    <span style="min-width: 37px;max-width: 37px;">20%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '20%' }" 
                                         class="progress-bar h-6 rounded" :class="barColor(20)">
+                                    </div>
                                     </div>
                                 </div></td>
                             <td>-</td>
                             <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_3'" @click="toggleChildren(3)"></i></a></td>
+                        </tr>
+                        <!-- Child Rows -->
+                        <tr class="child-row child-of-3" style="display: none;">
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">10%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '10%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(10)">
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>00/00/0000</td>
+                            <td>Brandon Korsgaard</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">50%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '50%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(50)">
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td></td>
+                        </tr>
+                        <tr class="child-row child-of-3" style="display: none;">
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">50%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '50%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(50)">
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>00/00/0000</td>
+                            <td>Brandon Korsgaard</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">70%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '70%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(70)">
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td></td>
+                        </tr>
+                        <!-- Parent Row -->
+                        <tr>
+                            <td>Yazmin</td>
+                            <td>Carter</td>
+                            <td>4</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">50%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '50%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(50)">
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">70%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '70%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(70)">
+                                    </div>
+                                    </div>
+                                </div></td>
+                            <td>-</td>
+                            <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_4'" @click="toggleChildren(4)"></i></a></td>
+                        </tr>
+                        <!-- Child Rows -->
+                        <tr class="child-row child-of-4" style="display: none;">
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">10%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '10%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(10)">
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>00/00/0000</td>
+                            <td>Tiana Donin</td>
+                            <td>In-Progress</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">50%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '50%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(50)">
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td></td>
+                        </tr>
+                        <tr class="child-row child-of-4" style="display: none;">
+                            <td>-</td>
+                            <td>-</td>
+                            <td>-</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">0%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '1%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(0)">
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td>00/00/0000</td>
+                            <td>Tiana Donin</td>
+                            <td>Assigned</td>
+                            <td>
+                                <div style="display: flex; align-items: center;">
+                                    <span style="min-width: 37px;max-width: 37px;">0%</span>
+                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                    <div :style="{ width: '1%' }" 
+                                        class="progress-bar h-6 rounded" :class="barColor(0)">
+                                    </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>-</td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -287,6 +473,7 @@ onMounted(() => {
 <style scoped>
 .table td, .table th{
     border-top:0px !important;
+    font-size:0.95rem
 }
 
 .btn-edit {
