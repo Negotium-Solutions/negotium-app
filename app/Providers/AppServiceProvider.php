@@ -25,6 +25,7 @@ class AppServiceProvider extends ServiceProvider
 
         // Load profiles/messages.yaml and merge it with the existing config
         $profileMessages = Yaml::parseFile(config_path('profile/messages.yaml'));
-        config(['messages' => array_merge(config('messages'), $profileMessages)]);
+        $profileCreatorMessages = Yaml::parseFile(config_path('admin/profile_creator/messages.yaml'));
+        config(['messages' => array_merge(config('messages'), $profileMessages, $profileCreatorMessages)]);
     }
 }

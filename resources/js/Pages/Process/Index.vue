@@ -128,7 +128,7 @@ function deleteProcess(process) {
                   <i class="pi pi-ellipsis-v"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu dropdown-menu-right">
-                  <a :href="route('process.edit', process.id)" class="dropdown-item">
+                  <a class="dropdown-item">
                     <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
                   </a>
                   <div class="dropdown-divider"></div>
