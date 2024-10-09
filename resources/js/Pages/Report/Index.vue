@@ -285,8 +285,8 @@ onMounted(() => {
     </AuthenticatedLayout>
 </template>
 <style scoped>
-table td, table th{
-    margin-top:0px !important;
+.table td, .table th{
+    border-top:0px !important;
 }
 
 .btn-edit {
