@@ -93,7 +93,7 @@ function handleProfileSidebarPosition(){
             </a>
           </li>
           <li class="nav-item">
-            <a :href="route('process')" :class="{ active: route().current('process') }" class="nav-link d-flex align-self-center">          
+            <a :class="{ active: route().current('process') }" class="nav-link d-flex align-self-center">
               <i class="nav-icon sidemenu-processes"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Processes</span>
             </a>
@@ -124,22 +124,21 @@ function handleProfileSidebarPosition(){
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link d-flex">
-              <i class="nav-icon sidemenu-admin"></i>
-              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Admin</span>
+            <a :href="route('process-manager')" :class="{ active: route().current('process-manager') }" class="nav-link d-flex">
+              <i class="nav-icon sidemenu-processes"></i>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Process Creator</span>
             </a>
-            <ul class="nav nav-treeview" style="display: none;">
-              <li class="nav-item">
-                <a :href="route('process-manager')" :class="{ active: route().current('process-manager') }" class="nav-link">
-                  <i class="far fa-circle nav-icon custom-icon-sm"></i>
-                  <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Process Creator</span>
-                </a>
-              </li>
-            </ul>
           </li>
 
           <li class="nav-item">
-            <a href="#" class="nav-link d-flex">          
+            <a  :href="route('profile-creation')" :class="{ active: route().current('profile-creation') }" class="nav-link d-flex">
+              <i class="nav-icon custom-icon-sm sidemenu-profiles"></i>
+              <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Profile Creator</span>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a href="#" class="nav-link d-flex">
               <i class="nav-icon sidemenu-help"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Help & Support</span>
             </a>

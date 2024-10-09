@@ -14,4 +14,5 @@ export * from './profile/documents/profile-documents.store.js';
 export * from './messages.store';
 export * from './user/user.store';
 export * from './process-manager/process-manager.store.js';
-export * from './process-execution/process-execution.store.js'
+export * from '@/stores/admin/process-execution/process-execution.store.js';
+export * from '@/stores/admin/profile-creator/profile-creator-manager.store.js';
