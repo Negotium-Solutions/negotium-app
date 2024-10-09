@@ -100,7 +100,7 @@ export const useProfileDetailStore = defineStore({
                         toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.profile_creator.create_profile_success, placeholderVariables), life: 3000 });
                         this.createProfileErrors = null;
                         setTimeout(() => {
-                            window.location.href = '/profile/'+response.data.data.id+'/processes';
+                            window.location.href = '/profile/'+response.data.data.id+'/processes?'+this.profile_type_id;
                         }, 3000);
                         break;
                     case 422:

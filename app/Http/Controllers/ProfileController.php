@@ -39,12 +39,13 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function create($id): Response
+    public function create(Request $request, $id): Response
     {
         $profile = json_decode($this->http->get("{$this->url}/profile/schema/{$id}")->getBody(), true)['data'] ?? [];
         $profile['profile_type_id'] = $id;
         // dd($profile);
         $parameters = [
+            'pt' => $request->input('pt'),
             'profile' => $profile,
             'profile_type_id' => $id,
         ];
@@ -114,7 +115,7 @@ class ProfileController extends Controller
             $id = $this->profileData['profileId'];
         }
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
-
+        
         $parameters = [
             'profile' => $profile,
         ];

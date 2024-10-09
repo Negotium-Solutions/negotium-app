@@ -19,7 +19,7 @@ const props = defineProps({
 onMounted(() => {
   profileManagerStore.setProfileData(props);
   profileDetailStore.set('profile', props.profile);
-  profileDetailStore.set('profileDetailsFields', props.profile.dynamicModel);
+  profileDetailStore.set('profileDetailsFields', props.profile.steps);
 });
 </script>
 

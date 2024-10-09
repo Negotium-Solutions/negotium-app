@@ -10,6 +10,7 @@ const profileDetailStore = useProfileDetailStore();
 const toast = useToast();
 
 const props = defineProps({
+  pt: 1,
   profile: null,
   profile_type_id: null,
   profileTypes: Array,
@@ -38,10 +39,10 @@ onMounted(() => {
         </div>
         <div class="row ml-2 mb-2">
           <div class="px-1 mb-1">
-            <a :href="route('profile.create', 1)" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold cursor-pointer" :class="{ 'bg-zinc-100 text-yellow-100' : parseInt(props.profile_type_id) === 1 }">Individual</a>
+            <a :href="route('profile.create', 100)+'?pt=1'" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold cursor-pointer" :class="{ 'bg-zinc-100 text-yellow-100' : parseInt(props.profile_type_id) === 100 }">Individual</a>
           </div>
           <div class="px-1 mb-1">
-            <a :href="route('profile.create', 2)" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold cursor-pointer" :class="{ 'bg-zinc-100 text-yellow-100' : parseInt(props.profile_type_id) === 2 }">Business</a>
+            <a :href="route('profile.create', 200)+'?pt=2'" class="float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold cursor-pointer" :class="{ 'bg-zinc-100 text-yellow-100' : parseInt(props.profile_type_id) === 200 }">Business</a>
           </div>
         </div>
         <div v-if="profileDetailStore.isSet('profile', profileDetailStore.profile)" class="d-flex flex-column w-100 pl-3 pr-3">
