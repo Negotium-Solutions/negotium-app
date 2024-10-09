@@ -135,7 +135,7 @@ function handleProfileSidebarPosition(){
 
           <li class="nav-item">
             <a  :href="route('profile-creation')" :class="{ active: route().current('profile-creation') }" class="nav-link d-flex">
-              <i class="nav-icon sidemenu-profiles"></i>
+              <i class="nav-icon custom-icon-sm sidemenu-profiles"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Profile Creator</span>
             </a>
           </li>

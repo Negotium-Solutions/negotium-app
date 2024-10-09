@@ -42,41 +42,42 @@ onMounted(() => {
     <div class="card card-default h-100">
       <div class="card-header border-bottom-0 pb-0">
         <div class="text-neutral-700 text-[1.25rem] font-bold font-['Roboto'] leading-loose">Profile inputs</div>
-        <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Manage inputs or add your own</div>
+        <div class="opacity-50 text-neutral-700 text-[0.90rem] font-normal font-['Nunito'] leading-3">Manage inputs or add your own</div>
       </div>
       <div class="card-body">
-        <div class="mt-3">
-          <hr class="opacity-10 bg-neutral-700"/>
-        </div>
-        <div class="mt-3">
-          <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Profile sections</div>
-        </div>
 
-        <div class="mt-3" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length > 0">
-          <div class="row"  v-for="(template, index) in profileCreatorManager.profile.steps" :key="index">
-            <div class="p-3 mt-3 text-md font-normal font-['Nunito'] w-full">
+        <div class="mt-0" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length > 0">
+          <div class="row m-0"  v-for="(template, index) in profileCreatorManager.profile.steps" :key="index">
+            <div class="mt-0 w-full">
+              <hr class="opacity-10 bg-neutral-700"/>
+            </div>
+            <div class="pt-2 text-md font-normal font-['Nunito'] w-full">
               <span class="font-bold">{{ template.name }}</span>
-              <button @click="profileCreatorManager.addSection(template)" class="justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white float-right">
-                <i class="pi pi-plus text-sm custom-icon-sm"></i> Add Input
+              <button @click="profileCreatorManager.addSection(template)" class="justify-center py-1.5 px-2.5 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white float-right">
+                <i class="pi pi-plus custom-icon-sm"></i> Add Input
               </button>
             </div>
-            <div class="mt-3 w-full">
-              <table class="table table-sm">
-                <thead>
-                  <tr>
-                    <th>Inputs</th>
-                    <th>Actions</th>
-                    <th>Quick Capture</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="(field, _index) in template.fields" :key="_index">
-                    <td>{{ field.label }}</td>
-                    <td></td>
-                    <td></td>
-                  </tr>
-                </tbody>
-              </table>
+            <div class="mt-2 w-full">
+              <div class="row align-items-center mb-1 py-1.5 border-neutral-700 text-xs">
+                <div class="col-md-6">
+                  Inputs
+                </div>
+                <div class="col-md-3 d-flex justify-content-start align-items-center">
+                  Actions
+                </div>
+                <div class="col-md-3 d-flex align-items-center">
+                  Quick Capture
+                </div>
+              </div>
+              <div v-for="(field, index) in template.fields" :key="index" class="row align-items-center mb-2 py-1.5 border border-neutral-700 rounded text-[0.9rem]">
+                <div class="col-md-6">
+                  {{ field.label }}
+                </div>
+                <div class="col-md-3 d-flex justify-content-start align-items-center">
+                </div>
+                <div class="col-md-3 d-flex align-items-center">
+                </div>
+              </div>
             </div>
           </div>
         </div>

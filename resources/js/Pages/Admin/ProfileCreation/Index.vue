@@ -33,7 +33,7 @@ onMounted(() => {
           </h1>
         </div><!-- /.col -->
         <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3 p-2">
-          <a :href="route('profile-creation.create')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white cursor-pointer">Create Profile</a>
+          <a :href="route('profile-creation.create')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white cursor-pointer">Create Profile</a>
         </div><!-- /.col -->
       </div>
     </template>
@@ -77,5 +77,18 @@ onMounted(() => {
       </div>
     </template>
   </Toast>
-  <ConfirmDialog></ConfirmDialog>
+  <ConfirmDialog :style="{ width: '400px' }">
+    <template #container="{ message, acceptCallback, rejectCallback }">
+      <div class="flex flex-col w-full gap-4 p-4">
+        <span class="text-2xl font-bold font-['Roboto'] leading-loose">{{ message.header }}</span>
+        <p class="text-base font-normal font-['Nunito'] leading-normal" v-html="message.message"></p>
+      </div>
+      <div class="row">
+        <div class="col-12 py-3 px-4 text-right">
+          <Button label="Cancel" outlined @click="rejectCallback" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2"></Button>
+          <Button :label="'Yes, Remove'" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
+        </div>
+      </div>
+    </template>
+  </ConfirmDialog>
 </template>

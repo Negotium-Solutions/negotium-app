@@ -280,9 +280,25 @@
     border-radius: 15px;
 }
 
-.rounded-custom-25{
+.rounded-custom-25 {
     border-radius: 25px;
-}
+    overflow: hidden; /* Ensures the rounded corners are respected */
+  }
+  
+  .rounded-custom-25 .btn {
+    border-radius: 0; /* Ensure individual buttons don't override the group radius */
+  }
+  
+  /* Optional: if you want the buttons on the left and right to inherit a specific part of the rounded border */
+  .rounded-custom-25 .btn:first-child {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+  }
+  
+  .rounded-custom-25 .btn:last-child {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+  }
 
 .rounded-custom-50{
     border-radius: 50%;
