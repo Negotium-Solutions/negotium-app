@@ -4,7 +4,7 @@ import { Link } from '@inertiajs/vue3';
 
 const csrfToken = ref('');
 
-const PROFILE_TYPE_INDIVIDUAL = 1;
+const PROFILE_TYPE_INDIVIDUAL = 100;
 
 onMounted(() => {
 
