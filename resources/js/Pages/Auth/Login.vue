@@ -38,7 +38,7 @@ const submit = () => {
         </div>
 
         <form @submit.prevent="submit">
-            <div>
+            <div class="mt-4">
                 <InputLabel for="email" value="Email" />
 
                 <TextInput
@@ -77,6 +77,13 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
+
+                <PrimaryButton class="w-100 rounded-custom-25 text-center items-center" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                    Log in
+                </PrimaryButton>
+            </div>
+
+            <div class="flex items-center justify-end mt-1 mb-4">
                 <Link
                     v-if="canResetPassword"
                     :href="route('password.request')"
@@ -84,10 +91,6 @@ const submit = () => {
                 >
                     Forgot your password?
                 </Link>
-
-                <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                    Log in
-                </PrimaryButton>
             </div>
         </form>
     </GuestLayout>
