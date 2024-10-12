@@ -60,8 +60,20 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function processes($id = null): Response
+    public function processes(Request $request, $id = null): Response
     {
+        // New
+        $profileTypes = json_decode($this->http->get("{$this->url}/dynamic-model/schema/".self::DYNAMIC_MODEL_TYPE_PROFILE)->getBody(), true)['data'] ?? [];
+        $schema_id = isset($profileTypes[0]['id']) ? $profileTypes[0]['id'] : null;
+        if ($request->has('schema_id')) {
+            $schema_id = $request->input('schema_id');
+        }
+        $profiles = json_decode($this->http->get("{$this->url}/dynamic-model?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
+        dd($profiles);
+
+
+
+
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
