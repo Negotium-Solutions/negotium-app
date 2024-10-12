@@ -12,6 +12,7 @@ const apiURL = computed(() => page.props.negotium_api_url);
 export const useProfileDetailStore = defineStore({
     id: 'profile-profile-details',
     state: () => ({
+        profileTypes: null,
         profile: null,
         dynamicModelFieldTypeGroup: null,
         createProfileErrors: null,
@@ -82,7 +83,7 @@ export const useProfileDetailStore = defineStore({
             });
         },
         async createProfile(toast) {
-            this.apiHelper = new ApiHelper('dynamic-model/profile-capture');
+            this.apiHelper = new ApiHelper('dynamic-model');
 
             this.loading = true;
 
@@ -101,6 +102,7 @@ export const useProfileDetailStore = defineStore({
                         this.createProfileErrors = null;
                         setTimeout(() => {
                             window.location.href = '/profile/'+response.data.data.id+'/processes?'+this.profile_type_id;
+                            this.loading = false;
                         }, 3000);
                         break;
                     case 422:

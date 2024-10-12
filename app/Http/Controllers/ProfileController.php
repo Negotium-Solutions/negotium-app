@@ -13,6 +13,7 @@ use \Illuminate\Http\Client\PendingRequest as PendingRequest;
 class ProfileController extends Controller
 {
     private const PROFILES_KEY = 'profiles';
+    private const DYNAMIC_MODEL_TYPE_PROFILE = 1;
     private PendingRequest $http;
     private string $url;
     private string $apiImagesUrl;
@@ -39,15 +40,18 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function create(Request $request, $id): Response
+    public function create($schema_id = null): Response
     {
-        $profile = json_decode($this->http->get("{$this->url}/profile/schema/{$id}")->getBody(), true)['data'] ?? [];
-        $profile['profile_type_id'] = $id;
-        // dd($profile);
+        $profileTypes = json_decode($this->http->get("{$this->url}/dynamic-model/schema/".self::DYNAMIC_MODEL_TYPE_PROFILE)->getBody(), true)['data'] ?? [];
+        if ($schema_id === null) {
+            $schema_id = isset($profileTypes[0]['id']) ? $profileTypes[0]['id'] : null;
+        }
+        $profile = json_decode($this->http->get("{$this->url}/dynamic-model/new-empty-record/{$schema_id}?with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
+
         $parameters = [
-            'pt' => $request->input('pt'),
+            'profileTypes' => $profileTypes,
             'profile' => $profile,
-            'profile_type_id' => $id,
+            'schema_id' => $schema_id
         ];
 
         return Inertia::render('Profile/ProfileDetails/Create', $parameters);

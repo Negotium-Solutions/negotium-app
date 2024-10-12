@@ -31,7 +31,7 @@ Route::middleware('auth')->group(function () {
 
     // Profiles
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
-    Route::get('/profile/create/{profile_type_id}', [ProfileController::class, 'create'])->name('profile.create');
+    Route::get('/profile/create/{schema_id?}', [ProfileController::class, 'create'])->name('profile.create');
     Route::get('/profile/{id?}/processes', [ProfileController::class, 'processes'])->name('profile.processes');
     Route::get('/profile/{id?}/profile-details', [ProfileController::class, 'details'])->name('profile.profile-details');
     Route::get('/profile/{id?}/profile-details/edit', [ProfileController::class, 'editDetails'])->name('profile.profile-details.edit');

@@ -78,7 +78,7 @@ function handleProfileSidebarPosition(){
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
           <li class="nav-item">
-            <a :href="route('profile.create', PROFILE_TYPE_INDIVIDUAL)+'?pt=1'"  :class="{ active: route().current('profile.create') }" class="nav-link d-flex">
+            <a :href="route('profile.create')"  :class="{ active: route().current('profile.create') }" class="nav-link d-flex">
               <i class="nav-icon sidemenu-admin"></i>
               <span class="ml-2 text-sm font-normal font-['Roboto'] leading-normal">Create Profile</span>
             </a>

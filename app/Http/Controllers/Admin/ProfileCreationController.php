@@ -16,6 +16,8 @@ class ProfileCreationController extends Controller
     private string $apiImagesUrl;
     private Request $request;
 
+    private const DYNAMIC_MODEL_TYPE_PROFILE = 1;
+
     public function __construct(Request $request)
     {
         $this->http = Http::withHeaders([
@@ -30,7 +32,7 @@ class ProfileCreationController extends Controller
 
     public function index()
     {
-        $profiles = json_decode($this->http->get("{$this->url}/dynamic-model?type_id=1")->getBody(), true)['data'] ?? [];
+        $profiles = json_decode($this->http->get("{$this->url}/dynamic-model/schema/".self::DYNAMIC_MODEL_TYPE_PROFILE)->getBody(), true)['data'] ?? [];
 
         $parameters = [
             'profiles' => $profiles
