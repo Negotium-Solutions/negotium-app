@@ -32,7 +32,7 @@ onMounted(() => {
             <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['RobotNo']">Profile Details</h1>
           </div>
           <div class="col-sm-6 text-right">
-            <a :href="route('profile.create', props.profile_type_id)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2">Cancel</a>
+            <a :href="route('profile.create', props.schema_id)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2">Cancel</a>
             <button v-if="!profileDetailStore.loading" @click="profileDetailStore.createProfile(toast)" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Save</button>
             <button v-if="profileDetailStore.loading"  class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white" disabled><i class="pi pi-spin pi-spinner"></i> Loading ...</button>
           </div>

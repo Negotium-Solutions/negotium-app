@@ -69,7 +69,7 @@ class ProfileController extends Controller
             $schema_id = $request->input('schema_id');
         }
         $profiles = json_decode($this->http->get("{$this->url}/dynamic-model?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
-        dd($profiles);
+        // dd($profiles);
 
 
 
