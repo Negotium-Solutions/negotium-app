@@ -6,13 +6,13 @@ export const useProfilesManagerStore = defineStore({
         // Collections and models
         apiUrl: '',
         apiImagesUrl: '',
-        navigation: '',
         profileTypes: null,
         profileType: {},
         profiles: null,
         profile: {},
         processes: null,
         process: {},
+        schemaId: null,
         selected_categories: [0],
         lookup: {
             profileManagerStore: null,
@@ -58,14 +58,13 @@ export const useProfilesManagerStore = defineStore({
         },
         setProfileData(props) {
             // Get selected profile type
-            const profileType = props.profileTypes.filter((item) => parseInt(item.id) === parseInt(props.profileTypeId))[0];
             this.set('profileTypes', props.profileTypes);
-            this.set('profileType', profileType);
-            this.set('profiles', profileType.profiles);
+            this.set('profiles', props.profiles);
             this.set('profile', props.profile);
+            this.set('schemaId', props.schemaId);
+            this.set('profileId', props.profileId);
             this.set('apiUrl', props.apiUrl);
             this.set('apiImagesUrl', props.apiImagesUrl);
-            this.set('navigation', props.navigation);
         },
         handleProfileDivHeight(){
             let windowHeight = window.innerHeight,

@@ -23,20 +23,20 @@ const messages = computed(() => usePage().props.messages);
 const process_messages = messages.value.processes;
 
 const props = defineProps({
-  profileTypeId: 0,
   profileTypes: Array,
-  profile: Object,
+  profiles: null,
+  profile: null,
+  schemaId: null,
+  profileId: null,
+  processes: null,
   apiUrl: String,
-  apiImagesUrl: String,
-  navigation: String,
-  lookup: null
+  apiImagesUrl: String
 });
 
 onMounted(() => {
   profileManagerStore.setProfileData(props);
   profileManagerStore.set('processes', props.profile.processes);
-  profileManagerStore.setLookUp('processes', props.lookup.processes);
-  profileManagerStore.setLookUp('processCategories', props.lookup.processCategories);
+  profileManagerStore.setLookUp('processes', props  .processes);
 });
 
 function assignProcess() {

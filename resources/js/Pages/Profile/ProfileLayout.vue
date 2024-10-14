@@ -48,18 +48,18 @@ onMounted(() => {
         <div class="col-md-12 pt-4">
           <div class="row">
             <div v-for="(profileType, index) in profileManagerStore.profileTypes" :key="index" class="px-1 mb-1">
-              <button @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profileType.profiles[0].id})+'?pt='+profileType.id)" :class="['float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold cursor-pointer', { 'bg-zinc-100 text-yellow-100' : profileManagerStore.isSelected('profileType', profileType) }]">{{profileType.name}}</button>
+              <a :href="route('profile.processes', {id: 0})+'?s_id='+profileType.id" :class="['float-right h-[38px] p-3 bg-white rounded border border-neutral-700 justify-center items-center gap-2 inline-flex ml-1 text-xs font-bold cursor-pointer', { 'bg-zinc-100 text-yellow-100' : profileManagerStore.schemaId === profileType.id }]">{{profileType.name}}</a>
             </div>
           </div>
         </div>
-        </div>
+      </div>
     </template>
     <template #profile>
     <div class="content-container">
 
       <div class="row" id="profiles-sidebar">
         <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0">
-          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profile.id})+'?pt='+profileManagerStore.profileType.id)" :class="{ 'bg-slate-500': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
+          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profile.id})+'?s_id='+profileManagerStore.schemaId)" :class="{ 'bg-slate-500': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
             <div class="w-100 pl-6 pr-2 d-flex">
             <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="profileManagerStore.apiImagesUrl+profile.avatar"  />
             <span :class="profileManagerStore.profile.id === profile.id ? 'text-white' : 'text-neutral-700'" class="flex items-center justify-center text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.profile_name }} </span>
@@ -101,11 +101,11 @@ onMounted(() => {
             <div class="row mb-3"></div>
             <div id="profile-view-menu">
             <h2 class="font-bold mb-2">Profile navigation</h2>
-            <div><a :href="route('profile.processes', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.processes')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 hover:text-gray-700">Processes <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.profile-details', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.profile-details') || route().current('profile.profile-details.edit')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Profile Details <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.communications', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.communications')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Communications <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.documents', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.documents')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Documents <i class="fa fa-chevron-right float-right"></i></a></div>
-            <div><a :href="route('profile.notes', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" :class="{' bg-slate-500 text-white' : route().current('profile.notes')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.processes', {'id': profileManagerStore.profile.id})+'?schema_id='+profileManagerStore.schema_id" :class="{' bg-slate-500 text-white' : route().current('profile.processes')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 hover:text-gray-700">Processes <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.profile-details', {'id': profileManagerStore.profile.id})+'?schema_id='+profileManagerStore.schema_id" :class="{' bg-slate-500 text-white' : route().current('profile.profile-details') || route().current('profile.profile-details.edit')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Profile Details <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.communications', {'id': profileManagerStore.profile.id})+'?schema_id='+profileManagerStore.schema_id" :class="{' bg-slate-500 text-white' : route().current('profile.communications')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Communications <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.documents', {'id': profileManagerStore.profile.id})+'?schema_id='+profileManagerStore.schema_id" :class="{' bg-slate-500 text-white' : route().current('profile.documents')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Documents <i class="fa fa-chevron-right float-right"></i></a></div>
+            <div><a :href="route('profile.notes', {'id': profileManagerStore.profile.id})+'?schema_id='+profileManagerStore.schema_id" :class="{' bg-slate-500 text-white' : route().current('profile.notes')}" class="w-100 px-4 py-2 rounded rounded-lg justify-between items-center inline-flex border border-neutral-200 mt-1 hover:text-gray-700">Notes & Reminders <i class="fa fa-chevron-right float-right"></i></a></div>
             <div class="row mb-7"></div>
           </div>
           <div class="row col-md-12 p-0 m-0" id="client-view-menu">
