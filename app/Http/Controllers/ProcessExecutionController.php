@@ -11,7 +11,8 @@ use Inertia\Inertia;
 
 class ProcessExecutionController extends Controller
 {
-    private const PROFILES_KEY = 'profiles';
+    private const PROFILES_KEY = 'profiles_';
+    private const DYNAMIC_MODEL_TYPE_PROFILE = 1;
     private PendingRequest $http;
     private string $url;
     private string $apiImagesUrl;
@@ -31,15 +32,15 @@ class ProcessExecutionController extends Controller
         $this->profileData = $this->setProfilesData();
     }
 
-    public function edit($id, $process_id, $step_id = null)
+    public function edit(Request $request, $id, $profile_id, $process_id, $step_id = null)
     {
         if((int)$id === 0 || $id === null){
-            $id = $this->profileData['profileId'];
+            $profile_id = $this->profileData['profileId'];
         }
 
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
-        $process = json_decode($this->http->get("{$this->url}/process-execution?with=&profile_id={$id}&process_id={$process_id}")->getBody(), true)['data'] ?? [];
-
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$profile_id}?schema_id={$request->input('s_id')}")->getBody(), true)['data'] ?? [];
+        $process = json_decode($this->http->get("{$this->url}/process-execution/{$id}?profile_id={$profile_id}&process_id={$process_id}&schema_id={$request->input('s_id')}")->getBody(), true)['data'] ?? [];
+dd($process);
         if ($step_id !== null && $step_id > 0) {
             $process['step_id'] = (int)$step_id;
         }
@@ -57,28 +58,33 @@ class ProcessExecutionController extends Controller
 
     public function setProfilesData() : array
     {
+        $key = self::PROFILES_KEY.Auth::user()->id;
         // Disable validation until caching is required
         if (true/*$this->request->has('cache') && $this->request->cache === 'clear'*/) {
-            Cache::store('redis')->forget(self::PROFILES_KEY);
+            Cache::store('redis')->forget($key);
         }
 
-        if (!Cache::has(self::PROFILES_KEY)) {
-            $response = json_decode($this->http->get($this->url.'/profile-type?with=profiles')->getBody(), true)['data'];
-            Cache::store('redis')->put(self::PROFILES_KEY, $response, 86400);
+        if (!Cache::has($key)) {
+            $profileTypes = json_decode($this->http->get("{$this->url}/dynamic-model/schema/".self::DYNAMIC_MODEL_TYPE_PROFILE)->getBody(), true)['data'] ?? [];
+            Cache::store('redis')->put($key, $profileTypes, 86400);
         }
 
-        $profileTypes = Cache::store('redis')->get(self::PROFILES_KEY) ?? [];
-        $profileTypeId = $this->request->has('pt') && ($this->request->input('pt') > 0) ? $this->request->input('pt') : null;
-        if(!isset($profileTypeId)) {
-            $profileTypeId = $profileTypes[0]['id'];
+        $profileTypes = Cache::store('redis')->get($key) ?? [];
+
+        $schemaId = $this->request->has('s_id') && $this->request->input('s_id') > 0 ? $this->request->input('s_id') : null;
+        if (!isset($schemaId)) {
+            $schemaId = isset($profileTypes[0]['id']) ? $profileTypes[0]['id'] : null;
         }
+        $profiles = json_decode($this->http->get("{$this->url}/profile?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
+
         if(!isset($id)) {
-            $id = $profileTypes[0]['profiles'][0]['id'];
+            $id = $profiles['models'][0]['id'];
         }
 
         return [
             'profileTypes' => $profileTypes,
-            'profileTypeId' => $profileTypeId,
+            'profiles' => $profiles['models'],
+            'schemaId' => $schemaId,
             'profileId' => $id,
             'apiUrl' => $this->apiUrl,
             'apiImagesUrl' => $this->apiImagesUrl

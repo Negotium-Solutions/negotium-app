@@ -40,7 +40,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/{id?}/communications', [ProfileController::class, 'communications'])->name('profile.communications');
 
     // Process Execution
-    Route::get('/process-execution/{profile_id}/edit/{process_id}/{step_id}', [ProcessExecutionController::class, 'edit'])->name('process-execution.edit');
+    Route::get('/process-execution/{id}/{profile_id}/edit/{process_id}/{step_id}', [ProcessExecutionController::class, 'edit'])->name('process-execution.edit');
 
     Route::get('/process', [ProcessController::class, 'index'])->name('process');
     Route::get('/process/create', [ProcessController::class, 'create'])->name('process.create');
