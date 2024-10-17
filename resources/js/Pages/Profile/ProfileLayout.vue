@@ -41,7 +41,7 @@ onMounted(() => {
           </h1>
         </div><!-- /.col -->
         <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
-          <a class="px-4 py-2 header-btn rounded-custom-25 border justify-center items-center text-white">Add Profile</a>
+          <a :href="route('profile.create', {'schema_id': profileManagerStore.schemaId})" class="px-4 py-2 header-btn rounded-custom-25 border justify-center items-center text-white">Add Profile</a>
         </div><!-- /.col -->
       </div>
       <div class="row mb-0 mt-1">

@@ -28,15 +28,17 @@ const props = defineProps({
   profile: null,
   schemaId: null,
   profileId: null,
-  processes: null,
+  profileProcesses: null,
   apiUrl: String,
-  apiImagesUrl: String
+  apiImagesUrl: String,
+  lookup: null
 });
 
 onMounted(() => {
   profileManagerStore.setProfileData(props);
-  profileManagerStore.set('processes', props.profile.processes);
-  profileManagerStore.setLookUp('processes', props  .processes);
+  profileManagerStore.set('profileProcesses', props.profileProcesses);
+  profileManagerStore.setLookUp('processes', props.lookup.processes);
+  profileManagerStore.setLookUp('processCategories', props.lookup.processCategories);
 });
 
 function assignProcess() {
@@ -68,7 +70,7 @@ function assignProcess() {
                         </div>
                       </div>
                       <div class="text-sm leading-5 text-neutral-600">
-                        <div>{{ process.log.step.name }}</div>
+                        <div>{{ process.step.name }}</div>
                       </div>
                     </td>
                     <td class="align-right text-right py-0">
@@ -78,7 +80,7 @@ function assignProcess() {
                   <tr>
                     <td colspan="2" class="py-0">
                       <span class="text-success text-sm font-normal font-['Nunito']">Up to date</span>
-                      <span class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: {{ FunctionsHelper.DateTime(process.log.updated_at) }}</span>
+                      <span class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: {{ FunctionsHelper.DateTime(process.updated_at) }}</span>
                     </td>
                   </tr>
                 </table>
@@ -98,19 +100,24 @@ function assignProcess() {
         </div>
       </div>
       <div class="col-md-12 pl-3 pr-3">
-        <table v-if="profileManagerStore.processes && profileManagerStore.processes.length > 0" class="table-sm w-100 table-row-spacing table-bg">
+        <table v-if="profileManagerStore.profileProcesses && profileManagerStore.profileProcesses.length > 0" class="table-sm w-100 table-row-spacing table-bg">
           <tr>
             <th>Select</th><th>Process Name</th><th>Current Posistion</th><th>Last Opened</th><th>Date Added</th><th>Actions</th>
           </tr>
-          <tr v-for="(process, index) in profileManagerStore.processes" :key="index" :class="{ 'bg-gray-200': profileManagerStore.isSelected('process', process)}">
+          <tr v-for="(profileProcess, index) in profileManagerStore.profileProcesses" :key="index" :class="{ 'bg-gray-200': profileManagerStore.isSelected('process', profileProcess)}">
             <td><input type="checkbox"></td>
-            <td>{{ process.name }}</td>
-            <td>{{ process.log.step.name }}</td>
-            <td>{{ FunctionsHelper.DateTime(process.log.updated_at) }}</td>
-            <td>{{ FunctionsHelper.DateTime(process.log.created_at) }}</td>
+            <td>{{ profileProcess.process.name }}</td>
+            <td>{{ (profileProcess.step !== null) ? profileProcess.step.name : '' }}</td>
+            <td>{{ FunctionsHelper.DateTime(profileProcess.updated_at) }}</td>
+            <td>{{ FunctionsHelper.DateTime(profileProcess.created_at) }}</td>
             <td class="last pl-2">
               <div class="d-flex">
-                <a :href="route('process-execution.edit', { profile_id: profileManagerStore.profile.id, process_id: process.id, step_id: 0})+'?pt='+profileManagerStore.profile.profile_type_id" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Start</a>
+                <a v-if="(profileProcess.step === null)" :href="route('process-execution.edit', { profile_id: profileManagerStore.profile.id, process_id: profileProcess.process.id, step_id: 0})+'?s_id='+profileProcess.id" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-100">
+                  Start
+                </a>
+                <a v-if="(profileProcess.step !== null)" :href="route('process-execution.edit', { profile_id: profileManagerStore.profile.id, process_id: profileProcess.process.id, step_id: 0})+'?s_id='+profileProcess.id" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-100">
+                  Continue
+                </a>
                 <div class="flex flex-col items-center pl-2">
                   <button @click="profileManagerStore.set('process', process)" type="button" data-toggle="dropdown" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 inline-flex">
                     <i class="pi pi-ellipsis-v"></i>
@@ -124,7 +131,8 @@ function assignProcess() {
                       <small>Details</small>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <button :disabled="!(process.log.status.name === 'stopped')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'resume', 'resumed')">
+                    <!--
+                    <button :disabled="!(profileProcess.status.name === 'stopped')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'resume', 'resumed')">
                       <small>Resume</small>
                     </button>
                     <button :disabled="!(process.log.status.name === 'active')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', 'stop', 'stopped')">
@@ -136,6 +144,7 @@ function assignProcess() {
                     <button :disabled="!(process.log.status.name === 'completed')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', 'archive', 'archived')">
                       <small class="text-danger" :class="{'opacity-50': !(process.log.status.name === 'completed')}">Archive</small>
                     </button>
+                    -->
                   </div>
                 </div>
               </div>

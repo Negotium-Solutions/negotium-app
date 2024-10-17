@@ -24,7 +24,7 @@
               </div>
               <div v-if="process.category" class="mt-1 text-xs leading-3" :style="'color: '+process.category.color">{{ process.category.name }}</div>
               <div class="mt-2.5 text-sm leading-5 text-neutral-700">
-                <div>{{ process.steps.length }} Steps | {{ (typeof process.steps.activities !== 'undefined') ? process.steps.activities.length : 0 }} Activities</div>
+                <div>{{ process.groups.length }} Steps | {{ (typeof process.groups.activities !== 'undefined') ? process.groups.activities.length : 0 }} Activities</div>
               </div>
             </td>
             <td class="align-middle text-right">

@@ -10,7 +10,7 @@ export const useProfilesManagerStore = defineStore({
         profileType: {},
         profiles: null,
         profile: {},
-        processes: null,
+        profileProcesses: null,
         process: {},
         schemaId: null,
         selected_categories: [0],
@@ -131,15 +131,15 @@ export const useProfilesManagerStore = defineStore({
         },
         filterByCategoryExcluding() {
             let assigned_processes_array = [];
-            this.profile.processes.forEach((process) => {
-                assigned_processes_array.push(process.id);
+            this.profileProcesses.forEach((profileProcess) => {
+                assigned_processes_array.push(profileProcess.id);
             });
 
             if(this.selected_categories.some((item) => item === 0)) {
                 return this.lookup.processes.filter((item) => !assigned_processes_array.includes(item.id));
             }
 
-            return this.lookup.processes.filter((item) => this.selected_categories.indexOf(item.process_category_id) >= 0 && !assigned_processes_array.includes(item.id));
+            return this.lookup.processes.filter((item) => this.selected_categories.indexOf(item.dynamic_model_category_id) >= 0 && !assigned_processes_array.includes(item.id));
         },
         PROFILE_TYPE: () => 'profileType',
         PROFILES: () => 'profile',

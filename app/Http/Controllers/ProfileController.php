@@ -72,11 +72,21 @@ class ProfileController extends Controller
             $schema_id = $this->profileData['schemaId'];
         }
 
+        $processes = json_decode($this->http->get("{$this->url}/process?with=groups")->getBody(), true)['data'] ?? [];
+        $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
+        $profileProcesses = json_decode($this->http->get("{$this->url}/profile/{$id}/processes?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
+
+        $lookup = [
+            'processes' => $processes,
+            'processCategories' => $processCategories
+        ];
+        // dd($lookup);
 
         $parameters = [
             'profile' => $profile['models'][0],
-            'processes' => []
+            'profileProcesses' => $profileProcesses,
+            'lookup' => $lookup
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
