@@ -47,9 +47,9 @@ export const useProcessExecution = defineStore({
             this.$state['lookup'][key] = value;
         },
         setStep(step_id) {
-            this.process.steps.forEach((step, index) => {
+            this.process.groups.forEach((step, index) => {
                 if (parseInt(step_id) === 0) {
-                    this.step = this.process.steps[0];
+                    this.step = this.process.groups[0];
                     return true;
                 }
 
@@ -155,10 +155,10 @@ export const useProcessExecution = defineStore({
         },
         getNextStep(step) {
             let nextStep = step;
-            this.process.steps.forEach((_step, index) => {
+            this.process.groups.forEach((_step, index) => {
                 if (step.id === _step.id) {
-                    if ((index+1) <= (this.process.steps.length - 1)) {
-                        nextStep = this.process.steps[index + 1];
+                    if ((index+1) <= (this.process.groups.length - 1)) {
+                        nextStep = this.process.groups[index + 1];
                     }
                 }
             });

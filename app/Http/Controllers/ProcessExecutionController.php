@@ -32,15 +32,12 @@ class ProcessExecutionController extends Controller
         $this->profileData = $this->setProfilesData();
     }
 
-    public function edit(Request $request, $id, $profile_id, $process_id, $step_id = null)
+    // Route::get('/process-execution/edit/{process_id}/{process_schema_id}/{profile_id}/{profile_schema_id}/{step_id}', [ProcessExecutionController::class, 'edit'])->name('process-execution.edit');
+    public function edit(Request $request, $process_id, $process_schema_id, $profile_id, $profile_schema_id, $step_id)
     {
-        if((int)$id === 0 || $id === null){
-            $profile_id = $this->profileData['profileId'];
-        }
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$profile_id}?schema_id={$profile_schema_id}")->getBody(), true)['data'] ?? [];
+        $process = json_decode($this->http->get("{$this->url}/process-execution/{$process_id}?schema_id={$process_schema_id}&with=groups.fields.validations,groups.fields.options&profile_id={$profile_id}&process_schema_id={$process_schema_id}")->getBody(), true)['data'] ?? [];
 
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$profile_id}?schema_id={$request->input('s_id')}")->getBody(), true)['data'] ?? [];
-        $process = json_decode($this->http->get("{$this->url}/process-execution/{$id}?profile_id={$profile_id}&process_id={$process_id}&schema_id={$request->input('s_id')}")->getBody(), true)['data'] ?? [];
-dd($process);
         if ($step_id !== null && $step_id > 0) {
             $process['step_id'] = (int)$step_id;
         }

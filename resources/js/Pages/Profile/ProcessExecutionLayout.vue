@@ -20,7 +20,7 @@ const processExecution = useProcessExecution();
 onMounted(() => {
   setTimeout(() => {
     processExecution.handleInnerContentDivHeight();
-    const arr = processExecution.process.steps;
+    const arr = processExecution.process.groups;
 
     const index = arr.findIndex(obj => obj.id === processExecution.step.id);
     activeStep.value = index
@@ -66,7 +66,7 @@ onMounted(() => {
                   <div class="time-label pb-0 mb-0">
                     <span class="pb-3">Progress</span>
                   </div>
-                  <div class="flex" v-for="(step, index) in processExecution.process.steps" :key="index" :class="(index+1) === processExecution.process.steps.length ? '' :'mb-4 pb-3'">
+                  <div class="flex" v-for="(step, index) in processExecution.process.groups" :key="index" :class="(index+1) === processExecution.process.groups.length ? '' :'mb-4 pb-3'">
                     <i :class="processExecution.step.id === step.id ? 'fas bg-blue' : index < activeStep ? 'fa fa-check bg-success-500 pt-1 text-white' : 'fas bg-neutral-500'" style="line-height: 1.5;"></i>
                     <div class="timeline-item flex flex-col pl-2"> <!-- Use flex column to align items vertically -->
                       <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step {{ index + 1 }}</span>
