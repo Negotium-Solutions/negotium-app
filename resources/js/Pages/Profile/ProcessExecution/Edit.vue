@@ -13,11 +13,16 @@ const props = defineProps({
   process: null,
   step_id: null,
   profileTypeId: 0,
+
+
   profileTypes: Array,
-  profile: Object,
+  profiles: null,
+  profile: null,
+  schemaId: null,
+  profileId: null,
+  profileProcesses: null,
   apiUrl: String,
   apiImagesUrl: String,
-  navigation: String,
   lookup: null
 });
 

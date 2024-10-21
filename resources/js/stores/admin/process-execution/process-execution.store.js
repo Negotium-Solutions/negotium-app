@@ -95,7 +95,7 @@ export const useProcessExecution = defineStore({
             }
         },
         async storeDynamicModel(toast, step = null, profile_type_id = null) {
-            this.apiHelper = new ApiHelper('dynamic-field')
+            this.apiHelper = new ApiHelper('process-execution')
             console.log('DynamicModel', this.process);
 
             if (step !== null) {
@@ -104,7 +104,7 @@ export const useProcessExecution = defineStore({
                 this.loading = true;
             }
 
-            await this.apiHelper.updateFields(this.process, this.process.id);
+            await this.apiHelper.update(this.process, null);
             this.apiHelper.isDoneLoading(null, () => {
                 let removeProcessVariables = {
                     'profileName': this.profile.profileName,

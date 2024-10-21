@@ -50,6 +50,8 @@ class ProcessExecutionController extends Controller
 
         $parameters = array_merge($parameters, $this->profileData);
 
+        // dd($parameters);
+
         return Inertia::render('Profile/ProcessExecution/Edit', $parameters);
     }
 
