@@ -89,8 +89,8 @@ onMounted(() => {
                 <div class="input-validation-error" v-if="typeof processManagerStore.categoryErrors?.name !== 'undefined'">
                   <span v-for="(error, index) in processManagerStore.categoryErrors?.name" :key="index" class="error invalid-feedback">{{ error }}</span>
                 </div>
-                <div class="input-validation-error" v-if="typeof processManagerStore.processErrors?.process_category_id !== 'undefined'">
-                  <span v-for="(error, index) in processManagerStore.processErrors?.process_category_id" :key="index" class="error invalid-feedback">{{ error }}</span>
+                <div class="input-validation-error" v-if="typeof processManagerStore.processErrors?.dynamic_model_category_id !== 'undefined'">
+                  <span v-for="(error, index) in processManagerStore.processErrors?.dynamic_model_category_id" :key="index" class="error invalid-feedback">{{ error }}</span>
                 </div>
               </div>
               <div class="mt-3">
