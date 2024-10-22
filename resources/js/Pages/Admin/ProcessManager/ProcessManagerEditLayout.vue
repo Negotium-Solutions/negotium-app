@@ -112,7 +112,7 @@ onUpdated(() => {
               </div>
               <div class="mt-3">
                 <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Steps</div>
-                <a :href="route('process-manager.edit-activity', [processManagerStore.process.id, step.id])" v-for="(step, index) in processManagerStore.process.steps" :key="index" class="w-full m-h-9 p-2 rounded border border-neutral-700/opacity-25 flex items-start justify-between mb-1" :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
+                <a :href="route('process-manager.edit-activity', [processManagerStore.process.id, step.id])" v-for="(step, index) in processManagerStore.process.groups" :key="index" class="w-full m-h-9 p-2 rounded border border-neutral-700/opacity-25 flex items-start justify-between mb-1" :class="{ 'bg-zinc-100' : processManagerStore.step.id === step.id }">
                   <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight w-full overflow-hidden break-words">
                     <span :class="{ 'text-white' : processManagerStore.step.id === step.id }">{{ step.name }}</span>
                   </div>
@@ -136,7 +136,7 @@ onUpdated(() => {
             <!-- /.card-body -->
           </div>
         </div>
-        <div class="col-sm-12 pr-0 h-100" :class="(route().current('process-manager.edit-activity') && (processManagerStore.process.steps && processManagerStore.process.steps.length == 1)) ? ' offset-lg-3 offset-md-3 col-lg-9 col-md-9' : ' col-lg-12 col-md-12'" id="process-1" v-if="!route().current('process-manager.edit')">
+        <div class="col-sm-12 pr-0 h-100" :class="(route().current('process-manager.edit-activity') && (processManagerStore.process.groups && processManagerStore.process.groups.length == 1)) ? ' offset-lg-3 offset-md-3 col-lg-9 col-md-9' : ' col-lg-12 col-md-12'" id="process-1" v-if="!route().current('process-manager.edit')">
           <slot></slot>
         </div>
         <div class="col-sm-12 pr-0 h-100" :class="(route().current('process-manager.edit')) ? ' offset-lg-3 offset-md-3 col-lg-9 col-md-9' : ' d-none col-lg-12 col-md-12'" id="process-2">

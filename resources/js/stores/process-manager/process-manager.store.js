@@ -42,7 +42,7 @@ export const useProcessManagerStore = defineStore({
         step: {
             id: null,
             name: null,
-            parent_id: null,
+            schema_id: null,
             order: null
         },
         stepErrors: null,
@@ -118,7 +118,7 @@ export const useProcessManagerStore = defineStore({
             this.apiHelper = new ApiHelper('step');
             this.loading = true;
             this.stepErrors = null;
-            this.step.parent_id = this.process.id;
+            this.step.schema_id = this.process.id;
             await this.apiHelper.create(this.step);
             this.apiHelper.isDoneLoading(null, () => {
                 const response = this.apiHelper.response;
@@ -220,7 +220,7 @@ export const useProcessManagerStore = defineStore({
         },
         setStep(step_id){
             if(step_id > 0) {
-                this.process.steps.forEach((step) => {
+                this.process.groups.forEach((step) => {
                     if(step.id === step_id) {
                         this.step = step;
                     }

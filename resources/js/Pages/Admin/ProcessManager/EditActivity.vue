@@ -50,7 +50,7 @@ onMounted(() => {
 
   <ProcessManagerEditLayout>
 
-    <process-steps v-if="processManagerStore.step.id !== null" :process="processManagerStore.process" :steps="processManagerStore.process.steps" :step="processManagerStore.step"></process-steps>
+    <process-steps v-if="processManagerStore.step.id !== null" :process="processManagerStore.process" :steps="processManagerStore.process.groups" :step="processManagerStore.step"></process-steps>
 
     <Dialog v-model:visible="processManagerStore.showAddActivity" :draggable="false" modal header="Add note or reminder" :style="{ width: '30vw' }" :class="'notes-dialog'" :breakpoints="{ '900px': '65vw', '575px': '90vw' } ">
       <template #header>
