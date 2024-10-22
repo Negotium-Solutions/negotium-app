@@ -100,11 +100,11 @@ class ApiHelper {
         this.loading = true;
         this.resetResponse();
 
-        console.log('id', id);
-
-        let _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point+'/update/'+id;
+        let _url = '';
         if( id === null ) {
-            let _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point+'/update';
+            _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point+'/update';
+        } else {
+            _url = this.apiUrl+'/'+this.user.tenant+'/'+this.end_point+'/update/'+id;
         }
 
         try {
@@ -119,6 +119,7 @@ class ApiHelper {
                 this.setResponse(_response.status, 'success', _response.data.message, [], _response.data);
             }
         } catch (error) {
+            console.log('error', error);
             this.setResponse(error.response.status,'error', error.response.statusText, error.response.data.errors, []);
         } finally {
             this.loading = false;

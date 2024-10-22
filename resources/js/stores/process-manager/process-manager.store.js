@@ -32,7 +32,7 @@ export const useProcessManagerStore = defineStore({
         process: {
             id: null,
             name: null,
-            process_category_id: null
+            dynamic_model_category_id: null
         },
         dynamicModelFieldTypeGroups: null,
         dynamicModelFieldTypeGroup: 1,
@@ -91,7 +91,7 @@ export const useProcessManagerStore = defineStore({
             this.apiHelper = new ApiHelper('process');
             this.loading = true;
             this.processErrors = null;
-            this.process.process_category_id = this.selectedCategory !== null ? this.selectedCategory.id : null;
+            this.process.dynamic_model_category_id = this.selectedCategory !== null ? this.selectedCategory.id : null;
             await this.apiHelper.create(this.process);
             this.apiHelper.isDoneLoading(null, () => {
                 const response = this.apiHelper.response;
@@ -253,7 +253,7 @@ export const useProcessManagerStore = defineStore({
             return this.selected_categories.some((item) => item === category_id)
         },
         toogleCategory(category_id) {
-            if(category_id === 0 || (this.selected_categories.length === 1 && this.selected_categories[0] === 0)) {
+            if (category_id === 0 || (this.selected_categories.length === 1 && this.selected_categories[0] === 0)) {
                 this.selected_categories = [];
                 this.selected_categories.push(category_id);
             } else {
@@ -263,6 +263,11 @@ export const useProcessManagerStore = defineStore({
                     this.selected_categories.push(category_id);
                 }
             }
+
+            if ( this.selected_categories.length === 0) {
+                this.selected_categories.push(0);
+            }
+
         },
         handleProcessDivHeight(){
             let windowHeight = window.innerHeight,
@@ -320,7 +325,7 @@ export const useProcessManagerStore = defineStore({
                 return this.processes;
             }
 
-            return this.processes.filter((item) => state.selected_categories.indexOf(item.process_category_id) >= 0);
+            return this.processes.filter((item) => state.selected_categories.indexOf(item.dynamic_model_category_id) >= 0);
         },
         getDynamicModelFieldTypeGroups() {
             return this.dynamicModelFieldTypeGroups;

@@ -104,7 +104,7 @@ export const useProcessExecution = defineStore({
                 this.loading = true;
             }
 
-            await this.apiHelper.update(this.process, null);
+            await this.apiHelper.update(this.process);
             this.apiHelper.isDoneLoading(null, () => {
                 let removeProcessVariables = {
                     'profileName': this.profile.profileName,

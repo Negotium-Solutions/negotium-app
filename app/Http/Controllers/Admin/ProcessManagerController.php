@@ -31,8 +31,11 @@ class ProcessManagerController extends Controller
 
     public function index(Request $request)
     {
-        $processes = json_decode($this->http->get("{$this->url}/process?with=category,steps.activities")->getBody(), true)['data'] ?? [];
-        $categories = json_decode($this->http->get("{$this->url}/lookup", ["model" => "ProcessCategory", "object" => 1])->getBody(), true)['data'] ?? [];
+        $processes = json_decode($this->http->get("{$this->url}/process?with=groups")->getBody(), true)['data'] ?? [];
+        $categories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
+        // dd($processes);
+        // $processes = json_decode($this->http->get("{$this->url}/process?with=category,steps.activities")->getBody(), true)['data'] ?? [];
+        // $categories = json_decode($this->http->get("{$this->url}/lookup", ["model" => "ProcessCategory", "object" => 1])->getBody(), true)['data'] ?? [];
 
         $lookup = [
             'categories' => $categories,
