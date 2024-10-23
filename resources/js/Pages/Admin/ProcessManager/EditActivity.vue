@@ -28,7 +28,7 @@ onMounted(() => {
   processManagerStore.setLookUp('categories', props.lookup.categories);
   processManagerStore.set('process', props.process);
   processManagerStore.set('dynamicModelFieldTypeGroups', props.dynamicModelFieldTypeGroup);
-  processManagerStore.setStep(parseInt(props.step_id));
+  processManagerStore.setStep(props.step_id);
   processManagerStore.lookup.categories.forEach((category, index) => {
     if(category.id === processManagerStore.process.process_category_id) {
       processManagerStore.selectedCategory = props.lookup.categories[index];

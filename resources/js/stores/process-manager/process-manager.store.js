@@ -143,7 +143,7 @@ export const useProcessManagerStore = defineStore({
             });
         },
         async createActivity(toast) {
-            this.apiHelper = new ApiHelper('dynamic-model-field');
+            this.apiHelper = new ApiHelper('activity');
             this.loading = true;
             this.activityErrors = null;
             this.activity.step_id = this.step.id;
@@ -159,11 +159,13 @@ export const useProcessManagerStore = defineStore({
                         }, 3000);
                         break;
                     case 422:
+                        console.log('response', response);
                         this.activityErrors = response.errors;
                         toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
                         this.loading = false;
                         break;
                     default:
+                        console.log('response', response);
                         toast.add({ severity: 'error', detail: response.message, life: 3000 });
                         this.loading = false;
                         break;
@@ -219,7 +221,7 @@ export const useProcessManagerStore = defineStore({
             this.$state[key] = value;
         },
         setStep(step_id){
-            if(step_id > 0) {
+            if(step_id !== '') {
                 this.process.groups.forEach((step) => {
                     if(step.id === step_id) {
                         this.step = step;

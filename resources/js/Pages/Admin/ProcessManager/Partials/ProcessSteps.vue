@@ -30,7 +30,7 @@ function setActiveStep()
 {
   props.steps.forEach((step, index) => {
   if (step.id === props.step.id) {
-    let stepsLength = props.process.steps.length;
+    let stepsLength = props.process.groups.length;
     
     // Always add the current step
     pageProps.visibleSteps.push(step.id);  
@@ -57,7 +57,6 @@ function setActiveStep()
       pageProps.shoAddStep = true;  // Ensure showAddStep is correctly named
     }
   }
-  console.log(pageProps.visibleSteps)
 });
 
 let process1 = document.getElementById('process-1');
@@ -114,9 +113,9 @@ function isHrVisible(step){
                   <div class="h-0.5 opacity-10 bg-neutral-700 rounded-[1px]"></div>
                 </div>
 
-                <div class="mt-3" v-if="step.activities && step.activities.length > 0">
+                <div class="mt-3" v-if="step.fields && step.fields.length > 0">
                   <div class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-3">Step Activities</div>
-                  <a href="javascript:void(0)" @click="isActiveStep(step) ? processManagerStore.set('activity', activity) : ''; processManagerStore.clearError()" v-for="(activity, index) in step.activities" :key="index" class="w-full m-h-9 p-2 rounded border border-neutral-700/opacity-25 flex items-start justify-between mb-1" :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
+                  <a href="javascript:void(0)" @click="isActiveStep(step) ? processManagerStore.set('activity', activity) : ''; processManagerStore.clearError()" v-for="(activity, index) in step.fields" :key="index" class="w-full m-h-9 p-2 rounded border border-neutral-700/opacity-25 flex items-start justify-between mb-1" :class="{ 'bg-zinc-100' : processManagerStore.activity.id === activity.id }">
                     <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight w-full overflow-hidden break-words">
                       <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3" :class="{ 'text-white' : processManagerStore.activity.id === activity.id }">Activity Type - {{ activity.field_type.name }}</span>
                       <div class="font-medium text-neutral-700 text-sm font-['Roboto'] leading-tight text-break" :class="{ 'text-white' : processManagerStore.activity.id === activity.id }">{{ activity.label }}</div>
