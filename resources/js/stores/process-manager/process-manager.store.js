@@ -189,11 +189,7 @@ export const useProcessManagerStore = defineStore({
                 rejectClass: 'btn-sm btn-outline-light border',
                 acceptClass: 'btn-sm btn-danger',
                 accept: () => {
-                    if (tableName === 'activity')
-                        tableName = 'dynamic-model-field';
-
                     this.apiHelper = new ApiHelper(tableName);
-
                     this.apiHelper.delete(item);
                     this.apiHelper.isDoneLoading(null, () => {
                         const response = this.apiHelper.response;
