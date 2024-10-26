@@ -33,22 +33,28 @@ class ProcessExecutionController extends Controller
     }
 
     // Route::get('/process-execution/edit/{process_id}/{process_schema_id}/{profile_id}/{profile_schema_id}/{step_id}', [ProcessExecutionController::class, 'edit'])->name('process-execution.edit');
-    public function edit(Request $request, $process_id, $process_schema_id, $profile_id, $profile_schema_id, $step_id)
+    public function edit($process_id, $process_schema_id, $profile_id, $profile_schema_id, $step_id)
     {
         $profile = json_decode($this->http->get("{$this->url}/profile/{$profile_id}?schema_id={$profile_schema_id}")->getBody(), true)['data'] ?? [];
         $process = json_decode($this->http->get("{$this->url}/process-execution/{$process_id}?schema_id={$process_schema_id}&with=groups.fields.validations,groups.fields.options&profile_id={$profile_id}&process_schema_id={$process_schema_id}")->getBody(), true)['data'] ?? [];
+        $profiles = json_decode($this->http->get("{$this->url}/profile?schema_id={$profile_schema_id}")->getBody(), true)['data'] ?? [];
 
-        if ($step_id !== null && $step_id > 0) {
-            $process['step_id'] = (int)$step_id;
+        $step = null;
+        foreach ($process['groups'] as $_step) {
+            if ($_step['id'] === $step_id) {
+                $step = $_step;
+            }
         }
 
         $parameters = [
-            'profile' => $profile,
+            'profiles' => $profiles,
+            'profile' => $profile['models'][0],
             'process' => $process,
-            'step_id' => $step_id
+            'step' => $step,
+            'apiImagesUrl' => $this->apiImagesUrl
         ];
 
-        $parameters = array_merge($parameters, $this->profileData);
+        // $parameters = array_merge($parameters, $this->profileData);
 
         // dd($parameters);
 
