@@ -74,15 +74,9 @@ export const useProcessExecution = defineStore({
                 processExecutionSteps.style.overflow = 'auto'
             }
         },
-        async storeStep(toast, step = null, profile_type_id = null) {
+        async storeStep(toast) {
             this.apiHelper = new ApiHelper('process-execution')
             console.log('Step', this.step);
-
-            if (step !== null) {
-                this.saveStepLoading = true;
-            } else {
-                this.loading = true;
-            }
 
             await this.apiHelper.update(this.step);
             this.apiHelper.isDoneLoading(null, () => {
