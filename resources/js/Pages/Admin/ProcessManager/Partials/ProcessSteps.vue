@@ -2,8 +2,14 @@
 import Button from "primevue/button";
 import { onMounted, reactive } from "vue";
 import { useProcessManagerStore } from "@/stores";
+import ConfirmDialog from "primevue/confirmdialog";
+import Toast from "primevue/toast";
+import {useConfirm} from "primevue/useconfirm";
+import {useToast} from "primevue/usetoast";
 
 const processManagerStore = useProcessManagerStore();
+const confirm = useConfirm();
+const toast = useToast();
 
 const props = defineProps({
   process: null,
@@ -129,7 +135,7 @@ function isHrVisible(step){
                           <small>Edit</small> <i class="pi pi-file-edit float-right mt-1"></i>
                         </a>
                         <div class="dropdown-divider"></div>
-                        <a href="#" class="dropdown-item">
+                        <a href="#" @click="processManagerStore.deleteItem(activity, 'dynamic-model-field', confirm, toast)" class="dropdown-item">
                           <small>Delete</small> <i class="pi pi-times float-right mt-1"></i>
                         </a>
                       </div>
@@ -171,4 +177,12 @@ function isHrVisible(step){
     </div>
 
   </div>
+  <Toast position="top-center">
+    <template #message="slotProps">
+      <div class="flex flex-column align-items-start" style="flex: 1">
+        <div class="font-medium text-sm my-1 text-900">{{ slotProps.message.detail }}</div>
+      </div>
+    </template>
+  </Toast>
+  <ConfirmDialog></ConfirmDialog>
 </template>
