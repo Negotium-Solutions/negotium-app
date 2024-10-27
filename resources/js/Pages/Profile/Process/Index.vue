@@ -112,10 +112,10 @@ function assignProcess() {
             <td>{{ FunctionsHelper.DateTime(profileProcess.created_at) }}</td>
             <td class="last pl-2">
               <div class="d-flex">
-                <a v-if="(profileProcess.step === null)" :href="route('process-execution.edit', { process_id: 0, process_schema_id: profileProcess.process.id, profile_id: profileManagerStore.profile.id, profile_schema_id: profileManagerStore.schemaId, step_id: 0})" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-100">
+                <a v-if="(profileProcess.process_status_id === 1)" :href="route('process-execution.edit', { process_id: profileProcess.process.process_model_id, process_schema_id: profileProcess.process.id, profile_id: profileManagerStore.profile.id, profile_schema_id: profileManagerStore.schemaId, step_id: profileProcess.step.id})" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-100">
                   Start
                 </a>
-                <a v-if="(profileProcess.step !== null)" :href="route('process-execution.edit', { process_id: 0, process_schema_id: profileProcess.process.id, profile_id: profileManagerStore.profile.id, profile_schema_id: profileManagerStore.schemaId, step_id: profileProcess.step.id})" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-100">
+                <a v-else :href="route('process-execution.edit', { process_id: profileProcess.process.process_model_id, process_schema_id: profileProcess.process.id, profile_id: profileManagerStore.profile.id, profile_schema_id: profileManagerStore.schemaId, step_id: profileProcess.step.id})" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-100">
                   Continue
                 </a>
                 <div class="flex flex-col items-center pl-2">

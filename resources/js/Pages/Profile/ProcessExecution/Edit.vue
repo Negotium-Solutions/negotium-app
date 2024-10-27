@@ -10,7 +10,11 @@ const processExecution = useProcessExecution();
 const toast = useToast();
 
 const props = defineProps({
-  process: null,
+  process_id: null,
+  process_schema_id: null,
+  profile_id: null,
+  profile_schema_id: null,
+  process_schema: null,
   step: null,
   profile: null,
   profiles: null,
@@ -24,7 +28,11 @@ const props = defineProps({
 
 onMounted(() => {
   profileManagerStore.setProfileData(props);
-  processExecution.set('process', props.process);
+  processExecution.set('process_id', props.process_id);
+  processExecution.set('process_schema_id', props.process_schema_id);
+  processExecution.set('profile_id', props.profile_id);
+  processExecution.set('profile_schema_id', props.profile_schema_id);
+  processExecution.set('process_schema', props.process_schema);
   processExecution.set('profiles', props.profiles.models);
   processExecution.set('profile', props.profile);
   processExecution.set('step', props.step);
@@ -41,7 +49,7 @@ function setFieldValue(index, value) {
 
 <template>
   <ExtendProfileExecutionLayout>
-  <div v-if="processExecution.isSet('process', processExecution.process)" class="col-lg-12 pl-0 pr-0" id="process-execution-steps">
+  <div v-if="processExecution.isSet('process_schema', processExecution.process_schema)" class="col-lg-12 pl-0 pr-0" id="process-execution-steps">
     <div class="d-flex flex-column w-100 pl-3 pr-3">
 
       <div class="flex flex-col px-2 py-2 mb-2">
@@ -87,7 +95,7 @@ function setFieldValue(index, value) {
       </div>
     </div>
   </div>
-  <div v-if="processExecution.isSet('process', processExecution.process)" class="col-lg-12 pl-2 pr-2 m-0 border-t" id="process-execution-buttons">
+  <div v-if="processExecution.isSet('process_schema', processExecution.process_schema)" class="col-lg-12 pl-2 pr-2 m-0 border-t" id="process-execution-buttons">
     <div class="d-flex flex-column w-100 pl-3 pr-3">
 
       <div class="flex flex-col px-2 py-2 mb-2">

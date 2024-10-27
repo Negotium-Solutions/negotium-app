@@ -19,7 +19,7 @@ const processExecution = useProcessExecution();
 onMounted(() => {
   setTimeout(() => {
     processExecution.handleInnerContentDivHeight();
-    const arr = processExecution.process.groups;
+    const arr = processExecution.process_schema.groups;
 
     const index = arr.findIndex(obj => obj.id === processExecution.step.id);
     activeStep.value = index
@@ -43,10 +43,10 @@ onMounted(() => {
           </div>
         </div>
         <div class="col-lg-10 col-md-10 col-sm-12">
-          <div class="row" v-if="processExecution.isSet('process', processExecution.process)" id="process-execution-header">
+          <div class="row" v-if="processExecution.isSet('process_schema', processExecution.process_schema)" id="process-execution-header">
             <div class="d-flex w-100 pt-4  pl-3 pr-3 pb-6 border-bottom">
               <div class="col-sm-6 p-0">
-                <h1 class="text-neutral-700 text-3xl font-bold font-['Roboto']">{{ processExecution.process.name }}</h1>
+                <h1 class="text-neutral-700 text-3xl font-bold font-['Roboto']">{{ processExecution.process_schema.name }}</h1>
               </div>
               <div class="col-sm-6 text-right">
                 <button @click="FunctionsHelper.loadPreviousPage()" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 mr-2">Back</button>
@@ -56,7 +56,7 @@ onMounted(() => {
               </div>
             </div>
           </div>
-          <div id="inner-content" class="row" v-if="processExecution.isSet('process', processExecution.process)">
+          <div id="inner-content" class="row" v-if="processExecution.isSet('process_schema', processExecution.process_schema)">
             <div class="col-lg-3 col-md-3 col-sm-12 pl-0 pr-0 profile-info" id="profiles-detail" style="position:relative">
               <div class="pt-3 border-right pr-3 pl-3 col-md-12 h-100" id="process-execution-content">
 
@@ -65,7 +65,7 @@ onMounted(() => {
                   <div class="time-label pb-0 mb-0">
                     <span class="pb-3">Progress</span>
                   </div>
-                  <div class="flex" v-for="(step, index) in processExecution.process.groups" :key="index" :class="(index+1) === processExecution.process.groups.length ? '' :'mb-4 pb-3'">
+                  <div class="flex" v-for="(step, index) in processExecution.process_schema.groups" :key="index" :class="(index+1) === processExecution.process_schema.groups.length ? '' :'mb-4 pb-3'">
                     <i :class="processExecution.step.id === step.id ? 'fas bg-blue' : index < activeStep ? 'fa fa-check bg-success-500 pt-1 text-white' : 'fas bg-neutral-500'" style="line-height: 1.5;"></i>
                     <div class="timeline-item flex flex-col pl-2"> <!-- Use flex column to align items vertically -->
                       <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step {{ index + 1 }}</span>

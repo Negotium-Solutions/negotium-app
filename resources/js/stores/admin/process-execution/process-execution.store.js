@@ -12,7 +12,11 @@ const apiURL = computed(() => page.props.negotium_api_url);
 export const useProcessExecution = defineStore({
     id: 'process-execution',
     state: () => ({
-        process: null,
+        process_id: null,
+        process_schema_id: null,
+        profile_id: null,
+        profile_schema_id: null,
+        process_schema: null,
         step: null,
         profiles: null,
         profile: null,
@@ -74,21 +78,16 @@ export const useProcessExecution = defineStore({
                 processExecutionSteps.style.overflow = 'auto'
             }
         },
-        async storeStep(toast, step = null, profile_type_id = null) {
+        async storeStep(toast) {
             this.apiHelper = new ApiHelper('process-execution')
-            console.log('Step', this.step);
-
-            if (step !== null) {
-                this.saveStepLoading = true;
-            } else {
-                this.loading = true;
-            }
+            this.step.process_id = this.process_id;
+            console.log('Step: ', this.step);
 
             await this.apiHelper.update(this.step);
             this.apiHelper.isDoneLoading(null, () => {
                 let removeProcessVariables = {
                     'profileName': this.profile.profileName,
-                    'processName': this.process.name
+                    'processName': this.process_schema.name
                 };
                 const response = this.apiHelper.response;
 
@@ -96,22 +95,10 @@ export const useProcessExecution = defineStore({
                     case 200:
                         toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.success_profile_process_updated, removeProcessVariables), life: 3000 });
                         this.profileProcessFieldsErrors = null;
-/*
-                        if (step !== null && step.id > 0) {
-                            setTimeout(() => {
-                                let _step = this.getNextStep(step);
-                                window.location.href = '/process-execution/'+this.profile.id+'/edit/'+this.process.id+'/'+_step.id+'?pt='+profile_type_id;
-                            }, 3000);
-                        } else {
-                            setTimeout(() => {
-                                const currentUrl = window.location.href;
-                                const partToRemove = '/edit';
-                                const index = currentUrl.indexOf(partToRemove);
-                                window.location.href = '/profile/'+this.profile.id+'/processes?pt='+profile_type_id;
-                            }, 3000);
-                        }
-                        */
 
+                        setTimeout(() => {
+                            window.location.href = '/process-execution/edit/'+this.process_id+'/'+this.process_schema_id+'/'+this.profile_id+'/'+this.profile_schema_id+'/'+response.data.data.step_id;
+                        }, 3000);
                         break;
                     case 422:
                         this.profileProcessFieldsErrors = response.errors;
@@ -137,10 +124,10 @@ export const useProcessExecution = defineStore({
         },
         getNextStep(step) {
             let nextStep = step;
-            this.process.groups.forEach((_step, index) => {
+            this.process_schema.groups.forEach((_step, index) => {
                 if (step.id === _step.id) {
-                    if ((index+1) <= (this.process.groups.length - 1)) {
-                        nextStep = this.process.groups[index + 1];
+                    if ((index+1) <= (this.process_schema.groups.length - 1)) {
+                        nextStep = this.process_schema.groups[index + 1];
                     }
                 }
             });

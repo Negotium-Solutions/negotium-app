@@ -77,8 +77,6 @@ class ProfileController extends Controller
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
         $profileProcesses = json_decode($this->http->get("{$this->url}/profile/{$id}/processes?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
 
-        // dd($profileProcesses);
-
         $lookup = [
             'processes' => $processes,
             'processCategories' => $processCategories
