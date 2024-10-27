@@ -101,7 +101,7 @@ function setFieldValue(index, value) {
       <div class="flex flex-col px-2 py-2 mb-2">
         <div class="row mt-3">
           <div class="col-md-12 text-right">
-            <button v-if="!processExecution.saveStepLoading" @click="processExecution.storeStep(toast, processExecution.step, profileManagerStore.profile.profile_type_id)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white">
+            <button v-if="!processExecution.saveStepLoading" @click="processExecution.storeStep(toast)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white">
               {{ processExecution.step.id !== processExecution.getNextStepId ? 'Next Step' : 'Save' }}
             </button>
             <button v-if="processExecution.saveStepLoading"  class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
