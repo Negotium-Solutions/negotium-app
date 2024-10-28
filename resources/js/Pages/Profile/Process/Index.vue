@@ -50,7 +50,7 @@ function assignProcess() {
   <ExtendProfileLayout>
     <div v-if="profileManagerStore.isSelected('profile', profileManagerStore.profile)" class="col-lg-12 pl-0 pr-0">
 
-      <div v-if="profileManagerStore.processes && profileManagerStore.processes.length > 0">
+      <div v-if="profileManagerStore.profileProcesses && profileManagerStore.profileProcesses.length > 0">
         <div class="d-flex w-100 pt-3 pl-3 pr-3">
           <div class="col-sm-12 p-0">
             <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Recent Processes</h1>
@@ -59,28 +59,33 @@ function assignProcess() {
         <div class="recent-processes d-flex w-100 pt-3 pl-3 pr-3">
           <div class="row col-md-12 p-0 w-100 mr-0 ml-0">
 
-            <div v-for="(process, index) in profileManagerStore.getRecentProcesses(profileManagerStore.processes, 'desc',4)" :key="index" class="col-md-6 mb-2 py-1">
+            <div v-for="(profileProcess, index) in profileManagerStore.getRecentProcesses(profileManagerStore.profileProcesses, 'desc',4)" :key="index" class="col-md-6 mb-2 py-1">
               <div class="rounded-lg border border-solid bg-neutral-50 border-neutral-700 mb-0 py-3 px-2">
                 <table class="table table-sm table-borderless p-0 mb-0">
                   <tr>
                     <td style="width: 70%;" class="py-0">
                       <div class="flex gap-5">
                         <div class="flex-auto text-lg font-bold leading-6 text-neutral-700">
-                          {{ process.name }}
+                          {{ profileProcess.process.name }}
                         </div>
                       </div>
                       <div class="text-sm leading-5 text-neutral-600">
-                        <div>{{ process.step.name }}</div>
+                        <div>{{ profileProcess.step.name }}</div>
                       </div>
                     </td>
                     <td class="align-right text-right py-0">
-                      <button class="w-[90px] leading-3 gap-2 justify-center py-2.5 px-3 text-sm rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Continue</button>
+                      <a v-if="(profileProcess.process_status_id === 1)" :href="route('process-execution.edit', { process_id: profileProcess.process.process_model_id, process_schema_id: profileProcess.process.id, profile_id: profileManagerStore.profile.id, profile_schema_id: profileManagerStore.schemaId, step_id: profileProcess.step.id})" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-100">
+                        Start
+                      </a>
+                      <a v-else :href="route('process-execution.edit', { process_id: profileProcess.process.process_model_id, process_schema_id: profileProcess.process.id, profile_id: profileManagerStore.profile.id, profile_schema_id: profileManagerStore.schemaId, step_id: profileProcess.step.id})" class="flex justify-center py-2 px-3 text-xs leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white w-100">
+                        Continue
+                      </a>
                     </td>
                   </tr>
                   <tr>
                     <td colspan="2" class="py-0">
                       <span class="text-success text-sm font-normal font-['Nunito']">Up to date</span>
-                      <span class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: {{ FunctionsHelper.DateTime(process.updated_at) }}</span>
+                      <span class="float-right text-right text-sm font-normalfont-['Nunito'] pr-1 text-neutral-600">Last opened: {{ FunctionsHelper.DateTime(profileProcess.updated_at) }}</span>
                     </td>
                   </tr>
                 </table>
@@ -119,7 +124,7 @@ function assignProcess() {
                   Continue
                 </a>
                 <div class="flex flex-col items-center pl-2">
-                  <button @click="profileManagerStore.set('process', process)" type="button" data-toggle="dropdown" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 inline-flex">
+                  <button @click="profileManagerStore.set('profileProcess', profileProcess)" type="button" data-toggle="dropdown" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 inline-flex">
                     <i class="pi pi-ellipsis-v"></i>
                   </button>
                   <div class="dropdown-menu dropdown-menu dropdown-menu-right">
@@ -131,20 +136,18 @@ function assignProcess() {
                       <small>Details</small>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <!--
-                    <button :disabled="!(profileProcess.status.name === 'stopped')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'resume', 'resumed')">
+                    <button :disabled="(1 === 'stopped')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ACTIVE, 'Resume', 'resume', 'resumed')">
                       <small>Resume</small>
                     </button>
-                    <button :disabled="!(process.log.status.name === 'active')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', 'stop', 'stopped')">
+                    <button :disabled="(1 === 'active')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_STOPPED, 'Stop', 'stop', 'stopped')">
                       <small>Stop</small>
                     </button>
-                    <button :disabled="!(process.log.status.name === 'assigned')" class="dropdown-item" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', 'remove', 'removed')">
-                      <small class="text-danger cursor-pointer" :class="{'opacity-50': !(process.log.status.name === 'completed')}">Remove</small>
+                    <button :disabled="(1 === 'assigned')" class="dropdown-item" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Remove', 'remove', 'removed')">
+                      <small class="text-danger cursor-pointer" :class="{'opacity-50': !(profileProcess.status.name === 'completed')}">Remove</small>
                     </button>
-                    <button :disabled="!(process.log.status.name === 'completed')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', 'archive', 'archived')">
-                      <small class="text-danger" :class="{'opacity-50': !(process.log.status.name === 'completed')}">Archive</small>
+                    <button :disabled="(1 === 'completed')" class="dropdown-item cursor-pointer" @click="profileProcessStore.showProcessConfirmation(toast, confirm, process, profile, profileProcessStore.PROCESS_STATUS_ARCHIVED, 'Archive', 'archive', 'archived')">
+                      <small class="text-danger" :class="{'opacity-50': !(profileProcess.status.name === 'completed')}">Archive</small>
                     </button>
-                    -->
                   </div>
                 </div>
               </div>

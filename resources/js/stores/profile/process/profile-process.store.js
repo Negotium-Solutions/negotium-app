@@ -101,19 +101,19 @@ export const useProfileProcessStore = defineStore({
                 this.status.loading = false;
             }
         },
-        async updateProcessLogStatus(process_log_id = 0, process_status_id = 0, toast, action_done)
+        async updateProcessStatus(profile_process_id = 0, process_status_id = 0, toast, action_done)
         {
             this.loading = true;
             this.status.loading = true;
-            if(process_log_id === 0 || process_status_id === 0) {
+            if(profile_process_id === 0 || process_status_id === 0) {
                 this.setResponse(422, 'error', messages.value.error.input_validation_error, [], []);
                 return false;
             }
 
-            let _url = this.apiUrl+'/'+this.user.tenant+'/process/update-process-log-status';
+            let _url = this.apiUrl+'/'+this.user.tenant+'/process/update-process-status';
 
             const data = {
-                "process_log_id": process_log_id,
+                "profile_process_id": profile_process_id,
                 "process_status_id": process_status_id
             };
 
@@ -178,11 +178,11 @@ export const useProfileProcessStore = defineStore({
 
             return this.selectedProfileProcesses.some(_item => _item.profile_id === item.profile_id && _item.process_id === item.process_id)
         },
-        showProcessConfirmation(toast, confirm, process, profile, process_status_id, buttonLabel, action, action_done)
+        showProcessConfirmation(toast, confirm, profileProcess, profile, process_status_id, buttonLabel, action, action_done)
         {
             this.acceptLabel = buttonLabel;
             let removeProcessVariables = {
-                'processName': process.name,
+                'processName': profileProcess.name,
                 'profileName': profile.profile_name,
                 'action': action
             };
@@ -204,7 +204,7 @@ export const useProfileProcessStore = defineStore({
                 },
                 accept: () => {
                     try {
-                        this.updateProcessLogStatus(process.log.id, process_status_id, toast, action_done);
+                        this.updateProcessStatus(profileProcess.id, process_status_id, toast, action_done);
                     } catch (error) {
                         toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(messages.value.processes.process_error, removeProcessVariables), life: 3000 });
                     }

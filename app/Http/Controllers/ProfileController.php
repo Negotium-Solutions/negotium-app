@@ -77,11 +77,22 @@ class ProfileController extends Controller
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
         $profileProcesses = json_decode($this->http->get("{$this->url}/profile/{$id}/processes?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
 
+        $assignedProcesses = [];
+        foreach ($profileProcesses as $profileProcess) {
+            $assignedProcesses[] = $profileProcess['process_id'];
+        }
+
+        $_processes = [];
+        foreach ($processes as $process) {
+            if (!in_array($process['id'], $assignedProcesses)) {
+                $_processes[] = $process;
+            }
+        }
+
         $lookup = [
-            'processes' => $processes,
+            'processes' => $_processes,
             'processCategories' => $processCategories
         ];
-        // dd($lookup);
 
         $parameters = [
             'profile' => $profile['models'][0],

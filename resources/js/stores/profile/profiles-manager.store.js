@@ -105,15 +105,16 @@ export const useProfilesManagerStore = defineStore({
             }
         },
         getRecentProcesses(processes, order = 'asc', maximum = null) {
+            console.log('ProfileProcesses', processes);
             if(maximum === null) {
-                return processes.sort((a, b) => new Date(a.log.updated_at) - new Date(b.log.updated_at));
+                return processes.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
             }
 
             let _processes = [];
             if(order === 'asc') {
-                _processes = processes.sort((a, b) => new Date(a.log.updated_at) - new Date(b.log.updated_at)).slice(0, maximum);
+                _processes = processes.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at)).slice(0, maximum);
             } else {
-                _processes = processes.sort((a, b) => new Date(b.log.updated_at) - new Date(a.log.updated_at)).slice(0, maximum);
+                _processes = processes.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at)).slice(0, maximum);
             }
 
             return _processes;
