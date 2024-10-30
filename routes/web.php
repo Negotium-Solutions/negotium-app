@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/step/create/{process_id}', [StepController::class, 'create'])->name('step.create');
     
     // Profiles
-    Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+    Route::get('/report/{id?}', [ReportController::class, 'index'])->name('report');
 });
 
 require __DIR__.'/auth.php';
