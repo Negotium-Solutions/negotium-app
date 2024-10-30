@@ -4,12 +4,14 @@ import axios from 'axios';
 import {router, usePage} from '@inertiajs/vue3';
 import { ref,computed,onMounted } from "vue";
 import { useToastr } from "@/toastr.js";
-
+import { useReport } from "@/stores/index.js";
+import {FunctionsHelper} from "@/helpers";
 
 const toastr = useToastr();
 const page = usePage();
 const user = computed(() => page.props.auth.user);
 const negotium_api_url = computed(() => page.props.negotium_api_url);
+const reportStore = useReport();
 
 const visibleChildren = ref([])
 const processStatus = ref([
@@ -21,13 +23,17 @@ const processStatus = ref([
 
 
 
-onMounted(() => {
+onMounted(async () => {
+ reportStore.profileTypes = await reportStore.getProfiles();
+ console.log('profileTyeps', reportStore.profileTypes);
 })
 
         function toggleChildren(parentId) {
 
             const parent = document.getElementById(`parent_${parentId}`)
             const childRows = document.querySelectorAll(`.child-of-${parentId}`);
+            console.log("Profiles", reportStore.profileTypes);
+            //console.log("Children", childRows);
             if(parent.classList.contains('pi-chevron-down')){
                 parent.classList.remove('pi-chevron-down')
                 parent.classList.add('pi-chevron-up')
@@ -64,17 +70,20 @@ onMounted(() => {
           </div><!-- /.col -->
         </template>
 
-        <div class="content-container pl-4 pr-4" id="">
+        <div class="content-container pl-4 pr-4" id="" v-for="(profileType, index) in reportStore.profileTypes" :key="index">
             <div class="row">
                 <table class="table w-full border-0">
                     <thead>
-                        <!-- <tr>
-                            <td colspan="2" class="border-t-0 border-l-0 border-b-0 border-r-4 bg-neutral-500 border-r-white text-['Roboto']">Profile information</td>
-                            <td colspan="9" class="bg-neutral-500 text-['Roboto']">Process information</td>
-                        </tr> -->
                         <tr>
-                            <td class="text-sm font-normal py-1">Name<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
-                            <td class="border-t-0 border-l-0 border-b-0 border-r-4 border-r-white text-sm font-normal py-1">Surame<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td colspan="2" class="border-t-0 border-l-0 border-b-0 border-r-4 bg-neutral-500 border-r-white text-['Roboto']">
+                              {{ profileType.name }}
+                            </td>
+                            <!-- <td colspan="9" class="bg-neutral-500 text-['Roboto']">Process information</td> -->
+                        </tr>
+                        <tr>
+                            <td v-if="profileType.dynamic_model_category_id === 1" class="text-sm font-normal py-1">Name<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td v-if="profileType.dynamic_model_category_id === 1" class="border-t-0 border-l-0 border-b-0 border-r-4 border-r-white text-sm font-normal py-1">Surame<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
+                            <td v-if="profileType.dynamic_model_category_id === 2" class="border-t-0 border-l-0 border-b-0 border-r-4 border-r-white text-sm font-normal py-1">Profile Name<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
                             <td class="text-sm font-normal py-1 last2">Assigned<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
                             <td class="text-sm font-normal py-1">Start Rate</td>
                             <td class="text-sm font-normal py-1">Process Name<i class="pi pi-chevron-down text-[0.6rem] pl-2"></i></td>
@@ -88,16 +97,18 @@ onMounted(() => {
                     </thead>
                     <tbody>
                         <!-- Parent Row -->
-                        <tr class="bg-[#efefef] pb-1">
-                            <td>Nico</td>
-                            <td>van der Meulen</td>
-                            <td>15</td>
+
+                        <tr v-for="(profile, profile_index) in profileType.profiles" :key="profile_index">
+                            <td v-if="profileType.dynamic_model_category_id === 1">{{ profile.first_name}}</td>
+                            <td v-if="profileType.dynamic_model_category_id === 1">{{ profile.last_name }}</td>
+                            <td v-if="profileType.dynamic_model_category_id === 2">{{ profile.profile_name }}</td>
+                            <td>{{ profile.processes_count }}</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
-                                    <span style="min-width: 37px;">33%</span>
+                                    <span style="min-width: 37px;">{{ profile.processes_start_rate_percentage }}%</span>
                                     <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                     <div :style="{ width: '33%' }" 
-                                        class="progress-bar h-6 rounded" :class="barColor(33)">
+                                        class="progress-bar h-6 rounded" :class="barColor(profile.processes_start_rate_percentage)">
                                     </div>
                                     </div>
                                 </div>
@@ -116,10 +127,12 @@ onMounted(() => {
                                     </div>
                                 </div></td>
                             <td>-</td>
-                            <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_1'" @click="toggleChildren(1)"></i></a></td>
+                            <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500">
+                              <i class="pi pi-chevron-down" @click="reportStore.setProfileProcesses(profile)" :style="{ transform: reportStore.showProcesses ? 'rotate(90deg)' : 'rotate(0deg)', transition: 'transform 0.3s' }"></i>
+                            </a></td>
                         </tr>
                         <!-- Child Rows -->
-                        <tr class="child-row child-of-1" style="display: none;">
+                        <tr v-if="reportStore.showProcesses"  v-for="(process, process_index) in reportStore.profileProcesses" :key="process_index" >
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
@@ -133,10 +146,10 @@ onMounted(() => {
                                     </div>
                                 </div>
                             </td>
-                            <td>Client Onboarding</td>
-                            <td>00/00/0000</td>
-                            <td>Erin Dias</td>
-                            <td>Assigned</td>
+                            <td>{{ process.name }}</td>
+                            <td>{{ FunctionsHelper.DateTime(process.created_at) }}</td>
+                            <td>{{ reportStore.profileName }}</td>
+                            <td>{{ process.status }}</td>
                             <td>
                                 <div style="display: flex; align-items: center;">
                                     <span style="min-width: 37px;">0%</span>
@@ -150,7 +163,8 @@ onMounted(() => {
                             <td>-</td>
                             <td></td>
                         </tr>
-                        <tr class="child-row child-of-1" style="display: none;">
+<!--
+                        <tr v-if="reportStore.showProcesses" >
                             <td>-</td>
                             <td>-</td>
                             <td>-</td>
@@ -211,8 +225,9 @@ onMounted(() => {
                             </td>
                             <td>-</td>
                             <td></td>
-                        </tr>
+                        </tr>  -->
                         <!-- Parent Row -->
+                        <!--
                         <tr class="bg-[#efefef] pb-1">
                             <td>Brook</td>
                             <td>Haley</td>
@@ -243,7 +258,9 @@ onMounted(() => {
                             <td>-</td>
                             <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_2'" @click="toggleChildren(2)"></i></a></td>
                         </tr>
+                        -->
                         <!-- Child Rows -->
+                        <!--
                         <tr class="child-row child-of-2" style="display: none;">
                             <td>-</td>
                             <td>-</td>
@@ -275,7 +292,9 @@ onMounted(() => {
                             <td>-</td>
                             <td></td>
                         </tr>
+                        -->
                         <!-- Parent Row -->
+                        <!--
                         <tr class="bg-[#efefef] pb-1">
                             <td>Gilbert</td>
                             <td>O'Conner</td>
@@ -306,7 +325,9 @@ onMounted(() => {
                             <td>-</td>
                             <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_3'" @click="toggleChildren(3)"></i></a></td>
                         </tr>
+                        -->
                         <!-- Child Rows -->
+                        <!--
                         <tr class="child-row child-of-3" style="display: none;">
                             <td>-</td>
                             <td>-</td>
@@ -369,7 +390,9 @@ onMounted(() => {
                             <td>-</td>
                             <td></td>
                         </tr>
+                        -->
                         <!-- Parent Row -->
+                        <!--
                         <tr class="bg-[#efefef] pb-1">
                             <td>Yazmin</td>
                             <td>Carter</td>
@@ -400,7 +423,9 @@ onMounted(() => {
                             <td>-</td>
                             <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_4'" @click="toggleChildren(4)"></i></a></td>
                         </tr>
+                        -->
                         <!-- Child Rows -->
+                        <!--
                         <tr class="child-row child-of-4" style="display: none;">
                             <td>-</td>
                             <td>-</td>
@@ -463,6 +488,7 @@ onMounted(() => {
                             <td>-</td>
                             <td></td>
                         </tr>
+                        -->
                     </tbody>
                 </table>
             </div>
