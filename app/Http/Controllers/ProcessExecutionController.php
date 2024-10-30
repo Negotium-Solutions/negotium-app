@@ -36,11 +36,11 @@ class ProcessExecutionController extends Controller
     public function edit($process_id, $process_schema_id, $profile_id, $profile_schema_id, $step_id)
     {
         $profile = json_decode($this->http->get("{$this->url}/profile/{$profile_id}?schema_id={$profile_schema_id}")->getBody(), true)['data'] ?? [];
-        $process = json_decode($this->http->get("{$this->url}/process-execution/{$process_id}?schema_id={$process_schema_id}&with=groups.fields.validations,groups.fields.options&profile_id={$profile_id}&process_schema_id={$process_schema_id}")->getBody(), true)['data'] ?? [];
+        $process_schema = json_decode($this->http->get("{$this->url}/process-execution/{$process_id}?schema_id={$process_schema_id}&with=groups.fields.validations,groups.fields.options&profile_id={$profile_id}&process_schema_id={$process_schema_id}")->getBody(), true)['data'] ?? [];
         $profiles = json_decode($this->http->get("{$this->url}/profile?schema_id={$profile_schema_id}")->getBody(), true)['data'] ?? [];
 
         $step = null;
-        foreach ($process['groups'] as $_step) {
+        foreach ($process_schema['groups'] as $_step) {
             if ($_step['id'] === $step_id) {
                 $step = $_step;
             }
@@ -49,14 +49,14 @@ class ProcessExecutionController extends Controller
         $parameters = [
             'profiles' => $profiles,
             'profile' => $profile['models'][0],
-            'process' => $process,
+            'process_id' => $process_id,
+            'process_schema_id' => $process_schema_id,
+            'profile_id' => $profile_id,
+            'profile_schema_id' => $profile_schema_id,
+            'process_schema' => $process_schema,
             'step' => $step,
             'apiImagesUrl' => $this->apiImagesUrl
         ];
-
-        // $parameters = array_merge($parameters, $this->profileData);
-
-        // dd($parameters);
 
         return Inertia::render('Profile/ProcessExecution/Edit', $parameters);
     }
