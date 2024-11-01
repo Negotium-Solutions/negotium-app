@@ -12,12 +12,14 @@ const no_communications_for_profile = messages.value.communication.no_communicat
 const profileCommunicationStore = useProfileCommunicationStore();
 
 const props = defineProps({
-  profileTypes: Array,
-  profileTypeId: 0,
-  profileId: 0,
-  apiUrl: String,
-  apiImagesUrl: String,
-  profile: Object,
+  profileTypes: null,
+  profileTypeId: null,
+  schemaId: null,
+  profileId: null,
+  apiUrl: null,
+  apiImagesUrl: null,
+  profiles: null,
+  profile: null,
   lookup: null
 });
 

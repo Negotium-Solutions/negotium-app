@@ -59,10 +59,10 @@ onMounted(() => {
 
       <div class="row" id="profiles-sidebar">
         <div class="col-lg-2 col-md-3 col-sm-12 border-right pr-0">
-          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profile.id})+'?s_id='+profileManagerStore.schemaId)" :class="{ 'bg-slate-500': profileManagerStore.profile.id === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
+          <div v-for="(profile, index) in profileManagerStore.profiles" :key="index" @click="FunctionsHelper.navigateTo(route(route().current(), {'id': profile.id})+'?s_id='+profileManagerStore.schemaId)" :class="{ 'bg-slate-500': profileManagerStore.profileId === profile.id }" class="w-100 py-2 h-14 border-b border-gray-200 justify-start items-center gap-3 inline-flex cursor-pointer">
             <div class="w-100 pl-6 pr-2 d-flex">
             <Avatar class="p-overlay-badge align-middle mr-2 w-[40px]" size="large" :image="profileManagerStore.apiImagesUrl+profile.avatar"  />
-            <span :class="profileManagerStore.profile.id === profile.id ? 'text-white' : 'text-neutral-700'" class="flex items-center justify-center text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.profile_name }} </span>
+            <span :class="profileManagerStore.profileId === profile.id ? 'text-white' : 'text-neutral-700'" class="flex items-center justify-center text-sm font-medium font-['Roboto'] leading-tight"> {{ profile.profile_name }} </span>
             <div class="row mb-2"></div>
             </div>
           </div>

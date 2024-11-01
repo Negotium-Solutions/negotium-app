@@ -76,7 +76,7 @@ class ProfileController extends Controller
         $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
         $profileProcesses = json_decode($this->http->get("{$this->url}/profile/{$id}/processes?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
-
+// dd($profileProcesses);
         $assignedProcesses = [];
         foreach ($profileProcesses as $profileProcess) {
             $assignedProcesses[] = $profileProcess['process_id'];
@@ -124,12 +124,11 @@ class ProfileController extends Controller
             $schema_id = $this->profileData['schemaId'];
         }
 
-        // $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
-        // dd($profile);
+
         $parameters = [
             'profileId' => $id,
-            'profile' => $profile
+            'profile' => $profile['models'][0],
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -149,7 +148,7 @@ class ProfileController extends Controller
         
         $parameters = [
             'profileId' => $id,
-            'profile' => $profile,
+            'profile' => $profile['models'][0],
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -160,22 +159,35 @@ class ProfileController extends Controller
     /**
      * Display the user's profile communications.
      */
-    public function communications($id): Response
+    public function communications(Request $request, $id): Response
     {
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}/?with=communications.user,communications.communicationType,communications.status")->getBody(), true)['data'] ?? [];
+        if ($request->has('s_id') && $request->input('s_id') > 0) {
+            $schema_id = $request->input('s_id');
+        } else {
+            $schema_id = $this->profileData['schemaId'];
+        }
+
+        $communications = json_decode($this->http->get("{$this->url}/communication?profile_id={$id}&with=user,communicationType,status")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
         $communicationTypes = json_decode($this->http->get("{$this->url}/lookup", ["model" => "CommunicationType", "object" => 1])->getBody(), true)['data'] ?? [];
 
         $lookup = [
           'communicationTypes' => $communicationTypes,
         ];
 
+        $_profile = $profile['models'][0];
+        $_profile['communications'] = $communications;
+
         $parameters = [
             'profileId' => $id,
-            'profile' => $profile,
+            'profile' => $_profile,
             'lookup' => $lookup
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
+
+        // dd($parameters);
+
         return Inertia::render('Profile/Communications/Index', $parameters);
     }
 
@@ -185,7 +197,7 @@ class ProfileController extends Controller
 
         $parameters = [
             'profileId' => $id,
-            'profile' => $profile
+            'profile' => $profile['models'][0]
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -199,7 +211,7 @@ class ProfileController extends Controller
 
         $parameters = [
             'profileId' => $id,
-            'profile' => $profile
+            'profile' => $profile['models'][0]
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
