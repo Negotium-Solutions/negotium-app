@@ -12,6 +12,7 @@ export const useProfilesManagerStore = defineStore({
         profile: {},
         profileProcesses: null,
         process: {},
+        profileId: '',
         schemaId: null,
         selected_categories: [0],
         lookup: {

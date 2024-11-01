@@ -33,11 +33,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile');
     Route::get('/profile/create/{schema_id?}', [ProfileController::class, 'create'])->name('profile.create');
     Route::get('/profile/{id?}/processes', [ProfileController::class, 'processes'])->name('profile.processes');
-    Route::get('/profile/{id?}/profile-details', [ProfileController::class, 'details'])->name('profile.profile-details');
-    Route::get('/profile/{id?}/profile-details/edit', [ProfileController::class, 'editDetails'])->name('profile.profile-details.edit');
-    Route::get('/profile/{id?}/documents', [ProfileController::class, 'documents'])->name('profile.documents');
-    Route::get('/profile/{id?}/notes', [ProfileController::class, 'notes'])->name('profile.notes');
-    Route::get('/profile/{id?}/communications', [ProfileController::class, 'communications'])->name('profile.communications');
+    Route::get('/profile/{id}/profile-details', [ProfileController::class, 'details'])->name('profile.profile-details');
+    Route::get('/profile/{id}/profile-details/edit', [ProfileController::class, 'editDetails'])->name('profile.profile-details.edit');
+    Route::get('/profile/{id}/documents', [ProfileController::class, 'documents'])->name('profile.documents');
+    Route::get('/profile/{id}/notes', [ProfileController::class, 'notes'])->name('profile.notes');
+    Route::get('/profile/{id}/communications', [ProfileController::class, 'communications'])->name('profile.communications');
 
     // Process Execution
     Route::get('/process-execution/edit/{process_id}/{process_schema_id}/{profile_id}/{profile_schema_id}/{step_id}', [ProcessExecutionController::class, 'edit'])->name('process-execution.edit');

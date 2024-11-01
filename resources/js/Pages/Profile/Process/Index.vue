@@ -35,7 +35,9 @@ const props = defineProps({
 });
 
 onMounted(() => {
+  console.log('props', props);
   profileManagerStore.setProfileData(props);
+  console.log('profileManagerStore', profileManagerStore);
   profileManagerStore.set('profileProcesses', props.profileProcesses);
   profileManagerStore.setLookUp('processes', props.lookup.processes);
   profileManagerStore.setLookUp('processCategories', props.lookup.processCategories);

@@ -63,7 +63,7 @@ class ProfileController extends Controller
     public function processes(Request $request, $id = null): Response
     {
         if ( (int)$id === 0) {
-            $id = $this->profileData['profileId'];
+            $id = $this->profileData['profiles'][0]['id'];
         }
 
         if ($request->has('s_id') && $request->input('s_id') > 0) {
@@ -95,6 +95,7 @@ class ProfileController extends Controller
         ];
 
         $parameters = [
+            'profileId' => $id,
             'profile' => $profile['models'][0],
             'profileProcesses' => $profileProcesses,
             'lookup' => $lookup
@@ -111,15 +112,23 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function details($id = null): Response
+    public function details(Request $request, $id = null): Response
     {
         if((int)$id === 0 || $id === null){
             $id = $this->profileData['profileId'];
         }
 
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
+        if ($request->has('s_id') && $request->input('s_id') > 0) {
+            $schema_id = $request->input('s_id');
+        } else {
+            $schema_id = $this->profileData['schemaId'];
+        }
 
+        // $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
+        // dd($profile);
         $parameters = [
+            'profileId' => $id,
             'profile' => $profile
         ];
 
@@ -134,14 +143,12 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function editDetails($id = null): Response
+    public function editDetails($id): Response
     {
-        if((int)$id === 0 || $id === null){
-            $id = $this->profileData['profileId'];
-        }
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
         
         $parameters = [
+            'profileId' => $id,
             'profile' => $profile,
         ];
 
@@ -153,11 +160,8 @@ class ProfileController extends Controller
     /**
      * Display the user's profile communications.
      */
-    public function communications($id = null): Response
+    public function communications($id): Response
     {
-        if((int)$id === 0 || $id === null){
-            $id = $this->profileData['profileId'];
-        }
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}/?with=communications.user,communications.communicationType,communications.status")->getBody(), true)['data'] ?? [];
         $communicationTypes = json_decode($this->http->get("{$this->url}/lookup", ["model" => "CommunicationType", "object" => 1])->getBody(), true)['data'] ?? [];
 
@@ -166,6 +170,7 @@ class ProfileController extends Controller
         ];
 
         $parameters = [
+            'profileId' => $id,
             'profile' => $profile,
             'lookup' => $lookup
         ];
@@ -174,14 +179,12 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Communications/Index', $parameters);
     }
 
-    public function notes($id = null): Response
+    public function notes($id): Response
     {
-        if((int)$id === 0 || $id === null){
-            $id = $this->profileData['profileId'];
-        }
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=notes.user")->getBody(), true)['data'] ?? [];
 
         $parameters = [
+            'profileId' => $id,
             'profile' => $profile
         ];
 
@@ -190,14 +193,12 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Notes/Index', $parameters);
     }
 
-    public function documents($id = null): Response
+    public function documents($id): Response
     {
-        if((int)$id === 0 || $id === null){
-            $id = $this->profileData['profileId'];
-        }
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=documents.user")->getBody(), true)['data'] ?? [];
 
         $parameters = [
+            'profileId' => $id,
             'profile' => $profile
         ];
 
@@ -227,15 +228,10 @@ class ProfileController extends Controller
         }
         $profiles = json_decode($this->http->get("{$this->url}/profile?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
 
-        if(!isset($id)) {
-            $id = $profiles['models'][0]['id'];
-        }
-
         return [
             'profileTypes' => $profileTypes,
             'profiles' => $profiles['models'],
             'schemaId' => $schemaId,
-            'profileId' => $id,
             'apiUrl' => $this->apiUrl,
             'apiImagesUrl' => $this->apiImagesUrl
         ];
