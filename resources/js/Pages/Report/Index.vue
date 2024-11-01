@@ -2,7 +2,8 @@
 import { AuthenticatedLayout } from '@/Layouts/Adminlte'
 import { usePage} from '@inertiajs/vue3';
 import { computed } from "vue";
-import {FunctionsHelper} from "@/helpers";
+import { FunctionsHelper } from "@/helpers";
+import { useProcesStatusReportStore } from "@/stores";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -10,44 +11,17 @@ const negotium_api_url = computed(() => page.props.negotium_api_url);
 const props = defineProps({
   processStatusReport: null
 });
-    function toggleChildren(parentId) {
-        const parent = document.getElementById(`parent_${parentId}`)
-        const childRows = document.querySelectorAll(`.child-of-${parentId}`);
 
-        if(parent.classList.contains('pi-chevron-down')){
-            parent.classList.remove('pi-chevron-down')
-            parent.classList.add('pi-chevron-up')
-        } else {
-            parent.classList.add('pi-chevron-down')
-            parent.classList.remove('pi-chevron-up')
-        }
-        childRows.forEach(row => {
-            row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
-        });
-    }
-
-    function barColor(num){
-        if(num < 30){
-            return 'bg-danger-500'
-        }
-        if(num < 70){
-            return 'bg-warning-500'
-        }
-        if(num <= 100){
-            return 'bg-success-500'
-        }
-    }
-
+const processStatusReportStore = useProcesStatusReportStore();
 </script>
-
 <template>
     <AuthenticatedLayout>
         <template #header>
-          <div class="col-sm-6">
-            <h1 class="m-0">Process status report</h1>
-          </div><!-- /.col -->
-          <div class="col-sm-6 text-right pt-2">
-          </div><!-- /.col -->
+            <div class="col-sm-6">
+              <h1 class="m-0">Process status report</h1>
+            </div><!-- /.col -->
+            <div class="col-sm-6 text-right pt-2">
+            </div><!-- /.col -->
         </template>
 
         <div class="content-container pl-4 pr-4" id="" >
@@ -81,70 +55,69 @@ const props = defineProps({
                     <tbody>
                         <!-- Parent Row -->
                       <template v-for="(profile, profile_index) in props.processStatusReport.report.profiles" :key="profile_index">
-                        <tr class="bg-[#efefef] pb-1">
-                            <td v-if="props.processStatusReport.report.dynamic_model_category_id === 1">{{ profile.first_name}}</td>
-                            <td v-if="props.processStatusReport.report.dynamic_model_category_id === 1">{{ profile.last_name }}</td>
-                            <td v-if="props.processStatusReport.report.dynamic_model_category_id === 2">{{ profile.profile_name }}</td>
-                            <td>{{ profile.processes_count }}</td>
-                            <td>
-                                <div style="display: flex; align-items: center;">
-                                    <span style="min-width: 37px;">{{ profile.processes_start_rate_percentage }}%</span>
-                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
-                                    <div :style="{ width: '33%' }" 
-                                        class="progress-bar h-6 rounded" :class="barColor(profile.processes_start_rate_percentage)">
-                                    </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>
-                                <div style="display: flex; align-items: center;">
-                                    <span style="min-width: 37px;">80%</span>
-                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
-                                    <div :style="{ width: '80%' }" 
-                                        class="progress-bar h-6 rounded" :class="barColor(80)">
-                                    </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>-</td>
-                            <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_' + profile.id" @click="toggleChildren(profile.id)"></i></a></td>
-                        </tr>
-                        <!-- Child Rows -->
-                        <tr :class="'child-row child-of-' + profile.id" v-for="(process, process_index) in profile.processes" :key="process_index" style="display: none;">
-                            <td>-</td>
-                            <td>-</td>
-                            <td>-</td>
-                            <td>
-                                <div style="display: flex; align-items: center;">
-                                    <span style="min-width: 37px;">0%</span>
-                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
-                                    <div :style="{ width: '1%' }" 
-                                        class="progress-bar h-6 rounded" :class="barColor(1)">
-                                    </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>{{ process.name }}</td>
-                            <td>{{ FunctionsHelper.DateTime(process.created_at) }}</td>
-                            <td>{{ profile.profile_name }}</td>
-                            <td>{{ process.status }}</td>
-                            <td>
-                                <div style="display: flex; align-items: center;">
-                                    <span style="min-width: 37px;">0%</span>
-                                    <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
-                                    <div :style="{ width: '1%' }" 
-                                        class="progress-bar h-6 rounded" :class="barColor(0)">
-                                    </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>-</td>
-                            <td></td>
-                        </tr>
+                          <tr class="bg-[#efefef] pb-1">
+                              <td v-if="props.processStatusReport.report.dynamic_model_category_id === 1">{{ profile.first_name}}</td>
+                              <td v-if="props.processStatusReport.report.dynamic_model_category_id === 1">{{ profile.last_name }}</td>
+                              <td v-if="props.processStatusReport.report.dynamic_model_category_id === 2">{{ profile.profile_name }}</td>
+                              <td>{{ profile.processes_count }}</td>
+                              <td>
+                                  <div style="display: flex; align-items: center;">
+                                      <span style="min-width: 37px;">{{ profile.processes_start_rate_percentage }}%</span>
+                                      <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                      <div :style="{ width: profile.processes_start_rate_percentage+'%' }"
+                                          class="progress-bar h-6 rounded" :class="processStatusReportStore.barColor(profile.processes_start_rate_percentage)">
+                                      </div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>
+                                  <div style="display: flex; align-items: center;">
+                                      <span style="min-width: 37px;">{{ profile.progress_overall_process }}%</span>
+                                      <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                        <div :style="{ width: profile.progress_overall_process+'%' }"
+                                            class="progress-bar h-6 rounded" :class="processStatusReportStore.barColor(profile.progress_overall_process)">
+                                        </div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>-</td>
+                              <td><a href="javascript:void(0)" class="rounded px-2 pb-1.5 pt-2 bg-neutral-500"><i class="pi pi-chevron-down" :id="'parent_' + profile.id" @click="processStatusReportStore.toggleChildren(profile.id)"></i></a></td>
+                          </tr>
+                          <!-- Child Rows -->
+                          <tr :class="'child-row child-of-' + profile.id" v-for="(process, process_index) in profile.processes" :key="process_index" style="display: none;">
+                              <td>-</td>
+                              <td>-</td>
+                              <td>-</td>
+                              <td>
+                                  <div style="display: flex; align-items: center;">
+                                      <span style="min-width: 37px;">0%</span>
+                                      <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                      <div :style="{ width: '1%' }"
+                                          class="progress-bar h-6 rounded" :class="processStatusReportStore.barColor(1)">
+                                      </div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>{{ process.name }}</td>
+                              <td>{{ FunctionsHelper.DateTime(process.created_at) }}</td>
+                              <td>{{ profile.profile_name }}</td>
+                              <td>{{ process.status }}</td>
+                              <td>
+                                  <div style="display: flex; align-items: center;">
+                                      <span style="min-width: 37px;">0%</span>
+                                      <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
+                                      <div :style="{ width: '1%' }"
+                                          class="progress-bar h-6 rounded" :class="processStatusReportStore.barColor(0)">
+                                      </div>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>-</td>
+                          </tr>
                       </template>
                     </tbody>
                 </table>
@@ -165,14 +138,14 @@ const props = defineProps({
 }
 
 .btn-edit {
-    color: lawngreen;
-  }
+  color: lawngreen;
+}
 
-  .btn-delete {
-    color: orangered;
-  }
+.btn-delete {
+  color: orangered;
+}
 
-  .progress-bar {
+.progress-bar {
   background-color: green;
   transition: width 0.3s;
 }
