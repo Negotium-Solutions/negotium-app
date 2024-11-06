@@ -76,7 +76,7 @@ class ProfileController extends Controller
         $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
         $profileProcesses = json_decode($this->http->get("{$this->url}/profile/{$id}/processes?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
-// dd($profileProcesses);
+        // dd($profileProcesses);
         $assignedProcesses = [];
         foreach ($profileProcesses as $profileProcess) {
             $assignedProcesses[] = $profileProcess['process_id'];
