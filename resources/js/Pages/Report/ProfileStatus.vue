@@ -62,7 +62,7 @@ const processStatusReportStore = useProcesStatusReportStore();
                               <td>{{ profile.processes_count }}</td>
                               <td>
                                   <div style="display: flex; align-items: center;">
-                                      <span style="min-width: 37px;">{{ profile.processes_start_rate_percentage }}%</span>
+                                      <span style="min-width: 37px;">{{ Math.round(profile.processes_start_rate_percentage) }}%</span>
                                       <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                       <div :style="{ width: profile.processes_start_rate_percentage+'%' }"
                                           class="progress-bar h-6 rounded" :class="processStatusReportStore.barColor(profile.processes_start_rate_percentage)">
@@ -76,7 +76,7 @@ const processStatusReportStore = useProcesStatusReportStore();
                               <td>-</td>
                               <td>
                                   <div style="display: flex; align-items: center;">
-                                      <span style="min-width: 37px;">{{ profile.progress_overall_process }}%</span>
+                                      <span style="min-width: 37px;">{{ Math.round(profile.progress_overall_process) }}%</span>
                                       <div style="background-color: #fff; width: 100%; height: 24px; border-radius: 4px; overflow: hidden; margin-left: 10px;border:1px solid #efefef">
                                         <div :style="{ width: profile.progress_overall_process+'%' }"
                                             class="progress-bar h-6 rounded" :class="processStatusReportStore.barColor(profile.progress_overall_process)">
