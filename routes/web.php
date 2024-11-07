@@ -9,7 +9,7 @@ use App\Http\Controllers\Admin\ProcessManagerController;
 use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\ProcessExecutionController;
-use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ProcessStatusReportController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -56,7 +56,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/step/create/{process_id}', [StepController::class, 'create'])->name('step.create');
     
     // Profiles
-    Route::get('/report/{id?}', [ReportController::class, 'index'])->name('report');
+    Route::get('/report/{id?}', [ProcessStatusReportController::class, 'index'])->name('report');
 });
 
 require __DIR__.'/auth.php';

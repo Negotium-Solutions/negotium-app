@@ -20,6 +20,7 @@ export const useProcessExecution = defineStore({
         step: null,
         profiles: null,
         profile: null,
+        current_step: null,
         profileProcessFieldsErrors: null,
         loading: false,
         saveStepLoading: false,
@@ -133,21 +134,9 @@ export const useProcessExecution = defineStore({
             });
             return nextStep;
         },
-        resetResponse() {
-            this.response = {
-                'status': '',
-                'message': '',
-                'errors': [],
-                'data': []
-            }
-        },
-        setResponse(code, status, message, errors, data) {
-            this.response = {
-                'code': code,
-                'status': status,
-                'message': message,
-                'errors': errors,
-                'data': data
+        goToStep(step) {
+            if ( (step.id !== this.step.id) && (step.order <= this.current_step.order)) {
+                window.location.href = '/process-execution/edit/' + this.process_id + '/' + this.process_schema_id + '/' + this.profile_id + '/' + this.profile_schema_id + '/' + step.id;
             }
         }
     },

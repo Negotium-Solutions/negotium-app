@@ -38,7 +38,8 @@ class ProcessExecutionController extends Controller
         $profile = json_decode($this->http->get("{$this->url}/profile/{$profile_id}?schema_id={$profile_schema_id}")->getBody(), true)['data'] ?? [];
         $process_schema = json_decode($this->http->get("{$this->url}/process-execution/{$process_id}?schema_id={$process_schema_id}&with=groups.fields.validations,groups.fields.options&profile_id={$profile_id}&process_schema_id={$process_schema_id}")->getBody(), true)['data'] ?? [];
         $profiles = json_decode($this->http->get("{$this->url}/profile?schema_id={$profile_schema_id}")->getBody(), true)['data'] ?? [];
-
+        $current_step = json_decode($this->http->get("{$this->url}/process-execution/current-process-step/{$process_schema_id}/{$profile_id}")->getBody(), true)['data'] ?? [];
+        // dd($current_step['step'], $process_schema_id, $profile_schema_id);
         $step = null;
         foreach ($process_schema['groups'] as $_step) {
             if ($_step['id'] === $step_id) {
@@ -49,6 +50,7 @@ class ProcessExecutionController extends Controller
         $parameters = [
             'profiles' => $profiles,
             'profile' => $profile['models'][0],
+            'current_step' => $current_step['step'],
             'process_id' => $process_id,
             'process_schema_id' => $process_schema_id,
             'profile_id' => $profile_id,

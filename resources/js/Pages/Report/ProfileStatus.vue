@@ -104,7 +104,7 @@ const processStatusReportStore = useProcesStatusReportStore();
                               </td>
                               <td>{{ process.name }}</td>
                               <td>{{ FunctionsHelper.DateTime(process.created_at) }}</td>
-                              <td>{{ profile.profile_name }}</td>
+                              <td>{{ process.started_by_user }}</td>
                               <td>{{ process.status }}</td>
                               <td>
                                   <div style="display: flex; align-items: center;">

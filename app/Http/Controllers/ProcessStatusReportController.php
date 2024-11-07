@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 use Inertia\Inertia;
 
-class ReportController extends Controller
+class ProcessStatusReportController extends Controller
 {
     private PendingRequest $http;
     private string $url;
@@ -32,6 +32,6 @@ class ReportController extends Controller
             'processStatusReport' => $processStatusReport
         ];
 
-        return Inertia::render('Report/Index', $parameters);
+        return Inertia::render('Report/ProfileStatus', $parameters);
     }
 }

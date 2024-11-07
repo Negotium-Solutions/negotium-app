@@ -17,6 +17,7 @@ const props = defineProps({
   process_schema: null,
   step: null,
   profile: null,
+  current_step: null,
   profiles: null,
 
   // Todo: Remove below
@@ -36,6 +37,7 @@ onMounted(() => {
   processExecution.set('profiles', props.profiles.models);
   processExecution.set('profile', props.profile);
   processExecution.set('step', props.step);
+  processExecution.set('current_step', props.current_step);
   processExecution.set('apiImagesUrl', props.apiImagesUrl);
 
   processExecution.handleInnerContentDivHeight()

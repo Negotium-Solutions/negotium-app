@@ -65,9 +65,9 @@ onMounted(() => {
                   <div class="time-label pb-0 mb-0">
                     <span class="pb-3">Progress</span>
                   </div>
-                  <div class="flex" v-for="(step, index) in processExecution.process_schema.groups" :key="index" :class="(index+1) === processExecution.process_schema.groups.length ? '' :'mb-4 pb-3'">
+                  <div @click="processExecution.goToStep(step)" class="flex cursor-pointer" v-for="(step, index) in processExecution.process_schema.groups" :key="index" :class="(index+1) === processExecution.process_schema.groups.length ? '' :'mb-4 pb-3'">
                     <i :class="processExecution.step.id === step.id ? 'fas bg-blue' : index < activeStep ? 'fa fa-check bg-success-500 pt-1 text-white' : 'fas bg-neutral-500'" style="line-height: 1.5;"></i>
-                    <div class="timeline-item flex flex-col pl-2"> <!-- Use flex column to align items vertically -->
+                    <div class="timeline-item flex flex-col pl-2">
                       <span class="opacity-50 text-neutral-700 text-xs font-normal font-['Nunito'] leading-3">Step {{ index + 1 }}</span>
                       <div class="font-bold text-neutral-700 text-sm font-['Roboto'] leading-tight text-break">{{ step.name }}</div>
                     </div>
