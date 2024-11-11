@@ -16,13 +16,17 @@ const props = defineProps({
   apiUrl: String,
   apiImagesUrl: String,
   navigation: String,
-  lookup: null
+  lookup: null,
+  form: null,
+  profiles: null,
+  schema_id: null,
+  profileId: null
 });
 
 onMounted(() => {
   profileManagerStore.setProfileData(props);
   profileDetailStore.set('profile', props.profile);
-  profileDetailStore.set('profileDetailsFields', props.profile.steps);
+  profileDetailStore.set('profileDetailsFields', props.form.groups);
 });
 </script>
 

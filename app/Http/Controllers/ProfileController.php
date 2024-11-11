@@ -46,8 +46,8 @@ class ProfileController extends Controller
         if ($schemaId === null) {
             $schemaId = isset($profileTypes[0]['id']) ? $profileTypes[0]['id'] : null;
         }
-        $profile = json_decode($this->http->get("{$this->url}/dynamic-model/new-empty-record/{$schemaId}?with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
-
+        $profile = json_decode($this->http->get("{$this->url}/profile/form/{$schemaId}?with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
+        // dd($profile);
         $parameters = [
             'profileTypes' => $profileTypes,
             'profile' => $profile,
@@ -112,23 +112,17 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function details(Request $request, $id = null): Response
+    public function details(Request $request, $id): Response
     {
-        if((int)$id === 0 || $id === null){
-            $id = $this->profileData['profileId'];
-        }
-
-        if ($request->has('s_id') && $request->input('s_id') > 0) {
-            $schema_id = $request->input('s_id');
-        } else {
-            $schema_id = $this->profileData['schemaId'];
-        }
-
+        $schema_id = $request->input('s_id');
         $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
+        $form = json_decode($this->http->get("{$this->url}/profile/edit/{$id}?schema_id={$schema_id}&with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
 
         $parameters = [
+            'schema_id' => $profile['id'],
             'profileId' => $id,
             'profile' => $profile['models'][0],
+            'form' => $form
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -142,13 +136,17 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
-    public function editDetails($id): Response
+    public function editDetails(Request $request, $id): Response
     {
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=dynamicModel")->getBody(), true)['data'] ?? [];
-        
+        $schema_id = $request->input('s_id');
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
+        $form = json_decode($this->http->get("{$this->url}/profile/edit/{$id}?schema_id={$schema_id}&with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
+
         $parameters = [
+            'schema_id' => $profile['id'],
             'profileId' => $id,
             'profile' => $profile['models'][0],
+            'form' => $form
         ];
 
         $parameters = array_merge($parameters, $this->profileData);

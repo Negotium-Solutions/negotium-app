@@ -10,21 +10,20 @@ const props = defineProps({
   profileTypeId: 0,
   profileTypes: Array,
   profile: Object,
+  form: null,
   apiUrl: String,
   apiImagesUrl: String,
   navigation: String,
   lookup: null,
   profiles: null,
-  schemaId: null,
+  schema_id: null,
   profileId: null
 });
 
 onMounted(() => {
   profileManagerStore.setProfileData(props);
-  console.log('props', props);
-  console.log('profileManagerStore', profileManagerStore);
   profileDetailStore.set('profile', props.profile);
-  profileDetailStore.set('profileDetailsFields', props.profile.steps);
+  profileDetailStore.set('profileDetailsFields', props.form.groups);
 });
 </script>
 
@@ -36,7 +35,7 @@ onMounted(() => {
         <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Profile Details</h1>
       </div>
       <div class="col-sm-6 text-right">
-        <a :href="route('profile.profile-details.edit', {'id': profileManagerStore.profile.id})+'?pt='+profileManagerStore.profileType.id" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Edit Details</a>
+        <a :href="route('profile.profile-details.edit', {'id': profileManagerStore.profile.id})+'?s_id='+props.schema_id" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Edit Details</a>
       </div>
     </div>
     <div class="d-flex flex-column w-100 pl-3 pr-3">

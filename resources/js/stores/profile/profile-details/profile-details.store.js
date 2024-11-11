@@ -87,14 +87,12 @@ export const useProfileDetailStore = defineStore({
 
             this.loading = true;
 
-            console.log('before', this.profile);
             await this.apiHelper.create(this.profile);
             this.apiHelper.isDoneLoading(null, () => {
                 let placeholderVariables = {
                     'profileName': this.profile.name
                 };
                 const response = this.apiHelper.response;
-                console.log('after', response);
 
                 switch (parseInt(response.code)) {
                     case 201:
