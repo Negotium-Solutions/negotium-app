@@ -47,11 +47,11 @@ class ProfileController extends Controller
             $schemaId = isset($profileTypes[0]['id']) ? $profileTypes[0]['id'] : null;
         }
         $profile = json_decode($this->http->get("{$this->url}/profile/form/{$schemaId}?with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
-        // dd($profile);
+
         $parameters = [
             'profileTypes' => $profileTypes,
             'profile' => $profile,
-            'schema_id' => $schemaId
+            'schemaId' => $schemaId
         ];
 
         return Inertia::render('Profile/ProfileDetails/Create', $parameters);
@@ -67,16 +67,16 @@ class ProfileController extends Controller
         }
 
         if ($request->has('s_id') && $request->input('s_id') > 0) {
-            $schema_id = $request->input('s_id');
+            $schemaId = $request->input('s_id');
         } else {
-            $schema_id = $this->profileData['schemaId'];
+            $schemaId = $this->profileData['schemaId'];
         }
 
         $processes = json_decode($this->http->get("{$this->url}/process?with=groups")->getBody(), true)['data'] ?? [];
         $processCategories = json_decode($this->http->get($this->url.'/process-category')->getBody(), true)['data'];
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
-        $profileProcesses = json_decode($this->http->get("{$this->url}/profile/{$id}/processes?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
-        // dd($profileProcesses);
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
+        $profileProcesses = json_decode($this->http->get("{$this->url}/profile/{$id}/processes?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
+
         $assignedProcesses = [];
         foreach ($profileProcesses as $profileProcess) {
             $assignedProcesses[] = $profileProcess['process_id'];
@@ -114,9 +114,9 @@ class ProfileController extends Controller
      */
     public function details(Request $request, $id): Response
     {
-        $schema_id = $request->input('s_id');
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
-        $form = json_decode($this->http->get("{$this->url}/profile/edit/{$id}?schema_id={$schema_id}&with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
+        $schemaId = $request->input('s_id');
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
+        $form = json_decode($this->http->get("{$this->url}/profile/edit/{$id}?schema_id={$schemaId}&with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
 
         $parameters = [
             'schema_id' => $profile['id'],
@@ -138,9 +138,9 @@ class ProfileController extends Controller
      */
     public function editDetails(Request $request, $id): Response
     {
-        $schema_id = $request->input('s_id');
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
-        $form = json_decode($this->http->get("{$this->url}/profile/edit/{$id}?schema_id={$schema_id}&with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
+        $schemaId = $request->input('s_id');
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
+        $form = json_decode($this->http->get("{$this->url}/profile/edit/{$id}?schema_id={$schemaId}&with=groups.fields.validations,groups.fields.options")->getBody(), true)['data'] ?? [];
 
         $parameters = [
             'schema_id' => $profile['id'],
@@ -159,14 +159,10 @@ class ProfileController extends Controller
      */
     public function communications(Request $request, $id): Response
     {
-        if ($request->has('s_id') && $request->input('s_id') > 0) {
-            $schema_id = $request->input('s_id');
-        } else {
-            $schema_id = $this->profileData['schemaId'];
-        }
+        $schemaId = $request->input('s_id');
 
         $communications = json_decode($this->http->get("{$this->url}/communication?profile_id={$id}&with=user,communicationType,status")->getBody(), true)['data'] ?? [];
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schema_id}")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
         $communicationTypes = json_decode($this->http->get("{$this->url}/lookup", ["model" => "CommunicationType", "object" => 1])->getBody(), true)['data'] ?? [];
 
         $lookup = [
@@ -184,18 +180,22 @@ class ProfileController extends Controller
 
         $parameters = array_merge($parameters, $this->profileData);
 
-        // dd($parameters);
-
         return Inertia::render('Profile/Communications/Index', $parameters);
     }
 
-    public function notes($id): Response
+    public function notes(Request $request, $id): Response
     {
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=notes.user")->getBody(), true)['data'] ?? [];
+        $schemaId = $request->input('s_id');
+
+        $notes = json_decode($this->http->get("{$this->url}/note?profile_id={$id}&with=user")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
+
+        $_profile = $profile['models'][0];
+        $_profile['notes'] = $notes;
 
         $parameters = [
             'profileId' => $id,
-            'profile' => $profile['models'][0]
+            'profile' => $_profile
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -203,13 +203,19 @@ class ProfileController extends Controller
         return Inertia::render('Profile/Notes/Index', $parameters);
     }
 
-    public function documents($id): Response
+    public function documents(Request $request, $id): Response
     {
-        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?with=documents.user")->getBody(), true)['data'] ?? [];
+        $schemaId = $request->input('s_id');
+
+        $documents = json_decode($this->http->get("{$this->url}/document?profile_id={$id}  ")->getBody(), true)['data'] ?? [];
+        $profile = json_decode($this->http->get("{$this->url}/profile/{$id}?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
+
+        $_profile = $profile['models'][0];
+        $_profile['documents'] = $documents;
 
         $parameters = [
             'profileId' => $id,
-            'profile' => $profile['models'][0]
+            'profile' => $_profile
         ];
 
         $parameters = array_merge($parameters, $this->profileData);
@@ -236,7 +242,16 @@ class ProfileController extends Controller
         if (!isset($schemaId)) {
             $schemaId = isset($profileTypes[0]['id']) ? $profileTypes[0]['id'] : null;
         }
-        $profiles = json_decode($this->http->get("{$this->url}/profile?schema_id={$schemaId}")->getBody(), true)['data'] ?? [];
+        $response = $this->http->get("{$this->url}/profile?schema_id={$schemaId}");
+
+        $profiles = null;
+        if ($response->successful()) {
+            $profiles = json_decode($response->getBody(), true)['data'] ?? [];
+        } else {
+            abort(408, 'Request Timeout');
+        }
+
+
 
         return [
             'profileTypes' => $profileTypes,

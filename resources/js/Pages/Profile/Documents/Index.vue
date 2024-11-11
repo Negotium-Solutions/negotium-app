@@ -18,11 +18,14 @@ const toast = useToast();
 const imagesUrl = computed(() => usePage().props.apiImagesUrl);
 
 const props = defineProps({
-  profileTypeId: 0,
-  profileTypes: Array,
-  profile: Object,
-  apiUrl: String,
-  apiImagesUrl: String,
+  profileTypes: null,
+  profileTypeId: null,
+  schemaId: null,
+  profileId: null,
+  apiUrl: null,
+  apiImagesUrl: null,
+  profiles: null,
+  profile: null,
   lookup: null
 });
 

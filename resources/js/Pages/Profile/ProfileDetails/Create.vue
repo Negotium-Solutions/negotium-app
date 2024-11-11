@@ -11,7 +11,7 @@ const toast = useToast();
 
 const props = defineProps({
   profile: null,
-  schema_id: null,
+  schemaId: null,
   profileTypes: Array,
   lookup: null
 });

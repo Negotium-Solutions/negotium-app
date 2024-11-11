@@ -16,14 +16,14 @@ const props = defineProps({
   navigation: String,
   lookup: null,
   profiles: null,
-  schema_id: null,
+  schemaId: null,
   profileId: null
 });
 
 onMounted(() => {
   profileManagerStore.setProfileData(props);
   profileDetailStore.set('profile', props.profile);
-  profileDetailStore.set('profileDetailsFields', props.form.groups);
+  profileDetailStore.set('form', props.form);
 });
 </script>
 
@@ -35,12 +35,12 @@ onMounted(() => {
         <h1 class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto']">Profile Details</h1>
       </div>
       <div class="col-sm-6 text-right">
-        <a :href="route('profile.profile-details.edit', {'id': profileManagerStore.profile.id})+'?s_id='+props.schema_id" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Edit Details</a>
+        <a :href="route('profile.profile-details.edit', {'id': profileManagerStore.profile.id})+'?s_id='+profileManagerStore.schemaId" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white">Edit Details</a>
       </div>
     </div>
     <div class="d-flex flex-column w-100 pl-3 pr-3">
 
-      <div v-for="(profileDetail, index) in profileDetailStore.profileDetailsFields" :key="index" class="flex flex-col w-100 px-2 py-2 rounded-lg border border-solid border-neutral-700 mb-2">
+      <div v-for="(profileDetail, index) in profileDetailStore.form.groups" :key="index" class="flex flex-col w-100 px-2 py-2 rounded-lg border border-solid border-neutral-700 mb-2">
 
         <div class="d-flex w-100 pt-2 pl-2 pr-2 pb-1">
           <h6 class="text-neutral-700 text-md mb-2 font-bold font-['Roboto']">{{ profileDetail.name }}</h6>

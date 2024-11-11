@@ -18,12 +18,14 @@ const messages = computed(() => usePage().props.messages);
 const no_notes_for_profile = messages.value.note.no_notes_for_profile;
 
 const props = defineProps({
-  profileTypeId: 0,
-  profileTypes: Array,
-  profile: Object,
-  apiUrl: String,
-  apiImagesUrl: String,
-  navigation: String,
+  profileTypes: null,
+  profileTypeId: null,
+  schemaId: null,
+  profileId: null,
+  apiUrl: null,
+  apiImagesUrl: null,
+  profiles: null,
+  profile: null,
   lookup: null
 });
 
