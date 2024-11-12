@@ -9,6 +9,8 @@ import NegotiumButton from "@/Components/negotium/Button.vue";
 import FileUpload from "primevue/fileupload";
 import Dialog from "primevue/dialog";
 import { useToast } from "primevue/usetoast";
+import { useConfirm } from "primevue/useconfirm";
+import ConfirmDialog from "primevue/confirmdialog";
 
 const profileManagerStore = useProfilesManagerStore();
 const profileDocumentStore = useProfileDocumentStore();
@@ -16,6 +18,7 @@ const messages = computed(() => usePage().props.messages);
 const no_documents_for_profile = messages.value.document.no_documents_for_profile;
 const toast = useToast();
 const imagesUrl = computed(() => usePage().props.apiImagesUrl);
+const confirm = useConfirm();
 
 const props = defineProps({
   profileTypes: null,
@@ -69,6 +72,11 @@ onMounted(() => {
                 <button @click="profileManagerStore.set('document', document)" type="button" data-toggle="dropdown" class="w-[30px] h-[30px] bg-[#dae3e7] rounded justify-center items-center gap-1 inline-flex">
                   <i class="pi pi-ellipsis-v"></i>
                 </button>
+                <div class="dropdown-menu dropdown-menu dropdown-menu-right">
+                  <button class="dropdown-item cursor-pointer" @click="profileDocumentStore.showDocumentConfirmation(toast, confirm, document)">
+                    <small>Delete</small>
+                  </button>
+                </div>
               </div>
             </div>
           </td>
@@ -127,6 +135,20 @@ onMounted(() => {
       </template>
     </Dialog>
 
+    <ConfirmDialog :style="{ width: '400px' }">
+      <template #container="{ message, acceptCallback, rejectCallback }">
+        <div class="flex flex-col w-full gap-4 p-4">
+          <span class="text-2xl font-bold font-['Roboto'] leading-loose">{{ message.header }}</span>
+          <p class="text-base font-normal font-['Nunito'] leading-normal" v-html="message.message"></p>
+        </div>
+        <div class="row">
+          <div class="col-12 py-3 px-4 text-right">
+            <Button label="Cancel" outlined @click="rejectCallback" class="gap-2 justify-center py-2 px-4 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 text-neutral-700 hover:bg-neutral-700 hover:text-white mr-2"></Button>
+            <Button :label="'Yes, Remove'" @click="acceptCallback" class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white"></Button>
+          </div>
+        </div>
+      </template>
+    </ConfirmDialog>
   </div>
   </ExtendProfileLayout>
 </template>

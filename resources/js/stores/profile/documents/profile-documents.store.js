@@ -80,6 +80,28 @@ export const useProfileDocumentStore = defineStore({
         viewDocument(document) {
             window.open(document.path, '_blank'); // Open the document in a new tab
         },
+        async deleteDocument(document, toast) {
+            this.loading = true;
+
+            await this.apiHelper.delete(document);
+            this.apiHelper.isDoneLoading(null, () => {
+                let removeVariables = {
+                    'documentName': document.name
+                };
+                const response = this.apiHelper.response;
+
+                if (parseInt(response.code) === 204) {
+                    toast.add({ severity: 'success', detail: FunctionsHelper.replaceTextVariables(messages.value.document.success_delete_document, removeVariables), life: 3000 });
+                    setTimeout(() => {
+                        this.loading = false;
+                        location.reload();
+                    }, 3000)
+                } else {
+                    toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                    this.loading = false;
+                }
+            });
+        },
         downloadDocument(path) {
             const link = document.createElement('a');
             link.href = path;
@@ -122,22 +144,38 @@ export const useProfileDocumentStore = defineStore({
                 file: null
             };
         },
-        resetResponse() {
-            this.response = {
-                'status': '',
-                'message': '',
-                'errors': [],
-                'data': []
-            }
-        },
-        setResponse(code, status, message, errors, data) {
-            this.response = {
-                'code': code,
-                'status': status,
-                'message': message,
-                'errors': errors,
-                'data': data
-            }
+        showDocumentConfirmation(toast, confirm, document)
+        {
+            let removeVariables = {
+                'documentName': document.name
+            };
+
+            confirm.require({
+                header: 'Process Confirmation',
+                message: FunctionsHelper.replaceTextVariables(messages.value.document.delete_document_confirmation, removeVariables),
+                acceptLabel: 'Yes, Remove',
+                acceptClass: 'btn btn-sm btn-default mr-2',
+                rejectLabel: 'Cancel',
+                rejectClass: 'btn btn-sm btn-default mr-2',
+                rejectProps: {
+                    label: 'Cancel',
+                    severity: 'secondary',
+                    outlined: true
+                },
+                acceptProps: {
+                    label: 'Save'
+                },
+                accept: () => {
+                    try {
+                        this.deleteDocument(document, toast);
+                    } catch (error) {
+                        toast.add({ severity: 'error', detail: FunctionsHelper.replaceTextVariables(messages.value.document.error_delete_document, removeVariables), life: 3000 });
+                    }
+                },
+                reject: () => {
+                    // Do nothing
+                }
+            });
         }
     },
     getters: {

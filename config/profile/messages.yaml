@@ -36,3 +36,6 @@ document:
                           Easily upload one or multiple documents to this profile by <br/>
                           clicking on 'Upload Document' in the top right corner.
   success_uploading_document: Document successfully uploaded for profile {profileName}
+  delete_document_confirmation: Are you sure you want to remove the document named {documentName}?
+  error_delete_document: We weren't able to remove the document called {documentName}, please try again.
+  success_delete_document: Document called {documentName} deleted successfully.

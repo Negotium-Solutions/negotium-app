@@ -213,23 +213,6 @@ export const useProfileProcessStore = defineStore({
                     // Do nothing
                 }
             });
-        },
-        resetResponse() {
-            this.response = {
-                'status': '',
-                'message': '',
-                'errors': [],
-                'data': []
-            }
-        },
-        setResponse(code, status, message, errors, data) {
-            this.response = {
-                'code': code,
-                'status': status,
-                'message': message,
-                'errors': errors,
-                'data': data
-            }
         }
     },
     getters: {
