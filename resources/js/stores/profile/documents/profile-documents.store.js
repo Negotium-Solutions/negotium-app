@@ -102,7 +102,9 @@ export const useProfileDocumentStore = defineStore({
                 }
             });
         },
-        downloadDocument(path) {
+        downloadDocument(document) {
+            
+
             const link = document.createElement('a');
             link.href = path;
             link.download = path.split('/').pop(); // Extracts the file name from the URL
