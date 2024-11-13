@@ -72,4 +72,46 @@ class FunctionsHelper {
     static loadPreviousPage() {
         window.history.back();
     }
+
+    static base64ToFile(base64String, filename = 'downloaded-file') {
+        // Extract the MIME type and Base64 data
+        const mimeTypeRegex = /^data:(.*?);base64,/;
+        const matches = base64String.match(mimeTypeRegex);
+
+        if (!matches) {
+            console.error('Invalid Base64 string');
+            return;
+        }
+
+        const mimeType = matches[1];
+        const base64Data = base64String.replace(mimeTypeRegex, '');
+
+        // Decode the Base64 string
+        const binaryData = atob(base64Data);
+
+        // Create a Blob from the binary data
+        const byteArrays = [];
+        for (let offset = 0; offset < binaryData.length; offset += 1024) {
+            const slice = binaryData.slice(offset, offset + 1024);
+            const byteNumbers = new Array(slice.length);
+            for (let i = 0; i < slice.length; i++) {
+                byteNumbers[i] = slice.charCodeAt(i);
+            }
+            byteArrays.push(new Uint8Array(byteNumbers));
+        }
+
+        const blob = new Blob(byteArrays, { type: mimeType });
+
+        // Create a URL for the Blob and trigger the download
+        const url = URL.createObjectURL(blob);
+
+        // Use a temporary <a> element to trigger download
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = filename; // Optional: specify the filename
+        link.click(); // Trigger the click event to download
+
+        // Clean up after the download
+        URL.revokeObjectURL(url); // Release the object URL to free memory
+    }
 }

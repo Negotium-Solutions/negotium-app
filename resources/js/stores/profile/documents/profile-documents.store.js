@@ -30,13 +30,6 @@ export const useProfileDocumentStore = defineStore({
         end_point: 'document',
         lookup: {
         },
-        response: {
-            'code': 0,
-            'status': '',
-            'message': '',
-            'errors': [],
-            'data': []
-        },
         apiHelper: new ApiHelper('document')
     }),
     actions: {
@@ -102,13 +95,23 @@ export const useProfileDocumentStore = defineStore({
                 }
             });
         },
-        downloadDocument(document) {
-            
+        async downloadDocument(document, toast) {
+            this.apiHelper = new ApiHelper('document/download');
+            this.loading = true;
 
-            const link = document.createElement('a');
-            link.href = path;
-            link.download = path.split('/').pop(); // Extracts the file name from the URL
-            link.click();
+            await this.apiHelper.get(document.id);
+            this.apiHelper.isDoneLoading(null, () => {
+
+                const response = this.apiHelper.response;
+
+                if (parseInt(response.code) === 200) {
+                    console.log('response', response);
+                    FunctionsHelper.base64ToFile(response.data.file);
+                } else {
+                    toast.add({ severity: 'error', detail: response.message, life: 3000 });
+                    this.loading = false;
+                }
+            });
         },
         getIconByDocumentType(documentType){
             switch (documentType) {
