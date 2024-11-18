@@ -4,6 +4,7 @@ import { onMounted } from "vue";
 import ExtendProfileExecutionLayout from "@/Pages/Profile/ProcessExecutionLayout.vue";
 import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
+import EmailActivity from "@/Components/Process/Activity/Email.vue";
 
 const profileManagerStore = useProfilesManagerStore();
 const processExecution = useProcessExecution();
@@ -83,6 +84,9 @@ function setFieldValue(index, value) {
                   {{ option.name }}
                 </label>
               </div>
+              <div class="flex flex-col" v-if="[13].includes(field.dynamic_model_field_type_id)">
+                <email-activity></email-activity>
+              </div>
               <div class="btn-group btn-group-toggle w-100" data-toggle="buttons" v-if="[7].includes(field.dynamic_model_field_type_id)">
                 <label class="btn btn-sm btn-outline-secondary border-neutral-700 border-opacity-20" v-for="(option, index) in field.options" :key="index" :class="{ 'bg-slate-500' : processExecution.step.fields[_index].value == option.name }">
                   <input type="radio" name="options" @click="setFieldValue(_index, option.name)" :id="'option_'+option.id" autocomplete="off"> <span class="text-neutral-700 font-normal" :class="{ 'text-white' : processExecution.step.fields[_index].value == option.name }">{{ option.name }}</span>
@@ -99,7 +103,6 @@ function setFieldValue(index, value) {
   </div>
   <div v-if="processExecution.isSet('process_schema', processExecution.process_schema)" class="col-lg-12 pl-2 pr-2 m-0 border-t" id="process-execution-buttons">
     <div class="d-flex flex-column w-100 pl-3 pr-3">
-
       <div class="flex flex-col px-2 py-2 mb-2">
         <div class="row mt-3">
           <div class="col-md-12 text-right">
@@ -109,8 +112,8 @@ function setFieldValue(index, value) {
             <button v-if="processExecution.saveStepLoading"  class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white" disabled><i class="pi pi-spin pi-spinner text-sm custom-icon-sm"></i> Loading ...</button>
           </div>
         </div>
-        </div>
-        </div>
+      </div>
+    </div>
   </div>
   </ExtendProfileExecutionLayout>
 </template>

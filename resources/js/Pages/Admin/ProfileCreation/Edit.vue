@@ -47,7 +47,7 @@ onMounted(() => {
       </div><!-- /.col -->
       <div class="col-sm-6 text-right pt-3">
         <a :href="route('profile-creation')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 w-24 text-neutral-700 hover:text-neutral-700 cursor-pointer mr-2">Cancel</a>
-        <a href="javascript:void(0)" @click="profileCreatorManager.create(toast)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white cursor-pointer">Save Draft</a>
+        <a href="javascript:void(0)" @click="profileCreatorManager.create(toast)" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white cursor-pointer">Save</a>
       </div><!-- /.col -->
     </template>
 
@@ -119,10 +119,10 @@ onMounted(() => {
               </div>
               <div class="mt-3">
                 <div class="btn-group btn-group-toggle rounded-custom-25" data-toggle="buttons">
-                  <a :href="route('profile-creation.edit', { id: profileCreatorManager.profile.id, profile_category_id: categoryType.id, quick_capture: profileCreatorManager.quick_capture })" v-for="(categoryType, index) in profileCreatorManager.categoryTypes" :key="index" @click="profileCreatorManager.set('profileCategory', profileCategory)" class="btn btn-sm btn-outline-secondary text-xs border-neutral-700 border-opacity-20 py-2 px-4 font-['Roboto']"  :class="{ 'bg-zinc-100' : profileCreatorManager.profileCategory.id === categoryType.id }">
+                  <button disabled v-for="(categoryType, index) in profileCreatorManager.categoryTypes" :key="index" class="btn btn-sm btn-outline-secondary text-xs border-neutral-700 border-opacity-20 py-2 px-4 font-['Roboto']"  :class="{ 'bg-zinc-100' : profileCreatorManager.profileCategory.id === categoryType.id }">
                     <input type="radio" name="options" :id="'option_'+categoryType.id" autocomplete="off">
                     <span class="text-neutral-700 font-normal text-xs" :class="{ 'text-white' : profileCreatorManager.profileCategory.id === categoryType.id }">{{ categoryType.name }}</span>
-                  </a>
+                  </button>
                 </div>
               </div>
               <div class="mt-3" v-if="profileCreatorManager.isSet('profileCategory', profileCreatorManager.profileCategory) && profileCreatorManager.profileCategory.templates.length === 0">

@@ -106,7 +106,6 @@ export const useProfilesManagerStore = defineStore({
             }
         },
         getRecentProcesses(processes, order = 'asc', maximum = null) {
-            console.log('ProfileProcesses', processes);
             if(maximum === null) {
                 return processes.sort((a, b) => new Date(a.updated_at) - new Date(b.updated_at));
             }
