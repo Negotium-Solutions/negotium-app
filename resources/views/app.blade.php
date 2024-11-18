@@ -34,5 +34,34 @@
         <script src="{{asset('adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js')}}"></script>
         <!-- AdminLTE -->
         <script src="{{asset('adminlte/dist/js/adminlte.js')}}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/chat.min.css') }}">
+@auth
+@php
+    $isLocal = request()->getHost() == 'localhost';
+    $botmanUrl = $isLocal ? url('/botman') : '';
+    $botmanFrame = $isLocal ? url('/botman/chat') : '';
+@endphp
+
+<script>
+    // Check if botmanFrame and botmanUrl are not empty strings
+    if ("{{ $botmanFrame }}" !== "" && "{{ $botmanUrl }}" !== "") {
+        var botmanWidget = {
+            frameEndpoint: "{{ $botmanFrame }}",
+            chatServer: "{{ $botmanUrl }}",
+            aboutText: 'Reference :- negotium-solutions.com',
+            introMessage: "✋ Hi! I'm Negotium's Chatbot",
+        };
+    } else {
+        var botmanWidget = {
+            aboutText: 'Reference :- negotium-solutions.com',
+            introMessage: "✋ Hi! I'm Negotium's Chatbot",
+        };
+    }
+    
+</script>
+
+
+<script src='{{ asset('assets/js/widget.js') }}'></script>
+@endauth
     </body>
 </html>

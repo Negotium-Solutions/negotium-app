@@ -10,6 +10,7 @@ use App\Http\Controllers\ProcessController;
 use App\Http\Controllers\StepController;
 use App\Http\Controllers\ProcessExecutionController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\BotManController;
 
 Route::middleware('auth')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
@@ -57,6 +58,8 @@ Route::middleware('auth')->group(function () {
     
     // Profiles
     Route::get('/reports', [ReportController::class, 'index'])->name('reports');
+
+    Route::match(['get', 'post'], '/botman', [BotManController::class, 'handle']);
 });
 
 require __DIR__.'/auth.php';
