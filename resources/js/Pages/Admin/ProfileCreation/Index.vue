@@ -38,7 +38,7 @@ onMounted(() => {
       </div>
     </template>
     <template #profile>
-      <div class="content-container">
+      <div class="content-container" style="padding-bottom:75px;">
         <div class="row m-4">
           <div class="col-lg-12 col-md-12 col-sm-12">
             <table v-if="profileCreatorManagerStore.profiles && profileCreatorManagerStore.profiles.length > 0" class="table-sm w-100 table-row-spacing table-bg">
