@@ -74,11 +74,27 @@ export const useProfilesManagerStore = defineStore({
                 profilesSidebar = document.getElementById('profiles-sidebar'),
                 profilesDetail = document.getElementById('profiles-detail'),
                 profilesHeader = document.getElementById('profiles-header'),
-                height = profilesHeader.offsetHeight,
-                newHeight = windowHeight -  height;
-            profilesContent.style.minHeight = newHeight+'px'
-            profilesSidebar.style.minHeight = newHeight+'px'
-            profilesDetail.style.minHeight = newHeight+'px'
+                navContent = document.getElementById('profile-nav-content');
+                let height = profilesHeader.offsetHeight;
+                // Get padding values
+let styles = window.getComputedStyle(profilesHeader);
+let paddingTop = parseFloat(styles.paddingTop);
+let paddingBottom = parseFloat(styles.paddingBottom);
+
+                let newHeight = windowHeight - paddingBottom - paddingTop -  height - 40;
+                console.log(newHeight)
+                profilesContent.style.minHeight = newHeight+'px'
+                profilesSidebar.style.minHeight = newHeight+'px'
+                profilesDetail.style.minHeight = newHeight+'px'
+            profilesContent.style.height = newHeight+'px'
+            profilesContent.style.overflow = 'auto'
+            
+            navContent.style.height = newHeight+'px'
+            navContent.style.paddingBottom = '75px'
+            navContent.style.overflow = 'auto'
+            profilesSidebar.style.height = newHeight+'px'
+            profilesSidebar.style.overflow = 'hidden'
+            profilesDetail.style.height = newHeight+'px'
             if(profileDetailContent){
                 profileDetailContent.style.minHeight = newHeight+'px'
             }

@@ -63,8 +63,8 @@ function resetForm() {
             </ol>
           </div><!-- /.col -->
           <div class="col-sm-6 text-right pt-2">
-              <a :href="route('document')" class="btn btn-sm btn-cs-light mr-2">Back</a>
-              <a v-on:click="save" class="btn btn-sm btn-cs-dark">Save</a>
+              <a :href="route('document')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-white text-neutral-700 cursor-pointer mr-2">Back</a>
+              <a v-on:click="save" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white cursor-pointer">Save</a>
           </div><!-- /.col -->
         </template>
 

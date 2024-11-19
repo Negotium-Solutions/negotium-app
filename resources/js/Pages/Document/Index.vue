@@ -58,7 +58,7 @@ function deleteDocument(id) {
             </ol>
           </div><!-- /.col -->
           <div class="col-sm-6 text-right pt-2">
-              <a :href="route('document.create')" class="btn btn-sm btn-dark">Add Document</a>
+              <a :href="route('document.create')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white cursor-pointer">Add Document</a>
           </div><!-- /.col -->
         </template>
 
