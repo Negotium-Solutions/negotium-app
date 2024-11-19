@@ -5,6 +5,13 @@ import ExtendProfileExecutionLayout from "@/Pages/Profile/ProcessExecutionLayout
 import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import EmailActivity from "@/Components/Process/Activity/Email.vue";
+import TextArea from "@/Components/Process/Activity/TextArea.vue";
+import Document from "@/Components/Process/Activity/Document.vue";
+import Percentage from "@/Components/Process/Activity/Percentage.vue";
+import Integer from "@/Components/Process/Activity/Integer.vue";
+import Amount from "@/Components/Process/Activity/Amount.vue";
+import Date from "@/Components/Process/Activity/Date.vue";
+import NegotiumLink from "@/Components/Process/Activity/Link.vue";
 
 const profileManagerStore = useProfilesManagerStore();
 const processExecution = useProcessExecution();
@@ -61,9 +68,9 @@ function setFieldValue(index, value) {
         </div>
 
         <div class="row">
-          <div v-for="(field, _index) in processExecution.step.fields" :key="_index" class="col-md-12 pl-3">
+          <div v-for="(field, _index) in processExecution.step.fields" :key="_index" class="col-md-12 pl-3 border mb-2">
             <div class="gap-28 mb-2">
-              <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700">{{ field.label }}</span>
+              <span class="mb-2 mt-4 text-neutral-700 text-[1.0rem] font-bold font-['Roboto'] leading-loose">{{ field.label }}</span>
               <input v-if="field.dynamic_model_field_type_id == 1" class="form-control" v-model="processExecution.step.fields[_index].value">
               <select class="form-control" v-if="[9].includes(field.dynamic_model_field_type_id)" v-model="processExecution.step.fields[_index].value" placeholder="Please select">
                 <option v-for="(option, index) in field.options" :key="index">{{ option.name }}</option>
@@ -83,6 +90,27 @@ function setFieldValue(index, value) {
                   />
                   {{ option.name }}
                 </label>
+              </div>
+              <div class="flex flex-col" v-if="[15].includes(field.dynamic_model_field_type_id)">
+                <negotium-link></negotium-link>
+              </div>
+              <div class="flex flex-col" v-if="[6].includes(field.dynamic_model_field_type_id)">
+                <date></date>
+              </div>
+              <div class="flex flex-col" v-if="[5].includes(field.dynamic_model_field_type_id)">
+                <amount></amount>
+              </div>
+              <div class="flex flex-col" v-if="[4].includes(field.dynamic_model_field_type_id)">
+                <integer></integer>
+              </div>
+              <div class="flex flex-col" v-if="[3].includes(field.dynamic_model_field_type_id)">
+                <percentage></percentage>
+              </div>
+              <div class="flex flex-col" v-if="[10].includes(field.dynamic_model_field_type_id)">
+                <document></document>
+              </div>
+              <div class="flex flex-col" v-if="[2].includes(field.dynamic_model_field_type_id)">
+                <text-area></text-area>
               </div>
               <div class="flex flex-col" v-if="[13].includes(field.dynamic_model_field_type_id)">
                 <email-activity></email-activity>

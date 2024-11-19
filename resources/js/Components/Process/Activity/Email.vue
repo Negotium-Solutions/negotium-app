@@ -12,9 +12,6 @@ const profileCommunicationStore = useProfileCommunicationStore();
 </script>
 
 <template>
-  <div class="row m-0 p-0 pb-2">
-    <div class="text-neutral-700 text-[1.5rem] font-bold font-['Roboto'] leading-loose w-100">Send Email</div>
-  </div>
   <div class="w-100 mb-2">
     <div class="input-group date" id="to-email">
       <input v-model="profileCommunicationStore.communication.to" type="text" class="form-control" placeholder="To:" disabled>
