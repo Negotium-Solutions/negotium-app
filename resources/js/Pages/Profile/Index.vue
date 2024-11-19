@@ -86,7 +86,7 @@ function handleProfileMenuDivHeight(){
           </h1>
         </div><!-- /.col -->
         <div class="col-sm-6 text-right pt-2 pt-sm-3 pt-md-3 pt-lg-3 pt-xl-3">
-          <a class="px-4 py-2 bg-neutral-700 rounded-custom-25 border border-neutral-700 justify-center items-center text-white">Add Profile</a>
+          <a class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white cursor-pointer">Add Profile</a>
         </div><!-- /.col -->
       </div>
       <div class="row mb-0 mt-1">
