@@ -202,14 +202,11 @@ export const useProfileCommunicationStore = defineStore({
         },
         resetCommunication() {
             this.loading = false;
-            this.communication = {
-                subject: '',
-                message: '',
-                to: [],
-                cc: [],
-                bcc: [],
-                communication_type_id: null
-            };
+            this.communication.subject = '';
+            this.communication.message = '';
+            this.communication.cc = [];
+            this.communication.bcc = [];
+            this.communication.communication_type_id = null;
             this.show_cc = false;
             this.show_bcc = false;
         }
