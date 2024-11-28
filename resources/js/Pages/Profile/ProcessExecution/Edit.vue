@@ -1,5 +1,5 @@
 <script setup>
-import { useProfilesManagerStore, useProcessExecution } from "@/stores/index.js";
+import { useProfilesManagerStore, useProcessExecution, useProfileCommunicationStore } from "@/stores/index.js";
 import { onMounted } from "vue";
 import ExtendProfileExecutionLayout from "@/Pages/Profile/ProcessExecutionLayout.vue";
 import { useToast } from "primevue/usetoast";
@@ -8,6 +8,7 @@ import EmailActivity from "@/Components/Process/Activity/Email.vue";
 
 const profileManagerStore = useProfilesManagerStore();
 const processExecution = useProcessExecution();
+const profileCommunicationStore = useProfileCommunicationStore();
 const toast = useToast();
 
 const props = defineProps({
@@ -40,6 +41,7 @@ onMounted(() => {
   processExecution.set('step', props.step);
   processExecution.set('current_step', props.current_step);
   processExecution.set('apiImagesUrl', props.apiImagesUrl);
+  profileCommunicationStore.communication.to[0] = props.profile.email;
 
   processExecution.handleInnerContentDivHeight()
   window.addEventListener('resize', processExecution.handleInnerContentDivHeight);

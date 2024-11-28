@@ -4,10 +4,11 @@ import Button from "primevue/button";
 import Editor from "primevue/editor";
 import FileUpload from "primevue/fileupload";
 import { useToast } from "primevue/usetoast";
-import { useProfileCommunicationStore } from "@/stores/index.js";
+import { useProfileCommunicationStore, useProfilesManagerStore  } from "@/stores/index.js";
 
 const toast = useToast();
 const profileCommunicationStore = useProfileCommunicationStore();
+const profileManagerStore = useProfilesManagerStore();
 
 </script>
 
