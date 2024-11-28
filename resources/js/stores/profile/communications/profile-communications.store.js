@@ -61,7 +61,9 @@ export const useProfileCommunicationStore = defineStore({
 
             let _url = this.apiUrl+'/'+this.user.tenant+'/communication/send-email/'+profile.id;
 
-            await this.apiHelper._post(_url, this.communication);
+            let data = {...this.communication, ...{ schema_id: profile.schema_id }};
+
+            await this.apiHelper._post(_url, data);
             this.apiHelper.isDoneLoading(null, () => {
                 const response = this.apiHelper.response;
                 if (parseInt(response.code) === 200) {
