@@ -155,7 +155,7 @@ export const useProcessManagerStore = defineStore({
                     case 201:
                         toast.add({ severity: 'success', detail: response.message, life: 3000 });
                         setTimeout(() => {
-                            location.reload();
+                            window.location = window.location.href.split('?')[0];
                         }, 3000);
                         break;
                     case 422:
