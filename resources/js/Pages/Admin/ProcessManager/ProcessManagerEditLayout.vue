@@ -46,7 +46,13 @@ onUpdated(() => {
         <Breadcrumb :model="breadCrumbs" :class="'p-0 text-sm'">
           <template #separator> <i class="pi pi-arrow-right text-sm"></i></template>
         </Breadcrumb>
+
       </div><!-- /.col -->
+        <div class="col-sm-6 text-right">
+          <a :href="route('process-manager')" class="gap-2 justify-center py-2.5 px-3 text-sm leading-3 rounded-custom-25 border border-solid border-neutral-700 border-opacity-20 bg-neutral-700 text-white float-right">
+            Save & Close
+          </a>
+        </div>
       </div>
     </template>
 
