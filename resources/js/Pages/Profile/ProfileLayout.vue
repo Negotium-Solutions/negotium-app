@@ -116,7 +116,7 @@ onMounted(() => {
           </div>
         </div>
         <!-- Profile Page Start -->
-        <div class="col-lg-7 col-md-5 col-sm-12 pl-0 pr-0">
+        <div class="col-lg-7 col-md-5 col-sm-12 pl-0 pr-0" id="profile-nav-content">
           <slot/>
         </div>
         <!-- Profile Page End -->
