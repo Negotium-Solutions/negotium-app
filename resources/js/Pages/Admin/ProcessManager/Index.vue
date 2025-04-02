@@ -46,7 +46,7 @@ onMounted(() => {
       </div>
     </template>
 
-    <div class="content-container pl-4 pr-4">
+    <div class="content-container pl-4 pr-4" style="padding-bottom:75px;">
 
       <div class="row mb-3">
         <div class="col-md-8">
