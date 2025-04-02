@@ -94,6 +94,16 @@ function setFieldValue(index, value) {
                   <input type="radio" name="options" @click="setFieldValue(_index, option.name)" :id="'option_'+option.id" autocomplete="off"> <span class="text-neutral-700 font-normal" :class="{ 'text-white' : processExecution.step.fields[_index].value == option.name }">{{ option.name }}</span>
                 </label>
               </div>
+              <div class="btn-group btn-group-toggle w-100" data-toggle="buttons" v-if="[16].includes(field.dynamic_model_field_type_id)">
+                <button class="btn btn-sm btn-success" @click="processExecution.downloadBase64File(field.file)">
+                  <i class="fa fa-download"></i> Download File
+                </button>
+              </div>
+
+              <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700 w-100" v-if="[16].includes(field.dynamic_model_field_type_id)">Checked file</span>
+              <div class="btn-group btn-group-toggle w-100" data-toggle="buttons" v-if="[16].includes(field.dynamic_model_field_type_id)">
+                <input type="file" class="" />
+              </div>
               <div class="input-validation-error" v-if="typeof processExecution.profileProcessFieldsErrors?.[field.field] !== 'undefined'">
                 <span v-for="(error, index) in processExecution.profileProcessFieldsErrors?.[field.field]" :key="index" class="error invalid-feedback">{{ error }}</span>
               </div>

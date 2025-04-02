@@ -108,7 +108,27 @@ onMounted(() => {
           </div>
         </div>
       </div>
-
+      <div class="mt-3 mb-1" v-if="processManagerStore.getDynamicModelFieldType === 16">
+        <p class="text-neutral-700 text-xs font-normal font-['Nunito'] leading-3 mb-2">Upload Document</p>
+        <div v-if="processManagerStore.getDynamicModelFieldType === 16" class="w-100 mb-2 mt-2 options-container">
+          <div class="w-100">
+            <input
+                type="file"
+                class="p-1 w-full border-0 rounded border border-neutral-700/opacity-25"
+                @change="processManagerStore.handleFileUpload($event)"
+            />
+          </div>
+        </div>
+        <div class="input-validation-error" v-if="typeof processManagerStore.activityErrors?.options !== 'undefined'">
+          <span v-for="(error, index) in processManagerStore.activityErrors?.options" :key="index" class="error invalid-feedback">{{ error }}</span>
+        </div>
+        <div class="mb-2 max-h-[200px] d-block overflow-y-auto">
+          <div v-for="(option, index) in processManagerStore.activity.options" :key="index" class="w-100 d-block mb-2 text-neutral-700 font-normal bg-white font-['Nunito'] leading-tight p-2.5 rounded border border-neutral-700/opacity-25 flex-col justify-start items-start gap-2 inline-flex">
+            <span>{{ option }}</span>
+            <i class="pi pi-times float-right cursor-pointer" @click="processManagerStore.removeOption(processManagerStore.activity.options, index)"></i>
+          </div>
+        </div>
+      </div>
       <template #footer>
         <div class="row w-100 m-0">
           <div class="col-12 pt-3 pb-3 flex justify-between">

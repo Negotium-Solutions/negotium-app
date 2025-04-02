@@ -138,6 +138,65 @@ export const useProcessExecution = defineStore({
             if ( (step.id !== this.step.id) && (step.order <= this.current_step.order)) {
                 window.location.href = '/process-execution/edit/' + this.process_id + '/' + this.process_schema_id + '/' + this.profile_id + '/' + this.profile_schema_id + '/' + step.id;
             }
+        },
+        getMimeTypeFromBase64(base64String) {
+            // Decode the first 24 characters (which usually include the header info)
+            const binaryStr = atob(base64String.substring(0, 24));
+            const header = binaryStr.substring(0, 4);
+
+            // Check for ZIP file signature ("PK\x03\x04") which is common for .xlsx files
+            if (header === "PK\u0003\u0004") {
+                return "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+            }
+
+            // Check for PDF signature ("%PDF")
+            if (header === "%PDF") {
+                return "application/pdf";
+            }
+
+            // Add more signature checks here if needed...
+
+            // Fallback MIME type if not recognized
+            return "application/octet-stream";
+        },
+        getFileExtensionFromMimeType(mimeType) {
+            const mimeMap = {
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet": "xlsx",
+                "application/pdf": "pdf",
+                "application/zip": "zip",
+                "application/octet-stream": "bin",
+                // add more mappings as needed
+            };
+            return mimeMap[mimeType] || "bin";
+        },
+        downloadBase64File(base64String, fileName = "") {
+            // Determine the MIME type and corresponding file extension
+            const mimeType = this.getMimeTypeFromBase64(base64String);
+            const extension = this.getFileExtensionFromMimeType(mimeType);
+
+            // Generate a filename if not provided
+            if (!fileName) {
+                fileName = `download.${extension}`;
+            }
+
+            // Decode Base64 string to a byte array
+            const byteCharacters = atob(base64String);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+
+            // Create a Blob from the byte array using the determined MIME type
+            const blob = new Blob([byteArray], { type: mimeType });
+
+            // Create a temporary link element to trigger the download
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = fileName;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     },
     getters: {

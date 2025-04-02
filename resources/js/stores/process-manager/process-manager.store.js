@@ -16,6 +16,7 @@ export const useProcessManagerStore = defineStore({
         activity: {
             name: null,
             type_id: null,
+            file: null,
             validations: [],
             options: []
         },
@@ -159,13 +160,11 @@ export const useProcessManagerStore = defineStore({
                         }, 3000);
                         break;
                     case 422:
-                        console.log('response', response);
                         this.activityErrors = response.errors;
                         toast.add({ severity: 'error', detail: messages.value.error.input_validation_error, life: 3000 });
                         this.loading = false;
                         break;
                     default:
-                        console.log('response', response);
                         toast.add({ severity: 'error', detail: response.message, life: 3000 });
                         this.loading = false;
                         break;
@@ -209,6 +208,19 @@ export const useProcessManagerStore = defineStore({
                     toast.add({ severity: 'error', summary: 'Rejected', detail: 'Operation cancelled', life: 3000 });
                 }
             });
+        },
+        handleFileUpload(event) {
+            let file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                this.activity.file = reader.result.split(",")[1]; // Remove the metadata part
+            };
+            reader.onerror = (error) => {
+                console.error("Error converting file:", error);
+            };
         },
         onFilter(event) {
             this.category.name = event.value;
