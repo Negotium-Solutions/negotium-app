@@ -5,6 +5,7 @@ import ExtendProfileExecutionLayout from "@/Pages/Profile/ProcessExecutionLayout
 import { useToast } from "primevue/usetoast";
 import Button from "primevue/button";
 import EmailActivity from "@/Components/Process/Activity/Email.vue";
+import { FunctionsHelper } from "@/helpers/index.js";
 
 const profileManagerStore = useProfilesManagerStore();
 const processExecution = useProcessExecution();
@@ -66,7 +67,7 @@ function setFieldValue(index, value) {
           <div v-for="(field, _index) in processExecution.step.fields" :key="_index" class="col-md-12 pl-3">
             <div class="gap-28 mb-2">
               <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700">{{ field.label }}</span>
-              <input v-if="field.dynamic_model_field_type_id == 1" class="form-control" v-model="processExecution.step.fields[_index].value">
+              <input v-if="field.dynamic_model_field_type_id === 1" class="form-control" v-model="processExecution.step.fields[_index].value">
               <select class="form-control" v-if="[9].includes(field.dynamic_model_field_type_id)" v-model="processExecution.step.fields[_index].value" placeholder="Please select">
                 <option v-for="(option, index) in field.options" :key="index">{{ option.name }}</option>
               </select>
@@ -89,21 +90,31 @@ function setFieldValue(index, value) {
               <div class="flex flex-col" v-if="[13].includes(field.dynamic_model_field_type_id)">
                 <email-activity></email-activity>
               </div>
+
               <div class="btn-group btn-group-toggle w-100" data-toggle="buttons" v-if="[7].includes(field.dynamic_model_field_type_id)">
                 <label class="btn btn-sm btn-outline-secondary border-neutral-700 border-opacity-20" v-for="(option, index) in field.options" :key="index" :class="{ 'bg-slate-500' : processExecution.step.fields[_index].value == option.name }">
                   <input type="radio" name="options" @click="setFieldValue(_index, option.name)" :id="'option_'+option.id" autocomplete="off"> <span class="text-neutral-700 font-normal" :class="{ 'text-white' : processExecution.step.fields[_index].value == option.name }">{{ option.name }}</span>
                 </label>
               </div>
-              <div class="btn-group btn-group-toggle w-100" data-toggle="buttons" v-if="[16].includes(field.dynamic_model_field_type_id)">
-                <button class="btn btn-sm btn-success" @click="processExecution.downloadBase64File(field.file)">
-                  <i class="fa fa-download"></i> Download File
-                </button>
+              <div class="p-2 border rounded" v-if="[16].includes(field.dynamic_model_field_type_id)">
+                <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
+                  <button class="btn btn-sm btn-default text-left" @click="FunctionsHelper.downloadBase64File(field.file)">
+                    <i class="fa fa-download"></i> Click here to download file
+                  </button>
+                </div>
+                <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700 w-100">Upload file</span>
+                <div class="mt-2 input-group">
+                  <div class="custom-file" v-if="processExecution.step.fields[_index].value === null">
+                    <input type="file" class="custom-file-input" id="file" @change="processExecution.handleFileUpload($event, _index)" required="">
+                    <label class="custom-file-label" for="file">Choose file</label>
+                  </div>
+                  <div class="w-100" v-else>
+                    {{ processExecution.step.fields[_index].value.name }} <span class="italic">{{ processExecution.step.fields[_index].value.size / 1000 }} KB</span> <span class="p-badge p-component p-badge-warning p-fileupload-file-badge" data-pc-name="badge" data-pc-extend="badge" data-pc-section="root">Pending</span>
+                    <button @click="processExecution.removeFile(_index)" class="p-button p-component float-right">X <span class="ml-1 p-button-label" data-pc-section="label">Remove</span></button>
+                  </div>
+                </div>
               </div>
 
-              <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700 w-100" v-if="[16].includes(field.dynamic_model_field_type_id)">Checked file</span>
-              <div class="btn-group btn-group-toggle w-100" data-toggle="buttons" v-if="[16].includes(field.dynamic_model_field_type_id)">
-                <input type="file" class="" />
-              </div>
               <div class="input-validation-error" v-if="typeof processExecution.profileProcessFieldsErrors?.[field.field] !== 'undefined'">
                 <span v-for="(error, index) in processExecution.profileProcessFieldsErrors?.[field.field]" :key="index" class="error invalid-feedback">{{ error }}</span>
               </div>
