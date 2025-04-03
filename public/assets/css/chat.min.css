@@ -165,7 +165,7 @@ div.loading-dots .dot-lg {
         opacity: 1;
     }
 }
-.btn {
+#botmanWidgetRoot > .btn {
     display: block;
     padding: 5px;
     border-radius: 5px;
