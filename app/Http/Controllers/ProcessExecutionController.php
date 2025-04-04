@@ -60,7 +60,7 @@ class ProcessExecutionController extends Controller
             'apiImagesUrl' => $this->apiImagesUrl
         ];
 
-        // dd($parameters);
+        // dd($parameters['step']['fields'][2]);
 
         return Inertia::render('Profile/ProcessExecution/Edit', $parameters);
     }

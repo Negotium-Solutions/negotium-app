@@ -1,8 +1,7 @@
-import { defineStore } from 'pinia';
-import axios from "axios";
-import { ApiHelper, FunctionsHelper } from "@/helpers/index.js";
-import { usePage } from "@inertiajs/vue3";
-import { computed } from "vue";
+import {defineStore} from 'pinia';
+import {ApiHelper, FunctionsHelper} from "@/helpers/index.js";
+import {usePage} from "@inertiajs/vue3";
+import {computed} from "vue";
 
 const page = usePage();
 const user = computed(() => page.props.auth.user);
@@ -148,7 +147,15 @@ export const useProcessExecution = defineStore({
             const reader = new FileReader();
             reader.readAsDataURL(file);
             reader.onload = () => {
-                this.step.fields[index].value.base64 = reader.result.split(",")[1];
+                this.step.fields[index].value = {
+                    'name': file.name,
+                    'type': file.type,
+                    'size': file.size,
+                    'url': null,
+                    'base64': reader.result.split(",")[1],
+                    'status': 'pending'
+                };
+                console.log('Step: ', this.step.fields[index]);
             };
             reader.onerror = (error) => {
                 console.error("Error converting file:", error);

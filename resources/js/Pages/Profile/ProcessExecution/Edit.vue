@@ -109,7 +109,10 @@ function setFieldValue(index, value) {
                     <label class="custom-file-label" for="file">Choose file</label>
                   </div>
                   <div class="w-100" v-else>
-                    {{ processExecution.step.fields[_index].value.name }} <span class="italic">{{ processExecution.step.fields[_index].value.size / 1000 }} KB</span> <span class="p-badge p-component p-badge-warning p-fileupload-file-badge" data-pc-name="badge" data-pc-extend="badge" data-pc-section="root">Pending</span>
+                    <a :href="processExecution.step.fields[_index].value.url"><i class="fa fa-file"></i> {{ processExecution.step.fields[_index].value.name }}</a>
+                    <span v-if="processExecution.step.fields[_index].value.status === 'pending'" class="italic">{{ processExecution.step.fields[_index].value.size / 1000 }} KB</span>
+                    <span v-if="processExecution.step.fields[_index].value.status === 'uploaded'" class="p-badge p-component p-badge-sucess p-fileupload-file-badge ml-2" data-pc-name="badge" data-pc-extend="badge" data-pc-section="root">Uploaded</span>
+                    <span v-if="processExecution.step.fields[_index].value.status === 'pending'" class="p-badge p-component p-badge-warning p-fileupload-file-badge ml-2" data-pc-name="badge" data-pc-extend="badge" data-pc-section="root">Pending</span>
                     <button @click="processExecution.removeFile(_index)" class="p-button p-component float-right">X <span class="ml-1 p-button-label" data-pc-section="label">Remove</span></button>
                   </div>
                 </div>
