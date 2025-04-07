@@ -96,6 +96,23 @@ function setFieldValue(index, value) {
                   <input type="radio" name="options" @click="setFieldValue(_index, option.name)" :id="'option_'+option.id" autocomplete="off"> <span class="text-neutral-700 font-normal" :class="{ 'text-white' : processExecution.step.fields[_index].value == option.name }">{{ option.name }}</span>
                 </label>
               </div>
+
+              <div class="p-2 border rounded" v-if="[10].includes(field.dynamic_model_field_type_id)">
+                <div class="mt-2 input-group">
+                  <div class="custom-file" v-if="processExecution.step.fields[_index].value === null">
+                    <input type="file" class="custom-file-input" id="file" @change="processExecution.handleFileUpload($event, _index)" required="">
+                    <label class="custom-file-label" for="file">Choose file</label>
+                  </div>
+                  <div class="w-100" v-else>
+                    <a target="_blank" :href="processExecution.step.fields[_index].value.url"><i class="fa fa-file"></i> {{ processExecution.step.fields[_index].value.name }}</a>
+                    <span v-if="processExecution.step.fields[_index].value.status === 'pending'" class="italic">{{ processExecution.step.fields[_index].value.size / 1000 }} KB</span>
+                    <span v-if="processExecution.step.fields[_index].value.status === 'uploaded'" class="p-badge p-component p-badge-sucess p-fileupload-file-badge ml-2" data-pc-name="badge" data-pc-extend="badge" data-pc-section="root">Uploaded</span>
+                    <span v-if="processExecution.step.fields[_index].value.status === 'pending'" class="p-badge p-component p-badge-warning p-fileupload-file-badge ml-2" data-pc-name="badge" data-pc-extend="badge" data-pc-section="root">Pending</span>
+                    <button @click="processExecution.removeFile(_index)" class="p-button p-component float-right">X <span class="ml-1 p-button-label" data-pc-section="label">Remove</span></button>
+                  </div>
+                </div>
+              </div>
+
               <div class="p-2 border rounded" v-if="[16].includes(field.dynamic_model_field_type_id)">
                 <div class="btn-group btn-group-toggle w-100" data-toggle="buttons">
                   <button class="btn btn-sm btn-default text-left" @click="FunctionsHelper.downloadBase64File(field.file)">
