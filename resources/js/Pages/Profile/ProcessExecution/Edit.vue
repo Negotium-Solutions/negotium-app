@@ -119,6 +119,7 @@ function setFieldValue(index, value) {
                     <i class="fa fa-download"></i> Click here to download file
                   </button>
                 </div>
+                <!--
                 <span class="mb-1 text-xs font-normal font-['Nunito'] leading-3 text-neutral-700 w-100">Upload file</span>
                 <div class="mt-2 input-group">
                   <div class="custom-file" v-if="processExecution.step.fields[_index].value === null">
@@ -133,6 +134,7 @@ function setFieldValue(index, value) {
                     <button @click="processExecution.removeFile(_index)" class="p-button p-component float-right">X <span class="ml-1 p-button-label" data-pc-section="label">Remove</span></button>
                   </div>
                 </div>
+                -->
               </div>
 
               <div class="input-validation-error" v-if="typeof processExecution.profileProcessFieldsErrors?.[field.field] !== 'undefined'">
