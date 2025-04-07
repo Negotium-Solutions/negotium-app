@@ -37,6 +37,15 @@ export const useProfileProcessStore = defineStore({
         apiHelper: new ApiHelper('profile')
     }),
     actions: {
+        setResponse(code, status, message, errors, data) {
+            this.response = {
+                'code': code,
+                'status': status,
+                'message': message,
+                'errors': errors,
+                'data': data
+            }
+        },
         async get(id = null, parent_id = null, _with = null)
         {
             this.loading = true;

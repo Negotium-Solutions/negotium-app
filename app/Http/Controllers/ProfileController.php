@@ -227,14 +227,16 @@ class ProfileController extends Controller
     {
         $key = self::PROFILES_KEY.Auth::user()->id;
         // Disable validation until caching is required
-        if (true/*$this->request->has('cache') && $this->request->cache === 'clear'*/) {
+        /*
+        if ($this->request->has('cache') && $this->request->cache === 'clear') {
             Cache::store('redis')->forget($key);
         }
+        */
 
-        if (!Cache::has($key)) {
+        // if (!Cache::has($key)) {
             $profileTypes = json_decode($this->http->get("{$this->url}/dynamic-model/schema/".self::DYNAMIC_MODEL_TYPE_PROFILE)->getBody(), true)['data'] ?? [];
             Cache::store('redis')->put($key, $profileTypes, 86400);
-        }
+        // }
 
         $profileTypes = Cache::store('redis')->get($key) ?? [];
 
@@ -245,13 +247,12 @@ class ProfileController extends Controller
         $response = $this->http->get("{$this->url}/profile?schema_id={$schemaId}");
 
         $profiles = null;
+        sleep(3);
         if ($response->successful()) {
             $profiles = json_decode($response->getBody(), true)['data'] ?? [];
         } else {
             abort(408, 'Request Timeout');
         }
-
-
 
         return [
             'profileTypes' => $profileTypes,
