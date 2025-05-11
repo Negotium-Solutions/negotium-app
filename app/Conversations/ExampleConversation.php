@@ -7,6 +7,7 @@ use BotMan\BotMan\Messages\Incoming\Answer;
 use BotMan\BotMan\Messages\Outgoing\Question;
 use BotMan\BotMan\Messages\Outgoing\Actions\Button;
 use BotMan\BotMan\Messages\Conversations\Conversation;
+use Illuminate\Support\Facades\Auth;
 
 class ExampleConversation extends Conversation
 {
@@ -18,8 +19,8 @@ class ExampleConversation extends Conversation
         
         // temp... remove!!!
         $this->bot->userStorage()->save([
-            'token' => '27|jvUEjmX9vB9mK81gZbzP7ijyNjjxqmBAVJVrEavAab9c04f3',
-            'tenant' => '354721dc-c7bf-4d46-9650-c44939f7875e',
+            'token' => Auth::user()->token,
+            'tenant' => Auth::user()->tenant,
         ]);
         
         $question = Question::create("How can I help?")

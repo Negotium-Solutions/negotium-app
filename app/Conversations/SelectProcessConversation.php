@@ -29,13 +29,14 @@ class SelectProcessConversation extends Conversation
         $response = $http->get($url);
         $json = $response->body();
         //$this->say($url);
+        // $this->say('Current tenant: ' . $user->get('tenant'));
         $response_data = json_decode($json);
 
         $buttons = [
             // Button::create('Onboarding')->value('onboarding'),
             // Button::create('Another')->value('another'),
         ];
-$this->say($json);
+// $this->say($json);
 
         if (isset($response_data->code) && $response_data->code === 200) {
             //$this->say($txt);
