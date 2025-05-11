@@ -24,9 +24,9 @@ class ProfileCreationController extends Controller
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
         ]);
-        $this->url = config('negotium_api_url').'/'.Auth::user()->tenant;
-        $this->apiUrl = config('negotium_api_url');
-        $this->apiImagesUrl = config('negotium_images_url');
+        $this->url = config('app.negotium_api_url').'/'.Auth::user()->tenant;
+        $this->apiUrl = config('app.negotium_api_url');
+        $this->apiImagesUrl = config('app.negotium_images_url');
         $this->request = $request;
     }
 

@@ -15,12 +15,12 @@ class ProcessController extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(config('negotium_api_url').'/'.Auth::user()->tenant.'/process?with=category,steps.activities');
+        ])->get(config('app.negotium_api_url').'/'.Auth::user()->tenant.'/process?with=category,steps.activities');
 
         $categoriesResponse = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(config('negotium_api_url').'/'.Auth::user()->tenant.'/process-category');
+        ])->get(config('app.negotium_api_url').'/'.Auth::user()->tenant.'/process-category');
 
         $categoriesResponseData = json_decode($categoriesResponse->body(), true);
         $responseData = json_decode($response->body(), true);
@@ -41,7 +41,7 @@ class ProcessController extends Controller
         $categoriesResponse = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(config('negotium_api_url').'/'.Auth::user()->tenant.'/process-category');
+        ])->get(config('app.negotium_api_url').'/'.Auth::user()->tenant.'/process-category');
 
         $categoriesResponseData = json_decode($categoriesResponse->body(), true);
 
@@ -59,12 +59,12 @@ class ProcessController extends Controller
         $processResponse = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(config('negotium_api_url').'/'.Auth::user()->tenant.'/process/'.$id.'?with=category,steps.activities');
+        ])->get(config('app.negotium_api_url').'/'.Auth::user()->tenant.'/process/'.$id.'?with=category,steps.activities');
 
         $activityGroupsResponse = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(config('negotium_api_url').'/'.Auth::user()->tenant.'/activity-group?with=activity_types');
+        ])->get(config('app.negotium_api_url').'/'.Auth::user()->tenant.'/activity-group?with=activity_types');
 
         $processResponseData = json_decode($processResponse->body(), true);
         $activityGroupsResponseData = json_decode($activityGroupsResponse->body(), true);

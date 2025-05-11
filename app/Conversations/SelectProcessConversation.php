@@ -25,7 +25,7 @@ class SelectProcessConversation extends Conversation
             'Authorization' => 'Bearer '. $user->get('token'),
             'Accept' => 'application/json'
         ]);
-        $url = config('negotium_api_url').'/'.$user->get('tenant').'/process';
+        $url = config('app.negotium_api_url').'/'.$user->get('tenant').'/process';
         $response = $http->get($url);
         $json = $response->body();
         //$this->say($url);
