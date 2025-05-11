@@ -54,6 +54,7 @@ return [
 
     'url' => env('APP_URL', 'http://localhost'),
     'negotium_api_url' => env('NEGOTIUM_API_URL', 'https://api-staging.negotium-solutions.com/api'),
+    'negotium_images_url' => env('NEGOTIUM_IMAGES_URL', 'https://api-staging.negotium-solutions.com'),
 
 
     /*
