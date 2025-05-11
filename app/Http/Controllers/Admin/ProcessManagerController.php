@@ -25,7 +25,7 @@ class ProcessManagerController extends Controller
         ]);
         $this->url = config('negotium_api_url').'/'.Auth::user()->tenant;
         $this->apiUrl = config('negotium_api_url');
-        $this->apiImagesUrl = env('NEGOTIUM_IMAGES_URL');
+        $this->apiImagesUrl = config('negotium_images_url');
         $this->request = $request;
     }
 
