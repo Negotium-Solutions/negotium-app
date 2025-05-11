@@ -97,6 +97,10 @@ function setFieldValue(index, value) {
                 </label>
               </div>
 
+              <div class="input-group" v-if="[6].includes(field.dynamic_model_field_type_id)">
+                <input type="date" v-model="processExecution.step.fields[_index].value" class="form-control" data-inputmask-alias="datetime" data-inputmask-inputformat="dd/mm/yyyy" data-mask="" inputmode="numeric">
+              </div>
+
               <div class="p-2 border rounded" v-if="[10].includes(field.dynamic_model_field_type_id)">
                 <div class="mt-2 input-group">
                   <div class="custom-file" v-if="processExecution.step.fields[_index].value === null">
