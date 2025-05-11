@@ -25,7 +25,7 @@ class SelectProcessConversation extends Conversation
             'Authorization' => 'Bearer '. $user->get('token'),
             'Accept' => 'application/json'
         ]);
-        $url = env('NEGOTIUM_API_URL').'/'.$user->get('tenant').'/process';
+        $url = config('negotium_api_url').'/'.$user->get('tenant').'/process';
         $response = $http->get($url);
         $json = $response->body();
         //$this->say($url);
@@ -35,8 +35,9 @@ class SelectProcessConversation extends Conversation
             // Button::create('Onboarding')->value('onboarding'),
             // Button::create('Another')->value('another'),
         ];
+$this->say($json);
 
-        if ($response_data->code === 200) {
+        if (isset($response_data->code) && $response_data->code === 200) {
             //$this->say($txt);
             $processes = $response_data->data;
             foreach ($processes as $process) {

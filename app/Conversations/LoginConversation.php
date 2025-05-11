@@ -41,7 +41,7 @@ class LoginConversation extends Conversation
                 
             $user = $this->bot->userStorage()->find();
 
-            $response = Http::post(env('NEGOTIUM_API_URL').'/auth/signin', [
+            $response = Http::post(config('negotium_api_url').'/auth/signin', [
                 'email' => $user->get('email'),
                 'password' => $password,
             ]);

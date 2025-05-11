@@ -44,7 +44,7 @@ class LoginRequest extends FormRequest
     {
         $this->ensureIsNotRateLimited();
 
-        $response = Http::post(env('NEGOTIUM_API_URL').'/auth/signin', [
+        $response = Http::post(config('negotium_api_url').'/auth/signin', [
             'email' => $this->email,
             'password' => $this->password,
         ]);

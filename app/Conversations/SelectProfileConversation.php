@@ -25,7 +25,7 @@ class SelectProfileConversation extends Conversation
             'Authorization' => 'Bearer '. $user->get('token'),
             'Accept' => 'application/json'
         ]);
-        $url = env('NEGOTIUM_API_URL').'/'.$user->get('tenant').'/profile?with=communications,schema,dynamicModel';
+        $url = config('negotium_api_url').'/'.$user->get('tenant').'/profile?with=communications,schema,dynamicModel';
         $response = $http->get($url);
         $json = $response->body();
         //$this->say($url);
@@ -90,7 +90,7 @@ class SelectProfileConversation extends Conversation
                     $profile = json_decode($user->get('profile'));
                     $process = json_decode($user->get('process'));
 
-                    $url = env('NEGOTIUM_API_URL').'/'.$user->get('tenant').'/profile/assign-processes';
+                    $url = config('negotium_api_url').'/'.$user->get('tenant').'/profile/assign-processes';
                     $data = '{ "data": [{ "profile_id": "'.$profile->id.'", "process_id": "'.$process->id.'" }] }';
                     $http = Http::withHeaders([
                         'Authorization' => 'Bearer '. $user->get('token'),

@@ -20,7 +20,7 @@ class ProcessStatusReportController extends Controller
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
         ]);
-        $this->url = env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant;
+        $this->url = config('negotium_api_url').'/'.Auth::user()->tenant;
         $this->request = $request;
     }
 

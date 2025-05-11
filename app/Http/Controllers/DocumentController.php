@@ -14,7 +14,7 @@ class DocumentController extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/document');
+        ])->get(config('negotium_api_url').'/'.Auth::user()->tenant.'/document');
 
         $responseData = json_decode($response->body());
 
@@ -41,7 +41,7 @@ class DocumentController extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/document/'.$id);
+        ])->get(config('negotium_api_url').'/'.Auth::user()->tenant.'/document/'.$id);
 
         $responseData = json_decode($response->body());
 

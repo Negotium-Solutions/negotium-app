@@ -14,7 +14,7 @@ class StepController extends Controller
         $processResponse = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/process/'.$process_id.'?with=category,steps');
+        ])->get(config('negotium_api_url').'/'.Auth::user()->tenant.'/process/'.$process_id.'?with=category,steps');
 
         $processResponseData = json_decode($processResponse->body(), true);
 

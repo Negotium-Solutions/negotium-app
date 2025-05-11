@@ -23,8 +23,8 @@ class ProcessManagerController extends Controller
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
         ]);
-        $this->url = env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant;
-        $this->apiUrl = env('NEGOTIUM_API_URL');
+        $this->url = config('negotium_api_url').'/'.Auth::user()->tenant;
+        $this->apiUrl = config('negotium_api_url');
         $this->apiImagesUrl = env('NEGOTIUM_IMAGES_URL');
         $this->request = $request;
     }

@@ -46,7 +46,7 @@ class AuthenticatedSessionController extends Controller
         $response = Http::withHeaders([
             'Authorization' => 'Bearer '. Auth::user()->token,
             'Accept' => 'application/json'
-        ])->get(env('NEGOTIUM_API_URL').'/'.Auth::user()->tenant.'/logout');
+        ])->get(config('negotium_api_url').'/'.Auth::user()->tenant.'/logout');
 
         $responseData = isset(json_decode($response->body(), true)['data']) ? json_decode($response->body(), true)['data'] : [];
 
