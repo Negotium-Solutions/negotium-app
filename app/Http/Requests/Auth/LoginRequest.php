@@ -43,7 +43,7 @@ class LoginRequest extends FormRequest
     public function authenticate(): void
     {
         $this->ensureIsNotRateLimited();
-dd(config('app.negotium_api_url').'/auth/signin');
+// dd(config('app.negotium_api_url').'/auth/signin');
         $response = Http::post(config('app.negotium_api_url').'/auth/signin', [
             'email' => $this->email,
             'password' => $this->password,
