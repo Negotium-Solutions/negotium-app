@@ -25,10 +25,12 @@ class SelectProfileConversation extends Conversation
             'Authorization' => 'Bearer '. $user->get('token'),
             'Accept' => 'application/json'
         ]);
-        $url = config('app.negotium_api_url').'/'.$user->get('tenant').'/profile?with=communications,schema,dynamicModel';
+        $url = config('app.negotium_api_url').'/'.$user->get('tenant').'/profile?schema_id=9e9d4638-e4b2-4684-ae8c-d07074dc2d86';
+
+        // $this->say($url);
         $response = $http->get($url);
         $json = $response->body();
-        //$this->say($url);
+        // $this->say($response->body());
         $response_data = json_decode($json);
 
         $buttons = [
@@ -37,7 +39,7 @@ class SelectProfileConversation extends Conversation
         ];
 
         if ($response_data->code === 200) {
-            $profiles = $response_data->data;
+            $profiles = $response_data->data->models;
             foreach ($profiles as $profile) {
                 if (str_contains(strtolower($profile->profile_name), $txt) || strtolower($profile->email) === $txt) {
                     $buttons[] = Button::create($profile->profile_name)->value(json_encode($profile));
